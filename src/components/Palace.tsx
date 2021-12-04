@@ -1,9 +1,17 @@
 import { useState } from "react"
 import "./Palace.module.css"
 import ReactModal from "react-modal"
-import palace from "../assets/ヴェルサイユ宮殿.jpg"
 
-function Palace() {
+interface Palacecontent {
+	image: any
+	name: string
+}
+interface PalaceProps {
+	palace: Palacecontent
+}
+
+const Palace: React.FC<PalaceProps> = ({ palace }) => {
+	//palaceはオブジェクト
 	const [isOpen, setIsOpen] = useState(false)
 	const customStyles: ReactModal.Styles = {
 		// ダイアログ内のスタイル（中央に表示）
@@ -18,9 +26,9 @@ function Palace() {
 	}
 	return (
 		<div className="Palace">
-			<img src={palace} alt="palace1" width="20%" />
+			<img src={palace.image} alt={palace.name} width="20%" />
 			<br />
-			<span>ヴェルサイユ宮殿</span>
+			<span>{palace.name}</span>
 			<button onClick={() => setIsOpen(true)}>︙</button>
 			<ReactModal
 				isOpen={isOpen}

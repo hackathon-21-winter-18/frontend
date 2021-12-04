@@ -24,12 +24,14 @@ function Login() {
 					placeholder="ユーザー名"
 					onChange={handleUserNameChange}
 				/>
+				<br />
 				<input
 					type="text"
 					name="passWord"
 					placeholder="パスワード"
 					onChange={handlePassWordChange}
 				/>
+				<br />
 				<input type="submit" value="submit" />
 			</form>
 		</div>
