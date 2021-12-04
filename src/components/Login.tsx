@@ -35,5 +35,4 @@ function Login() {
 		</div>
 	)
 }
-//stateに入れてボタン押したときにPOST
 export default Login
