@@ -1,4 +1,5 @@
 import { useState } from "react"
+import { Link } from "react-router-dom"
 import "./Palace.module.css"
 import ReactModal from "react-modal"
 
@@ -34,7 +35,9 @@ const Palace: React.FC<PalaceProps> = ({ palace }) => {
 	}
 	return (
 		<div className="Palace">
-			<img src={palace.image} alt={palace.Name} width="20%" />
+			<Link to="/memorize">
+				<img src={palace.image} alt={palace.Name} width="20%" />
+			</Link>
 			<br />
 			<span>{palace.Name}</span>
 			<button onClick={() => setIsOpen(true)}>︙</button>
