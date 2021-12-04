@@ -2,8 +2,8 @@ import React from "react"
 import "./Login.module.css"
 
 function Login() {
-	function handleSubmit(e) {
-		alert("提出しました")
+	function handleSubmit() {
+		alert("ログインしました")
 	}
 	return (
 		<div className="Login">

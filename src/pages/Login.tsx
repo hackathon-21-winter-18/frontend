@@ -1,6 +1,6 @@
 import React from "react"
 import "./Login.module.css"
-import "../component/Login"
+import "../components/Login"
 
 function Login() {
 	return (
