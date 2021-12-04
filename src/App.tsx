@@ -1,11 +1,11 @@
 import React from "react"
-import "./App.css"
-import HelloWorld from "./components/HelloWorld"
+import "./App.module.css"
+import Palace from "./components/Palace"
 
 function App() {
 	return (
 		<div className="App">
-			<HelloWorld />
+			<Palace />
 		</div>
 	)
 }
