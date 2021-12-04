@@ -1,18 +1,16 @@
+import { useState } from "react"
 import "./App.module.css"
-import { BrowserRouter, Route, Routes } from "react-router-dom"
-import Home from "./pages/Home"
-import LoginPage from "./pages/LoginPage"
-import NotFound from "./pages/NotFound"
+import { BrowserRouter } from "react-router-dom"
+import AuthenticatedRoutes from "./components/AuthenticatedRoutes"
+import NotAuthenticatedRoutes from "./components/NotAuthenticatedRoutes"
 
 function App() {
+	const [isAuthenticated, setIsAuthenticated] = useState(true)
+
 	return (
 		<div className="App">
 			<BrowserRouter>
-				<Routes>
-					<Route path="/" element={<Home />} />
-					<Route path="/login" element={<LoginPage />} />
-					<Route element={<NotFound />} />
-				</Routes>
+				{isAuthenticated ? <AuthenticatedRoutes /> : <NotAuthenticatedRoutes />}
 			</BrowserRouter>
 		</div>
 	)
