@@ -2,7 +2,7 @@ import { useState } from "react"
 import "./Palace.module.css"
 import ReactModal from "react-modal"
 import palace from "../assets/ヴェルサイユ宮殿.jpg"
-import FromNewPalace from "./DialogFronNewPalace"
+import FromNewPalace from "./DialogFromNewPalace"
 function Palace() {
     const [isOpen, setIsOpen] = useState(false)
     const customStyles: ReactModal.Styles = {
