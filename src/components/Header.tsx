@@ -1,6 +1,7 @@
 import { useState } from "react"
 import "./Header.module.css"
 import ReactModal from "react-modal"
+import { Link } from "react-router-dom"
 import logo from "../assets/脳みそ.png"
 
 function Header() {
@@ -39,6 +40,7 @@ function Header() {
 				<button onClick={() => alert("作成方法4")}>作成方法4</button>
 			</ReactModal>
 			<button onClick={() => alert("ログアウト")}>ログアウト</button>
+			<Link to="login">ログイン</Link>
 		</div>
 	)
 }
