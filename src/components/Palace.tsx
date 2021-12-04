@@ -8,12 +8,10 @@ function Palace() {
 	const customStyles: ReactModal.Styles = {
 		// ダイアログ内のスタイル（中央に表示）
 		content: {
-			top: "50%",
-			left: "50%",
-			right: "auto",
+			top: "30%",
 			bottom: "auto",
-			marginRight: "-50%",
-			transform: "translate(-50%, -50%)",
+			right: "auto",
+			left: "50%",
 		},
 		// 親ウィンドウのスタイル
 		overlay: {},
@@ -30,6 +28,7 @@ function Palace() {
 				style={customStyles}
 			>
 				<button onClick={() => alert("宮殿の編集画面へ")}>宮殿の編集</button>
+				<br />
 				<button onClick={() => alert("削除確認ポップアップ表示")}>
 					宮殿の削除
 				</button>
