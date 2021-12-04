@@ -7,8 +7,20 @@ import palace2 from "../assets/バッキンガム宮殿.jpg"
 
 function Home() {
 	const [palaces, setPalaces] = useState([
-		{ image: palace1, name: "palace1" },
-		{ image: palace2, name: "palace2" },
+		{
+			ID: 0,
+			Name: "Versailles",
+			image: palace1,
+			pins: [{ ID: 0, x: 0, y: 0 }],
+			CreatedBy: 1,
+		},
+		{
+			ID: 1,
+			Name: "Buckingham",
+			image: palace2,
+			pins: [{ ID: 1, x: 1, y: 1 }],
+			CreatedBy: 1,
+		},
 	])
 	const listItems = palaces.map((palace) => (
 		<li>

@@ -3,8 +3,16 @@ import "./Palace.module.css"
 import ReactModal from "react-modal"
 
 interface Palacecontent {
+	ID: number
+	Name: string
 	image: any
-	name: string
+	pins: Pin[]
+	CreatedBy: number
+}
+interface Pin {
+	ID: number
+	x: number
+	y: number
 }
 interface PalaceProps {
 	palace: Palacecontent
@@ -26,9 +34,9 @@ const Palace: React.FC<PalaceProps> = ({ palace }) => {
 	}
 	return (
 		<div className="Palace">
-			<img src={palace.image} alt={palace.name} width="20%" />
+			<img src={palace.image} alt={palace.Name} width="20%" />
 			<br />
-			<span>{palace.name}</span>
+			<span>{palace.Name}</span>
 			<button onClick={() => setIsOpen(true)}>︙</button>
 			<ReactModal
 				isOpen={isOpen}
