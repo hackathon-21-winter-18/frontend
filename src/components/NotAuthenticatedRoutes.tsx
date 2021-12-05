@@ -6,7 +6,7 @@ function NotAuthenticatedRoutes() {
 	return (
 		<Routes>
 			<Route path="/*" element={<LoginPage />} />
-			<Route element={<NotFound />} />
+			<Route path="/*" element={<NotFound />} />
 		</Routes>
 	)
 }

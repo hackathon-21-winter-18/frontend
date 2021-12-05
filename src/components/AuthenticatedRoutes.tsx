@@ -8,9 +8,8 @@ function AuthenticatedRoutes() {
 	return (
 		<Routes>
 			<Route path="/" element={<Home />} />
-			<Route path="/login" element={<LoginPage />} />
-			<Route path="/memorize" element={<Memorize />} />
-			<Route element={<NotFound />} />
+			<Route path="/memorize/:id" element={<Memorize />} />
+			<Route path="/*" element={<NotFound />} />
 		</Routes>
 	)
 }

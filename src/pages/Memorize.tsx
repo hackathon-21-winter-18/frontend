@@ -1,7 +1,10 @@
 import { useState } from "react"
+import { useParams } from "react-router"
 import palace1 from "../assets/ヴェルサイユ宮殿.jpg"
+import palace2 from "../assets/バッキンガム宮殿.jpg"
+import Word from "../components/Word"
 
-interface Palacecontent {
+interface Memorizecontents {
 	ID: number
 	Name: string
 	image: any
@@ -13,40 +16,55 @@ interface Pin {
 	x: number
 	y: number
 }
+
 function Memorize() {
-	const [palace, setPalace] = useState({
-		ID: 0,
-		Name: "samplePalace",
+	const [flag, setFlag] = useState([...Array(2)].fill(false)) //2のところは取得したembededPinsの数を充てる
+	const params = useParams()
+	//paramsが宮殿のidなのでaxiosで宮殿情報取得
+	const [samplePalace, setSamplePalace] = useState({
+		id: "0",
+		name: "Versailles",
 		image: palace1,
-		pins: [{ ID: 0, x: 0, y: 0 }],
-		CreatedBy: 1,
+		embededPins: [
+			{ id: "a1", x: 0, y: 0, word: "apple", memo: "aaa" },
+			{ id: "a2", x: 1, y: 1, word: "banana", memo: "bbb" },
+		],
 	})
-	/*
-  const [words,setWords]=useState()
-  const listItems = words.map((words) => (
-		<oi>
-			<Word word={word} />
-		</oi>
+	const listItems = samplePalace.embededPins.map((pin, index) => (
+		<li>
+			<Word
+				key={index}
+				word={pin.word}
+				num={index}
+				flag={flag}
+				setFlag={setFlag}
+			/>
+		</li>
 	))
-  */
-	const [count, setCount] = useState(0)
 
 	function handleClick() {
 		alert("ダイアログ表示")
+		console.log(params)
 	}
 	return (
 		<div className="Memorize">
 			<span>暗記画面</span>
 			<br />
-			<img src={palace.image} alt={palace.Name} width="30%" />
-			ここに単語一覧
-			<br />
-			{count === 0 ? (
-				<button onClick={handleClick}>暗記完了！</button>
+			{
+				//<img src={} alt={location.state.palace.name} />
+			}
+			{params.id === "0" ? (
+				<img src={palace1} alt={samplePalace.name} />
 			) : (
-				<span>a</span>
+				<img src={palace2} alt={samplePalace.name} />
 			)}
-			{/*0じゃなくて取得してきた単語数を表す変数を充てる*/}
+			{/*あとでコンポーネント分ける*/}
+			<ol>{listItems}</ol>
+			<br />
+			{flag.every((value) => value === false) ? (
+				<button onClick={handleClick}>暗記完了！</button>
+			) : null}
+			{/*flagの中身が全部trueなら表示*/}
 		</div>
 	)
 }

@@ -1,7 +1,7 @@
 import "./NotFound.module.css"
 
-function App() {
+function NotFound() {
 	return <div className="NotFound">NotFound</div>
 }
 
-export default App
+export default NotFound
