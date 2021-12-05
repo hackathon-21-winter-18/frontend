@@ -7,19 +7,18 @@ import palace2 from "../assets/バッキンガム宮殿.jpg"
 
 function Home() {
 	const [palaces, setPalaces] = useState([
+		//base64で取得するのでそのままsrcに突っ込む
 		{
-			ID: 0,
-			Name: "Versailles",
+			id: "0",
+			name: "Versailles",
 			image: palace1,
-			pins: [{ ID: 0, x: 0, y: 0 }],
-			CreatedBy: 1,
+			embededPins: [{ id: "a1", x: 0, y: 0, word: "apple", memo: "aaa" }],
 		},
 		{
-			ID: 1,
-			Name: "Buckingham",
+			id: "1",
+			name: "Buckingham",
 			image: palace2,
-			pins: [{ ID: 1, x: 1, y: 1 }],
-			CreatedBy: 1,
+			embededPins: [{ id: "a1", x: 1, y: 1, word: "banana", memo: "bbb" }],
 		},
 	])
 	const listItems = palaces.map((palace) => (
