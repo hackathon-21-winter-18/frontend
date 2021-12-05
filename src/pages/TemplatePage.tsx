@@ -1,38 +1,40 @@
 import { useState } from "react"
-import styles from "./Home.module.css"
+import styles from "TemplatePage.module.css"
 import Header from "../components/Header"
-import Palace from "../components/Palace"
+import Template from "../components/Template"
 import palace1 from "../assets/ヴェルサイユ宮殿.jpg"
 import palace2 from "../assets/バッキンガム宮殿.jpg"
 
-const Home: React.FC = () => {
-	const [palaces, setPalaces] = useState([
+const TemplatePage: React.FC = () => {
+	const [templates, setTemplates] = useState([
 		//base64で取得するのでそのままsrcに突っ込む
 		{
 			id: "0",
 			name: "Versailles",
 			image: palace1,
-			embededPins: [{ id: "a1", x: 0, y: 0, word: "apple", memo: "aaa" }],
+			pins: [{ id: "a1", x: 0, y: 0 }],
+			createdBy: "mehm8128",
 		},
 		{
 			id: "1",
 			name: "Buckingham",
 			image: palace2,
-			embededPins: [{ id: "a1", x: 1, y: 1, word: "banana", memo: "bbb" }],
+			pins: [{ id: "a1", x: 1, y: 1 }],
+			createdBy: "mehm8128",
 		},
 	])
-	const listItems = palaces.map((palace) => (
+	const listItems = templates.map((template) => (
 		<li>
-			<Palace palace={palace} />
+			<Template template={template} />
 		</li>
 	))
 	return (
-		<div className={styles.Home}>
+		<div>
 			<Header />
-			<span>ホーム画面</span>
+			<span>テンプレート</span>
 			<ul>{listItems}</ul>
 		</div>
 	)
 }
 
-export default Home
+export default TemplatePage

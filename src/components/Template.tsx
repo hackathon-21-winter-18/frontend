@@ -1,27 +1,24 @@
 import { useState } from "react"
 import { Link } from "react-router-dom"
-import styles from "./Palace.module.css"
 import ReactModal from "react-modal"
 
-interface PalaceContents {
+interface TemplateContents {
 	id: string
 	name: string
-	image: any
-	embededPins: EmbededPins[]
+	image: string
+	pins: Pins[]
+	createdBy: string
 }
-interface EmbededPins {
+interface Pins {
 	id: string
-	x: number
-	y: number
-	word: string
-	memo: string
+	x: Number
+	y: Number
 }
-interface PalaceProps {
-	palace: PalaceContents
+interface TemplateProps {
+	template: TemplateContents
 }
 
-const Palace: React.FC<PalaceProps> = ({ palace }) => {
-	//palaceはオブジェクト
+const Template: React.FC<TemplateProps> = ({ template }) => {
 	const [isOpen, setIsOpen] = useState(false)
 	const customStyles: ReactModal.Styles = {
 		// ダイアログ内のスタイル（中央に表示）
@@ -36,25 +33,27 @@ const Palace: React.FC<PalaceProps> = ({ palace }) => {
 	}
 	return (
 		<div>
-			<Link to={"/memorize/" + palace.id}>
-				<img src={palace.image} alt={palace.name} width="20%" />
+			<Link to={"/fromTemplate/" + template.id}>
+				<img src={template.image} alt={template.name} width="20%" />
 			</Link>
 			<br />
-			<span>{palace.name}</span>
+			<span>{template.name}</span>
 			<button onClick={() => setIsOpen(true)}>︙</button>
 			<ReactModal
 				isOpen={isOpen}
 				onRequestClose={() => setIsOpen(false)}
 				style={customStyles}
 			>
-				<button onClick={() => alert("宮殿の編集画面へ")}>宮殿の編集</button>
+				<button onClick={() => alert("宮殿の編集画面へ")}>
+					テンプレートの編集
+				</button>
 				<br />
 				<button onClick={() => alert("削除確認ポップアップ表示")}>
-					宮殿の削除
+					テンプレートの削除
 				</button>
 			</ReactModal>
 		</div>
 	)
 }
 
-export default Palace
+export default Template

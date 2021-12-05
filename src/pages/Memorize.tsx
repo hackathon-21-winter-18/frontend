@@ -4,19 +4,7 @@ import styles from "Memorize.module.css"
 import palace1 from "../assets/ヴェルサイユ宮殿.jpg"
 import palace2 from "../assets/バッキンガム宮殿.jpg"
 import Word from "../components/Word"
-
-interface Memorizecontents {
-	ID: number
-	Name: string
-	image: any
-	pins: Pin[]
-	CreatedBy: number
-}
-interface Pin {
-	ID: number
-	x: number
-	y: number
-}
+import Header from "../components/Header"
 
 const Memorize: React.FC = () => {
 	const [flag, setFlag] = useState([...Array(2)].fill(false)) //2のところは取得したembededPinsの数を充てる
@@ -62,6 +50,7 @@ const Memorize: React.FC = () => {
 	}
 	return (
 		<div>
+			<Header />
 			<span>暗記画面</span>
 			<br />
 			{

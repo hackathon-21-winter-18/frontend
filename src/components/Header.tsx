@@ -11,8 +11,7 @@ const Header: React.FC = () => {
 			<img src={logo} alt="logo" width="2%" />
 			<span>アプリ名</span>
 			<span>{userName}でログイン中</span>
-			<button>テンプレート</button>
-			{/*ここはあとでLinkにしてページ遷移させる*/}
+			<Link to="template">テンプレート</Link>
 			<FromNewPalace />
 			<button onClick={() => alert("ログアウト")}>ログアウト</button>
 			<Link to="login">ログイン</Link>
