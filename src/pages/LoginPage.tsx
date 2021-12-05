@@ -1,10 +1,10 @@
 import React from "react"
-import "./LoginPage.module.css"
+import styles from "./LoginPage.module.css"
 import Login from "../components/Login"
 
-function LoginPage() {
+const LoginPage: React.FC = () => {
 	return (
-		<div className="Login">
+		<div>
 			<Login />
 		</div>
 	)

@@ -1,4 +1,6 @@
 import { useState } from "react"
+import styles from "Word.module.css"
+
 interface WordProps {
 	word: string
 	num: number
@@ -9,7 +11,7 @@ const Word: React.FC<WordProps> = ({ word, num, flag, setFlag }) => {
 	const [wordFlag, setWordFlag] = useState(flag)
 	function handleClick() {}
 	return (
-		<div className="Word">
+		<div>
 			{wordFlag[num] === false ? (
 				<span>{word}未</span>
 			) : (

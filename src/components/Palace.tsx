@@ -1,6 +1,6 @@
 import { useState } from "react"
 import { Link } from "react-router-dom"
-import "./Palace.module.css"
+import styles from "./Palace.module.css"
 import ReactModal from "react-modal"
 
 interface Palacecontents {
@@ -35,7 +35,7 @@ const Palace: React.FC<PalaceProps> = ({ palace }) => {
 		overlay: {},
 	}
 	return (
-		<div className="Palace">
+		<div>
 			<Link to={"/memorize/" + palace.id}>
 				<img src={palace.image} alt={palace.name} width="20%" />
 			</Link>

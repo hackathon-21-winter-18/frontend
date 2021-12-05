@@ -1,5 +1,6 @@
 import { useState } from "react"
 import { useParams } from "react-router"
+import styles from "Memorize.module.css"
 import palace1 from "../assets/ヴェルサイユ宮殿.jpg"
 import palace2 from "../assets/バッキンガム宮殿.jpg"
 import Word from "../components/Word"
@@ -17,7 +18,7 @@ interface Pin {
 	y: number
 }
 
-function Memorize() {
+const Memorize: React.FC = () => {
 	const [flag, setFlag] = useState([...Array(2)].fill(false)) //2のところは取得したembededPinsの数を充てる
 	const params = useParams()
 	//params.idが宮殿のidなのでaxiosで宮殿情報取得
@@ -60,7 +61,7 @@ function Memorize() {
 		console.log(params)
 	}
 	return (
-		<div className="Memorize">
+		<div>
 			<span>暗記画面</span>
 			<br />
 			{

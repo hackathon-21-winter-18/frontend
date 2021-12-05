@@ -1,7 +1,7 @@
 import { useState } from "react"
-import "./Login.module.css"
+import styles from "./Login.module.css"
 
-function Login() {
+const Login: React.FC = () => {
 	const [userName, setUserName] = useState("")
 	const [passWord, setPassWord] = useState("")
 
@@ -15,7 +15,7 @@ function Login() {
 		setPassWord(e.target.value)
 	}
 	return (
-		<div className="Login">
+		<div>
 			<span>新規登録orログイン</span>
 			<form onSubmit={handleSubmit}>
 				<input

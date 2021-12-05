@@ -4,7 +4,7 @@ import LoginPage from "../pages/LoginPage"
 import Memorize from "../pages/Memorize"
 import NotFound from "../pages/NotFound"
 
-function AuthenticatedRoutes() {
+const AuthenticatedRoutes: React.FC = () => {
 	return (
 		<Routes>
 			<Route path="/" element={<Home />} />

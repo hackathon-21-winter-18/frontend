@@ -1,7 +1,7 @@
-import "./NotFound.module.css"
+import styles from "./NotFound.module.css"
 
-function NotFound() {
-	return <div className="NotFound">NotFound</div>
+const NotFound: React.FC = () => {
+	return <div>NotFound</div>
 }
 
 export default NotFound

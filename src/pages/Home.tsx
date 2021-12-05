@@ -1,11 +1,11 @@
 import { useState } from "react"
-import "./Home.module.css"
+import styles from "./Home.module.css"
 import Header from "../components/Header"
 import Palace from "../components/Palace"
 import palace1 from "../assets/ヴェルサイユ宮殿.jpg"
 import palace2 from "../assets/バッキンガム宮殿.jpg"
 
-function Home() {
+const Home: React.FC = () => {
 	const [palaces, setPalaces] = useState([
 		//base64で取得するのでそのままsrcに突っ込む
 		{
@@ -27,7 +27,7 @@ function Home() {
 		</li>
 	))
 	return (
-		<div className="Home">
+		<div className={styles.Home}>
 			<Header />
 			<ul>{listItems}</ul>
 		</div>
