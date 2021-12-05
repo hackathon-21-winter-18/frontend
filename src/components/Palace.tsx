@@ -3,25 +3,27 @@ import { Link } from "react-router-dom"
 import "./Palace.module.css"
 import ReactModal from "react-modal"
 
-interface Palacecontent {
-	ID: number
-	Name: string
+interface Palacecontents {
+	id: string
+	name: string
 	image: any
-	pins: Pin[]
-	CreatedBy: number
+	embededPins: Pin[]
 }
 interface Pin {
-	ID: number
+	id: string
 	x: number
 	y: number
+	word: string
+	memo: string
 }
 interface PalaceProps {
-	palace: Palacecontent
+	palace: Palacecontents
 }
 
 const Palace: React.FC<PalaceProps> = ({ palace }) => {
 	//palaceはオブジェクト
 	const [isOpen, setIsOpen] = useState(false)
+	const [palaceInfo, setPalace] = useState(palace)
 	const customStyles: ReactModal.Styles = {
 		// ダイアログ内のスタイル（中央に表示）
 		content: {
@@ -33,13 +35,15 @@ const Palace: React.FC<PalaceProps> = ({ palace }) => {
 		// 親ウィンドウのスタイル
 		overlay: {},
 	}
+	const location = { pathname: "/memorize", state: { palace: palaceInfo } }
+
 	return (
 		<div className="Palace">
-			<Link to="/memorize">
-				<img src={palace.image} alt={palace.Name} width="20%" />
+			<Link to={location}>
+				<img src={palace.image} alt={palace.name} width="20%" />
 			</Link>
 			<br />
-			<span>{palace.Name}</span>
+			<span>{palace.name}</span>
 			<button onClick={() => setIsOpen(true)}>︙</button>
 			<ReactModal
 				isOpen={isOpen}
