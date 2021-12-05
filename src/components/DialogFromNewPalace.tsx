@@ -1,6 +1,8 @@
 import * as React from 'react';
 import Dialog from '@mui/material/Dialog';
 import Button from '@mui/material/Button';
+import { Link } from "react-router-dom"
+
 
 export interface FromNewPalaceDialogProps {
   open: boolean;
@@ -24,6 +26,7 @@ function FromNewPalaceDialog(props: FromNewPalaceDialogProps) {
       reader.readAsDataURL(file)
     }
   }
+
   return (
     <Dialog open={open} onClose={handleClose}>
       <div>
@@ -44,7 +47,9 @@ function FromNewPalaceDialog(props: FromNewPalaceDialogProps) {
             <img src={previewImg} alt="previewImage" />
           </div>
           <div>
-            <Button >次に進む</Button>
+            <Link to={"edit"}>
+              <Button  >次に進む</Button>
+            </Link>
           </div>
         </div>}
     </Dialog>
