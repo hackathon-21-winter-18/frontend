@@ -2,23 +2,21 @@ import { useState } from "react"
 import styles from "Word.module.css"
 
 interface WordProps {
-	word: string
 	num: number
+	word: string
 	flag: boolean[]
 	setFlag: any
 }
-const Word: React.FC<WordProps> = ({ word, num, flag, setFlag }) => {
-	const [wordFlag, setWordFlag] = useState(flag)
-	function handleClick() {}
+const Word: React.FC<WordProps> = ({ num, word, flag, setFlag }) => {
+	function handleClick() {
+		let flag1 = flag
+		flag1[num] = !flag1[num]
+		setFlag(flag1)
+	}
 	return (
 		<div>
-			{wordFlag[num] === false ? (
-				<span>{word}未</span>
-			) : (
-				<span>{word}(未)</span>
-			)}
+			{flag[num] === true ? <span>{word}</span> : <span>{word}(未)</span>}
 			<button onClick={handleClick}>ボタン</button>
-			<span>{wordFlag[num].toString()}</span>
 			{/*flagがtrueのとき、ピンは青くなって黒帯が外れた状態*/}
 		</div>
 	)
