@@ -2,60 +2,58 @@ import { useState } from "react"
 import { Link } from "react-router-dom"
 import "./Palace.module.css"
 import ReactModal from "react-modal"
-import FromNewPalace from "./DialogFromNewPalace"
 
 interface Palacecontent {
-    ID: number
-    Name: string
-    image: any
-    pins: Pin[]
-    CreatedBy: number
+  ID: number
+  Name: string
+  image: any
+  pins: Pin[]
+  CreatedBy: number
 }
 interface Pin {
-    ID: number
-    x: number
-    y: number
+  ID: number
+  x: number
+  y: number
 }
 interface PalaceProps {
-    palace: Palacecontent
+  palace: Palacecontent
 }
 
 const Palace: React.FC<PalaceProps> = ({ palace }) => {
-    //palaceはオブジェクト
-    const [isOpen, setIsOpen] = useState(false)
-    const customStyles: ReactModal.Styles = {
-        // ダイアログ内のスタイル（中央に表示）
-        content: {
-            top: "30%",
-            bottom: "auto",
-            right: "auto",
-            left: "50%",
-        },
-        // 親ウィンドウのスタイル
-        overlay: {},
-    }
-    return (
-        <div className="Palace">
-            <Link to="/memorize">
-                <img src={palace.image} alt={palace.Name} width="20%" />
-            </Link>
-            <br />
-            <span>{palace.Name}</span>
-            <button onClick={() => setIsOpen(true)}>︙</button>
-            <ReactModal
-                isOpen={isOpen}
-                onRequestClose={() => setIsOpen(false)}
-                style={customStyles}
-            >
-                <button onClick={() => alert("宮殿の編集画面へ")}>宮殿の編集</button>
-                <br />
-                <button onClick={() => alert("削除確認ポップアップ表示")}>
-                    宮殿の削除
-                </button>
-            </ReactModal>
-            <FromNewPalace />
-        </div>
-    )
+  //palaceはオブジェクト
+  const [isOpen, setIsOpen] = useState(false)
+  const customStyles: ReactModal.Styles = {
+    // ダイアログ内のスタイル（中央に表示）
+    content: {
+      top: "30%",
+      bottom: "auto",
+      right: "auto",
+      left: "50%",
+    },
+    // 親ウィンドウのスタイル
+    overlay: {},
+  }
+  return (
+    <div className="Palace">
+      <Link to="/memorize">
+        <img src={palace.image} alt={palace.Name} width="20%" />
+      </Link>
+      <br />
+      <span>{palace.Name}</span>
+      <button onClick={() => setIsOpen(true)}>︙</button>
+      <ReactModal
+        isOpen={isOpen}
+        onRequestClose={() => setIsOpen(false)}
+        style={customStyles}
+      >
+        <button onClick={() => alert("宮殿の編集画面へ")}>宮殿の編集</button>
+        <br />
+        <button onClick={() => alert("削除確認ポップアップ表示")}>
+          宮殿の削除
+        </button>
+      </ReactModal>
+    </div>
+  )
 }
 
 export default Palace
