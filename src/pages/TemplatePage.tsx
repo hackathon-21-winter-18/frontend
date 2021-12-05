@@ -25,7 +25,7 @@ const TemplatePage: React.FC = () => {
 	])
 	const listItems = templates.map((template) => (
 		<li>
-			<Template template={template} />
+			<Template key={template.id} template={template} />
 		</li>
 	))
 	return (

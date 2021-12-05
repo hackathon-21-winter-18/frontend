@@ -23,7 +23,7 @@ const Home: React.FC = () => {
 	])
 	const listItems = palaces.map((palace) => (
 		<li>
-			<Palace palace={palace} />
+			<Palace key={palace.id} palace={palace} />
 		</li>
 	))
 	return (
