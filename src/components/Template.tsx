@@ -1,21 +1,10 @@
 import { useState } from "react"
 import { Link } from "react-router-dom"
 import ReactModal from "react-modal"
+import { TemplateTypes } from "../types/TemplateTypes"
 
-interface TemplateContents {
-	id: string
-	name: string
-	image: string
-	pins: Pins[]
-	createdBy: string
-}
-interface Pins {
-	id: string
-	x: Number
-	y: Number
-}
 interface TemplateProps {
-	template: TemplateContents
+	template: TemplateTypes
 }
 
 const Template: React.VFC<TemplateProps> = ({ template }) => {
