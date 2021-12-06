@@ -1,6 +1,8 @@
-import { Button, Dialog, Input } from '@mui/material';
+import { Input } from '@mui/material';
 import * as React from 'react';
 import noumiso from "../assets/脳みそ.png"
+import AddNewWordDialog from "../components/AddNewWordDialog"
+import EditAddedWord from '../components/EditAddedWord';
 export default function Edit() {
   const [open, setOpen] = React.useState(false);
   const [newWord, setNewWord] = React.useState('');
@@ -20,45 +22,26 @@ export default function Edit() {
     setOpen(false);
     setNewWord('');
   }
+  const handleChange = (e: any, index: number) => {
+    const _words = words.slice();
+    _words[index] = e.target.value;
+    setWords([..._words]);
+  }
+  const handleDelete = (index: number) => {
+    const _words = words.slice();
+    _words.splice(index, 1);
+    setWords([..._words]);
+  }
   return (
     <span>
+      <Icon ></Icon>
       <div>
         <img src={noumiso} alt={"noumiso"} onClick={handleOnClick} />
       </div>
       <div>
-        {words.map((word: string) => <Input value={word}></Input>)}
+        {words.map((word: string, index: number) => <div><EditAddedWord word={word} handleChange={(e: any) => handleChange(e, index)} handleDelete={() => handleDelete(index)} /></div>)}
       </div>
       <AddNewWordDialog open={open} newWord={newWord} setNewWord={setNewWord} handleClose={handleClose} handleClick={handleClick} />
     </span>
-  )
-}
-interface AddNewWordDialogProps {
-  open: boolean;
-  handleClose: () => void;
-  handleClick: () => void;
-  newWord: string;
-  setNewWord: any;
-}
-function AddNewWordDialog(props: AddNewWordDialogProps) {
-  const { open, handleClose, handleClick, newWord, setNewWord } = props;
-  const handleChange = (e: any) => {
-    setNewWord(e.target.value);
-  }
-  return (
-    <Dialog open={open} onClose={handleClose}>
-      <div>
-        単語
-      </div>
-      <div>
-        <Input type="text" value={newWord} onChange={handleChange}></Input>
-      </div>
-      <div>
-        説明
-      </div>
-      <div>
-        <Input></Input>
-      </div>
-      <Button onClick={handleClick}>登録</Button>
-    </Dialog>
   )
 }
