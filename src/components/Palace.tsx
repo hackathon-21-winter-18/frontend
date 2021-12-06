@@ -2,26 +2,13 @@ import { useState } from "react"
 import { Link } from "react-router-dom"
 import styles from "./Palace.module.css"
 import ReactModal from "react-modal"
+import { PalaceType } from "../types"
 
-interface PalaceContents {
-	id: string
-	name: string
-	image: any
-	embededPins: EmbededPins[]
-}
-interface EmbededPins {
-	id: string
-	x: number
-	y: number
-	word: string
-	memo: string
-}
 interface PalaceProps {
-	palace: PalaceContents
+	palace: PalaceType
 }
 
 const Palace: React.VFC<PalaceProps> = ({ palace }) => {
-	//palaceはオブジェクト
 	const [isOpen, setIsOpen] = useState(false)
 	const customStyles: ReactModal.Styles = {
 		// ダイアログ内のスタイル（中央に表示）
