@@ -1,80 +1,70 @@
 import { useState } from "react"
 import { useParams } from "react-router"
 import styles from "Memorize.module.css"
+import Word from "../components/Word"
+import Header from "../components/Header"
+import { PalaceType } from "../types"
 import palace1 from "../assets/ヴェルサイユ宮殿.jpg"
 import palace2 from "../assets/バッキンガム宮殿.jpg"
-import Word from "../components/Word"
 
-interface Memorizecontents {
-	ID: number
-	Name: string
-	image: any
-	pins: Pin[]
-	CreatedBy: number
-}
-interface Pin {
-	ID: number
-	x: number
-	y: number
-}
+const mockPalaces: PalaceType[] = [
+	{
+		id: "0",
+		name: "Versailles",
+		image: palace1,
+		embededPins: [
+			{ number: "a1", x: 0, y: 0, word: "apple", memo: "aaa" },
+			{ number: "a2", x: 1, y: 1, word: "banana", memo: "bbb" },
+		],
+	},
+	{
+		id: "1",
+		name: "Buckingham",
+		image: palace2,
+		embededPins: [
+			{ number: "a1", x: 0, y: 0, word: "apple", memo: "aaa" },
+			{ number: "a2", x: 1, y: 1, word: "banana", memo: "bbb" },
+		],
+	},
+]
 
-const Memorize: React.FC = () => {
-	const [flag, setFlag] = useState([...Array(2)].fill(false)) //2のところは取得したembededPinsの数を充てる
+const Memorize: React.VFC = () => {
+	const [flags, setFlags] = useState([...Array(2)].fill(false)) //2のところは取得したembededPinsの数を充てる
 	const params = useParams()
 	//params.idが宮殿のidなのでaxiosで宮殿情報取得
-	const [samplePalace, setSamplePalace] = useState([
-		{
-			id: "0",
-			name: "Versailles",
-			image: palace1,
-			embededPins: [
-				{ id: "a1", x: 0, y: 0, word: "apple", memo: "aaa" },
-				{ id: "a2", x: 1, y: 1, word: "banana", memo: "bbb" },
-			],
-		},
-		{
-			id: "1",
-			name: "Buckingham",
-			image: palace2,
-			embededPins: [
-				{ id: "a1", x: 0, y: 0, word: "apple", memo: "aaa" },
-				{ id: "a2", x: 1, y: 1, word: "banana", memo: "bbb" },
-			],
-		},
-	])
-	const listItems = samplePalace[Number(params.id)].embededPins.map(
-		(pin, index) => (
+
+	const listItems = mockPalaces[Number(params.id)].embededPins.map(
+		(pin: any, index: any) => (
 			<li>
 				<Word
-					key={index}
-					word={pin.word}
+					key={pin.id}
 					num={index}
-					flag={flag}
-					setFlag={setFlag}
+					word={pin.word}
+					flags={flags}
+					handleClick={() =>
+						setFlags(flags.map((flag, i) => (i === index ? !flag : flag)))
+					}
 				/>
 			</li>
 		)
 	)
-
 	function handleClick() {
 		alert("ダイアログ表示")
-		console.log(params)
 	}
+
 	return (
 		<div>
+			<Header />
 			<span>暗記画面</span>
 			<br />
-			{
-				//<img src={} alt={location.state.palace.name} />
-			}
 			<img
-				src={samplePalace[Number(params.id)].image}
-				alt={samplePalace[Number(params.id)].name}
+				src={mockPalaces[Number(params.id)].image}
+				alt={mockPalaces[Number(params.id)].name}
 			/>
-			{/*あとでコンポーネント分ける*/}
+			{/*あとでコンポーネント分けるかも*/}
 			<ol>{listItems}</ol>
 			<br />
-			{flag.every((value) => value === false) ? (
+			{flags.every((value) => value) ? (
 				<button onClick={handleClick}>暗記完了！</button>
 			) : null}
 			{/*flagの中身が全部trueなら表示*/}

@@ -1,13 +1,33 @@
+import axios from "axios"
 import { useState } from "react"
 import styles from "./Login.module.css"
 
-const Login: React.FC = () => {
+const Login: React.VFC = () => {
 	const [userName, setUserName] = useState("")
 	const [passWord, setPassWord] = useState("")
-
-	function handleSubmit() {
-		alert("POSTする")
+	/*
+レスポンスの保存を考える
+	function handleRegister() {
+		const data = {
+			name: userName,
+			password: passWord,
+		}
+		axios.post("/oauth/signup", { data }).then((res) => {
+			setUserName("")
+			setPassWord("")
+		})
 	}
+	function handleLogin() {
+		const data = {
+			name: userName,
+			password: passWord,
+		}
+		axios.post("/oauth/login", { data }).then((res) => {
+			setUserName("")
+			setPassWord("")
+		})
+	} @
+	*/
 	function handleUserNameChange(e: any) {
 		setUserName(e.target.value)
 	}
@@ -17,7 +37,7 @@ const Login: React.FC = () => {
 	return (
 		<div>
 			<span>新規登録orログイン</span>
-			<form onSubmit={handleSubmit}>
+			<form>
 				<input
 					type="text"
 					name="userName"
@@ -32,7 +52,10 @@ const Login: React.FC = () => {
 					onChange={handlePassWordChange}
 				/>
 				<br />
-				<input type="submit" value="submit" />
+				{/*
+				<button onClick={handleRegister}>新規登録</button>
+				<button onClick={handleLogin}>ログイン</button> @
+				*/}
 			</form>
 		</div>
 	)

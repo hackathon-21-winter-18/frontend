@@ -1,15 +1,14 @@
 import { useState } from "react"
 import { Link } from "react-router-dom"
-import styles from "./Palace.module.css"
 import ReactModal from "react-modal"
-import { PalaceType } from "../types"
+import { TemplateType } from "../types"
 import axios from "axios"
 
-interface PalaceProps {
-	palace: PalaceType
+interface TemplateProps {
+	template: TemplateType
 }
 
-const Palace: React.VFC<PalaceProps> = ({ palace }) => {
+const Template: React.VFC<TemplateProps> = ({ template }) => {
 	const [isOpen, setIsOpen] = useState(false)
 	const customStyles: ReactModal.Styles = {
 		// ダイアログ内のスタイル（中央に表示）
@@ -25,31 +24,31 @@ const Palace: React.VFC<PalaceProps> = ({ palace }) => {
 	/*
 	function handleDelete() {
 		//確認ダイアログ表示
-		const to="/palaces/"+palace.id
-		axios.delete(to) @
-	}*/
-
+		const to = "/templates/" + template.id
+		axios.delete(to)
+	} @
+	*/
 	return (
 		<div>
-			<Link to={"/memorize/" + palace.id}>
-				<img src={palace.image} alt={palace.name} width="20%" />
+			<Link to={"/fromTemplate/" + template.id}>
+				<img src={template.image} alt={template.name} width="20%" />
 			</Link>
 			<br />
-			<span>{palace.name}</span>
+			<span>{template.name}</span>
 			<button onClick={() => setIsOpen(true)}>︙</button>
 			<ReactModal
 				isOpen={isOpen}
 				onRequestClose={() => setIsOpen(false)}
 				style={customStyles}
 			>
-				<Link to="/palaceEdit">宮殿の編集</Link>
+				<Link to="/templateEdit">テンプレートの編集</Link>
 				{/*
 				<br />
-				<button onClick={handleDelete}>宮殿の削除</button> @
+				<button onClick={handleDelete}>テンプレートの削除</button> @
 				*/}
 			</ReactModal>
 		</div>
 	)
 }
 
-export default Palace
+export default Template
