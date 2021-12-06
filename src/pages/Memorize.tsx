@@ -6,8 +6,8 @@ import palace2 from "../assets/バッキンガム宮殿.jpg"
 import Word from "../components/Word"
 import Header from "../components/Header"
 
-const Memorize: React.FC = () => {
-	const [flag, setFlag] = useState([...Array(2)].fill(false)) //2のところは取得したembededPinsの数を充てる
+const Memorize: React.VFC = () => {
+	const [flags, setFlags] = useState([...Array(2)].fill(false)) //2のところは取得したembededPinsの数を充てる
 	const params = useParams()
 	const [bool, setBool] = useState(false)
 	//params.idが宮殿のidなのでaxiosで宮殿情報取得
@@ -38,8 +38,10 @@ const Memorize: React.FC = () => {
 					key={pin.id}
 					num={index}
 					word={pin.word}
-					flag={flag}
-					setFlag={setFlag}
+					flags={flags}
+					handleClick={() =>
+						setFlags(flags.map((flag, i) => (i === index ? !flag : flag)))
+					}
 				/>
 			</li>
 		)
@@ -60,12 +62,10 @@ const Memorize: React.FC = () => {
 			{/*あとでコンポーネント分ける*/}
 			<ol>{listItems}</ol>
 			<br />
-			{flag.every((value) => value === true) ? (
+			{flags.every((value) => value) ? (
 				<button onClick={handleClick}>暗記完了！</button>
 			) : null}
 			{/*flagの中身が全部trueなら表示*/}
-			<br />
-			<button onClick={() => setBool(!bool)}>再レンダー</button>
 		</div>
 	)
 }

@@ -20,7 +20,7 @@ interface PalaceProps {
 	palace: PalaceContents
 }
 
-const Palace: React.FC<PalaceProps> = ({ palace }) => {
+const Palace: React.VFC<PalaceProps> = ({ palace }) => {
 	//palaceはオブジェクト
 	const [isOpen, setIsOpen] = useState(false)
 	const customStyles: ReactModal.Styles = {

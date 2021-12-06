@@ -1,7 +1,7 @@
 import { useState } from "react"
 import styles from "./Login.module.css"
 
-const Login: React.FC = () => {
+const Login: React.VFC = () => {
 	const [userName, setUserName] = useState("")
 	const [passWord, setPassWord] = useState("")
 
