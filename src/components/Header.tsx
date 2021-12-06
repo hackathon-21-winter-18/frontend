@@ -4,7 +4,7 @@ import { Link } from "react-router-dom"
 import logo from "../assets/脳みそ.png"
 import FromNewPalace from "./DialogFromNewPalace"
 
-const Header: React.FC = () => {
+const Header: React.VFC = () => {
 	const [userName, setUserName] = useState("(ユーザー名)")
 	return (
 		<div>

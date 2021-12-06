@@ -5,7 +5,7 @@ import Template from "../components/Template"
 import palace1 from "../assets/ヴェルサイユ宮殿.jpg"
 import palace2 from "../assets/バッキンガム宮殿.jpg"
 
-const TemplatePage: React.FC = () => {
+const TemplatePage: React.VFC = () => {
 	const [templates, setTemplates] = useState([
 		//base64で取得するのでそのままsrcに突っ込む
 		{

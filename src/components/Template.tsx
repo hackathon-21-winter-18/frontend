@@ -18,7 +18,7 @@ interface TemplateProps {
 	template: TemplateContents
 }
 
-const Template: React.FC<TemplateProps> = ({ template }) => {
+const Template: React.VFC<TemplateProps> = ({ template }) => {
 	const [isOpen, setIsOpen] = useState(false)
 	const customStyles: ReactModal.Styles = {
 		// ダイアログ内のスタイル（中央に表示）

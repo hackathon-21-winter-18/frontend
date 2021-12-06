@@ -2,7 +2,7 @@ import { Route, Routes } from "react-router-dom"
 import LoginPage from "../pages/LoginPage"
 import NotFound from "../pages/NotFound"
 
-const NotAuthenticatedRoutes: React.FC = () => {
+const NotAuthenticatedRoutes: React.VFC = () => {
 	return (
 		<Routes>
 			<Route path="/*" element={<LoginPage />} />

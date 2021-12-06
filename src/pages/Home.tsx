@@ -5,7 +5,7 @@ import Palace from "../components/Palace"
 import palace1 from "../assets/ヴェルサイユ宮殿.jpg"
 import palace2 from "../assets/バッキンガム宮殿.jpg"
 
-const Home: React.FC = () => {
+const Home: React.VFC = () => {
 	const [palaces, setPalaces] = useState([
 		//base64で取得するのでそのままsrcに突っ込む
 		{

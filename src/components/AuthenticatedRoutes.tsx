@@ -4,7 +4,7 @@ import Memorize from "../pages/Memorize"
 import TemplatePage from "../pages/TemplatePage"
 import NotFound from "../pages/NotFound"
 
-const AuthenticatedRoutes: React.FC = () => {
+const AuthenticatedRoutes: React.VFC = () => {
 	return (
 		<Routes>
 			<Route path="/" element={<Home />} />

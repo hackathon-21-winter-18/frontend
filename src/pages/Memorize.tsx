@@ -6,9 +6,10 @@ import palace2 from "../assets/バッキンガム宮殿.jpg"
 import Word from "../components/Word"
 import Header from "../components/Header"
 
-const Memorize: React.FC = () => {
-	const [flag, setFlag] = useState([...Array(2)].fill(false)) //2のところは取得したembededPinsの数を充てる
+const Memorize: React.VFC = () => {
+	const [flags, setFlags] = useState([...Array(2)].fill(false)) //2のところは取得したembededPinsの数を充てる
 	const params = useParams()
+	const [bool, setBool] = useState(false)
 	//params.idが宮殿のidなのでaxiosで宮殿情報取得
 	const [samplePalace, setSamplePalace] = useState([
 		{
@@ -34,28 +35,26 @@ const Memorize: React.FC = () => {
 		(pin, index) => (
 			<li>
 				<Word
-					key={index}
-					word={pin.word}
+					key={pin.id}
 					num={index}
-					flag={flag}
-					setFlag={setFlag}
+					word={pin.word}
+					flags={flags}
+					handleClick={() =>
+						setFlags(flags.map((flag, i) => (i === index ? !flag : flag)))
+					}
 				/>
 			</li>
 		)
 	)
-
 	function handleClick() {
 		alert("ダイアログ表示")
-		console.log(params)
 	}
+
 	return (
 		<div>
 			<Header />
 			<span>暗記画面</span>
 			<br />
-			{
-				//<img src={} alt={location.state.palace.name} />
-			}
 			<img
 				src={samplePalace[Number(params.id)].image}
 				alt={samplePalace[Number(params.id)].name}
@@ -63,7 +62,7 @@ const Memorize: React.FC = () => {
 			{/*あとでコンポーネント分ける*/}
 			<ol>{listItems}</ol>
 			<br />
-			{flag.every((value) => value === false) ? (
+			{flags.every((value) => value) ? (
 				<button onClick={handleClick}>暗記完了！</button>
 			) : null}
 			{/*flagの中身が全部trueなら表示*/}
