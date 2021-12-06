@@ -2,6 +2,7 @@ import { useState } from "react"
 import { Link } from "react-router-dom"
 import ReactModal from "react-modal"
 import { TemplateType } from "../types"
+import axios from "axios"
 
 interface TemplateProps {
 	template: TemplateType
@@ -20,6 +21,13 @@ const Template: React.VFC<TemplateProps> = ({ template }) => {
 		// 親ウィンドウのスタイル
 		overlay: {},
 	}
+	/*
+	function handleDelete() {
+		//確認ダイアログ表示
+		const to = "/templates/" + template.id
+		axios.delete(to)
+	} @
+	*/
 	return (
 		<div>
 			<Link to={"/fromTemplate/" + template.id}>
@@ -33,13 +41,11 @@ const Template: React.VFC<TemplateProps> = ({ template }) => {
 				onRequestClose={() => setIsOpen(false)}
 				style={customStyles}
 			>
-				<button onClick={() => alert("宮殿の編集画面へ")}>
-					テンプレートの編集
-				</button>
+				<Link to="/templateEdit">テンプレートの編集</Link>
+				{/*
 				<br />
-				<button onClick={() => alert("削除確認ポップアップ表示")}>
-					テンプレートの削除
-				</button>
+				<button onClick={handleDelete}>テンプレートの削除</button> @
+				*/}
 			</ReactModal>
 		</div>
 	)

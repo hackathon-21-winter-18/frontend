@@ -61,7 +61,7 @@ const Memorize: React.VFC = () => {
 				src={mockPalaces[Number(params.id)].image}
 				alt={mockPalaces[Number(params.id)].name}
 			/>
-			{/*あとでコンポーネント分ける*/}
+			{/*あとでコンポーネント分けるかも*/}
 			<ol>{listItems}</ol>
 			<br />
 			{flags.every((value) => value) ? (

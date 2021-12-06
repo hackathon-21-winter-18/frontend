@@ -3,6 +3,7 @@ import { Link } from "react-router-dom"
 import styles from "./Palace.module.css"
 import ReactModal from "react-modal"
 import { PalaceType } from "../types"
+import axios from "axios"
 
 interface PalaceProps {
 	palace: PalaceType
@@ -21,6 +22,13 @@ const Palace: React.VFC<PalaceProps> = ({ palace }) => {
 		// 親ウィンドウのスタイル
 		overlay: {},
 	}
+	/*
+	function handleDelete() {
+		//確認ダイアログ表示
+		const to="/palaces/"+palace.id
+		axios.delete(to) @
+	}*/
+
 	return (
 		<div>
 			<Link to={"/memorize/" + palace.id}>
@@ -34,11 +42,11 @@ const Palace: React.VFC<PalaceProps> = ({ palace }) => {
 				onRequestClose={() => setIsOpen(false)}
 				style={customStyles}
 			>
-				<button onClick={() => alert("宮殿の編集画面へ")}>宮殿の編集</button>
+				<Link to="/palaceEdit">宮殿の編集</Link>
+				{/*
 				<br />
-				<button onClick={() => alert("削除確認ポップアップ表示")}>
-					宮殿の削除
-				</button>
+				<button onClick={handleDelete}>宮殿の削除</button> @
+				*/}
 			</ReactModal>
 		</div>
 	)

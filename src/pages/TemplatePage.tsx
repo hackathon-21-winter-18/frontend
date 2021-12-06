@@ -1,9 +1,13 @@
+import { useEffect, useState } from "react"
 import styles from "TemplatePage.module.css"
 import Header from "../components/Header"
 import Template from "../components/Template"
+import { TemplateType } from "../types"
 import palace1 from "../assets/ヴェルサイユ宮殿.jpg"
 import palace2 from "../assets/バッキンガム宮殿.jpg"
-const mockTemplates = [
+import axios from "axios"
+
+const mockTemplates: TemplateType[] = [
 	{
 		id: "0",
 		name: "Versailles",
@@ -21,11 +25,18 @@ const mockTemplates = [
 ]
 
 const TemplatePage: React.VFC = () => {
+	const [templates, setTemplates] = useState(null)
+	//mockTemplates→templates @
 	const listItems = mockTemplates.map((template) => (
 		<li>
 			<Template key={template.id} template={template} />
 		</li>
 	))
+	/*
+	useEffect(() => {
+		axios.get("/templates/me/{userID}").then((res) => setTemplates(res.data))
+	}) @
+	*/
 	return (
 		<div>
 			<Header />

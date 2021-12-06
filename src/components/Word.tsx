@@ -1,4 +1,3 @@
-import { useState } from "react"
 import styles from "Word.module.css"
 
 interface WordProps {
@@ -7,6 +6,7 @@ interface WordProps {
 	flags: boolean[]
 	handleClick: () => void
 }
+
 const Word: React.VFC<WordProps> = ({ num, word, flags, handleClick }) => {
 	return (
 		<div>
@@ -16,6 +16,5 @@ const Word: React.VFC<WordProps> = ({ num, word, flags, handleClick }) => {
 		</div>
 	)
 }
-//現時点では正常に作動しません！！！
 
 export default Word
