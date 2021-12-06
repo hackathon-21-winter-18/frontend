@@ -1,16 +1,17 @@
-import { Input } from '@mui/material';
 import * as React from 'react';
 import noumiso from "../assets/脳みそ.png"
 import AddNewWordDialog from "../components/AddNewWordDialog"
 import EditAddedWord from '../components/EditAddedWord';
+import PushPinIcon from '@mui/icons-material/PushPin';
 export default function Edit() {
   const [open, setOpen] = React.useState(false);
   const [newWord, setNewWord] = React.useState('');
+  const [newCoodinate, setNewCoodinate]: [[number, number], any] = React.useState([0, 0]);
   const [words, setWords] = React.useState(new Array<string>());
-  const [coodinate, setCoodinate] = React.useState([0, 0]);
+  const [coodinates, setCoodinates] = React.useState(new Array<[number, number]>());
 
   const handleOnClick = (e: any) => {
-    setCoodinate([e.pageX, e.pageY]);
+    setNewCoodinate([e.pageX, e.pageY]);
     setOpen(true);
   }
   const handleClose = () => {
@@ -18,7 +19,8 @@ export default function Edit() {
     setNewWord('');
   }
   const handleClick = () => {
-    setWords([...words, `(${newWord},${coodinate[0]},${coodinate[1]})`]);
+    setWords([...words, newWord]);
+    setCoodinates([...coodinates, newCoodinate]);
     setOpen(false);
     setNewWord('');
   }
@@ -31,10 +33,13 @@ export default function Edit() {
     const _words = words.slice();
     _words.splice(index, 1);
     setWords([..._words]);
+    const _coodinates = coodinates.slice();
+    _words.splice(index, 1);
+    setCoodinates([..._coodinates]);
   }
   return (
     <span>
-      <Icon ></Icon>
+      {coodinates.map(([x, y]: [number, number]) => <PushPinIcon style={{ position: 'absolute', top: y + 'px', left: x + 'px' }} />)}
       <div>
         <img src={noumiso} alt={"noumiso"} onClick={handleOnClick} />
       </div>
