@@ -2,7 +2,7 @@ import { useState } from "react"
 import { Link } from "react-router-dom"
 import styles from "./Palace.module.css"
 import ReactModal from "react-modal"
-import { PalaceType } from "../types/PalaceTypes"
+import { PalaceType } from "../types"
 
 interface PalaceProps {
 	palace: PalaceType

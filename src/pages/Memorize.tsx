@@ -3,7 +3,7 @@ import { useParams } from "react-router"
 import styles from "Memorize.module.css"
 import Word from "../components/Word"
 import Header from "../components/Header"
-import { PalaceType } from "../types/PalaceTypes"
+import { PalaceType } from "../types"
 import palace1 from "../assets/ヴェルサイユ宮殿.jpg"
 import palace2 from "../assets/バッキンガム宮殿.jpg"
 

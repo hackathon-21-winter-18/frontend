@@ -1,7 +1,7 @@
 import styles from "./Home.module.css"
 import Header from "../components/Header"
 import Palace from "../components/Palace"
-import { PalaceType } from "../types/PalaceTypes"
+import { PalaceType } from "../types"
 import palace1 from "../assets/ヴェルサイユ宮殿.jpg"
 import palace2 from "../assets/バッキンガム宮殿.jpg"
 

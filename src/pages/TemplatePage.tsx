@@ -1,4 +1,3 @@
-import { useState } from "react"
 import styles from "TemplatePage.module.css"
 import Header from "../components/Header"
 import Template from "../components/Template"
