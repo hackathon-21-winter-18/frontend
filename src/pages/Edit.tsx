@@ -34,7 +34,7 @@ export default function Edit() {
     _words.splice(index, 1);
     setWords([..._words]);
     const _coodinates = coodinates.slice();
-    _words.splice(index, 1);
+    _coodinates.splice(index, 1);
     setCoodinates([..._coodinates]);
   }
   return (
