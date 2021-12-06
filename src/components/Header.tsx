@@ -10,10 +10,11 @@ const Header: React.VFC = () => {
 		<div>
 			<img src={logo} alt="logo" width="2%" />
 			<span>アプリ名</span>
-			<span>{userName}でログイン中</span>
-			<Link to="template">テンプレート</Link>
+			<Link to="/">ホーム</Link>
+			<Link to="/template">テンプレート</Link>
 			<FromNewPalace />
 			<button onClick={() => alert("ログアウト")}>ログアウト</button>
+			<span>{userName}でログイン中</span>
 			<Link to="login">ログイン</Link>
 		</div>
 	)

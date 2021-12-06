@@ -11,8 +11,8 @@ const mockPalaces: PalaceType[] = [
 		name: "Versailles",
 		image: palace1,
 		embededPins: [
-			{ id: "a1", x: 0, y: 0, word: "apple", memo: "aaa" },
-			{ id: "a2", x: 1, y: 1, word: "banana", memo: "bbb" },
+			{ number: "a1", x: 0, y: 0, word: "apple", memo: "aaa" },
+			{ number: "a2", x: 1, y: 1, word: "banana", memo: "bbb" },
 		],
 	},
 	{
@@ -20,8 +20,8 @@ const mockPalaces: PalaceType[] = [
 		name: "Buckingham",
 		image: palace2,
 		embededPins: [
-			{ id: "a1", x: 0, y: 0, word: "apple", memo: "aaa" },
-			{ id: "a2", x: 1, y: 1, word: "banana", memo: "bbb" },
+			{ number: "a1", x: 0, y: 0, word: "apple", memo: "aaa" },
+			{ number: "a2", x: 1, y: 1, word: "banana", memo: "bbb" },
 		],
 	},
 ]

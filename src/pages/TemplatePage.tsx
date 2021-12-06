@@ -8,14 +8,14 @@ const mockTemplates = [
 		id: "0",
 		name: "Versailles",
 		image: palace1,
-		pins: [{ id: "a1", x: 0, y: 0 }],
+		pins: [{ number: "a1", x: 0, y: 0 }],
 		createdBy: "mehm8128",
 	},
 	{
 		id: "1",
 		name: "Buckingham",
 		image: palace2,
-		pins: [{ id: "a1", x: 1, y: 1 }],
+		pins: [{ number: "a1", x: 1, y: 1 }],
 		createdBy: "mehm8128",
 	},
 ]
