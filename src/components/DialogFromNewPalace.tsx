@@ -1,16 +1,18 @@
 import * as React from 'react';
 import Dialog from '@mui/material/Dialog';
 import Button from '@mui/material/Button';
+import { Link } from "react-router-dom"
+
 
 export interface FromNewPalaceDialogProps {
   open: boolean;
   previewImg: string;
   onClose: () => void;
-  setPreviewImg: any;
+  setPreviewImg: React.Dispatch<React.SetStateAction<string>>;
 }
 
 function FromNewPalaceDialog(props: FromNewPalaceDialogProps) {
-  const { open, onClose, previewImg } = props;
+  const { open, onClose, previewImg, setPreviewImg } = props;
   const handleClose = () => {
     onClose();
   }
@@ -18,12 +20,13 @@ function FromNewPalaceDialog(props: FromNewPalaceDialogProps) {
     if (e.target.files && e.target.files[0]) {
       const file = e.target.files[0];
       const reader = new FileReader()
-      reader.onload = (e: any) => {
-        props.setPreviewImg(e.target.result)
+      reader.onload = (ev: ProgressEvent<FileReader>) => {
+        setPreviewImg(ev.target?.result?.toString()!)
       }
       reader.readAsDataURL(file)
     }
   }
+
   return (
     <Dialog open={open} onClose={handleClose}>
       <div>
@@ -44,7 +47,9 @@ function FromNewPalaceDialog(props: FromNewPalaceDialogProps) {
             <img src={previewImg} alt="previewImage" />
           </div>
           <div>
-            <Button >次に進む</Button>
+            <Link to={"edit"}>
+              <Button  >次に進む</Button>
+            </Link>
           </div>
         </div>}
     </Dialog>
