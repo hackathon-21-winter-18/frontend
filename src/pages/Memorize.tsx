@@ -1,4 +1,4 @@
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import { useParams } from "react-router"
 import styles from "Memorize.module.css"
 import Word from "../components/Word"
@@ -6,6 +6,7 @@ import Header from "../components/Header"
 import { PalaceType } from "../types"
 import palace1 from "../assets/ヴェルサイユ宮殿.jpg"
 import palace2 from "../assets/バッキンガム宮殿.jpg"
+import axios from "axios"
 
 const mockPalaces: PalaceType[] = [
 	{
@@ -30,9 +31,11 @@ const mockPalaces: PalaceType[] = [
 
 const Memorize: React.VFC = () => {
 	const [flags, setFlags] = useState([...Array(2)].fill(false)) //2のところは取得したembededPinsの数を充てる
+	const [palace, setPalace] = useState(null)
 	const params = useParams()
 	//params.idが宮殿のidなのでaxiosで宮殿情報取得
 
+	//mockPalaces→palaces @
 	const listItems = mockPalaces[Number(params.id)].embededPins.map(
 		(pin: any, index: any) => (
 			<li>
@@ -51,12 +54,25 @@ const Memorize: React.VFC = () => {
 	function handleClick() {
 		alert("ダイアログ表示")
 	}
-
+	/*
+	paramsに一致する宮殿を取得
+	useEffect(() => {
+		axios.get("/palaces/me/{userID}").then((res) => {
+			const data = res.data
+			for (let i = 0; i < data.length; i++) {
+				if (data.id === params.id) {
+					setPalace(data[i])
+				}
+			}
+		})
+	}, []) @
+*/
 	return (
 		<div>
 			<Header />
 			<span>暗記画面</span>
 			<br />
+			{/*palace.image,palace.name @*/}
 			<img
 				src={mockPalaces[Number(params.id)].image}
 				alt={mockPalaces[Number(params.id)].name}
