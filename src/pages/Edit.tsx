@@ -1,16 +1,16 @@
 import * as React from 'react';
 import noumiso from "../assets/脳みそ.png"
 import AddNewWordDialog from "../components/AddNewWordDialog"
-import EditAddedWord from '../components/EditAddedWord';
+import { EditAddedWord } from '../components/EditAddedWord';
 import PushPinIcon from '@mui/icons-material/PushPin';
-export default function Edit() {
+export const Edit: React.VFC = () => {
   const [open, setOpen] = React.useState(false);
   const [newWord, setNewWord] = React.useState('');
-  const [newCoodinate, setNewCoodinate]: [[number, number], any] = React.useState([0, 0]);
+  const [newCoodinate, setNewCoodinate] = React.useState<[number, number]>([0, 0]);
   const [words, setWords] = React.useState(new Array<string>());
   const [coodinates, setCoodinates] = React.useState(new Array<[number, number]>());
 
-  const handleOnClick = (e: any) => {
+  const handleOnClick = (e: React.MouseEvent<HTMLImageElement>) => {
     setNewCoodinate([e.pageX, e.pageY]);
     setOpen(true);
   }
@@ -24,7 +24,7 @@ export default function Edit() {
     setOpen(false);
     setNewWord('');
   }
-  const handleChange = (e: any, index: number) => {
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>, index: number) => {
     const _words = words.slice();
     _words[index] = e.target.value;
     setWords([..._words]);
@@ -38,15 +38,15 @@ export default function Edit() {
     setCoodinates([..._coodinates]);
   }
   return (
-    <span>
+    <div>
       {coodinates.map(([x, y]: [number, number]) => <PushPinIcon style={{ position: 'absolute', top: y + 'px', left: x + 'px' }} />)}
       <div>
         <img src={noumiso} alt={"noumiso"} onClick={handleOnClick} />
       </div>
       <div>
-        {words.map((word: string, index: number) => <div><EditAddedWord word={word} handleChange={(e: any) => handleChange(e, index)} handleDelete={() => handleDelete(index)} /></div>)}
+        {words.map((word: string, index: number) => <div><EditAddedWord word={word} handleChange={(e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => handleChange(e, index)} handleDelete={() => handleDelete(index)} /></div>)}
       </div>
       <AddNewWordDialog open={open} newWord={newWord} setNewWord={setNewWord} handleClose={handleClose} handleClick={handleClick} />
-    </span>
+    </div>
   )
 }

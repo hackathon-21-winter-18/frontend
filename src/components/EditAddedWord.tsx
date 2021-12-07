@@ -3,10 +3,10 @@ import * as React from 'react';
 
 export interface EditAddedWordProps {
   word: string;
-  handleChange: any;
-  handleDelete: any;
+  handleChange: (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => void;
+  handleDelete: React.MouseEventHandler<HTMLButtonElement>;
 }
-export default function EditAddedWord(props: EditAddedWordProps) {
+export const EditAddedWord: React.VFC<EditAddedWordProps> = (props: EditAddedWordProps) => {
   const { word, handleChange, handleDelete } = props;
   return (
     <div>

@@ -3,7 +3,7 @@ import Home from "../pages/Home"
 import LoginPage from "../pages/LoginPage"
 import Memorize from "../pages/Memorize"
 import TemplatePage from "../pages/TemplatePage"
-import Edit from "../pages/Edit"
+import { Edit } from "../pages/Edit"
 import NotFound from "../pages/NotFound"
 
 //login画面は一時的に入れておきますが最後に消します

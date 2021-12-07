@@ -8,11 +8,11 @@ export interface FromNewPalaceDialogProps {
   open: boolean;
   previewImg: string;
   onClose: () => void;
-  setPreviewImg: any;
+  setPreviewImg: React.Dispatch<React.SetStateAction<string>>;
 }
 
 function FromNewPalaceDialog(props: FromNewPalaceDialogProps) {
-  const { open, onClose, previewImg } = props;
+  const { open, onClose, previewImg, setPreviewImg } = props;
   const handleClose = () => {
     onClose();
   }
@@ -20,8 +20,8 @@ function FromNewPalaceDialog(props: FromNewPalaceDialogProps) {
     if (e.target.files && e.target.files[0]) {
       const file = e.target.files[0];
       const reader = new FileReader()
-      reader.onload = (e: any) => {
-        props.setPreviewImg(e.target.result)
+      reader.onload = (ev: ProgressEvent<FileReader>) => {
+        setPreviewImg(ev.target?.result?.toString()!)
       }
       reader.readAsDataURL(file)
     }

@@ -6,11 +6,11 @@ interface AddNewWordDialogProps {
   handleClose: () => void;
   handleClick: () => void;
   newWord: string;
-  setNewWord: any;
+  setNewWord: React.Dispatch<React.SetStateAction<string>>;
 }
 export default function AddNewWordDialog(props: AddNewWordDialogProps) {
   const { open, handleClose, handleClick, newWord, setNewWord } = props;
-  const handleChange = (e: any) => {
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     setNewWord(e.target.value);
   }
   return (
