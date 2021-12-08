@@ -42,7 +42,7 @@ const Login: React.VFC = () => {
   }
   function handleCheck(e: React.MouseEvent) {
     e.preventDefault()
-    axios.get('http://localhost:8080/api/palaces').then((res) => {
+    axios.get('http://localhost:8080/api/ping').then((res) => {
       console.log(res)
     })
   }
