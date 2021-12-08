@@ -22,12 +22,11 @@ const Palace: React.VFC<PalaceProps> = ({ palace }) => {
 		// 親ウィンドウのスタイル
 		overlay: {},
 	}
-	/*
+
 	function handleDelete() {
 		//確認ダイアログ表示
-		const to="/palaces/"+palace.id
-		axios.delete(to) @
-	}*/
+		axios.delete("/palace/" + palace.id)
+	}
 
 	return (
 		<div>
@@ -43,10 +42,8 @@ const Palace: React.VFC<PalaceProps> = ({ palace }) => {
 				style={customStyles}
 			>
 				<Link to="/palaceEdit">宮殿の編集</Link>
-				{/*
 				<br />
-				<button onClick={handleDelete}>宮殿の削除</button> @
-				*/}
+				<button onClick={handleDelete}>宮殿の削除</button>
 			</ReactModal>
 		</div>
 	)

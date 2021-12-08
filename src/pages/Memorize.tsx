@@ -31,21 +31,21 @@ const mockPalaces: PalaceType[] = [
 ]
 
 const Memorize: React.VFC = () => {
-	const [flags, setFlags] = useState([...Array(2)].fill(false)) //2→palace.embededPins.length
+	const [flags, setFlags] = useState([...Array(2)].fill(false)) //2→palace.embededPins.length @
 	const [palace, setPalace] = useState(null)
 	const params = useParams()
 
 	//mockPalaces[]→palace @
 	const listItems = mockPalaces[Number(params.id)].embededPins.map(
-		(pin: any, index: any) => (
+		(pin: any) => (
 			<li>
 				<Word
-					key={pin.id}
-					num={index}
+					key={pin.number}
+					num={pin.number}
 					word={pin.word}
 					flags={flags}
 					handleClick={() =>
-						setFlags(flags.map((flag, i) => (i === index ? !flag : flag)))
+						setFlags(flags.map((flag, i) => (i === pin.number ? !flag : flag)))
 					}
 				/>
 			</li>
@@ -57,7 +57,7 @@ const Memorize: React.VFC = () => {
 	/*
 	paramsに一致する宮殿を取得
 	useEffect(() => {
-		axios.get("/palaces/me/{userID}").then((res) => {
+		axios.get("/palaces/me/"+userId).then((res) => {
 			const data = res.data
 			for (let i = 0; i < data.length; i++) {
 				if (data.id === params.id) {
@@ -72,7 +72,7 @@ const Memorize: React.VFC = () => {
 			<Header />
 			<span>暗記画面</span>
 			<br />
-			{/* mockPalaces[]→palce*/}
+			{/* mockPalaces[]→palce @*/}
 			{mockPalaces[Number(params.id)].embededPins.map((pin, index) => (
 				<PushPinIcon
 					style={{
@@ -84,7 +84,7 @@ const Memorize: React.VFC = () => {
 					key={pin.number}
 				/>
 			))}
-			{/*palace.image,palace.name @*/}
+			{/*mockPalaces[]→palce @*/}
 			<img
 				src={mockPalaces[Number(params.id)].image}
 				alt={mockPalaces[Number(params.id)].name}

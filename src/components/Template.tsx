@@ -21,13 +21,10 @@ const Template: React.VFC<TemplateProps> = ({ template }) => {
 		// 親ウィンドウのスタイル
 		overlay: {},
 	}
-	/*
 	function handleDelete() {
 		//確認ダイアログ表示
-		const to = "/templates/" + template.id
-		axios.delete(to)
-	} @
-	*/
+		axios.delete("/templates" + template.id)
+	}
 	return (
 		<div>
 			<Link to={"/fromTemplate/" + template.id}>
@@ -42,10 +39,8 @@ const Template: React.VFC<TemplateProps> = ({ template }) => {
 				style={customStyles}
 			>
 				<Link to="/templateEdit">テンプレートの編集</Link>
-				{/*
 				<br />
-				<button onClick={handleDelete}>テンプレートの削除</button> @
-				*/}
+				<button onClick={handleDelete}>テンプレートの削除</button>
 			</ReactModal>
 		</div>
 	)

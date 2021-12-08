@@ -37,7 +37,7 @@ const Home: React.VFC = () => {
 	))
 	/*
 	useEffect(() => {
-		axios.get("/palaces/me/{userID}").then((res) => setPalaces(res.data))
+		axios.get("/palaces/me/"+userId).then((res) => setPalaces(res.data))
 	}, []) @
 */
 	return (
