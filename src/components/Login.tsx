@@ -14,7 +14,7 @@ const Login: React.VFC = () => {
       name: userName,
       password: passWord,
     }
-    axios.post('http://localhost:8080/oauth/signup', {data}).then((res) => {
+    axios.post('http://localhost:8080/api/oauth/signup', {data}).then((res) => {
       login(userName, passWord)
       setUserName('')
       setPassWord('')
@@ -27,7 +27,7 @@ const Login: React.VFC = () => {
       name: userName,
       password: passWord,
     }
-    axios.post('http://localhost:8080/oauth/login', {data}).then((res) => {
+    axios.post('http://localhost:8080/api/oauth/login', {data}).then((res) => {
       login(userName, passWord)
       setUserName('')
       setPassWord('')
