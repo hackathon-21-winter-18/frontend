@@ -1,6 +1,5 @@
 import {useEffect, useState} from 'react'
 import styles from './Home.module.css'
-import Header from '../components/Header'
 import Palace from '../components/Palace'
 import {PalaceType} from '../types'
 import palace1 from '../assets/ヴェルサイユ宮殿.jpg'
@@ -42,7 +41,6 @@ const Home: React.VFC = () => {
 */
   return (
     <div className={styles.Home}>
-      <Header />
       <span>ホーム画面</span>
       <ul>{listItems}</ul>
     </div>

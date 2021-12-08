@@ -1,6 +1,5 @@
 import {useEffect, useState} from 'react'
 import styles from 'TemplatePage.module.css'
-import Header from '../components/Header'
 import Template from '../components/Template'
 import {TemplateType} from '../types'
 import palace1 from '../assets/ヴェルサイユ宮殿.jpg'
@@ -39,7 +38,6 @@ const TemplatePage: React.VFC = () => {
 	*/
   return (
     <div>
-      <Header />
       <span>テンプレート</span>
       <ul>{listItems}</ul>
     </div>
