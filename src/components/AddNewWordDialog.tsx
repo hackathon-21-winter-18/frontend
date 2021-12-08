@@ -7,11 +7,16 @@ interface AddNewWordDialogProps {
   handleClick: () => void;
   newWord: string;
   setNewWord: React.Dispatch<React.SetStateAction<string>>;
+  newMemo: string;
+  setNewMemo: React.Dispatch<React.SetStateAction<string>>;
 }
 export default function AddNewWordDialog(props: AddNewWordDialogProps) {
-  const { open, handleClose, handleClick, newWord, setNewWord } = props;
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+  const { open, handleClose, handleClick, newWord, setNewWord, newMemo, setNewMemo } = props;
+  const handleWordChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     setNewWord(e.target.value);
+  }
+  const handleMemoChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+    setNewMemo(e.target.value);
   }
   return (
     <Dialog open={open} onClose={handleClose}>
@@ -19,13 +24,13 @@ export default function AddNewWordDialog(props: AddNewWordDialogProps) {
         単語
       </div>
       <div>
-        <Input type="text" value={newWord} onChange={handleChange}></Input>
+        <Input type="text" value={newWord} onChange={handleWordChange}></Input>
       </div>
       <div>
         説明
       </div>
       <div>
-        <Input></Input>
+        <Input type="text" value={newMemo} onChange={handleMemoChange}></Input>
       </div>
       <Button onClick={handleClick}>登録</Button>
     </Dialog>
