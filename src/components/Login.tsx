@@ -40,8 +40,9 @@ const Login: React.VFC = () => {
   function handlePassWordChange(e: any) {
     setPassWord(e.target.value)
   }
-  function handleCheck() {
-    axios.get('http://localhost:8080/api/oauth/signup').then((res) => {
+  function handleCheck(e: React.MouseEvent) {
+    e.preventDefault()
+    axios.get('http://localhost:8080/api/palaces').then((res) => {
       console.log(res)
     })
   }
