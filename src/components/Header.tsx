@@ -1,11 +1,12 @@
-import {useState} from 'react'
+import {useContext} from 'react'
 import styles from './Header.module.css'
 import {Link} from 'react-router-dom'
 import logo from '../assets/脳みそ.png'
 import FromNewPalace from './DialogFromNewPalace'
+import {UserContext} from './UserProvider'
 
 const Header: React.VFC = () => {
-  const [userName, setUserName] = useState('(ユーザー名)')
+  const {user, logout} = useContext(UserContext)
   return (
     <div>
       <img src={logo} alt="logo" width="2%" />
@@ -13,8 +14,8 @@ const Header: React.VFC = () => {
       <Link to="/">ホーム</Link>
       <Link to="/template">テンプレート</Link>
       <FromNewPalace />
-      <button onClick={() => alert('ログアウト')}>ログアウト</button>
-      <span>{userName}でログイン中</span>
+      <button onClick={() => logout}>ログアウト</button>
+      <span>{user.name}でログイン中</span>
       <Link to="login">ログイン</Link>
     </div>
   )

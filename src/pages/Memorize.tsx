@@ -1,4 +1,4 @@
-import {useState, useEffect} from 'react'
+import {useState, useEffect, useContext} from 'react'
 import {useParams} from 'react-router'
 import styles from 'Memorize.module.css'
 import Word from '../components/Word'
@@ -8,6 +8,7 @@ import palace1 from '../assets/ヴェルサイユ宮殿.jpg'
 import palace2 from '../assets/バッキンガム宮殿.jpg'
 import axios from 'axios'
 import PushPinIcon from '@mui/icons-material/PushPin'
+import {UserContext} from '../components/UserProvider'
 
 const mockPalaces: PalaceType[] = [
   {
@@ -32,11 +33,16 @@ const mockPalaces: PalaceType[] = [
 
 const Memorize: React.VFC = () => {
   const [flags, setFlags] = useState([...Array(2)].fill(false)) //2→palace.embededPins.length @
-  const [palace, setPalace] = useState(null)
+  const [palace, setPalace] = useState<PalaceType>({
+    id: '',
+    name: '',
+    image: '',
+    embededPins: [{number: 0, x: 0, y: 0, word: '', memo: ''}],
+  })
   const params = useParams()
+  const {user} = useContext(UserContext)
 
-  //mockPalaces[]→palace @
-  const listItems = mockPalaces[Number(params.id)].embededPins.map((pin: any) => (
+  const listItems = palace.embededPins.map((pin: any) => (
     <li>
       <Word
         key={pin.number}
@@ -50,26 +56,24 @@ const Memorize: React.VFC = () => {
   function handleClick() {
     alert('ダイアログ表示')
   }
-  /*
-	paramsに一致する宮殿を取得
-	useEffect(() => {
-		axios.get("/palaces/me/"+userId).then((res) => {
-			const data = res.data
-			for (let i = 0; i < data.length; i++) {
-				if (data.id === params.id) {
-					setPalace(data[i])
-				}
-			}
-		})
-	}, []) @
-*/
+
+  useEffect(() => {
+    axios.get('/palaces/me/' + user.id).then((res) => {
+      const data = res.data
+      for (let i = 0; i < data.length; i++) {
+        if (data.id === params.id) {
+          setPalace(data[i])
+        }
+      }
+    })
+  }, [])
+
   return (
     <div>
       <Header />
       <span>暗記画面</span>
       <br />
-      {/* mockPalaces[]→palce @*/}
-      {mockPalaces[Number(params.id)].embededPins.map((pin, index) => (
+      {palace.embededPins.map((pin: any, index: any) => (
         <PushPinIcon
           style={{
             position: 'absolute',
@@ -80,9 +84,7 @@ const Memorize: React.VFC = () => {
           key={pin.number}
         />
       ))}
-      {/*mockPalaces[]→palce @*/}
-      <img src={mockPalaces[Number(params.id)].image} alt={mockPalaces[Number(params.id)].name} />
-      {/*あとでコンポーネント分けるかも*/}
+      <img src={palace.image} alt={palace.name} />
       <ol>{listItems}</ol>
       <br />
       {flags.every((value) => value) ? <button onClick={handleClick}>暗記完了！</button> : null}

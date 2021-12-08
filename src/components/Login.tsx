@@ -17,6 +17,7 @@ const Login: React.VFC = () => {
       login(userName, passWord)
       setUserName('')
       setPassWord('')
+      console.log(res.status)
     })
   }
   function handleLogin(e: React.MouseEvent) {
@@ -29,6 +30,7 @@ const Login: React.VFC = () => {
       login(userName, passWord)
       setUserName('')
       setPassWord('')
+      console.log(res.status)
     })
   }
   function handleUserNameChange(e: any) {
