@@ -7,6 +7,7 @@ import { PalaceType } from "../types"
 import palace1 from "../assets/ヴェルサイユ宮殿.jpg"
 import palace2 from "../assets/バッキンガム宮殿.jpg"
 import axios from "axios"
+import PushPinIcon from "@mui/icons-material/PushPin"
 
 const mockPalaces: PalaceType[] = [
 	{
@@ -14,8 +15,8 @@ const mockPalaces: PalaceType[] = [
 		name: "Versailles",
 		image: palace1,
 		embededPins: [
-			{ number: "a1", x: 0, y: 0, word: "apple", memo: "aaa" },
-			{ number: "a2", x: 1, y: 1, word: "banana", memo: "bbb" },
+			{ number: "0", x: 100, y: 100, word: "apple", memo: "aaa" },
+			{ number: "1", x: 200, y: 200, word: "banana", memo: "bbb" },
 		],
 	},
 	{
@@ -23,19 +24,18 @@ const mockPalaces: PalaceType[] = [
 		name: "Buckingham",
 		image: palace2,
 		embededPins: [
-			{ number: "a1", x: 0, y: 0, word: "apple", memo: "aaa" },
-			{ number: "a2", x: 1, y: 1, word: "banana", memo: "bbb" },
+			{ number: "0", x: 100, y: 100, word: "apple", memo: "aaa" },
+			{ number: "1", x: 200, y: 200, word: "banana", memo: "bbb" },
 		],
 	},
 ]
 
 const Memorize: React.VFC = () => {
-	const [flags, setFlags] = useState([...Array(2)].fill(false)) //2のところは取得したembededPinsの数を充てる
+	const [flags, setFlags] = useState([...Array(2)].fill(false)) //2→palace.embededPins.length
 	const [palace, setPalace] = useState(null)
 	const params = useParams()
-	//params.idが宮殿のidなのでaxiosで宮殿情報取得
 
-	//mockPalaces→palaces @
+	//mockPalaces[]→palace @
 	const listItems = mockPalaces[Number(params.id)].embededPins.map(
 		(pin: any, index: any) => (
 			<li>
@@ -72,6 +72,18 @@ const Memorize: React.VFC = () => {
 			<Header />
 			<span>暗記画面</span>
 			<br />
+			{/* mockPalaces[]→palce*/}
+			{mockPalaces[Number(params.id)].embededPins.map((pin) => (
+				<PushPinIcon
+					style={{
+						position: "absolute",
+						top: pin.y + "px",
+						left: pin.x + "px",
+						color: flags[Number(pin.number)] ? "blue" : "red",
+					}}
+					key={pin.number}
+				/>
+			))}
 			{/*palace.image,palace.name @*/}
 			<img
 				src={mockPalaces[Number(params.id)].image}
