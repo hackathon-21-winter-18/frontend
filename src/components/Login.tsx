@@ -1,18 +1,20 @@
 import axios from "axios"
 import { useState } from "react"
 import styles from "./Login.module.css"
+import { useContext } from "react"
+import { UserContext } from "./UserProvider"
 
 const Login: React.VFC = () => {
 	const [userName, setUserName] = useState("")
 	const [passWord, setPassWord] = useState("")
-	/*
-レスポンスの保存を考える
+	const { login } = useContext(UserContext)
 	function handleRegister() {
 		const data = {
 			name: userName,
 			password: passWord,
 		}
 		axios.post("/oauth/signup", { data }).then((res) => {
+			login(userName, passWord)
 			setUserName("")
 			setPassWord("")
 		})
@@ -23,11 +25,11 @@ const Login: React.VFC = () => {
 			password: passWord,
 		}
 		axios.post("/oauth/login", { data }).then((res) => {
+			login(userName, passWord)
 			setUserName("")
 			setPassWord("")
 		})
-	} @
-	*/
+	}
 	function handleUserNameChange(e: any) {
 		setUserName(e.target.value)
 	}
@@ -52,10 +54,8 @@ const Login: React.VFC = () => {
 					onChange={handlePassWordChange}
 				/>
 				<br />
-				{/*
 				<button onClick={handleRegister}>新規登録</button>
-				<button onClick={handleLogin}>ログイン</button> @
-				*/}
+				<button onClick={handleLogin}>ログイン</button>
 			</form>
 		</div>
 	)
