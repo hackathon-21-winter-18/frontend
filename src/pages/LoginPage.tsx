@@ -1,7 +1,7 @@
-import React from "react";
-import styles from "./LoginPage.module.css";
-import Header from "../components/Header";
-import Login from "../components/Login";
+import React from 'react'
+import styles from './LoginPage.module.css'
+import Header from '../components/Header'
+import Login from '../components/Login'
 
 const LoginPage: React.VFC = () => {
   return (
@@ -10,7 +10,7 @@ const LoginPage: React.VFC = () => {
       <span>ログインページ</span>
       <Login />
     </div>
-  );
-};
+  )
+}
 
-export default LoginPage;
+export default LoginPage
