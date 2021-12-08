@@ -42,7 +42,7 @@ const TemplatePage: React.VFC = () => {
     </li>
   ))
   useEffect(() => {
-    axios.get('/templates/me/' + user.id).then((res) => setTemplates(res.data))
+    axios.get('http://localhost:8080/templates/me/' + user.id).then((res) => setTemplates(res.data))
   }, [])
 
   return (

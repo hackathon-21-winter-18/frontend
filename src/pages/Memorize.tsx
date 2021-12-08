@@ -58,7 +58,7 @@ const Memorize: React.VFC = () => {
   }
 
   useEffect(() => {
-    axios.get('/palaces/me/' + user.id).then((res) => {
+    axios.get('http://localhost:8080/palaces/me/' + user.id).then((res) => {
       const data = res.data
       for (let i = 0; i < data.length; i++) {
         if (data.id === params.id) {
