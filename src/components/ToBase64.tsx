@@ -13,8 +13,8 @@ export default function ToBase64() {
 		return canvas.toDataURL(mime_type)
 	}
 
-	var img = document.getElementById("previewImage")
+	var img = document.getElementById("id")
 	return ImageToBase64(img, "image/jpeg")
 }
-/*importしてidがpreviweImageとなっているimgタグに入ってる画像をbase64に変換した文字列をToBase64()で取ってこれる。
+/*importしてidがid(ここはあとでこのコンポーネントを変える必要あり)となっているimgタグに入ってる画像をbase64に変換した文字列をToBase64()で取ってこれる。
 その文字列をそのままsrcに突っ込めばデコードしてくれるはず*/
