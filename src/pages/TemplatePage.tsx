@@ -12,14 +12,14 @@ const mockTemplates: TemplateType[] = [
 		id: "0",
 		name: "Versailles",
 		image: palace1,
-		pins: [{ number: "a1", x: 0, y: 0 }],
+		pins: [{ number: 0, x: 0, y: 0 }],
 		createdBy: "mehm8128",
 	},
 	{
 		id: "1",
 		name: "Buckingham",
 		image: palace2,
-		pins: [{ number: "a1", x: 1, y: 1 }],
+		pins: [{ number: 0, x: 1, y: 1 }],
 		createdBy: "mehm8128",
 	},
 ]

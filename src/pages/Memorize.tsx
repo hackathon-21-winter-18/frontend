@@ -15,8 +15,8 @@ const mockPalaces: PalaceType[] = [
 		name: "Versailles",
 		image: palace1,
 		embededPins: [
-			{ number: "0", x: 100, y: 100, word: "apple", memo: "aaa" },
-			{ number: "1", x: 200, y: 200, word: "banana", memo: "bbb" },
+			{ number: 0, x: 100, y: 100, word: "apple", memo: "aaa" },
+			{ number: 1, x: 200, y: 200, word: "banana", memo: "bbb" },
 		],
 	},
 	{
@@ -24,8 +24,8 @@ const mockPalaces: PalaceType[] = [
 		name: "Buckingham",
 		image: palace2,
 		embededPins: [
-			{ number: "0", x: 100, y: 100, word: "apple", memo: "aaa" },
-			{ number: "1", x: 200, y: 200, word: "banana", memo: "bbb" },
+			{ number: 0, x: 100, y: 100, word: "apple", memo: "aaa" },
+			{ number: 1, x: 200, y: 200, word: "banana", memo: "bbb" },
 		],
 	},
 ]
@@ -73,13 +73,13 @@ const Memorize: React.VFC = () => {
 			<span>暗記画面</span>
 			<br />
 			{/* mockPalaces[]→palce*/}
-			{mockPalaces[Number(params.id)].embededPins.map((pin) => (
+			{mockPalaces[Number(params.id)].embededPins.map((pin, index) => (
 				<PushPinIcon
 					style={{
 						position: "absolute",
 						top: pin.y + "px",
 						left: pin.x + "px",
-						color: flags[Number(pin.number)] ? "blue" : "red",
+						color: flags[pin.number] ? "blue" : "red",
 					}}
 					key={pin.number}
 				/>

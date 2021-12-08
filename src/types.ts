@@ -1,6 +1,6 @@
 //PalaceType
 type EmbededPins = {
-	number: string
+	number: number
 	x: number
 	y: number
 	word: string
@@ -10,14 +10,14 @@ type EmbededPins = {
 export type PalaceType = {
 	id: string
 	name: string
-	image: any
+	image: string
 	embededPins: EmbededPins[]
 }
 //TemplateType
 type Pins = {
-	number: string
-	x: Number
-	y: Number
+	number: number
+	x: number
+	y: number
 }
 
 export type TemplateType = {
