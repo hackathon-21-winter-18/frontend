@@ -40,6 +40,11 @@ const Login: React.VFC = () => {
   function handlePassWordChange(e: any) {
     setPassWord(e.target.value)
   }
+  function handleCheck() {
+    axios.get('http://localhost:8080/api/oauth/signup').then((res) => {
+      console.log(res)
+    })
+  }
   return (
     <div>
       <span>新規登録orログイン</span>
@@ -50,6 +55,7 @@ const Login: React.VFC = () => {
         <br />
         <button onClick={handleRegister}>新規登録</button>
         <button onClick={handleLogin}>ログイン</button>
+        <button onClick={handleCheck}>ボタン</button>
       </form>
     </div>
   )
