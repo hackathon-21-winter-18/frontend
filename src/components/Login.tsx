@@ -8,7 +8,8 @@ const Login: React.VFC = () => {
   const [userName, setUserName] = useState('')
   const [passWord, setPassWord] = useState('')
   const {login} = useContext(UserContext)
-  function handleRegister() {
+  function handleRegister(e: React.MouseEvent) {
+    e.preventDefault()
     const data = {
       name: userName,
       password: passWord,
