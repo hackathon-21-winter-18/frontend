@@ -13,8 +13,8 @@ const mockPalaces: PalaceType[] = [
 		name: "Versailles",
 		image: palace1,
 		embededPins: [
-			{ number: "a1", x: 0, y: 0, word: "apple", memo: "aaa" },
-			{ number: "a2", x: 1, y: 1, word: "banana", memo: "bbb" },
+			{ number: 0, x: 0, y: 0, word: "apple", memo: "aaa" },
+			{ number: 1, x: 1, y: 1, word: "banana", memo: "bbb" },
 		],
 	},
 	{
@@ -22,8 +22,8 @@ const mockPalaces: PalaceType[] = [
 		name: "Buckingham",
 		image: palace2,
 		embededPins: [
-			{ number: "a1", x: 0, y: 0, word: "apple", memo: "aaa" },
-			{ number: "a2", x: 1, y: 1, word: "banana", memo: "bbb" },
+			{ number: 0, x: 0, y: 0, word: "apple", memo: "aaa" },
+			{ number: 1, x: 1, y: 1, word: "banana", memo: "bbb" },
 		],
 	},
 ]
@@ -37,7 +37,7 @@ const Home: React.VFC = () => {
 	))
 	/*
 	useEffect(() => {
-		axios.get("/palaces/me/{userID}").then((res) => setPalaces(res.data))
+		axios.get("/palaces/me/"+userId).then((res) => setPalaces(res.data))
 	}, []) @
 */
 	return (
