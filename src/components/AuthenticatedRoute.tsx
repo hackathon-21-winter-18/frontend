@@ -1,27 +1,12 @@
-import { ReactNode } from "react"
-import { Route } from "react-router-dom"
-import LoginPage from "../pages/LoginPage"
-import { useContext } from "react"
-import { UserContext } from "./UserProvider"
+import { Navigate, Outlet } from "react-router-dom";
+import { useContext } from "react";
+import { UserContext } from "./UserProvider";
 
-interface AuthenticatedRouteProps {
-	path: string
-	element: ReactNode
-}
-const AuthenticatedRoute: React.VFC<AuthenticatedRouteProps> = ({
-	path,
-	element,
-}) => {
-	const { user } = useContext(UserContext)
+const AuthenticatedRoute: React.VFC = () => {
+  const { user } = useContext(UserContext);
+  console.log(user);
 
-	return
-	{
-		user.auth ? (
-			<Route path={path} element={element} />
-		) : (
-			<Route path="/login" element={<LoginPage />} />
-		)
-	}
-}
+  return user.auth ? <Outlet /> : <Navigate to="/login" />;
+};
 
-export default AuthenticatedRoute
+export default AuthenticatedRoute;
