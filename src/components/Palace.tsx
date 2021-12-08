@@ -35,6 +35,7 @@ const Palace: React.VFC<PalaceProps> = ({ palace }) => {
 			</Link>
 			<br />
 			<span>{palace.name}</span>
+			<span>単語数:{palace.embededPins.length}</span>
 			<button onClick={() => setIsOpen(true)}>︙</button>
 			<ReactModal
 				isOpen={isOpen}
