@@ -65,7 +65,7 @@ export const Edit: React.VFC = () => {
       embededPins: embededPins,
       createdBy: user.id,
     }
-    axios.post('http://localhost:8080/api/palaces/me/' + user.id, {data}).then((res) => {
+    axios.post('http://localhost:8080/api/palaces/me/' + user.id, data).then((res) => {
       console.log(res.status)
     })
   }
