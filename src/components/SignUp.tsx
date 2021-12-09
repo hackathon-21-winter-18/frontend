@@ -12,7 +12,7 @@ const SignUp: React.VFC = () => {
 
   const handleRegister = async (e: React.MouseEvent) => {
     e.preventDefault()
-    console.log({name, password})
+    if (password !== passwordConfirm) return
     await signup({name, password})
     setName('')
     setPassword('')
@@ -20,7 +20,12 @@ const SignUp: React.VFC = () => {
 
   return (
     <div className={styles.signup}>
-      <form>
+      <h1>アカウント登録</h1>
+      <div className={styles.divider} />
+      <h2>
+        <span>Palame</span>へようこそ。
+      </h2>
+      <form className={styles.form}>
         <input
           type="text"
           name="name"
@@ -42,8 +47,15 @@ const SignUp: React.VFC = () => {
           value={passwordConfirm}
           onChange={(e) => setPasswordConfirm(e.target.value)}
         />
-        <button onClick={handleRegister}>登録</button>
-        <Link to="/login">ログインする</Link>
+
+        <div className={styles.buttonContainer}>
+          <Link className={styles.loginButton} to="/login">
+            ログインする
+          </Link>
+          <button className={styles.registerButton} onClick={handleRegister}>
+            アカウント登録
+          </button>
+        </div>
       </form>
     </div>
   )
