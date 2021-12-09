@@ -20,51 +20,53 @@ const SignUp: React.VFC = () => {
   }
 
   return (
-    <div className={styles.signup}>
-      <h1>アカウント登録</h1>
-      <div className={styles.divider} />
-      <h2>
-        <span>Palame</span>へようこそ。
-      </h2>
-      <form className={styles.form}>
-        <input
-          type="text"
-          name="name"
-          placeholder="ユーザー名"
-          value={name}
-          onChange={(e) => setName(e.target.value)}
-          required
-        />
-        <input
-          type="password"
-          name="password"
-          placeholder="パスワード"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-          required
-        />
-        <input
-          type="password"
-          name="password"
-          placeholder="パスワード(確認)"
-          value={passwordConfirm}
-          onChange={(e) => setPasswordConfirm(e.target.value)}
-          required
-        />
+    <div className={styles.signupLayout}>
+      <div className={styles.signup}>
+        <h1>アカウント登録</h1>
+        <div className={styles.divider} />
+        <h2>
+          <span>Palame</span>へようこそ。
+        </h2>
+        <form className={styles.form}>
+          <input
+            type="text"
+            name="name"
+            placeholder="ユーザー名"
+            value={name}
+            onChange={(e) => setName(e.target.value)}
+            required
+          />
+          <input
+            type="password"
+            name="password"
+            placeholder="パスワード"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            required
+          />
+          <input
+            type="password"
+            name="password"
+            placeholder="パスワード(確認)"
+            value={passwordConfirm}
+            onChange={(e) => setPasswordConfirm(e.target.value)}
+            required
+          />
 
-        <div className={styles.buttonContainer}>
-          <Link className={styles.loginButton} to="/login">
-            ログインする
-          </Link>
-          <button
-            className={styles.registerButton}
-            onClick={handleRegister}
-            type="submit"
-            disabled={!name || !password || !passwordConfirm || password !== passwordConfirm}>
-            アカウント登録
-          </button>
-        </div>
-      </form>
+          <div className={styles.buttonContainer}>
+            <Link className={styles.loginButton} to="/login">
+              ログインする
+            </Link>
+            <button
+              className={styles.registerButton}
+              onClick={handleRegister}
+              type="submit"
+              disabled={!name || !password || !passwordConfirm || password !== passwordConfirm}>
+              アカウント登録
+            </button>
+          </div>
+        </form>
+      </div>
     </div>
   )
 }

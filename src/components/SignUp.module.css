@@ -1,4 +1,19 @@
+.signupLayout {
+  display: flex;
+  flex-direction: column;
+}
+.signupLayout::before {
+  content: '';
+  display: block;
+  height: 128px;
+}
+.signupLayout::after {
+  display: block;
+  content: '';
+  height: 64px;
+}
 .signup {
+  margin: 0 auto;
   padding: 32px;
 
   width: 400px;
@@ -54,11 +69,18 @@
 }
 .registerButton:disabled {
   background-color: #e2e9f7;
+  cursor: not-allowed;
 }
 .loginButton {
   text-decoration: none;
   color: #313847;
   font-size: 14px;
+  padding: 8px 12px;
+  border-radius: 8px;
+  transition-duration: 0.3s;
+}
+.loginButton:hover {
+  background-color: #e2e9f7;
 }
 
 /* TODO @media screen and (width<600px){} */
