@@ -7,8 +7,10 @@ import { FinishEditButton } from "../components/FinishEditButton"
 export const Edit: React.VFC = () => {
   const [open, setOpen] = React.useState(false)
 
-  const [newWord, setNewWord] = React.useState("")
-  const [newMemo, setNewMemo] = React.useState("")
+  const [name, setName] = React.useState('')
+
+  const [newWord, setNewWord] = React.useState('')
+  const [newMemo, setNewMemo] = React.useState('')
   const [newCoodinate, setNewCoodinate] = React.useState<[number, number]>([
     0, 0,
   ])
@@ -18,6 +20,7 @@ export const Edit: React.VFC = () => {
   const [coodinates, setCoodinates] = React.useState(
     new Array<[number, number]>()
   )
+
   const image = useParams() //あとで使うかも
   const location = useLocation()
 
