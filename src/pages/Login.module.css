@@ -66,6 +66,7 @@
 .loginButton:enabled {
   font-weight: bold;
   background-color: #313847;
+  cursor: pointer;
 }
 .loginButton:disabled {
   background-color: #e2e9f7;

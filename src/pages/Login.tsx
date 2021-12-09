@@ -2,12 +2,13 @@ import React, {useState} from 'react'
 import styles from './Login.module.css'
 import {useContext} from 'react'
 import {UserContext} from '../components/UserProvider'
-import {Link} from 'react-router-dom'
+import {Link, useNavigate} from 'react-router-dom'
 
 const Login: React.VFC = () => {
   const [name, setName] = useState('')
   const [password, setPassword] = useState('')
   const {login} = useContext(UserContext)
+  const navigate = useNavigate()
 
   const handleLogin = async (e: React.MouseEvent) => {
     e.preventDefault()
@@ -16,6 +17,7 @@ const Login: React.VFC = () => {
     await login({name, password})
     setName('')
     setPassword('')
+    navigate('/')
   }
 
   return (
@@ -27,7 +29,7 @@ const Login: React.VFC = () => {
         <form className={styles.form}>
           <input type="text" name="name" placeholder="ユーザー名" onChange={(e) => setName(e.target.value)} required />
           <input
-            type="text"
+            type="password"
             name="password"
             placeholder="パスワード"
             onChange={(e) => setPassword(e.target.value)}
