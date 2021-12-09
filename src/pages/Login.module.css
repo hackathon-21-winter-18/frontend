@@ -1,0 +1,86 @@
+.layout {
+  display: flex;
+  flex-direction: column;
+}
+.layout::before {
+  content: '';
+  display: block;
+  height: 128px;
+}
+.lauout::after {
+  display: block;
+  content: '';
+  height: 64px;
+}
+.login {
+  margin: 0 auto;
+  padding: 32px;
+
+  width: 400px;
+  border: 1px solid #c6d0e5;
+  border-radius: 10px;
+}
+.login h1 {
+  margin: 0;
+  font-size: 30px;
+  font-weight: bold;
+  color: #313847;
+}
+.divider {
+  width: 100%;
+  border-top: 1px solid #c6d0e5;
+}
+.login h2 {
+  margin: 16px 0 40px 0;
+  font-size: 16px;
+  font-weight: normal;
+  color: #555d6d;
+}
+.login h2 > span {
+  font-weight: bold;
+}
+
+.login input {
+  width: calc(100% - 32px);
+  padding: 16px;
+  margin-bottom: 32px;
+  font-size: 16px;
+  border-radius: 7px;
+  border: none;
+  background-color: #e2e9f7;
+}
+.buttonContainer {
+  margin-top: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.loginButton {
+  padding: 8px 12px;
+  font-size: 16px;
+
+  color: white;
+  border: none;
+  border-radius: 8px;
+}
+.loginButton:enabled {
+  font-weight: bold;
+  background-color: #313847;
+}
+.loginButton:disabled {
+  background-color: #e2e9f7;
+  cursor: not-allowed;
+}
+.signupButton {
+  text-decoration: none;
+  color: #313847;
+  font-size: 14px;
+  padding: 8px 12px;
+  border-radius: 8px;
+  transition-duration: 0.3s;
+}
+.signupButton:hover {
+  background-color: #e2e9f7;
+}
+
+/* TODO @media screen and (width<600px){} */
