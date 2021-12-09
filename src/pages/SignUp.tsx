@@ -1,7 +1,7 @@
-import React, {useContext, useEffect, useRef, useState} from 'react'
+import React, {useContext, useState} from 'react'
 import {Link} from 'react-router-dom'
 import styles from './SignUp.module.css'
-import {UserContext} from './UserProvider'
+import {UserContext} from '../components/UserProvider'
 
 const SignUp: React.VFC = () => {
   const [name, setName] = useState('')

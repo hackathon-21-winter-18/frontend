@@ -2,14 +2,14 @@ import './App.module.css'
 import {BrowserRouter, Route, Routes} from 'react-router-dom'
 import {UserProvider} from './components/UserProvider'
 import Home from './pages/Home'
-import LoginPage from './pages/LoginPage'
+import Login from './pages/Login'
 import Memorize from './pages/Memorize'
 import {Edit} from './pages/Edit'
 import TemplatePage from './pages/TemplatePage'
 import NotFound from './pages/NotFound'
 import Layout from './components/Layout'
 import AuthenticatedRoute from './components/AuthenticatedRoute'
-import SignUp from './components/SignUp'
+import SignUp from './pages/SignUp'
 
 function App() {
   return (
@@ -18,7 +18,7 @@ function App() {
         <BrowserRouter>
           <Routes>
             <Route element={<Layout />}>
-              <Route path="/login" element={<LoginPage />} />
+              <Route path="/login" element={<Login />} />
               <Route path="/signup" element={<SignUp />} />
               <Route element={<AuthenticatedRoute />}>
                 <Route path="/" element={<Home />} />

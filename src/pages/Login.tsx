@@ -1,7 +1,7 @@
 import React, {useState} from 'react'
 import styles from './Login.module.css'
 import {useContext} from 'react'
-import {UserContext} from './UserProvider'
+import {UserContext} from '../components/UserProvider'
 
 const Login: React.VFC = () => {
   const [userName, setUserName] = useState('')
