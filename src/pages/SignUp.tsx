@@ -1,7 +1,7 @@
-import React, {useContext, useEffect, useRef, useState} from 'react'
+import React, {useContext, useState} from 'react'
 import {Link} from 'react-router-dom'
 import styles from './SignUp.module.css'
-import {UserContext} from './UserProvider'
+import {UserContext} from '../components/UserProvider'
 
 const SignUp: React.VFC = () => {
   const [name, setName] = useState('')
@@ -25,7 +25,7 @@ const SignUp: React.VFC = () => {
         <h1>アカウント登録</h1>
         <div className={styles.divider} />
         <h2>
-          <span>Palame</span>へようこそ。
+          <span>Palamo</span>へようこそ。
         </h2>
         <form className={styles.form}>
           <input
