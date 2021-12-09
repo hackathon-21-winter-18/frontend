@@ -50,9 +50,9 @@ const Login: React.VFC = () => {
     <div>
       <span>新規登録orログイン</span>
       <form>
-        <input type="text" name="userName" placeholder="ユーザー名" onChange={handleUserNameChange} />
+        <input type="text" name="userName" value={userName} placeholder="ユーザー名" onChange={handleUserNameChange} />
         <br />
-        <input type="text" name="passWord" placeholder="パスワード" onChange={handlePassWordChange} />
+        <input type="text" name="passWord" value={passWord} placeholder="パスワード" onChange={handlePassWordChange} />
         <br />
         <button onClick={handleRegister}>新規登録</button>
         <button onClick={handleLogin}>ログイン</button>
