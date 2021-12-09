@@ -25,7 +25,7 @@ const SignUp: React.VFC = () => {
         <h1>アカウント登録</h1>
         <div className={styles.divider} />
         <h2>
-          <span>Palame</span>へようこそ。
+          <span>Palamo</span>へようこそ。
         </h2>
         <form className={styles.form}>
           <input
