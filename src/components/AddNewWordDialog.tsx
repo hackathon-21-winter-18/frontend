@@ -1,5 +1,5 @@
-import { Button, Dialog, Input } from '@mui/material';
-import * as React from 'react';
+import { Button, Dialog, Input } from '@mui/material'
+import * as React from 'react'
 
 interface AddNewWordDialogProps {
   open: boolean;
@@ -20,15 +20,11 @@ export default function AddNewWordDialog(props: AddNewWordDialogProps) {
   }
   return (
     <Dialog open={open} onClose={handleClose}>
-      <div>
-        単語
-      </div>
+      <div>単語</div>
       <div>
         <Input type="text" value={newWord} onChange={handleWordChange}></Input>
       </div>
-      <div>
-        説明
-      </div>
+      <div>説明</div>
       <div>
         <Input type="text" value={newMemo} onChange={handleMemoChange}></Input>
       </div>
