@@ -14,11 +14,14 @@ export interface FinishEditButtonProps {
 export const FinishEditButton: React.VFC<FinishEditButtonProps> = (props: FinishEditButtonProps) => {
   const { name, image, coodinates, words, memos, createdBy } = props;
   const handleClick = () => {
-    axios.post(`/palaces/me/${createdBy}`, {
-      name: { name },
-      image: { image },
-      createdBy: '',
-    })
+
+    //WIP
+
+    // axios.post(`/palaces/me/${createdBy}`, {
+    //   name: { name },
+    //   image: { image },
+    //   createdBy: '',
+    // })
   }
   return (
     <div>

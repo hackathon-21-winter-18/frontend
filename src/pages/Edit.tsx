@@ -86,7 +86,7 @@ export const Edit: React.VFC = () => {
         handleClose={handleDialogClose}
         handleClick={handleDialogClick}
       />
-      <FinishEditButton name={'a'} image={'b'} coodinates={coodinates} words={words} memos={memos} createdBy={'c'} />
+      <FinishEditButton name={'hoge'} image={'fuga'} coodinates={coodinates} words={words} memos={memos} createdBy={'piyo'} />
     </div>
   )
 }
