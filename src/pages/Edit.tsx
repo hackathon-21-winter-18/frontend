@@ -3,7 +3,6 @@ import { useParams, useLocation } from "react-router"
 import AddNewWordDialog from "../components/AddNewWordDialog"
 import { EditAddedWord } from "../components/EditAddedWord"
 import PushPinIcon from "@mui/icons-material/PushPin"
-import { FinishEditButton } from "../components/FinishEditButton"
 export const Edit: React.VFC = () => {
   const [open, setOpen] = React.useState(false)
 
