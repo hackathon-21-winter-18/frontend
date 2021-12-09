@@ -1,0 +1,19 @@
+.createNewPalaceButton {
+  border: none;
+  border-radius: 10px;
+  background-color: #e2e9f7;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+
+  color: #313847;
+  font-size: 18px;
+  font-weight: 500;
+
+  aspect-ratio: 7/6;
+}
+.addIcon {
+  width: 80px !important;
+  height: 80px !important;
+}

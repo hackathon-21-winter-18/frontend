@@ -18,8 +18,8 @@ function App() {
           <Routes>
             <Route element={<Layout />}>
               <Route path="/login" element={<LoginPage />} />
-              <Route path="/" element={<Home />} />
               <Route element={<AuthenticatedRoute />}>
+                <Route path="/" element={<Home />} />
                 <Route path="/memorize/:id" element={<Memorize />} />
                 <Route path="/edit/:base64/*" element={<Edit />} />
                 <Route path="/template" element={<TemplatePage />} />

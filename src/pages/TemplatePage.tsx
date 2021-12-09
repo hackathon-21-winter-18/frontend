@@ -5,6 +5,7 @@ import {TemplateType} from '../types'
 import palace1 from '../assets/ヴェルサイユ宮殿.jpg'
 import palace2 from '../assets/バッキンガム宮殿.jpg'
 import axios from 'axios'
+import Sidebar from '../components/Sidebar'
 
 const mockTemplates: TemplateType[] = [
   {
@@ -38,7 +39,7 @@ const TemplatePage: React.VFC = () => {
 	*/
   return (
     <div>
-      <span>テンプレート</span>
+      <Sidebar />
       <ul>{listItems}</ul>
     </div>
   )
