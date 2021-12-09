@@ -1,4 +1,6 @@
 import React, {createContext, useState} from 'react'
+import {postLogin} from '../api/registration'
+import {RegistrationResponse, UserRegistration} from '../types'
 
 interface UserContextInterface {
   user: {
@@ -6,7 +8,7 @@ interface UserContextInterface {
     id: string
     auth: boolean
   }
-  login: (name: string, id: string) => void
+  login: (user: UserRegistration) => Promise<void>
   logout: () => void
 }
 
@@ -16,7 +18,7 @@ const initialContext: UserContextInterface = {
     id: '',
     auth: false,
   },
-  login: (_0, _1) => {},
+  login: (_0) => new Promise(() => {}),
   logout: () => {},
 }
 
@@ -24,10 +26,10 @@ export const UserContext = createContext<UserContextInterface>(initialContext)
 
 export const UserProvider: React.FC = ({children}) => {
   const [user, setUser] = useState({name: '', id: '', auth: false})
-  const login = (name: string, id: string) => {
+  const login = async (user: UserRegistration) => {
+    const res = await postLogin(user)
     setUser({
-      name: name,
-      id: id,
+      ...res,
       auth: true,
     })
   }

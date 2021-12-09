@@ -8,28 +8,24 @@ const Login: React.VFC = () => {
   const [userName, setUserName] = useState('')
   const [passWord, setPassWord] = useState('')
   const {login} = useContext(UserContext)
-  function handleRegister() {
+  async function handleRegister() {
     const data = {
       name: userName,
       password: passWord,
     }
-    axios.post('/oauth/signup', {data}).then((res) => {
-      login(userName, passWord)
-      setUserName('')
-      setPassWord('')
-    })
+    await login(data)
+    setUserName('')
+    setPassWord('')
   }
-  function handleLogin(e: React.MouseEvent) {
+  async function handleLogin(e: React.MouseEvent) {
     e.preventDefault()
     const data = {
       name: userName,
       password: passWord,
     }
-    axios.post('/oauth/login', {data}).then((res) => {
-      login(userName, passWord)
-      setUserName('')
-      setPassWord('')
-    })
+    await login(data)
+    setUserName('')
+    setPassWord('')
   }
   function handleUserNameChange(e: any) {
     setUserName(e.target.value)
