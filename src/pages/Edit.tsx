@@ -50,7 +50,7 @@ export const Edit: React.VFC = () => {
 
   function handleComplete() {
     const embededPins = []
-    for (let i = 0; i < embededPins.length; i++) {
+    for (let i = 0; i < coodinates.length; i++) {
       embededPins.push({
         number: i,
         x: coodinates[i][0],
@@ -65,6 +65,7 @@ export const Edit: React.VFC = () => {
       embededPins: embededPins,
       createdBy: user.id,
     }
+    console.log(data)
     axios.post('http://localhost:8080/api/palaces/me/' + user.id, data).then((res) => {
       console.log(res.status)
     })
