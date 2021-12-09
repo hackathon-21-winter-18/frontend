@@ -1,4 +1,4 @@
-import React, {useContext, useState} from 'react'
+import React, {useContext, useEffect, useRef, useState} from 'react'
 import {Link} from 'react-router-dom'
 import styles from './SignUp.module.css'
 import {UserContext} from './UserProvider'
@@ -12,7 +12,8 @@ const SignUp: React.VFC = () => {
 
   const handleRegister = async (e: React.MouseEvent) => {
     e.preventDefault()
-    if (password !== passwordConfirm) return
+    if (name === '' || password === '') return
+
     await signup({name, password})
     setName('')
     setPassword('')
@@ -32,6 +33,7 @@ const SignUp: React.VFC = () => {
           placeholder="ユーザー名"
           value={name}
           onChange={(e) => setName(e.target.value)}
+          required
         />
         <input
           type="password"
@@ -39,6 +41,7 @@ const SignUp: React.VFC = () => {
           placeholder="パスワード"
           value={password}
           onChange={(e) => setPassword(e.target.value)}
+          required
         />
         <input
           type="password"
@@ -46,13 +49,18 @@ const SignUp: React.VFC = () => {
           placeholder="パスワード(確認)"
           value={passwordConfirm}
           onChange={(e) => setPasswordConfirm(e.target.value)}
+          required
         />
 
         <div className={styles.buttonContainer}>
           <Link className={styles.loginButton} to="/login">
             ログインする
           </Link>
-          <button className={styles.registerButton} onClick={handleRegister}>
+          <button
+            className={styles.registerButton}
+            onClick={handleRegister}
+            type="submit"
+            disabled={!name || !password || !passwordConfirm || password !== passwordConfirm}>
             アカウント登録
           </button>
         </div>
