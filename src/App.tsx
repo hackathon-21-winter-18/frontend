@@ -9,6 +9,7 @@ import TemplatePage from './pages/TemplatePage'
 import NotFound from './pages/NotFound'
 import Layout from './components/Layout'
 import AuthenticatedRoute from './components/AuthenticatedRoute'
+import SignUp from './components/SignUp'
 
 function App() {
   return (
@@ -18,6 +19,7 @@ function App() {
           <Routes>
             <Route element={<Layout />}>
               <Route path="/login" element={<LoginPage />} />
+              <Route path="/signup" element={<SignUp />} />
               <Route element={<AuthenticatedRoute />}>
                 <Route path="/" element={<Home />} />
                 <Route path="/memorize/:id" element={<Memorize />} />
