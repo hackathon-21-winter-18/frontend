@@ -4,7 +4,8 @@ type EmbededPins = {
   x: number
   y: number
   word: string
-  memo: string
+  place: string
+  do: string
 }
 
 export type PalaceType = {
