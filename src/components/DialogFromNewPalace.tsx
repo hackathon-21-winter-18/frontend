@@ -28,7 +28,7 @@ function FromNewPalaceDialog(props: FromNewPalaceDialogProps) {
   let navigate = useNavigate()
   function handleNavigate() {
     onClose()
-    navigate('/edit/' + previewImg.substr(27, 100), {replace: true, state: {image: previewImg}})
+    navigate('/edit/' + previewImg.substring(27, 100), {replace: true, state: {image: previewImg}})
   }
   return (
     <Dialog open={open} onClose={handleClose}>

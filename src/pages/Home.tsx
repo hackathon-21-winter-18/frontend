@@ -1,4 +1,4 @@
-import {useEffect, useState} from 'react'
+import {useEffect, useState, useContext} from 'react'
 import styles from './Home.module.css'
 import Palace from '../components/Palace'
 import {PalaceType} from '../types'
@@ -7,8 +7,8 @@ import palace2 from '../assets/バッキンガム宮殿.jpg'
 import axios from 'axios'
 import Sidebar from '../components/Sidebar'
 import CreateNewPalaceButton from '../components/CreateNewPalaceButton'
-import {useContext} from 'react'
 import {UserContext} from '../components/UserProvider'
+import {useNavigate} from 'react-router-dom'
 
 const mockPalaces: PalaceType[] = [
   {
@@ -39,16 +39,19 @@ const Home: React.VFC = () => {
       embededPins: [{number: 0, x: 0, y: 0, word: '', place: '', do: ''}],
     },
   ])
-
   const {user} = useContext(UserContext)
+  let navigate = useNavigate()
 
   function DeletePalace(number: number) {
     setPalaces(palaces.slice(0, number).concat(palaces.slice(number + 1)))
   }
   useEffect(() => {
-    axios.get('http://localhost:8080/api/oauth/whoamI', {withCredentials: true}).then((res) => {
-      console.log(res.data)
-    })
+    axios
+      .get('http://localhost:8080/api/oauth/whoamI', {withCredentials: true})
+      .then((res) => {
+        console.log(res.data)
+      })
+      .catch((error) => navigate('/error', {state: error}))
     axios
       .get('http://localhost:8080/api/palaces/me', {withCredentials: true})
       .then((res) => {
@@ -57,7 +60,7 @@ const Home: React.VFC = () => {
           console.log(res.data)
         }
       })
-      .catch((error) => console.log(error))
+      .catch((error) => navigate('/error', {state: error}))
   }, [])
 
   return (

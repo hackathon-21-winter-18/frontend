@@ -1,15 +1,13 @@
 import * as React from 'react'
-import { useParams, useLocation } from 'react-router'
+import {useParams, useLocation, useNavigate} from 'react-router'
 import AddNewWordDialog from '../components/AddNewWordDialog'
-import { EditAddedWord } from '../components/EditAddedWord'
+import {EditAddedWord} from '../components/EditAddedWord'
 import PushPinIcon from '@mui/icons-material/PushPin'
 import axios from 'axios'
 import {UserContext} from '../components/UserProvider'
 
-
 export const Edit: React.VFC = () => {
   const [open, setOpen] = React.useState(false)
-
   const [newWord, setNewWord] = React.useState('')
   const [words, setWords] = React.useState(new Array<string>())
   const [newPlace, setNewPlace] = React.useState('')
@@ -22,6 +20,7 @@ export const Edit: React.VFC = () => {
   const location = useLocation()
   const [name, setName] = React.useState('')
   const {user} = React.useContext(UserContext)
+  let navigate = useNavigate()
 
   const handleOnClick = (e: React.MouseEvent<HTMLImageElement>) => {
     setNewCoodinate([e.pageX, e.pageY])
@@ -44,7 +43,6 @@ export const Edit: React.VFC = () => {
     setNewCondition('')
     setPlaces([...places, newPlace])
     setConditions([...conditions, newCondition])
-
   }
   const handleWordChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>, index: number) => {
     const _words = words.slice()
@@ -78,7 +76,7 @@ export const Edit: React.VFC = () => {
   function handleNameChange(e: any) {
     setName(e.target.value)
   }
-  
+
   function handleComplete() {
     const embededPins = []
     for (let i = 0; i < coodinates.length; i++) {
@@ -89,7 +87,6 @@ export const Edit: React.VFC = () => {
         word: words[i],
         place: places[i],
         do: conditions[i],
-
       })
     }
     const data = {
@@ -97,7 +94,6 @@ export const Edit: React.VFC = () => {
       image: location.state.image.substr(22),
       embededPins: embededPins,
       createdBy: user.id,
-
     }
     console.log(data)
     axios
@@ -105,22 +101,19 @@ export const Edit: React.VFC = () => {
       .then((res) => {
         console.log(res.status)
       })
-      .catch((error) => {
-        console.log(error)
-      })
+      .catch((error) => navigate('/error', {state: error}))
   }
 
   return (
     <div>
       {coodinates.map(([x, y]: [number, number], index) => (
-        <PushPinIcon key={index} style={{ position: 'absolute', top: y + 'px', left: x + 'px' }} />
+        <PushPinIcon key={index} style={{position: 'absolute', top: y + 'px', left: x + 'px'}} />
       ))}
       <div>
         <img src={location.state.image} alt="map" onClick={handleOnClick} />
       </div>
       <div>
         {[...Array(words.length)].map((_, index: number) => (
-
           <EditAddedWord
             key={index}
             word={words[index]}

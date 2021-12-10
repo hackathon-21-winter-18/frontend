@@ -1,5 +1,5 @@
 import {useState, useEffect, useContext} from 'react'
-import {useParams} from 'react-router'
+import {useParams, useNavigate} from 'react-router'
 import styles from 'Memorize.module.css'
 import Word from '../components/Word'
 import {PalaceType} from '../types'
@@ -40,7 +40,7 @@ const Memorize: React.VFC = () => {
   })
   const params = useParams()
   const {user} = useContext(UserContext)
-
+  let navigate = useNavigate()
   const listItems = palace.embededPins.map((pin: any) => (
     <li key={pin.number}>
       <Word
@@ -55,14 +55,17 @@ const Memorize: React.VFC = () => {
     alert('ダイアログ表示')
   }
   useEffect(() => {
-    axios.get('http://localhost:8080/api/palaces/me', {withCredentials: true}).then((res) => {
-      const data = res.data
-      for (let i = 0; i < data.length; i++) {
-        if (data[i].id === params.id) {
-          setPalace(data[i])
+    axios
+      .get('http://localhost:8080/api/palaces/me', {withCredentials: true})
+      .then((res) => {
+        const data = res.data
+        for (let i = 0; i < data.length; i++) {
+          if (data[i].id === params.id) {
+            setPalace(data[i])
+          }
         }
-      }
-    })
+      })
+      .catch((error) => navigate('/error', {state: error}))
   }, [])
   return (
     <div>

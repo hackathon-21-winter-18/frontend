@@ -1,5 +1,5 @@
 import {useState} from 'react'
-import {Link} from 'react-router-dom'
+import {Link, useNavigate} from 'react-router-dom'
 import ReactModal from 'react-modal'
 import {TemplateType} from '../types'
 import axios from 'axios'
@@ -9,6 +9,7 @@ interface TemplateProps {
 }
 
 const Template: React.VFC<TemplateProps> = ({template}) => {
+  let navigate = useNavigate()
   const [isOpen, setIsOpen] = useState(false)
   const customStyles: ReactModal.Styles = {
     // ダイアログ内のスタイル（中央に表示）
@@ -23,7 +24,9 @@ const Template: React.VFC<TemplateProps> = ({template}) => {
   }
   function handleDelete() {
     //確認ダイアログ表示
-    axios.delete('http://localhost:8080/api/templates/' + template.id, {withCredentials: true})
+    axios
+      .delete('http://localhost:8080/api/templates/' + template.id, {withCredentials: true})
+      .catch((error) => navigate('/error', {state: error}))
   }
   return (
     <div>

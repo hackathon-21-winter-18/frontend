@@ -30,7 +30,9 @@ const Palace: React.VFC<PalaceProps> = ({num, palace, deletePalace}) => {
 
   function handleDelete() {
     //確認ダイアログ表示
-    axios.delete('http://localhost:8080/api/palaces/' + palace.id, {withCredentials: true})
+    axios
+      .delete('http://localhost:8080/api/palaces/' + palace.id, {withCredentials: true})
+      .catch((error) => navigate('/error', {state: error}))
     deletePalace(num)
   }
   function Extension() {

@@ -1,6 +1,5 @@
 import {useEffect, useState, useContext} from 'react'
 import styles from 'TemplatePage.module.css'
-import Header from '../components/Header'
 import Template from '../components/Template'
 import {TemplateType} from '../types'
 import palace1 from '../assets/ヴェルサイユ宮殿.jpg'
@@ -8,6 +7,7 @@ import palace2 from '../assets/バッキンガム宮殿.jpg'
 import axios from 'axios'
 import {UserContext} from '../components/UserProvider'
 import Sidebar from '../components/Sidebar'
+import {useNavigate} from 'react-router-dom'
 
 const mockTemplates: TemplateType[] = [
   {
@@ -34,13 +34,17 @@ const TemplatePage: React.VFC = () => {
     },
   ])
   const {user} = useContext(UserContext)
+  let navigate = useNavigate()
   const listItems = templates.map((template) => (
     <li key={template.id}>
       <Template template={template} />
     </li>
   ))
   useEffect(() => {
-    axios.get('http://localhost:8080/api/templates/me', {withCredentials: true}).then((res) => setTemplates(res.data))
+    axios
+      .get('http://localhost:8080/api/templates/me', {withCredentials: true})
+      .then((res) => setTemplates(res.data))
+      .catch((error) => navigate('/error', {state: error}))
   }, [])
 
   return (

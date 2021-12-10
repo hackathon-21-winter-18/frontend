@@ -1,5 +1,5 @@
 import * as React from 'react'
-import {useParams, useLocation} from 'react-router'
+import {useParams, useLocation, useNavigate} from 'react-router'
 import AddNewWordDialog from '../components/AddNewWordDialog'
 import {EditAddedWord} from '../components/EditAddedWord'
 import PushPinIcon from '@mui/icons-material/PushPin'
@@ -28,7 +28,7 @@ export const Fix: React.VFC = () => {
     embededPins: [{number: 0, x: 0, y: 0, word: '', place: '', do: ''}],
   })
   const params = useParams()
-
+  let navigate = useNavigate()
   const handleOnClick = (e: React.MouseEvent<HTMLImageElement>) => {
     setNewCoodinate([e.pageX, e.pageY])
     setOpen(true)
@@ -83,32 +83,35 @@ export const Fix: React.VFC = () => {
     setName(e.target.value)
   }
   React.useEffect(() => {
-    axios.get('http://localhost:8080/api/palaces/me', {withCredentials: true}).then((res) => {
-      const data = res.data
-      let words2 = words
-      let coodinates2 = coodinates
-      let name2 = name
-      let places2 = places
-      let conditions2 = conditions
-      for (let i = 0; i < data.length; i++) {
-        if (data[i].id === params.id) {
-          setPalace(data[i])
-          for (let j = 0; j < data[i].embededPins.length; j++) {
-            words2 = words2.concat([data[i].embededPins[j].word])
-            coodinates2 = coodinates2.concat([[data[i].embededPins[j].x, data[i].embededPins[j].y]])
-            name2 = data[i].name
-            places2 = places2.concat([data[i].embededPins[j].place])
-            conditions2 = conditions2.concat([data[i].embededPins[j].do])
+    axios
+      .get('http://localhost:8080/api/palaces/me', {withCredentials: true})
+      .then((res) => {
+        const data = res.data
+        let words2 = words
+        let coodinates2 = coodinates
+        let name2 = name
+        let places2 = places
+        let conditions2 = conditions
+        for (let i = 0; i < data.length; i++) {
+          if (data[i].id === params.id) {
+            setPalace(data[i])
+            for (let j = 0; j < data[i].embededPins.length; j++) {
+              words2 = words2.concat([data[i].embededPins[j].word])
+              coodinates2 = coodinates2.concat([[data[i].embededPins[j].x, data[i].embededPins[j].y]])
+              name2 = data[i].name
+              places2 = places2.concat([data[i].embededPins[j].place])
+              conditions2 = conditions2.concat([data[i].embededPins[j].do])
+            }
           }
         }
-      }
-      setWords(words2)
-      setCoodinates(coodinates2)
-      setName(name2)
-      setPlaces(places2)
-      setConditions(conditions2)
-      console.log('set!')
-    })
+        setWords(words2)
+        setCoodinates(coodinates2)
+        setName(name2)
+        setPlaces(places2)
+        setConditions(conditions2)
+        console.log('set!')
+      })
+      .catch((error) => navigate('/error', {state: error}))
   }, [])
 
   function handleComplete() {
@@ -134,9 +137,7 @@ export const Fix: React.VFC = () => {
       .then((res) => {
         console.log(res.status)
       })
-      .catch((error) => {
-        console.log(error)
-      })
+      .catch((error) => navigate('/error', {state: {message: error}}))
   }
   function handleCheck() {
     console.log(words)

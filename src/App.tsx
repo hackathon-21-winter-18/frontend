@@ -7,7 +7,7 @@ import Memorize from './pages/Memorize'
 import {Edit} from './pages/Edit'
 import {Fix} from './pages/Fix'
 import TemplatePage from './pages/TemplatePage'
-import NotFound from './pages/NotFound'
+import ErrorPage from './pages/ErrorPage'
 import Layout from './components/Layout'
 import AuthenticatedRoute from './components/AuthenticatedRoute'
 import SignUp from './pages/SignUp'
@@ -27,7 +27,8 @@ function App() {
                 <Route path="/edit/:base64/*" element={<Edit />} />
                 <Route path="/fix/:id" element={<Fix />} />
                 <Route path="/template" element={<TemplatePage />} />
-                <Route path="/*" element={<NotFound />} />
+                <Route path="/error" element={<ErrorPage />} />
+                <Route path="/*" element={<ErrorPage />} />
               </Route>
             </Route>
           </Routes>

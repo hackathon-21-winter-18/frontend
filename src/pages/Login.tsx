@@ -9,7 +9,6 @@ const Login: React.VFC = () => {
   const [name, setName] = useState('')
   const [password, setPassword] = useState('')
   const {login} = useContext(UserContext)
-  const navigate = useNavigate()
 
   const handleLogin = async (e: React.MouseEvent) => {
     e.preventDefault()
