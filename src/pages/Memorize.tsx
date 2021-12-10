@@ -42,9 +42,8 @@ const Memorize: React.VFC = () => {
   const {user} = useContext(UserContext)
 
   const listItems = palace.embededPins.map((pin: any) => (
-    <li>
+    <li key={pin.number}>
       <Word
-        key={pin.number}
         num={pin.number}
         word={pin.word}
         flags={flags}
@@ -71,13 +70,13 @@ const Memorize: React.VFC = () => {
       <br />
       {palace.embededPins.map((pin, index) => (
         <PushPinIcon
+          key={pin.number}
           style={{
             position: 'absolute',
             top: pin.y + 'px',
             left: pin.x + 'px',
             color: flags[pin.number] ? 'blue' : 'red',
           }}
-          key={pin.number}
         />
       ))}
       <img src={'data:image/png;base64,' + palace.image} alt={palace.name} />

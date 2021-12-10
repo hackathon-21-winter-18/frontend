@@ -125,14 +125,12 @@ export const Fix: React.VFC = () => {
       </div>
       <div>
         {words.map((word: string, index: number) => (
-          <div>
-            <EditAddedWord
-              key={index}
-              word={word}
-              handleChange={(e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => handleChange(e, index)}
-              handleDelete={() => handleDelete(index)}
-            />
-          </div>
+          <EditAddedWord
+            key={index}
+            word={word}
+            handleChange={(e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => handleChange(e, index)}
+            handleDelete={() => handleDelete(index)}
+          />
         ))}
       </div>
       <AddNewWordDialog

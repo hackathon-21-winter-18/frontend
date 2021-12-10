@@ -35,8 +35,8 @@ const TemplatePage: React.VFC = () => {
   ])
   const {user} = useContext(UserContext)
   const listItems = templates.map((template) => (
-    <li>
-      <Template key={template.id} template={template} />
+    <li key={template.id}>
+      <Template template={template} />
     </li>
   ))
   useEffect(() => {
