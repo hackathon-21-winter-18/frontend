@@ -9,8 +9,12 @@ import {UserContext} from '../components/UserProvider'
 export const Edit: React.VFC = () => {
   const [open, setOpen] = React.useState(false)
   const [newWord, setNewWord] = React.useState('')
-  const [newCoodinate, setNewCoodinate] = React.useState<[number, number]>([0, 0])
   const [words, setWords] = React.useState(new Array<string>())
+  const [newPlace, setNewPlace] = React.useState('')
+  const [places, setPlaces] = React.useState(new Array<string>())
+  const [newCondition, setNewCondition] = React.useState('')
+  const [conditions, setConditions] = React.useState(new Array<string>())
+  const [newCoodinate, setNewCoodinate] = React.useState<[number, number]>([0, 0])
   const [coodinates, setCoodinates] = React.useState(new Array<[number, number]>())
   const image = useParams() //あとで使うかも
   const location = useLocation()
@@ -24,22 +28,44 @@ export const Edit: React.VFC = () => {
   const handleClose = () => {
     setOpen(false)
     setNewWord('')
+    setNewPlace('')
+    setNewCondition('')
   }
   const handleClick = () => {
     setWords([...words, newWord])
     setCoodinates([...coodinates, newCoodinate])
     setOpen(false)
     setNewWord('')
+    setNewPlace('')
+    setNewCondition('')
+    setPlaces([...places, newPlace])
+    setConditions([...conditions, newCondition])
   }
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>, index: number) => {
+  const handleWordChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>, index: number) => {
     const _words = words.slice()
     _words[index] = e.target.value
     setWords([..._words])
+  }
+  const handlePlaceChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>, index: number) => {
+    const _places = places.slice()
+    _places[index] = e.target.value
+    setPlaces([..._places])
+  }
+  const handleConditionChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>, index: number) => {
+    const _conditions = conditions.slice()
+    _conditions[index] = e.target.value
+    setConditions([..._conditions])
   }
   const handleDelete = (index: number) => {
     const _words = words.slice()
     _words.splice(index, 1)
     setWords([..._words])
+    const _places = places.slice()
+    _places.splice(index, 1)
+    setPlaces([..._places])
+    const _conditions = conditions.slice()
+    _conditions.splice(index, 1)
+    setConditions([..._conditions])
     const _coodinates = coodinates.slice()
     _coodinates.splice(index, 1)
     setCoodinates([..._coodinates])
@@ -56,8 +82,8 @@ export const Edit: React.VFC = () => {
         x: coodinates[i][0],
         y: coodinates[i][1],
         word: words[i],
-        place: 'test',
-        do: 'test',
+        place: places[i],
+        do: conditions[i],
       })
     }
     const data = {
@@ -86,11 +112,21 @@ export const Edit: React.VFC = () => {
         <img src={location.state.image} alt="map" onClick={handleOnClick} />
       </div>
       <div>
-        {words.map((word: string, index: number) => (
+        {[...Array(words.length)].map((_, index: number) => (
           <EditAddedWord
             key={index}
-            word={word}
-            handleChange={(e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => handleChange(e, index)}
+            word={words[index]}
+            place={places[index]}
+            condition={conditions[index]}
+            handleWordChange={(e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) =>
+              handleWordChange(e, index)
+            }
+            handlePlaceChange={(e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) =>
+              handlePlaceChange(e, index)
+            }
+            handleConditionChange={(e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) =>
+              handleConditionChange(e, index)
+            }
             handleDelete={() => handleDelete(index)}
           />
         ))}
@@ -98,11 +134,15 @@ export const Edit: React.VFC = () => {
       <AddNewWordDialog
         open={open}
         newWord={newWord}
+        newPlace={newPlace}
+        newCondition={newCondition}
         setNewWord={setNewWord}
+        setNewPlace={setNewPlace}
+        setNewCondition={setNewCondition}
         handleClose={handleClose}
         handleClick={handleClick}
       />
-      <input type="text" value={name} placeholder="神殿の名前" onChange={handleNameChange} />
+      <input type="text" value={name} placeholder="宮殿の名前" onChange={handleNameChange} />
       <button onClick={handleComplete}>完成!</button>
     </div>
   )
