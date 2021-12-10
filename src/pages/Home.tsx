@@ -45,13 +45,12 @@ const Home: React.VFC = () => {
   function DeletePalace(number: number) {
     setPalaces(palaces.slice(0, number).concat(palaces.slice(number + 1)))
   }
-
   useEffect(() => {
     axios.get('http://localhost:8080/api/oauth/whoamI', {withCredentials: true}).then((res) => {
       console.log(res.data)
     })
     axios
-      .get('http://localhost:8080/api/palaces/me/' + user.id, {withCredentials: true})
+      .get('http://localhost:8080/api/palaces/me', {withCredentials: true})
       .then((res) => {
         setPalaces(res.data)
         console.log(res.data)

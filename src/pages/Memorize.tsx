@@ -56,7 +56,7 @@ const Memorize: React.VFC = () => {
     alert('ダイアログ表示')
   }
   useEffect(() => {
-    axios.get('http://localhost:8080/api/palaces/me/' + user.id, {withCredentials: true}).then((res) => {
+    axios.get('http://localhost:8080/api/palaces/me', {withCredentials: true}).then((res) => {
       const data = res.data
       for (let i = 0; i < data.length; i++) {
         if (data[i].id === params.id) {

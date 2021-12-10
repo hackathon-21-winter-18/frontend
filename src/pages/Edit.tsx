@@ -68,7 +68,7 @@ export const Edit: React.VFC = () => {
     }
     console.log(data)
     axios
-      .post('http://localhost:8080/api/palaces/me/' + user.id, data, {withCredentials: true})
+      .post('http://localhost:8080/api/palaces/me', data, {withCredentials: true})
       .then((res) => {
         console.log(res.status)
       })

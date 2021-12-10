@@ -57,7 +57,7 @@ export const Fix: React.VFC = () => {
     setName(e.target.value)
   }
   React.useEffect(() => {
-    axios.get('http://localhost:8080/api/palaces/me/' + user.id, {withCredentials: true}).then((res) => {
+    axios.get('http://localhost:8080/api/palaces/me', {withCredentials: true}).then((res) => {
       const data = res.data
       let words2 = words
       let coodinates2 = coodinates
