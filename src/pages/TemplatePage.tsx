@@ -1,5 +1,5 @@
 import {useEffect, useState, useContext} from 'react'
-import styles from 'TemplatePage.module.css'
+import styles from './TemplatePage.module.css'
 import Header from '../components/Header'
 import Template from '../components/Template'
 import {TemplateType} from '../types'
@@ -8,6 +8,7 @@ import palace2 from '../assets/バッキンガム宮殿.jpg'
 import axios from 'axios'
 import {UserContext} from '../components/UserProvider'
 import Sidebar from '../components/Sidebar'
+import CreateNewTemplateButton from '../components/CreateNewTemplateButton'
 
 const mockTemplates: TemplateType[] = [
   {
@@ -44,9 +45,13 @@ const TemplatePage: React.VFC = () => {
   }, [])
 
   return (
-    <div>
+    <div className={styles.templatePage}>
       <Sidebar />
-      <ul>{listItems}</ul>
+      <ul className={styles.templateContainer}>
+        <CreateNewTemplateButton />
+
+        {listItems}
+      </ul>
     </div>
   )
 }
