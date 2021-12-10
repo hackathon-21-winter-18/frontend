@@ -3,6 +3,7 @@ import styles from './Login.module.css'
 import {useContext} from 'react'
 import {UserContext} from '../components/UserProvider'
 import {Link, useNavigate} from 'react-router-dom'
+import logo from '../assets/logo.svg'
 
 const Login: React.VFC = () => {
   const [name, setName] = useState('')
@@ -22,6 +23,7 @@ const Login: React.VFC = () => {
   return (
     <div className={styles.layout}>
       <div className={styles.login}>
+        <img src={logo} alt="palamo logo" className={styles.logo} />
         <h1>ログイン</h1>
         <div className={styles.divider} />
         <h2>おかえりなさい。</h2>

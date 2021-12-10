@@ -1,4 +1,4 @@
-import {Button, Input} from '@mui/material'
+import { Button, Input } from '@mui/material'
 import * as React from 'react'
 
 export interface EditAddedWordProps {
@@ -11,7 +11,9 @@ export interface EditAddedWordProps {
   handleDelete: React.MouseEventHandler<HTMLButtonElement>
 }
 export const EditAddedWord: React.VFC<EditAddedWordProps> = (props: EditAddedWordProps) => {
+
   const {word, place, condition, handleWordChange, handlePlaceChange, handleConditionChange, handleDelete} = props
+
   return (
     <div>
       <Input value={word} onChange={handleWordChange} />
@@ -20,6 +22,6 @@ export const EditAddedWord: React.VFC<EditAddedWordProps> = (props: EditAddedWor
       <span>で</span>
       <Input value={condition} onChange={handleConditionChange} />
       <Button onClick={handleDelete}>削除</Button>
-    </div>
+    </div >
   )
 }
