@@ -38,7 +38,7 @@ const Palace: React.VFC<PalaceProps> = ({palace}) => {
       </Link> */}
       <img
         className={styles.image}
-        src={palace.image}
+        src={'data:image/png;base64,' + palace.image}
         alt={palace.name}
         onClick={() => navigate('/memorize/' + palace.id)}
       />
