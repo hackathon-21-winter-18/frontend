@@ -1,4 +1,5 @@
 .sidebar {
+  min-height: calc(100vh - 101px);
   width: 252px;
   padding: 24px;
   flex-shrink: 0;
@@ -13,29 +14,88 @@
 
   border-radius: 10px;
   padding: 12px;
-  margin-bottom: 32px;
+  margin-bottom: 24px;
   display: flex;
   align-items: center;
 
   text-decoration: none;
-  transition-duration: 0.1s;
+  transition-duration: 0.2s;
 }
 .buttonNotHere {
-  background-color: #e2e9f7;
+  background-color: #eef3ff;
   color: #555d6d;
   font-weight: 500;
   font-size: 24px;
 
+  border: 2px solid white;
   border-radius: 10px;
   padding: 12px;
-  margin-bottom: 32px;
+  margin-bottom: 24px;
   display: flex;
   align-items: center;
 
   text-decoration: none;
-  transition-duration: 0.3s;
+  transition-duration: 0.2s;
+}
+.buttonNotHere:hover {
+  border: 2px solid #95a0b6;
 }
 .buttonIcon {
   margin-right: 12px;
+}
+.userSetting {
+  margin-top: auto;
+}
+
+.userSetting {
+  width: 100%;
+  padding: 10px 12px;
+  background-color: #eef3ff;
+  border: none;
+  display: flex;
+  align-items: flex-end;
+  font-size: 18px;
+  font-weight: 700;
+  color: #555d6d;
+  cursor: pointer;
+  border: 2px solid white;
+  border-radius: 10px;
+  transition-duration: 0.2s;
+}
+.userSetting:hover {
+  border: 2px solid #95a0b6;
+}
+.userSetting:hover .lastIcon {
+  display: initial;
+}
+.userIcon {
+  margin-right: 16px;
+}
+
+.lastIcon {
+  display: none;
+  transition-duration: 0.3s;
+  margin-left: auto;
+}
+.card {
+  width: calc(252px - 24px);
+  padding: 12px;
+}
+.card p {
+  font-size: 14px;
+  color: #313847;
+}
+.logout {
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  color: #555d6d;
+  background-color: white;
+  border: 1px solid #95a0b6;
+  border-radius: 6px;
+  width: 100%;
+  padding: 4px;
+  margin-top: 16px;
+  cursor: pointer;
 }
 /* TODO SP用設定 */
