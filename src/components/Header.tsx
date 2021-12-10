@@ -4,6 +4,7 @@ import {Link, useNavigate} from 'react-router-dom'
 import logo from '../assets/脳みそ.png'
 import FromNewPalace from './DialogFromNewPalace'
 import {UserContext} from './UserProvider'
+import FromNewTemplate from './DialogFromNewTemplate'
 
 const Header: React.VFC = () => {
   const {user, logout} = useContext(UserContext)
@@ -16,6 +17,7 @@ const Header: React.VFC = () => {
         <>
           <span>{user.name}でログイン中</span>
           <FromNewPalace />
+          <FromNewTemplate />
           <Link to="login" onClick={logout}>
             ログアウト
           </Link>

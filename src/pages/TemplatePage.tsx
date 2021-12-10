@@ -35,11 +35,14 @@ const TemplatePage: React.VFC = () => {
     },
   ])
   const {user} = useContext(UserContext)
-  const listItems = templates.map((template) => (
+  const listItems = templates.map((template, index) => (
     <li key={template.id}>
-      <Template template={template} />
+      <Template num={index} template={template} deleteTemplate={DeleteTemplate} />
     </li>
   ))
+  function DeleteTemplate(number: number) {
+    setTemplates(templates.slice(0, number).concat(templates.slice(number + 1)))
+  }
   useEffect(() => {
     axios.get('http://localhost:8080/api/templates/me', {withCredentials: true}).then((res) => setTemplates(res.data))
   }, [])

@@ -42,7 +42,9 @@ const Home: React.VFC = () => {
 
   const {user} = useContext(UserContext)
   const listItems = palaces.map((palace, index) => (
-    <Palace key={palace.id} num={index} palace={palace} deletePalace={DeletePalace} />
+    <li key={palace.id}>
+      <Palace num={index} palace={palace} deletePalace={DeletePalace} />
+    </li>
   ))
 
   function DeletePalace(number: number) {

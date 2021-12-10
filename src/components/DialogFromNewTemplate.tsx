@@ -3,14 +3,14 @@ import Dialog from '@mui/material/Dialog'
 import Button from '@mui/material/Button'
 import {useNavigate} from 'react-router-dom'
 
-export interface FromNewPalaceDialogProps {
+export interface FromNewTemplateDialogProps {
   open: boolean
   previewImg: string
   onClose: () => void
   setPreviewImg: React.Dispatch<React.SetStateAction<string>>
 }
 
-function FromNewPalaceDialog(props: FromNewPalaceDialogProps) {
+function FromNewTemplateDialog(props: FromNewTemplateDialogProps) {
   const {open, onClose, previewImg, setPreviewImg} = props
   const handleClose = () => {
     onClose()
@@ -28,7 +28,7 @@ function FromNewPalaceDialog(props: FromNewPalaceDialogProps) {
   let navigate = useNavigate()
   function handleNavigate() {
     onClose()
-    navigate('/edit/' + previewImg.substring(27, 100), {replace: true, state: {image: previewImg}})
+    navigate('/editTemplate/' + previewImg.substring(27, 100), {replace: true, state: {image: previewImg}})
   }
   return (
     <Dialog open={open} onClose={handleClose}>
@@ -63,7 +63,7 @@ function FromNewPalaceDialog(props: FromNewPalaceDialogProps) {
     </Dialog>
   )
 }
-export default function FromNewPalace() {
+export default function FromNewTemplate() {
   const [open, setOpen] = React.useState(false)
   const [previewImg, setPreviewImg] = React.useState('')
   const handleClickOpen = () => {
@@ -76,9 +76,9 @@ export default function FromNewPalace() {
   return (
     <span>
       <Button variant="outlined" onClick={handleClickOpen}>
-        新規画像から
+        新規画像から(template)
       </Button>
-      <FromNewPalaceDialog open={open} onClose={handleClose} previewImg={previewImg} setPreviewImg={setPreviewImg} />
+      <FromNewTemplateDialog open={open} onClose={handleClose} previewImg={previewImg} setPreviewImg={setPreviewImg} />
     </span>
   )
 }
