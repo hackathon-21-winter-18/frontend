@@ -4,7 +4,6 @@ import {UserContext} from './UserProvider'
 
 const AuthenticatedRoute: React.VFC = () => {
   const {user} = useContext(UserContext)
-  console.log(user)
 
   return user.auth ? <Outlet /> : <Navigate to="/login" />
 }

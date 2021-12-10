@@ -30,6 +30,7 @@
   margin: 0;
   font-size: 30px;
   font-weight: bold;
+  font-family: 'Noto Sans JP';
   color: #313847;
 }
 .divider {
@@ -39,7 +40,8 @@
 .login h2 {
   margin: 16px 0 40px 0;
   font-size: 16px;
-  font-weight: normal;
+  font-weight: 400;
+  font-family: 'Noto Sans JP';
   color: #555d6d;
 }
 .login h2 > span {
@@ -82,6 +84,7 @@
   text-decoration: none;
   color: #313847;
   font-size: 14px;
+  font-family: 'Noto Sans JP';
   padding: 8px 12px;
   border-radius: 8px;
   transition-duration: 0.3s;

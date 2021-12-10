@@ -11,6 +11,7 @@
   color: white;
   font-weight: 700;
   font-size: 24px;
+  font-family: 'Noto Sans JP';
 
   border-radius: 10px;
   padding: 12px;
@@ -20,12 +21,14 @@
 
   text-decoration: none;
   transition-duration: 0.2s;
+  cursor: default;
 }
 .buttonNotHere {
   background-color: #eef3ff;
   color: #555d6d;
   font-weight: 500;
   font-size: 24px;
+  font-family: 'Noto Sans JP';
 
   border: 2px solid white;
   border-radius: 10px;
