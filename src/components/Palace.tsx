@@ -56,7 +56,9 @@ const Palace: React.VFC<PalaceProps> = ({num, palace, deletePalace}) => {
         {palace.embededPins.length + ' Words'}
       </div>
       <ReactModal isOpen={isOpen} onRequestClose={() => setIsOpen(false)} style={customStyles}>
-        <Link to="/palaceEdit">宮殿の編集</Link>
+        <Link to={'fix/' + palace.id} state={{image: 'data:image/png;base64,' + palace.image}}>
+          宮殿の編集
+        </Link>
         <br />
         <button onClick={handleDelete}>宮殿の削除</button>
       </ReactModal>

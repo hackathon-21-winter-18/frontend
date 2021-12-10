@@ -59,7 +59,7 @@ const Memorize: React.VFC = () => {
     axios.get('http://localhost:8080/api/palaces/me/' + user.id, {withCredentials: true}).then((res) => {
       const data = res.data
       for (let i = 0; i < data.length; i++) {
-        if (data.id === params.id) {
+        if (data[i].id === params.id) {
           setPalace(data[i])
         }
       }
@@ -80,7 +80,7 @@ const Memorize: React.VFC = () => {
           key={pin.number}
         />
       ))}
-      <img src={palace.image} alt={palace.name} />
+      <img src={'data:image/png;base64,' + palace.image} alt={palace.name} />
       {/*あとでコンポーネント分けるかも*/}
       <ol>{listItems}</ol>
       <br />
