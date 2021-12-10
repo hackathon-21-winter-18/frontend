@@ -68,7 +68,7 @@ const Memorize: React.VFC = () => {
     <div>
       <span>暗記画面</span>
       <br />
-      {palace.embededPins.map((pin, index) => (
+      {palace.embededPins.map((pin) => (
         <PushPinIcon
           key={pin.number}
           style={{

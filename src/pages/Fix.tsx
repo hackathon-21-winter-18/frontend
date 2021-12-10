@@ -10,8 +10,12 @@ import {PalaceType} from '../types'
 export const Fix: React.VFC = () => {
   const [open, setOpen] = React.useState(false)
   const [newWord, setNewWord] = React.useState('')
-  const [newCoodinate, setNewCoodinate] = React.useState<[number, number]>([0, 0])
   const [words, setWords] = React.useState(new Array<string>())
+  const [newPlace, setNewPlace] = React.useState('')
+  const [places, setPlaces] = React.useState(new Array<string>())
+  const [newCondition, setNewCondition] = React.useState('')
+  const [conditions, setConditions] = React.useState(new Array<string>())
+  const [newCoodinate, setNewCoodinate] = React.useState<[number, number]>([0, 0])
   const [coodinates, setCoodinates] = React.useState(new Array<[number, number]>())
   const image = useParams() //あとで使うかも
   const location = useLocation()
@@ -32,22 +36,44 @@ export const Fix: React.VFC = () => {
   const handleClose = () => {
     setOpen(false)
     setNewWord('')
+    setNewPlace('')
+    setNewCondition('')
   }
   const handleClick = () => {
     setWords([...words, newWord])
+    setPlaces([...places, newPlace])
+    setConditions([...conditions, newCondition])
     setCoodinates([...coodinates, newCoodinate])
     setOpen(false)
     setNewWord('')
+    setNewPlace('')
+    setNewCondition('')
   }
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>, index: number) => {
+  const handleWordChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>, index: number) => {
     const _words = words.slice()
     _words[index] = e.target.value
     setWords([..._words])
+  }
+  const handlePlaceChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>, index: number) => {
+    const _places = places.slice()
+    _places[index] = e.target.value
+    setPlaces([..._places])
+  }
+  const handleConditionChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>, index: number) => {
+    const _conditions = conditions.slice()
+    _conditions[index] = e.target.value
+    setConditions([..._conditions])
   }
   const handleDelete = (index: number) => {
     const _words = words.slice()
     _words.splice(index, 1)
     setWords([..._words])
+    const _places = places.slice()
+    _places.splice(index, 1)
+    setPlaces([..._places])
+    const _conditions = conditions.slice()
+    _conditions.splice(index, 1)
+    setConditions([..._conditions])
     const _coodinates = coodinates.slice()
     _coodinates.splice(index, 1)
     setCoodinates([..._coodinates])
@@ -62,22 +88,25 @@ export const Fix: React.VFC = () => {
       let words2 = words
       let coodinates2 = coodinates
       let name2 = name
+      let places2 = places
+      let conditions2 = conditions
       for (let i = 0; i < data.length; i++) {
         if (data[i].id === params.id) {
           setPalace(data[i])
           for (let j = 0; j < data[i].embededPins.length; j++) {
-            console.log([data[i].embededPins[j].word])
-            console.log([[data[i].embededPins[j].x, data[i].embededPins[j].y]])
-            console.log(data[i].name)
             words2 = words2.concat([data[i].embededPins[j].word])
             coodinates2 = coodinates2.concat([[data[i].embededPins[j].x, data[i].embededPins[j].y]])
             name2 = data[i].name
+            places2 = places2.concat([data[i].embededPins[j].place])
+            conditions2 = conditions2.concat([data[i].embededPins[j].do])
           }
         }
       }
       setWords(words2)
       setCoodinates(coodinates2)
       setName(name2)
+      setPlaces(places2)
+      setConditions(conditions2)
       console.log('set!')
     })
   }, [])
@@ -90,8 +119,8 @@ export const Fix: React.VFC = () => {
         x: coodinates[i][0],
         y: coodinates[i][1],
         word: words[i],
-        place: 'test',
-        do: 'test',
+        place: places[i],
+        do: conditions[i],
       })
     }
     const data = {
@@ -124,11 +153,21 @@ export const Fix: React.VFC = () => {
         <img src={location.state.image} alt="map" onClick={handleOnClick} />
       </div>
       <div>
-        {words.map((word: string, index: number) => (
+        {[...Array(words.length)].map((_, index: number) => (
           <EditAddedWord
             key={index}
-            word={word}
-            handleChange={(e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => handleChange(e, index)}
+            word={words[index]}
+            place={places[index]}
+            condition={conditions[index]}
+            handleWordChange={(e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) =>
+              handleWordChange(e, index)
+            }
+            handlePlaceChange={(e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) =>
+              handlePlaceChange(e, index)
+            }
+            handleConditionChange={(e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) =>
+              handleConditionChange(e, index)
+            }
             handleDelete={() => handleDelete(index)}
           />
         ))}
@@ -136,7 +175,11 @@ export const Fix: React.VFC = () => {
       <AddNewWordDialog
         open={open}
         newWord={newWord}
+        newPlace={newPlace}
+        newCondition={newCondition}
         setNewWord={setNewWord}
+        setNewPlace={setNewPlace}
+        setNewCondition={setNewCondition}
         handleClose={handleClose}
         handleClick={handleClick}
       />
