@@ -27,7 +27,7 @@ const Login: React.VFC = () => {
         <img src={logo} alt="palamo logo" className={styles.logo} />
         <h1>ログイン</h1>
         <div className={styles.divider} />
-        <h2>おかえりなさい。</h2>
+        <h2>おかえりなさい！</h2>
         <form className={styles.form}>
           <input type="text" name="name" placeholder="ユーザー名" onChange={(e) => setName(e.target.value)} required />
           <input
