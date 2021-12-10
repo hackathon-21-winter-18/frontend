@@ -39,7 +39,12 @@ const Home: React.VFC = () => {
       embededPins: [{number: 0, x: 0, y: 0, word: '', place: '', do: ''}],
     },
   ])
+
   const {user} = useContext(UserContext)
+
+  function DeletePalace(number: number) {
+    setPalaces(palaces.slice(0, number).concat(palaces.slice(number + 1)))
+  }
 
   useEffect(() => {
     axios.get('http://localhost:8080/api/oauth/whoamI', {withCredentials: true}).then((res) => {
@@ -60,8 +65,8 @@ const Home: React.VFC = () => {
       <ul className={styles.palaceContainer}>
         <CreateNewPalaceButton />
 
-        {palaces.map((palace) => (
-          <Palace key={palace.id} palace={palace} />
+        {palaces.map((palace, index) => (
+          <Palace key={palace.id} num={index} palace={palace} deletePalace={DeletePalace} />
         ))}
       </ul>
     </div>

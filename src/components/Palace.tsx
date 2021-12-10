@@ -8,10 +8,12 @@ import MoreVertIcon from '@mui/icons-material/MoreVert'
 import CommentIcon from '@mui/icons-material/Comment'
 
 interface PalaceProps {
+  num: number
   palace: PalaceType
+  deletePalace: (number: number) => void
 }
 
-const Palace: React.VFC<PalaceProps> = ({palace}) => {
+const Palace: React.VFC<PalaceProps> = ({num, palace, deletePalace}) => {
   const [isOpen, setIsOpen] = useState(false)
   const navigate = useNavigate()
   const customStyles: ReactModal.Styles = {
@@ -28,7 +30,8 @@ const Palace: React.VFC<PalaceProps> = ({palace}) => {
 
   function handleDelete() {
     //確認ダイアログ表示
-    axios.delete('http://localhost:8080/api/palace/' + palace.id, {withCredentials: true})
+    axios.delete('http://localhost:8080/api/palaces/' + palace.id, {withCredentials: true})
+    deletePalace(num)
   }
 
   return (
