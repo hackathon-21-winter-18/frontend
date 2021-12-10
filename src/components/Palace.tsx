@@ -33,7 +33,16 @@ const Palace: React.VFC<PalaceProps> = ({num, palace, deletePalace}) => {
     axios.delete('http://localhost:8080/api/palaces/' + palace.id, {withCredentials: true})
     deletePalace(num)
   }
-
+  function Extension() {
+    switch (palace.image.substring(0, 5)) {
+      case 'iVBOR':
+        return 'data:image/png;base64,' + palace.image
+      case 'R0IGO':
+        return 'data:image/gif;base64,' + palace.image
+      case '/9j/4':
+        return 'data:image/jpeg;base64,' + palace.image
+    }
+  }
   return (
     <div className={styles.palace}>
       {/* <Link to={'/memorize/' + palace.id} className={styles.image}>
@@ -41,7 +50,7 @@ const Palace: React.VFC<PalaceProps> = ({num, palace, deletePalace}) => {
       </Link> */}
       <img
         className={styles.image}
-        src={'data:image/png;base64,' + palace.image}
+        src={Extension()}
         alt={palace.name}
         onClick={() => navigate('/memorize/' + palace.id)}
       />
