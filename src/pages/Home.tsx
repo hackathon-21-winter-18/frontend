@@ -7,6 +7,8 @@ import palace2 from '../assets/バッキンガム宮殿.jpg'
 import axios from 'axios'
 import Sidebar from '../components/Sidebar'
 import CreateNewPalaceButton from '../components/CreateNewPalaceButton'
+import {useContext} from 'react'
+import {UserContext} from '../components/UserProvider'
 
 const mockPalaces: PalaceType[] = [
   {
@@ -14,8 +16,8 @@ const mockPalaces: PalaceType[] = [
     name: 'Versailles',
     image: palace1,
     embededPins: [
-      {number: 0, x: 0, y: 0, word: 'apple', memo: 'aaa'},
-      {number: 1, x: 1, y: 1, word: 'banana', memo: 'bbb'},
+      {number: 0, x: 0, y: 0, word: 'apple', place: 'aaa', do: 'aaa'},
+      {number: 1, x: 1, y: 1, word: 'banana', place: 'bbb', do: 'bbb'},
     ],
   },
   {
@@ -23,28 +25,49 @@ const mockPalaces: PalaceType[] = [
     name: 'Buckingham',
     image: palace2,
     embededPins: [
-      {number: 0, x: 0, y: 0, word: 'apple', memo: 'aaa'},
-      {number: 1, x: 1, y: 1, word: 'banana', memo: 'bbb'},
+      {number: 0, x: 0, y: 0, word: 'apple', place: 'aaa', do: 'aaa'},
+      {number: 1, x: 1, y: 1, word: 'banana', place: 'bbb', do: 'bbb'},
     ],
   },
 ]
 const Home: React.VFC = () => {
-  const [palaces, setPalaces] = useState(null)
+  const [palaces, setPalaces] = useState([
+    {
+      id: '',
+      name: '',
+      image: '',
+      embededPins: [{number: 0, x: 0, y: 0, word: '', place: '', do: ''}],
+    },
+  ])
 
-  /*
-	useEffect(() => {
-		axios.get("/palaces/me/"+userId).then((res) => setPalaces(res.data))
-	}, []) @
-*/
+  const {user} = useContext(UserContext)
+
+  function DeletePalace(number: number) {
+    setPalaces(palaces.slice(0, number).concat(palaces.slice(number + 1)))
+  }
+  useEffect(() => {
+    axios.get('http://localhost:8080/api/oauth/whoamI', {withCredentials: true}).then((res) => {
+      console.log(res.data)
+    })
+    axios
+      .get('http://localhost:8080/api/palaces/me', {withCredentials: true})
+      .then((res) => {
+        if (res.data.length !== 0) {
+          setPalaces(res.data)
+          console.log(res.data)
+        }
+      })
+      .catch((error) => console.log(error))
+  }, [])
+
   return (
     <div className={styles.home}>
       <Sidebar />
       <ul className={styles.palaceContainer}>
         <CreateNewPalaceButton />
 
-        {/* mockPalaces→palaces @ */}
-        {mockPalaces.map((palace) => (
-          <Palace key={palace.id} palace={palace} />
+        {palaces.map((palace, index) => (
+          <Palace key={palace.id} num={index} palace={palace} deletePalace={DeletePalace} />
         ))}
       </ul>
     </div>

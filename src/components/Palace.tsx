@@ -8,10 +8,12 @@ import MoreVertIcon from '@mui/icons-material/MoreVert'
 import CommentIcon from '@mui/icons-material/Comment'
 
 interface PalaceProps {
+  num: number
   palace: PalaceType
+  deletePalace: (number: number) => void
 }
 
-const Palace: React.VFC<PalaceProps> = ({palace}) => {
+const Palace: React.VFC<PalaceProps> = ({num, palace, deletePalace}) => {
   const [isOpen, setIsOpen] = useState(false)
   const navigate = useNavigate()
   const customStyles: ReactModal.Styles = {
@@ -28,9 +30,19 @@ const Palace: React.VFC<PalaceProps> = ({palace}) => {
 
   function handleDelete() {
     //確認ダイアログ表示
-    axios.delete('/palace/' + palace.id)
+    axios.delete('http://localhost:8080/api/palaces/' + palace.id, {withCredentials: true})
+    deletePalace(num)
   }
-
+  function Extension() {
+    switch (palace.image.substring(0, 5)) {
+      case 'iVBOR':
+        return 'data:image/png;base64,' + palace.image
+      case 'R0IGO':
+        return 'data:image/gif;base64,' + palace.image
+      case '/9j/4':
+        return 'data:image/jpeg;base64,' + palace.image
+    }
+  }
   return (
     <div className={styles.palace}>
       {/* <Link to={'/memorize/' + palace.id} className={styles.image}>
@@ -38,7 +50,7 @@ const Palace: React.VFC<PalaceProps> = ({palace}) => {
       </Link> */}
       <img
         className={styles.image}
-        src={palace.image}
+        src={Extension()}
         alt={palace.name}
         onClick={() => navigate('/memorize/' + palace.id)}
       />
@@ -53,7 +65,9 @@ const Palace: React.VFC<PalaceProps> = ({palace}) => {
         {palace.embededPins.length + ' Words'}
       </div>
       <ReactModal isOpen={isOpen} onRequestClose={() => setIsOpen(false)} style={customStyles}>
-        <Link to="/palaceEdit">宮殿の編集</Link>
+        <Link to={'fix/' + palace.id} state={{image: 'data:image/png;base64,' + palace.image}}>
+          宮殿の編集
+        </Link>
         <br />
         <button onClick={handleDelete}>宮殿の削除</button>
       </ReactModal>
