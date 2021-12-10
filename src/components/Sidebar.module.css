@@ -7,14 +7,14 @@
   flex-direction: column;
 }
 .buttonHere {
-  background-color: #313847;
-  color: white;
+  background-color: #f3f6fb;
+  color: #313847;
   font-weight: 700;
   font-size: 24px;
   font-family: 'Noto Sans JP';
 
   border-radius: 10px;
-  padding: 12px;
+  padding: 8px 12px;
   margin-bottom: 24px;
   display: flex;
   align-items: center;
@@ -24,15 +24,14 @@
   cursor: default;
 }
 .buttonNotHere {
-  background-color: #eef3ff;
-  color: #555d6d;
+  background-color: white;
+  color: #828894;
   font-weight: 500;
   font-size: 24px;
   font-family: 'Noto Sans JP';
 
-  border: 2px solid white;
   border-radius: 10px;
-  padding: 12px;
+  padding: 8px 12px;
   margin-bottom: 24px;
   display: flex;
   align-items: center;
@@ -41,8 +40,10 @@
   transition-duration: 0.2s;
 }
 .buttonNotHere:hover {
-  border: 2px solid #95a0b6;
+  background-color: #eef3ff;
+  color: #313847;
 }
+
 .buttonIcon {
   margin-right: 12px;
 }
