@@ -44,15 +44,12 @@ const Home: React.VFC = () => {
   useEffect(() => {
     axios.get('http://localhost:8080/api/oauth/whoamI', {withCredentials: true}).then((res) => {
       console.log(res.data)
-      console.log(res.data.id, res.data.name)
     })
-    console.log('b')
     axios
       .get('http://localhost:8080/api/palaces/me/' + user.id, {withCredentials: true})
       .then((res) => {
         setPalaces(res.data)
         console.log(res.data)
-        console.log('a')
       })
       .catch((error) => console.log(error))
   }, [])
