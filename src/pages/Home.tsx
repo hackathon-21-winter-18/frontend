@@ -64,9 +64,11 @@ const Home: React.VFC = () => {
       <ul className={styles.palaceContainer}>
         <CreateNewPalaceButton />
 
-        {palaces.map((palace, index) => (
-          <Palace key={palace.id} num={index} palace={palace} deletePalace={DeletePalace} />
-        ))}
+        {palaces.length !== 0
+          ? palaces.map((palace, index) => (
+              <Palace key={palace.id} num={index} palace={palace} deletePalace={DeletePalace} />
+            ))
+          : null}
       </ul>
     </div>
   )
