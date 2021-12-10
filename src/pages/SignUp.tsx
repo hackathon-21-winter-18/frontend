@@ -2,6 +2,7 @@ import React, {useContext, useState} from 'react'
 import {Link} from 'react-router-dom'
 import styles from './SignUp.module.css'
 import {UserContext} from '../components/UserProvider'
+import logo from '../assets/logo.svg'
 
 const SignUp: React.VFC = () => {
   const [name, setName] = useState('')
@@ -22,6 +23,7 @@ const SignUp: React.VFC = () => {
   return (
     <div className={styles.signupLayout}>
       <div className={styles.signup}>
+        <img src={logo} alt="palamo logo" className={styles.logo} />
         <h1>アカウント登録</h1>
         <div className={styles.divider} />
         <h2>
