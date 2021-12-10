@@ -28,7 +28,7 @@ const Palace: React.VFC<PalaceProps> = ({palace}) => {
 
   function handleDelete() {
     //確認ダイアログ表示
-    axios.delete('/palace/' + palace.id)
+    axios.delete('http://localhost:8080/api/palace/' + palace.id, {withCredentials: true})
   }
 
   return (

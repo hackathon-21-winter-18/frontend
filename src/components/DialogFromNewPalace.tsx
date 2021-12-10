@@ -1,7 +1,7 @@
 import * as React from 'react'
 import Dialog from '@mui/material/Dialog'
 import Button from '@mui/material/Button'
-import {Link} from 'react-router-dom'
+import {useNavigate} from 'react-router-dom'
 
 export interface FromNewPalaceDialogProps {
   open: boolean
@@ -25,7 +25,10 @@ function FromNewPalaceDialog(props: FromNewPalaceDialogProps) {
       reader.readAsDataURL(file)
     }
   }
-
+  let navigate = useNavigate()
+  function handleNavigate() {
+    navigate('/edit/' + previewImg.substr(27, 100), {replace: true, state: {image: previewImg}})
+  }
   return (
     <Dialog open={open} onClose={handleClose}>
       <div>
@@ -52,9 +55,7 @@ function FromNewPalaceDialog(props: FromNewPalaceDialogProps) {
             <img src={previewImg} alt="previewImage" id="id" />
           </div>
           <div>
-            <Link to={'edit/' + previewImg.substr(27, 1000)} state={{image: previewImg}}>
-              <Button>次に進む</Button>
-            </Link>
+            <button onClick={handleNavigate}>次に進む</button>
           </div>
         </div>
       )}

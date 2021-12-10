@@ -23,7 +23,7 @@ const Template: React.VFC<TemplateProps> = ({template}) => {
   }
   function handleDelete() {
     //確認ダイアログ表示
-    axios.delete('/templates' + template.id)
+    axios.delete('http://localhost:8080/api/templates/' + template.id, {withCredentials: true})
   }
   return (
     <div>
