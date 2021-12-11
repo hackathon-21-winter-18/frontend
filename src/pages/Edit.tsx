@@ -22,6 +22,9 @@ export const Edit: React.VFC = () => {
   const [name, setName] = React.useState('')
   const {user} = React.useContext(UserContext)
   const [isOpen, setIsOpen] = React.useState(false)
+  const [shareOption, setShareOptin] = React.useState(false)
+  const [templateOption, setTemplateOption] = React.useState(false)
+  const [palaceId, setPalaceId] = React.useState('')
 
   const handleOnClick = (e: React.MouseEvent<HTMLImageElement>) => {
     setNewCoodinate([e.pageX, e.pageY])
@@ -102,10 +105,19 @@ export const Edit: React.VFC = () => {
         .post('http://localhost:8080/api/palaces/me', data, {withCredentials: true})
         .then((res) => {
           console.log(res.status)
+          //setPalaceId(res.data.id)
         })
         .catch((error) => {
           console.log(error)
         })
+      if (shareOption) {
+        axios
+          .put('http://localhost:8080/api/palaces/share' + palaceId, shareOption, {withCredentials: true})
+          .then((res) => console.log(res.status))
+          .catch((error) => {
+            console.log(error)
+          })
+      }
     } else {
       setIsOpen(true)
     }
@@ -151,6 +163,16 @@ export const Edit: React.VFC = () => {
         handleClick={handleClick}
       />
       <input type="text" value={name} placeholder="宮殿の名前" onChange={handleNameChange} />
+      <div>
+        <div>
+          <input type="checkbox" onClick={() => setShareOptin(!shareOption)} />
+          <label>共有</label>
+        </div>
+        <div>
+          <input type="checkbox" onClick={() => setTemplateOption(!templateOption)} />
+          <label>テンプレートとして保存</label>
+        </div>
+      </div>
       <button onClick={handleComplete}>完成!</button>
       <Dialog open={isOpen} onClose={() => setIsOpen(false)}>
         <span>単語もしくは宮殿の名前が登録されていません。</span>

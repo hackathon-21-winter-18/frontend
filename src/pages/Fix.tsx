@@ -23,6 +23,9 @@ export const Fix: React.VFC = () => {
   const [name, setName] = React.useState('')
   const {user} = React.useContext(UserContext)
   const [isOpen, setIsOpen] = React.useState(false)
+  const [shareOption, setShareOptin] = React.useState(false)
+  const [templateOption, setTemplateOption] = React.useState(false)
+  const [palaceId, setPalaceId] = React.useState('')
 
   const [palace, setPalace] = React.useState<PalaceType>({
     id: '',
@@ -186,6 +189,16 @@ export const Fix: React.VFC = () => {
         handleClick={handleClick}
       />
       <input type="text" value={name} placeholder="神殿の名前" onChange={handleNameChange} />
+      <div>
+        <div>
+          <input type="checkbox" onClick={() => setShareOptin(!shareOption)} />
+          <label>共有</label>
+        </div>
+        <div>
+          <input type="checkbox" onClick={() => setTemplateOption(!templateOption)} />
+          <label>テンプレートとして保存</label>
+        </div>
+      </div>
       <button onClick={handleComplete}>完成!</button>
       <Dialog open={isOpen} onClose={() => setIsOpen(false)}>
         <span>単語もしくは宮殿の名前が登録されていません。</span>
