@@ -2,7 +2,6 @@ import * as React from 'react'
 import styles from './Edit.module.css'
 import {useParams, useLocation} from 'react-router'
 import {AddNewWordDialog} from '../components/AddNewWordDialog'
-import axios from 'axios'
 import useAuth from '../components/UserProvider'
 import {useMousePosition} from '../hooks/useMousePosition'
 import {CustomCursor} from '../components/CustomCursor'
@@ -33,24 +32,19 @@ export const Edit: React.VFC<EditProps> = ({imageUrl, isPlayground = false}) => 
 
   const handleComplete = () => {
     if (pins.length > 0 && !isPlayground) {
-      const data = {
-        name: palaceName,
-        image: location.state.image.substr(22),
-        embededPins: pins,
-        createdBy: user.id,
-      }
+      let data
       if (location.state.image.substr(0, 23) === 'data:image/jpeg;base64,') {
         data = {
-          name: name,
+          name: palaceName,
           image: location.state.image.substr(23),
-          embededPins: embededPins,
+          embededPins: pins,
           createdBy: user.id,
         }
       } else {
         data = {
-          name: name,
+          name: palaceName,
           image: location.state.image.substr(22),
-          embededPins: embededPins,
+          embededPins: pins,
           createdBy: user.id,
         }
       }
@@ -59,11 +53,7 @@ export const Edit: React.VFC<EditProps> = ({imageUrl, isPlayground = false}) => 
     }
   }
   React.useEffect(() => {
-    setWords([])
-    setPlaces([])
-    setConditions([])
-    setCoodinates([])
-    setName('')
+    setPins([])
   }, [useLocation()])
 
   const handleClickAway = () => {
