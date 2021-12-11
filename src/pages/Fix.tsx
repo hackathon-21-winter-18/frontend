@@ -24,14 +24,13 @@ export const Fix: React.VFC = () => {
   const {user} = React.useContext(UserContext)
   const [isOpen, setIsOpen] = React.useState(false)
   const [shareOption, setShareOptin] = React.useState(false)
-  const [templateOption, setTemplateOption] = React.useState(false)
-  const [palaceId, setPalaceId] = React.useState('')
 
   const [palace, setPalace] = React.useState<PalaceType>({
     id: '',
     name: '',
     image: '',
     embededPins: [{number: 0, x: 0, y: 0, word: '', place: '', do: ''}],
+    share: false,
   })
   const params = useParams()
 
@@ -140,6 +139,18 @@ export const Fix: React.VFC = () => {
         .put('http://localhost:8080/api/palaces/' + palace.id, data, {withCredentials: true})
         .then((res) => {
           console.log(res.status)
+          if (shareOption) {
+            axios
+              .put(
+                'http://localhost:8080/api/palaces/share/' + palace.id,
+                {share: shareOption},
+                {withCredentials: true}
+              )
+              .then((res) => console.log(res.status))
+              .catch((error) => {
+                console.log(error)
+              })
+          }
         })
         .catch((error) => {
           console.log(error)
@@ -190,14 +201,10 @@ export const Fix: React.VFC = () => {
       />
       <input type="text" value={name} placeholder="神殿の名前" onChange={handleNameChange} />
       <div>
-        <div>
-          <input type="checkbox" onClick={() => setShareOptin(!shareOption)} />
-          <label>共有</label>
-        </div>
-        <div>
-          <input type="checkbox" onClick={() => setTemplateOption(!templateOption)} />
-          <label>テンプレートとして保存</label>
-        </div>
+        <label>
+          <input type="checkbox" onClick={() => setShareOptin(!shareOption)} id="sharedCheckBox" />
+          共有
+        </label>
       </div>
       <button onClick={handleComplete}>完成!</button>
       <Dialog open={isOpen} onClose={() => setIsOpen(false)}>

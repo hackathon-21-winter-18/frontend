@@ -27,8 +27,10 @@ export const EditFromTemplate: React.VFC = () => {
     name: '',
     image: '',
     pins: [{number: 0, x: 0, y: 0}],
+    share: false,
   })
   const [isOpen, setIsOpen] = React.useState(false)
+  const [shareOption, setShareOptin] = React.useState(false)
 
   const handleOnClick = (e: React.MouseEvent<HTMLImageElement>) => {
     setNewCoodinate([e.pageX, e.pageY])
@@ -107,7 +109,15 @@ export const EditFromTemplate: React.VFC = () => {
         .post('http://localhost:8080/api/palaces/me', data, {withCredentials: true})
         .then((res) => {
           console.log(res.status)
-          console.log(res.data)
+          const palaceId = res.data.id
+          if (shareOption) {
+            axios
+              .put('http://localhost:8080/api/palaces/share/' + palaceId, {share: shareOption}, {withCredentials: true})
+              .then((res) => console.log(res.status))
+              .catch((error) => {
+                console.log(error)
+              })
+          }
         })
         .catch((error) => {
           console.log(error)
@@ -182,6 +192,12 @@ export const EditFromTemplate: React.VFC = () => {
         handleClick={handleClick}
       />
       <input type="text" value={name} placeholder="宮殿の名前" onChange={handleNameChange} />
+      <div>
+        <label>
+          <input type="checkbox" onClick={() => setShareOptin(!shareOption)} id="sharedCheckBox" />
+          共有
+        </label>
+      </div>
       <button onClick={handleComplete}>完成!</button>
       <button onClick={() => console.log(words)}>ボタン</button>
       <Dialog open={isOpen} onClose={() => setIsOpen(false)}>

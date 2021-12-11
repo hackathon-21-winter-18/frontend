@@ -25,7 +25,6 @@ export const Edit: React.VFC = () => {
   const [isOpen, setIsOpen] = React.useState(false)
   const [shareOption, setShareOptin] = React.useState(false)
   const [templateOption, setTemplateOption] = React.useState(false)
-  const [palaceId, setPalaceId] = React.useState('')
 
   const handleOnClick = (e: React.MouseEvent<HTMLImageElement>) => {
     setNewCoodinate([e.pageX, e.pageY])
@@ -101,46 +100,45 @@ export const Edit: React.VFC = () => {
         embededPins: embededPins,
         createdBy: user.id,
       }
-      /*
-      let pins = new Array<Pins>()
-      for (let i = 0; i < coodinates.length; i++) {
-        pins.push({
-          number: i,
-          x: coodinates[i][0],
-          y: coodinates[i][1],
-        })
-      }
-      const data2 = {
-        name: name,
-        image: location.state.image.substring(22),
-        pins: pins,
-        createdBy: user.id,
-      }
-      */
+
       console.log(data)
       axios
         .post('http://localhost:8080/api/palaces/me', data, {withCredentials: true})
         .then((res) => {
           console.log(res.status)
-          //setPalaceId(res.data.id)
+          const palaceId = res.data.id
+          if (shareOption) {
+            axios
+              .put('http://localhost:8080/api/palaces/share/' + palaceId, {share: shareOption}, {withCredentials: true})
+              .then((res) => console.log(res.status))
+              .catch((error) => {
+                console.log(error)
+              })
+          }
         })
         .catch((error) => {
           console.log(error)
         })
-      /*
-      axios
-        .post('http://localhost:8080/api/templates/me', data2, {withCredentials: true})
-        .then((res) => {
-          console.log(res.status)
-        })
-        .catch((error) => {
-          console.log(error)
-        })
-      */
-      if (shareOption) {
+      if (templateOption) {
+        let pins = new Array<Pins>()
+        for (let i = 0; i < coodinates.length; i++) {
+          pins.push({
+            number: i,
+            x: coodinates[i][0],
+            y: coodinates[i][1],
+          })
+        }
+        const data2 = {
+          name: name,
+          image: location.state.image.substring(22),
+          pins: pins,
+          createdBy: user.id,
+        }
         axios
-          .put('http://localhost:8080/api/palaces/share' + palaceId, shareOption, {withCredentials: true})
-          .then((res) => console.log(res.status))
+          .post('http://localhost:8080/api/templates/me', data2, {withCredentials: true})
+          .then((res) => {
+            console.log(res.status)
+          })
           .catch((error) => {
             console.log(error)
           })
@@ -192,12 +190,16 @@ export const Edit: React.VFC = () => {
       <input type="text" value={name} placeholder="宮殿の名前" onChange={handleNameChange} />
       <div>
         <div>
-          <input type="checkbox" onClick={() => setShareOptin(!shareOption)} />
-          <label>共有</label>
+          <label>
+            <input type="checkbox" onClick={() => setShareOptin(!shareOption)} id="sharedCheckBox" />
+            共有
+          </label>
         </div>
         <div>
-          <input type="checkbox" onClick={() => setTemplateOption(!templateOption)} />
-          <label>テンプレートとして保存</label>
+          <label>
+            <input type="checkbox" onClick={() => setTemplateOption(!templateOption)} />
+            テンプレートとして保存
+          </label>
         </div>
       </div>
       <button onClick={handleComplete}>完成!</button>

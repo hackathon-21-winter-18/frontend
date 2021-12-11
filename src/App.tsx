@@ -14,6 +14,8 @@ import AuthenticatedRoute from './components/AuthenticatedRoute'
 import SignUp from './pages/SignUp'
 import {EditFromTemplate} from './pages/EditFromTemplate'
 import {FixTemplate} from './pages/FixTemplate'
+import SharedPalaces from './pages/SharedPalaces'
+import SharedTemplates from './pages/SharedTemplates'
 
 function App() {
   return (
@@ -33,6 +35,8 @@ function App() {
                 <Route path="/template" element={<TemplatePage />} />
                 <Route path="/editTemplate/:base64/*" element={<EditTemplate />} />
                 <Route path="/fromTemplate/:id" element={<EditFromTemplate />} />
+                <Route path="/sharedPalaces" element={<SharedPalaces />} />
+                <Route path="/sharedTemplates" element={<SharedTemplates />} />
                 <Route path="/*" element={<NotFound />} />
               </Route>
             </Route>

@@ -16,9 +16,11 @@ export const FixTemplate: React.VFC = () => {
     name: '',
     image: '',
     pins: [{number: 0, x: 0, y: 0}],
+    share: false,
   })
   const params = useParams()
   const [isOpen, setIsOpen] = React.useState(false)
+  const [shareOption, setShareOptin] = React.useState(false)
 
   const handleOnClick = (e: React.MouseEvent<HTMLImageElement>) => {
     setCoodinates(coodinates.concat([[e.pageX, e.pageY]]))
@@ -71,6 +73,18 @@ export const FixTemplate: React.VFC = () => {
         .put('http://localhost:8080/api/templates/' + template.id, data, {withCredentials: true})
         .then((res) => {
           console.log(res.status)
+          if (shareOption) {
+            axios
+              .put(
+                'http://localhost:8080/api/templates/share/' + template.id,
+                {share: shareOption},
+                {withCredentials: true}
+              )
+              .then((res) => console.log(res.status))
+              .catch((error) => {
+                console.log(error)
+              })
+          }
         })
         .catch((error) => {
           console.log(error)
@@ -94,6 +108,12 @@ export const FixTemplate: React.VFC = () => {
       </div>
       <ol>{listItems}</ol>
       <input type="text" value={name} placeholder="テンプレートの名前" onChange={handleNameChange} />
+      <div>
+        <label>
+          <input type="checkbox" onClick={() => setShareOptin(!shareOption)} id="sharedCheckBox" />
+          共有
+        </label>
+      </div>
       <button onClick={handleComplete}>完成!</button>
       <Dialog open={isOpen} onClose={() => setIsOpen(false)}>
         <span>ピンもしくはテンプレートの名前が登録されていません。</span>

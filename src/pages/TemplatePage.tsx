@@ -10,21 +10,6 @@ import {UserContext} from '../components/UserProvider'
 import Sidebar from '../components/Sidebar'
 import CreateNewTemplateButton from '../components/CreateNewTemplateButton'
 
-const mockTemplates: TemplateType[] = [
-  {
-    id: '0',
-    name: 'Versailles',
-    image: palace1,
-    pins: [{number: 0, x: 0, y: 0}],
-  },
-  {
-    id: '1',
-    name: 'Buckingham',
-    image: palace2,
-    pins: [{number: 0, x: 1, y: 1}],
-  },
-]
-
 const TemplatePage: React.VFC = () => {
   const [templates, setTemplates] = useState([
     {
@@ -32,6 +17,7 @@ const TemplatePage: React.VFC = () => {
       name: '',
       image: '',
       pins: [{number: 0, x: 0, y: 0}],
+      share: false,
     },
   ])
   const {user} = useContext(UserContext)

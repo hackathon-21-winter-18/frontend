@@ -32,6 +32,8 @@ const Sidebar: React.VFC = () => {
         <BalconyIcon className={styles.buttonIcon} />
         My Template
       </Link>
+      <Link to="/sharedPalaces">SharedPalace</Link>
+      <Link to="/sharedTemplates">SharedTemplates</Link>
       <button className={styles.userSetting} onClick={handleClick}>
         <PersonPinIcon className={styles.userIcon} />
         {user.name}

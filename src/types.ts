@@ -13,6 +13,7 @@ export type PalaceType = {
   name: string
   image: string
   embededPins: EmbededPins[]
+  share: boolean
 }
 //TemplateType
 export type Pins = {
@@ -26,7 +27,27 @@ export type TemplateType = {
   name: string
   image: string
   pins: Pins[]
+  share: boolean
 }
+//SharedPalaceType
+export type SharedPalaceType = {
+  id: string
+  name: string
+  image: string
+  embededPins: EmbededPins[]
+  savedCount: number
+  createrName: string
+}
+//SharedTemplateType
+export type SharedTemplateType = {
+  id: string
+  name: string
+  image: string
+  pins: Pins[]
+  savedCount: number
+  createrName: string
+}
+//login周り
 export type UserRegistration = {
   name: string
   password: string

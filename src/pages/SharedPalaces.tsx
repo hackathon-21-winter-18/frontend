@@ -1,42 +1,33 @@
 import {useEffect, useState} from 'react'
 import styles from './Home.module.css'
-import Palace from '../components/Palace'
-import {PalaceType} from '../types'
-import palace1 from '../assets/ヴェルサイユ宮殿.jpg'
-import palace2 from '../assets/バッキンガム宮殿.jpg'
+import SharedPalace from '../components/SharedPalace'
 import axios from 'axios'
 import Sidebar from '../components/Sidebar'
-import CreateNewPalaceButton from '../components/CreateNewPalaceButton'
 import {useContext} from 'react'
 import {UserContext} from '../components/UserProvider'
 
-const Home: React.VFC = () => {
+const SharedPalaces: React.VFC = () => {
   const [palaces, setPalaces] = useState([
     {
       id: '',
       name: '',
       image: '',
       embededPins: [{number: 0, x: 0, y: 0, word: '', place: '', do: ''}],
-      share: false,
+      savedCount: 0,
+      createrName: '',
     },
   ])
 
   const {user} = useContext(UserContext)
   const listItems = palaces.map((palace, index) => (
     <li key={palace.id}>
-      <Palace num={index} palace={palace} deletePalace={DeletePalace} />
+      <SharedPalace palace={palace} />
     </li>
   ))
 
-  function DeletePalace(number: number) {
-    setPalaces(palaces.slice(0, number).concat(palaces.slice(number + 1)))
-  }
   useEffect(() => {
-    axios.get('http://localhost:8080/api/oauth/whoamI', {withCredentials: true}).then((res) => {
-      console.log(res.data)
-    })
     axios
-      .get('http://localhost:8080/api/palaces/me', {withCredentials: true})
+      .get('http://localhost:8080/api/palaces', {withCredentials: true})
       .then((res) => {
         if (res.data.length !== 0) {
           setPalaces(res.data)
@@ -49,13 +40,9 @@ const Home: React.VFC = () => {
   return (
     <div className={styles.home}>
       <Sidebar />
-      <ul className={styles.palaceContainer}>
-        <CreateNewPalaceButton />
-
-        {listItems}
-      </ul>
+      <ul>{listItems}</ul>
     </div>
   )
 }
 
-export default Home
+export default SharedPalaces

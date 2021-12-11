@@ -17,14 +17,29 @@ interface TemplateProps {
 const Template: React.VFC<TemplateProps> = ({num, template, deleteTemplate}) => {
   const [isOpen, setIsOpen] = useState(false)
   const [deleteIsOpen, setDeleteIsOpen] = useState(false)
+  const [shareIsOpen, setShareIsOpen] = useState(false)
+  const [share, setShare] = useState(template.share)
   const navigate = useNavigate()
 
   function handleDeleteDialog() {
     setDeleteIsOpen(true)
   }
+  function handleShareDialog() {
+    setShareIsOpen(true)
+  }
   function handleDelete() {
-    axios.delete('http://localhost:8080/api/templates/' + template.id, {withCredentials: true})
+    axios.delete('http://localhost:8080/api/templates/share/' + template.id, {withCredentials: true})
     deleteTemplate(num)
+  }
+  function handleShare() {
+    axios.put(
+      'http://localhost:8080/api/templates/share/' + template.id,
+      {share: !template.share},
+      {withCredentials: true}
+    )
+    setShare(!share)
+    setShareIsOpen(false)
+    setIsOpen(false)
   }
   function Extension() {
     switch (template.image.substring(0, 5)) {
@@ -69,6 +84,12 @@ const Template: React.VFC<TemplateProps> = ({num, template, deleteTemplate}) => 
           本当にテンプレートを削除しますか？
           <button onClick={handleDelete}>はい</button>
           <button onClick={() => setDeleteIsOpen(false)}>いいえ</button>
+        </Dialog>
+        <button onClick={handleShareDialog}>テンプレートの共有設定</button>
+        <Dialog open={shareIsOpen} onClose={() => setShareIsOpen(false)}>
+          {share ? 'テンプレートを未共有にしますか？' : 'テンプレートを共有しますか？'}
+          <button onClick={handleShare}>はい</button>
+          <button onClick={() => setShareIsOpen(false)}>いいえ</button>
         </Dialog>
       </Dialog>
     </div>
