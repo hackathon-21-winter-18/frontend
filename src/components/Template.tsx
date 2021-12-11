@@ -63,7 +63,7 @@ const Template: React.VFC<TemplateProps> = ({num, template, deleteTemplate}) => 
         className={styles.image}
         src={Extension()}
         alt={template.name}
-        onClick={() => navigate('/fromTemplate/' + template.id, {state: {image: Extension()}})}
+        onClick={() => navigate('/fromTemplate/' + template.id, {state: {image: Extension(), shared: true}})}
       />
       <div className={styles.titleContainer}>
         <h1 className={styles.title}>{template.name}</h1>

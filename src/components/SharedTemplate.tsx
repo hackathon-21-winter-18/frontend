@@ -50,7 +50,7 @@ const SharedTemplate: React.VFC<TemplateProps> = ({template}) => {
         className={styles.image}
         src={Extension()}
         alt={template.name}
-        onClick={() => navigate('/memorize/' + template.id)}
+        onClick={() => navigate('/memorize/' + template.id, {state: {shared: true}})}
       />
       {/*stateによって変える*/}
       <div className={styles.titleContainer}>

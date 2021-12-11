@@ -58,7 +58,7 @@ const Palace: React.VFC<PalaceProps> = ({num, palace, deletePalace}) => {
         className={styles.image}
         src={Extension()}
         alt={palace.name}
-        onClick={() => navigate('/memorize/' + palace.id)}
+        onClick={() => navigate('/memorize/' + palace.id, {state: {shared: false}})}
       />
       <div className={styles.titleContainer}>
         <h1 className={styles.title}>{palace.name}</h1>

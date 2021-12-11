@@ -50,7 +50,7 @@ const SharedPalace: React.VFC<PalaceProps> = ({palace}) => {
         className={styles.image}
         src={Extension()}
         alt={palace.name}
-        onClick={() => navigate('/memorize/' + palace.id)}
+        onClick={() => navigate('/memorize/' + palace.id, {state: {shared: true}})}
       />
       {/*stateによって変える*/}
       <div className={styles.titleContainer}>

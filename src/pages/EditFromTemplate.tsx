@@ -127,29 +127,55 @@ export const EditFromTemplate: React.VFC = () => {
     }
   }
   React.useEffect(() => {
-    axios.get('http://localhost:8080/api/templates/me', {withCredentials: true}).then((res) => {
-      const data = res.data
-      let name2 = name
-      let coodinates2 = coodinates
-      let array = []
-      for (let i = 0; i < data.length; i++) {
-        if (data[i].id === params.id) {
-          setTemplate(data[i])
-          array = Array(data[i].pins.length)
-          for (let j = 0; j < data[i].pins.length; j++) {
-            name2 = data[i].name
-            coodinates2 = coodinates2.concat([[data[i].pins[j].x, data[i].pins[j].y]])
+    if (location.state.shared) {
+      axios.get('http://localhost:8080/api/templates', {withCredentials: true}).then((res) => {
+        const data = res.data
+        let name2 = name
+        let coodinates2 = coodinates
+        let array = []
+        for (let i = 0; i < data.length; i++) {
+          if (data[i].id === params.id) {
+            setTemplate(data[i])
+            array = Array(data[i].pins.length)
+            for (let j = 0; j < data[i].pins.length; j++) {
+              name2 = data[i].name
+              coodinates2 = coodinates2.concat([[data[i].pins[j].x, data[i].pins[j].y]])
+            }
           }
         }
-      }
-      setName(name2)
-      setCoodinates(coodinates2)
-      array = array.fill('')
-      setWords(array)
-      setPlaces(array)
-      setConditions(array)
-      console.log('set!')
-    })
+        setName(name2)
+        setCoodinates(coodinates2)
+        array = array.fill('')
+        setWords(array)
+        setPlaces(array)
+        setConditions(array)
+        console.log('set!')
+      })
+    } else {
+      axios.get('http://localhost:8080/api/templates/me', {withCredentials: true}).then((res) => {
+        const data = res.data
+        let name2 = name
+        let coodinates2 = coodinates
+        let array = []
+        for (let i = 0; i < data.length; i++) {
+          if (data[i].id === params.id) {
+            setTemplate(data[i])
+            array = Array(data[i].pins.length)
+            for (let j = 0; j < data[i].pins.length; j++) {
+              name2 = data[i].name
+              coodinates2 = coodinates2.concat([[data[i].pins[j].x, data[i].pins[j].y]])
+            }
+          }
+        }
+        setName(name2)
+        setCoodinates(coodinates2)
+        array = array.fill('')
+        setWords(array)
+        setPlaces(array)
+        setConditions(array)
+        console.log('set!')
+      })
+    }
   }, [])
 
   return (

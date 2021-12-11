@@ -1,11 +1,9 @@
 import {useState, useEffect, useContext} from 'react'
-import {useParams} from 'react-router'
+import {useParams, useLocation} from 'react-router'
 import {Link} from 'react-router-dom'
 import styles from 'Memorize.module.css'
 import Word from '../components/Word'
 import {PalaceType} from '../types'
-import palace1 from '../assets/ヴェルサイユ宮殿.jpg'
-import palace2 from '../assets/バッキンガム宮殿.jpg'
 import axios from 'axios'
 import PushPinIcon from '@mui/icons-material/PushPin'
 import {UserContext} from '../components/UserProvider'
@@ -23,6 +21,7 @@ const Memorize: React.VFC = () => {
   const params = useParams()
   const {user} = useContext(UserContext)
   const [isOpen, setIsOpen] = useState(false)
+  let location = useLocation()
 
   const listItems = palace.embededPins.map((pin: any) => (
     <li key={pin.number}>
@@ -50,14 +49,25 @@ const Memorize: React.VFC = () => {
     setIsOpen(true)
   }
   useEffect(() => {
-    axios.get('http://localhost:8080/api/palaces/me', {withCredentials: true}).then((res) => {
-      const data = res.data
-      for (let i = 0; i < data.length; i++) {
-        if (data[i].id === params.id) {
-          setPalace(data[i])
+    if (location.state.shared) {
+      axios.get('http://localhost:8080/api/palaces', {withCredentials: true}).then((res) => {
+        const data = res.data
+        for (let i = 0; i < data.length; i++) {
+          if (data[i].id === params.id) {
+            setPalace(data[i])
+          }
         }
-      }
-    })
+      })
+    } else {
+      axios.get('http://localhost:8080/api/palaces/me', {withCredentials: true}).then((res) => {
+        const data = res.data
+        for (let i = 0; i < data.length; i++) {
+          if (data[i].id === params.id) {
+            setPalace(data[i])
+          }
+        }
+      })
+    }
   }, [])
   return (
     <div>
