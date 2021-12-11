@@ -33,6 +33,7 @@ export const Edit: React.VFC<EditProps> = ({imageUrl}) => {
   const [templateOption, setTemplateOption] = React.useState(false)
   const [palaceId, setPalaceId] = React.useState('')
   const [completeIsOpen, setCompleteIsOpen] = React.useState(false)
+  const [flags, setFlags] = React.useState(new Array<boolean>())
 
   const handleOnClick = (e: React.MouseEvent<HTMLImageElement>) => {
     setNewCoodinate([e.pageX, e.pageY])
@@ -46,6 +47,11 @@ export const Edit: React.VFC<EditProps> = ({imageUrl}) => {
   }
   const handleClick = () => {
     setWords([...words, newWord])
+    if (newWord !== '') {
+      setFlags(flags.concat([true]))
+    } else {
+      setFlags(flags.concat([false]))
+    }
     setPlaces([...places, newPlace])
     setConditions([...conditions, newCondition])
     setCoodinates([...coodinates, newCoodinate])
@@ -60,6 +66,11 @@ export const Edit: React.VFC<EditProps> = ({imageUrl}) => {
     const _words = words.slice()
     _words[index] = e.target.value
     setWords([..._words])
+    if (_words[index] !== '') {
+      setFlags(flags.map((flag, i) => (i === index ? true : flag)))
+    } else {
+      setFlags(flags.map((flag, i) => (i === index ? false : flag)))
+    }
   }
   const handlePlaceChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>, index: number) => {
     const _places = places.slice()
@@ -90,7 +101,7 @@ export const Edit: React.VFC<EditProps> = ({imageUrl}) => {
   }
 
   function handleComplete() {
-    if (coodinates.length > 0 && name !== '') {
+    if (coodinates.length > 0 && name !== '' && flags.every((value) => value)) {
       const embededPins = []
       for (let i = 0; i < coodinates.length; i++) {
         embededPins.push({
