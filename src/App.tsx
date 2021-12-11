@@ -16,6 +16,8 @@ import {EditFromTemplate} from './pages/EditFromTemplate'
 import {FixTemplate} from './pages/FixTemplate'
 import SharedPalaces from './pages/SharedPalaces'
 import SharedTemplates from './pages/SharedTemplates'
+import SideLayout from './components/SideLayout'
+import Playground from './pages/Playground'
 
 function App() {
   return (
@@ -27,7 +29,11 @@ function App() {
               <Route path="/login" element={<Login />} />
               <Route path="/signup" element={<SignUp />} />
               <Route element={<AuthenticatedRoute />}>
-                <Route path="/" element={<Home />} />
+                <Route element={<SideLayout />}>
+                  <Route path="/" element={<Home />} />
+                  <Route path="/template" element={<TemplatePage />} />
+                  <Route path="/playground" element={<Playground />} />
+                </Route>
                 <Route path="/memorize/:id" element={<Memorize />} />
                 <Route path="/edit/:base64/*" element={<Edit />} />
                 <Route path="/fix/:id" element={<Fix />} />

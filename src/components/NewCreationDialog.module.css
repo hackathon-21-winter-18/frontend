@@ -1,0 +1,117 @@
+.dialog {
+  padding: 32px;
+  width: 700px;
+  min-height: 350px;
+}
+.dialog > h1 {
+  margin-bottom: 8px;
+  font-size: 24px;
+  font-weight: 700;
+  font-family: 'Noto sans jp';
+  color: #313847;
+}
+.dialog > h1 > span {
+  color: #c6d0e5;
+  font-size: 0.9em;
+  font-weight: 500;
+  cursor: pointer;
+}
+
+.dialog > p {
+  margin-top: 16px;
+
+  font-size: 14px;
+  font-weight: 400;
+  font-family: 'noto sans jp';
+  color: #7a8498;
+}
+.divider {
+  width: 100%;
+  border-top: 1px solid #c6d0e5;
+}
+.container {
+  margin-top: 32px;
+  display: grid;
+  grid-template-columns: 5fr 7fr;
+  grid-column-gap: 24px;
+}
+.buttonContainer {
+  display: flex;
+  flex-direction: column;
+}
+.buttonContainer > button {
+  padding: 8px;
+  margin-bottom: 12px;
+  font-size: 14px;
+  font-weight: 500;
+  font-family: 'Noto Sans JP';
+  color: #555d6d;
+
+  border: 2px solid white;
+  border-radius: 8px;
+
+  background-color: #eef3ff;
+  cursor: pointer;
+  transition-duration: 0.2s;
+}
+.buttonContainer > button:hover {
+  background-color: #eef3ff;
+  color: #555d6d;
+  border: 2px solid #95a0b6;
+}
+.buttonContainer > button:first-child {
+}
+.container > img {
+  aspect-ratio: 16/9;
+  background-color: #eef3ff;
+}
+.uploadContainer {
+  margin-top: 32px;
+}
+.uploadButton {
+  padding: 8px;
+  margin-bottom: 12px;
+  font-size: 14px;
+  font-weight: 500;
+  font-family: 'Noto Sans JP';
+  color: #555d6d;
+
+  border: 2px solid white;
+  border-radius: 8px;
+
+  background-color: #eef3ff;
+  cursor: pointer;
+  transition-duration: 0.2s;
+}
+.uploadButton:hover {
+  background-color: #eef3ff;
+  color: #555d6d;
+  border: 2px solid #95a0b6;
+}
+.imageList {
+  padding: 8px;
+  border: 1px solid #c6d0e5;
+  border-radius: 8px;
+
+  display: flex;
+  align-items: center;
+  column-gap: 16px;
+
+  height: 48px;
+}
+.imageList > *:last-child {
+  margin-left: auto;
+}
+.imageList > img {
+  height: 100%;
+  object-fit: contain;
+}
+.createButton {
+  padding: 8px 24px;
+  background-color: #313847;
+  color: white;
+  font-weight: 700;
+  border: 1px solid white;
+  border-radius: 8px;
+  cursor: pointer;
+}

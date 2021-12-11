@@ -1,12 +1,10 @@
-import {useEffect, useState, useContext} from 'react'
 import styles from './TemplatePage.module.css'
-import Header from '../components/Header'
+import {useEffect, useState} from 'react'
 import Template from '../components/Template'
 import {TemplateType} from '../types'
 import axios from 'axios'
-import {UserContext} from '../components/UserProvider'
-import Sidebar from '../components/Sidebar'
 import CreateNewTemplateButton from '../components/CreateNewTemplateButton'
+import useAuth from '../components/UserProvider'
 
 const TemplatePage: React.VFC = () => {
   const [templates, setTemplates] = useState([
@@ -18,7 +16,7 @@ const TemplatePage: React.VFC = () => {
       share: false,
     },
   ])
-  const {user} = useContext(UserContext)
+  const {user} = useAuth()
   const listItems = templates.map((template, index) => (
     <li key={template.id}>
       <Template num={index} template={template} deleteTemplate={DeleteTemplate} />
@@ -38,7 +36,6 @@ const TemplatePage: React.VFC = () => {
 
   return (
     <div className={styles.templatePage}>
-      <Sidebar />
       <ul className={styles.templateContainer}>
         <CreateNewTemplateButton />
 

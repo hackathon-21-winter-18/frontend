@@ -1,14 +1,20 @@
 import * as React from 'react'
+import styles from './Edit.module.css'
 import {useParams, useLocation} from 'react-router'
+import {Link} from 'react-router-dom'
 import AddNewWordDialog from '../components/AddNewWordDialog'
 import {EditAddedWord} from '../components/EditAddedWord'
 import PushPinIcon from '@mui/icons-material/PushPin'
 import axios from 'axios'
-import {UserContext} from '../components/UserProvider'
 import {Pins} from '../types'
+import useAuth from '../components/UserProvider'
 import Dialog from '@mui/material/Dialog'
 
-export const Edit: React.VFC = () => {
+interface EditProps {
+  imageUrl?: string
+}
+
+export const Edit: React.VFC<EditProps> = ({imageUrl}) => {
   const [open, setOpen] = React.useState(false)
   const [newWord, setNewWord] = React.useState('')
   const [words, setWords] = React.useState(new Array<string>())
@@ -21,10 +27,12 @@ export const Edit: React.VFC = () => {
   const image = useParams() //あとで使うかも
   const location = useLocation()
   const [name, setName] = React.useState('')
-  const {user} = React.useContext(UserContext)
+  const {user} = useAuth()
   const [isOpen, setIsOpen] = React.useState(false)
   const [shareOption, setShareOptin] = React.useState(false)
   const [templateOption, setTemplateOption] = React.useState(false)
+  const [palaceId, setPalaceId] = React.useState('')
+  const [completeIsOpen, setCompleteIsOpen] = React.useState(false)
 
   const handleOnClick = (e: React.MouseEvent<HTMLImageElement>) => {
     setNewCoodinate([e.pageX, e.pageY])
@@ -115,6 +123,8 @@ export const Edit: React.VFC = () => {
                 console.log(error)
               })
           }
+          console.log(res.data)
+          setPalaceId(res.data.id)
         })
         .catch((error) => {
           console.log(error)
@@ -143,19 +153,18 @@ export const Edit: React.VFC = () => {
             console.log(error)
           })
       }
+      setCompleteIsOpen(true)
     } else {
       setIsOpen(true)
     }
   }
 
   return (
-    <div>
+    <div className={styles.edit}>
       {coodinates.map(([x, y]: [number, number], index) => (
         <PushPinIcon key={index} style={{position: 'absolute', top: y + 'px', left: x + 'px'}} />
       ))}
-      <div>
-        <img src={location.state.image} alt="map" onClick={handleOnClick} />
-      </div>
+      <img className={styles.layoutImage} src={imageUrl ?? location.state.image} alt="map" onClick={handleOnClick} />
       <div>
         {[...Array(words.length)].map((_, index: number) => (
           <EditAddedWord
@@ -206,6 +215,11 @@ export const Edit: React.VFC = () => {
       <Dialog open={isOpen} onClose={() => setIsOpen(false)}>
         <span>単語もしくは宮殿の名前が登録されていません。</span>
         <button onClick={() => setIsOpen(false)}>OK</button>
+      </Dialog>
+      <Dialog open={completeIsOpen}>
+        宮殿が完成しました
+        <Link to={'/memorize/' + palaceId}>今すぐ覚える</Link>
+        <Link to="/">ホームへ戻る</Link>
       </Dialog>
     </div>
   )

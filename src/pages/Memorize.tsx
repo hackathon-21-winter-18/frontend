@@ -6,7 +6,7 @@ import Word from '../components/Word'
 import {PalaceType} from '../types'
 import axios from 'axios'
 import PushPinIcon from '@mui/icons-material/PushPin'
-import {UserContext} from '../components/UserProvider'
+import useAuth from '../components/UserProvider'
 import Dialog from '@mui/material/Dialog'
 
 const Memorize: React.VFC = () => {
@@ -19,7 +19,7 @@ const Memorize: React.VFC = () => {
   })
   const [flags, setFlags] = useState([...Array(palace.embededPins.length)].fill(false))
   const params = useParams()
-  const {user} = useContext(UserContext)
+  const {user} = useAuth()
   const [isOpen, setIsOpen] = useState(false)
   let location = useLocation()
 
@@ -92,9 +92,7 @@ const Memorize: React.VFC = () => {
       {/*flagの中身が全部trueなら表示*/}
       <Dialog open={isOpen} onClose={() => setIsOpen(false)}>
         お疲れさまでした。
-        <Link to={'/'} state={{image: Extension()}}>
-          ホームへ戻る
-        </Link>
+        <Link to="/">ホームへ戻る</Link>
       </Dialog>
     </div>
   )

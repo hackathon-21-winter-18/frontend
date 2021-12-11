@@ -4,9 +4,10 @@ import AddNewWordDialog from '../components/AddNewWordDialog'
 import {EditAddedWord} from '../components/EditAddedWord'
 import PushPinIcon from '@mui/icons-material/PushPin'
 import axios from 'axios'
-import {UserContext} from '../components/UserProvider'
+import useAuth from '../components/UserProvider'
 import {PalaceType} from '../types'
 import Dialog from '@mui/material/Dialog'
+import {Link} from 'react-router-dom'
 
 export const Fix: React.VFC = () => {
   const [open, setOpen] = React.useState(false)
@@ -21,9 +22,10 @@ export const Fix: React.VFC = () => {
   const image = useParams() //あとで使うかも
   const location = useLocation()
   const [name, setName] = React.useState('')
-  const {user} = React.useContext(UserContext)
+  const {user} = useAuth()
   const [isOpen, setIsOpen] = React.useState(false)
   const [shareOption, setShareOptin] = React.useState(false)
+  const [completeIsOpen, setCompleteIsOpen] = React.useState(false)
 
   const [palace, setPalace] = React.useState<PalaceType>({
     id: '',
@@ -151,6 +153,7 @@ export const Fix: React.VFC = () => {
                 console.log(error)
               })
           }
+          setCompleteIsOpen(true)
         })
         .catch((error) => {
           console.log(error)
@@ -210,6 +213,11 @@ export const Fix: React.VFC = () => {
       <Dialog open={isOpen} onClose={() => setIsOpen(false)}>
         <span>単語もしくは宮殿の名前が登録されていません。</span>
         <button onClick={() => setIsOpen(false)}>OK</button>
+      </Dialog>
+      <Dialog open={completeIsOpen}>
+        宮殿が修正されました
+        <Link to={'/memorize/' + palace.id}>今すぐ覚える</Link>
+        <Link to="/">ホームへ戻る</Link>
       </Dialog>
     </div>
   )

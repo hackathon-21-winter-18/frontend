@@ -7,6 +7,7 @@ import axios from 'axios'
 import {UserContext} from '../components/UserProvider'
 import {TemplateType} from '../types'
 import Dialog from '@mui/material/Dialog'
+import {Link} from 'react-router-dom'
 
 export const EditFromTemplate: React.VFC = () => {
   const [open, setOpen] = React.useState(false)
@@ -31,6 +32,8 @@ export const EditFromTemplate: React.VFC = () => {
   })
   const [isOpen, setIsOpen] = React.useState(false)
   const [shareOption, setShareOptin] = React.useState(false)
+  const [completeIsOpen, setCompleteIsOpen] = React.useState(false)
+  const [palaceId, setPalaceId] = React.useState('')
 
   const handleOnClick = (e: React.MouseEvent<HTMLImageElement>) => {
     setNewCoodinate([e.pageX, e.pageY])
@@ -118,10 +121,13 @@ export const EditFromTemplate: React.VFC = () => {
                 console.log(error)
               })
           }
+          console.log(res.data)
+          setPalaceId(res.data.id)
         })
         .catch((error) => {
           console.log(error)
         })
+      setCompleteIsOpen(true)
     } else {
       setIsOpen(true)
     }
@@ -229,6 +235,11 @@ export const EditFromTemplate: React.VFC = () => {
       <Dialog open={isOpen} onClose={() => setIsOpen(false)}>
         <span>単語もしくは宮殿の名前が登録されていません。</span>
         <button onClick={() => setIsOpen(false)}>OK</button>
+      </Dialog>
+      <Dialog open={completeIsOpen}>
+        宮殿が完成しました
+        <Link to={'/memorize/' + palaceId}>今すぐ覚える</Link>
+        <Link to="/">ホームへ戻る</Link>
       </Dialog>
     </div>
   )
