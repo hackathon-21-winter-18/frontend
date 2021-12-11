@@ -1,18 +1,22 @@
 import * as React from 'react'
 import styles from './Edit.module.css'
-import { useParams, useLocation } from 'react-router'
-import AddNewWordDialog from '../components/AddNewWordDialog'
-import { EditAddedWord } from '../components/EditAddedWord'
+import {useParams, useLocation} from 'react-router'
+import {AddNewWordDialog} from '../components/AddNewWordDialog'
+import {EditAddedWord} from '../components/EditAddedWord'
 import PushPinIcon from '@mui/icons-material/PushPin'
 import axios from 'axios'
 import useAuth from '../components/UserProvider'
 import Dialog from '@mui/material/Dialog'
+import {useMousePosition} from '../hooks/useMousePosition'
+import {CustomCursor} from '../components/CustomCursor'
+import {Box, ClickAwayListener, Portal, SxProps} from '@mui/material'
+import {useHover} from '../hooks/useHover'
 
 interface EditProps {
   imageUrl?: string
 }
 
-export const Edit: React.VFC<EditProps> = ({ imageUrl }) => {
+export const Edit: React.VFC<EditProps> = ({imageUrl}) => {
   const [open, setOpen] = React.useState(false)
   const [newWord, setNewWord] = React.useState('')
   const [words, setWords] = React.useState(new Array<string>())
@@ -25,12 +29,15 @@ export const Edit: React.VFC<EditProps> = ({ imageUrl }) => {
   const image = useParams() //あとで使うかも
   const location = useLocation()
   const [name, setName] = React.useState('')
-  const { user } = useAuth()
+  const {user} = useAuth()
   const [isOpen, setIsOpen] = React.useState(false)
 
-  const handleOnClick = (e: React.MouseEvent<HTMLImageElement>) => {
-    setNewCoodinate([e.pageX, e.pageY])
-    setOpen(true)
+  const [hoverRef, isHovered] = useHover<HTMLImageElement>()
+  const {x, y} = useMousePosition()
+
+  const handleOnClick = () => {
+    setNewCoodinate([x, y])
+    setOpen(!open)
   }
   const handleClose = () => {
     setOpen(false)
@@ -119,7 +126,7 @@ export const Edit: React.VFC<EditProps> = ({ imageUrl }) => {
       }
       console.log(data)
       axios
-        .post('http://localhost:8080/api/palaces/me', data, { withCredentials: true })
+        .post('http://localhost:8080/api/palaces/me', data, {withCredentials: true})
         .then((res) => {
           console.log(res.status)
         })
@@ -138,12 +145,48 @@ export const Edit: React.VFC<EditProps> = ({ imageUrl }) => {
     setName('')
   }, [useLocation()])
 
+  const handleClickAway = () => {
+    console.log('handle click away')
+    setOpen(false)
+  }
+  const boxStyle = React.useCallback<() => SxProps>(
+    () => ({
+      position: 'fixed',
+      top: y,
+      left: x,
+      transform: `translate(${window.innerWidth / 2 < x ? '-100%' : '0'}, -100%)`,
+      p: 1,
+      borderRadius: 2,
+    }),
+    [open]
+  )
+
   return (
     <div className={styles.edit}>
+      <CustomCursor type="pin" isHover={isHovered} />
       {coodinates.map(([x, y]: [number, number], index) => (
-        <PushPinIcon key={index} style={{ position: 'absolute', top: y + 'px', left: x + 'px' }} />
+        <PushPinIcon key={index} style={{position: 'absolute', top: y + 'px', left: x + 'px'}} />
       ))}
-      <img className={styles.layoutImage} src={imageUrl ?? location.state.image} alt="map" onClick={handleOnClick} />
+
+      <ClickAwayListener onClickAway={handleClickAway}>
+        <div>
+          <img
+            className={styles.layoutImage}
+            src={imageUrl ?? location.state.image}
+            alt="map"
+            onClick={handleOnClick}
+            ref={hoverRef}
+          />
+          {open && (
+            <Portal>
+              <Box sx={boxStyle()}>
+                <AddNewWordDialog open={open} />
+              </Box>
+            </Portal>
+          )}
+        </div>
+      </ClickAwayListener>
+
       <div>
         {[...Array(words.length)].map((_, index: number) => (
           <EditAddedWord
@@ -164,7 +207,7 @@ export const Edit: React.VFC<EditProps> = ({ imageUrl }) => {
           />
         ))}
       </div>
-      <AddNewWordDialog
+      {/* <AddNewWordDialog
         open={open}
         newWord={newWord}
         newPlace={newPlace}
@@ -174,7 +217,7 @@ export const Edit: React.VFC<EditProps> = ({ imageUrl }) => {
         setNewCondition={setNewCondition}
         handleClose={handleClose}
         handleClick={handleClick}
-      />
+      /> */}
       <input type="text" value={name} placeholder="宮殿の名前" onChange={handleNameChange} />
       <button onClick={handleComplete}>完成!</button>
       <Dialog open={isOpen} onClose={() => setIsOpen(false)}>

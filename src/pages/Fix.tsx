@@ -1,6 +1,6 @@
 import * as React from 'react'
 import {useParams, useLocation} from 'react-router'
-import AddNewWordDialog from '../components/AddNewWordDialog'
+import {AddNewWordDialog} from '../components/AddNewWordDialog'
 import {EditAddedWord} from '../components/EditAddedWord'
 import PushPinIcon from '@mui/icons-material/PushPin'
 import axios from 'axios'
@@ -176,14 +176,14 @@ export const Fix: React.VFC = () => {
       </div>
       <AddNewWordDialog
         open={open}
-        newWord={newWord}
-        newPlace={newPlace}
-        newCondition={newCondition}
-        setNewWord={setNewWord}
-        setNewPlace={setNewPlace}
-        setNewCondition={setNewCondition}
-        handleClose={handleClose}
-        handleClick={handleClick}
+        // newWord={newWord}
+        // newPlace={newPlace}
+        // newCondition={newCondition}
+        // setNewWord={setNewWord}
+        // setNewPlace={setNewPlace}
+        // setNewCondition={setNewCondition}
+        // handleClose={handleClose}
+        // handleClick={handleClick}
       />
       <input type="text" value={name} placeholder="神殿の名前" onChange={handleNameChange} />
       <button onClick={handleComplete}>完成!</button>
