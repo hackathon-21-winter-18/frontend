@@ -39,7 +39,6 @@ const TemplatePage: React.VFC = () => {
 	*/
   return (
     <div>
-      <Sidebar />
       <ul>{listItems}</ul>
     </div>
   )
