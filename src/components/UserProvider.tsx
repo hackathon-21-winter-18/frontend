@@ -1,5 +1,4 @@
 import React, {createContext, useContext, useEffect, useMemo, useState} from 'react'
-import {useLocation, useNavigate} from 'react-router-dom'
 import {postLogin, postSignUp, getCurrentUser} from '../api/registration'
 import {UserRegistration} from '../types'
 
@@ -21,9 +20,6 @@ export const UserProvider: React.FC = ({children}) => {
   const [user, setUser] = useState({name: '', id: '', auth: false})
   const [loading, setLoading] = useState(false)
   const [loadingInitial, setLoadingInitial] = useState(true)
-
-  const navigate = useNavigate()
-  const location = useLocation()
 
   useEffect(() => {
     getCurrentUser()
