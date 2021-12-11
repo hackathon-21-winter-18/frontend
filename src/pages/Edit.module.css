@@ -1,0 +1,7 @@
+.edit {
+  width: 100%;
+}
+.layoutImage {
+  width: 100%;
+  object-fit: contain;
+}

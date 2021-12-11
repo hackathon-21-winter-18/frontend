@@ -1,5 +1,5 @@
 .sidebar {
-  min-height: calc(100vh - 101px);
+  min-height: calc(100vh - 117px);
   width: 252px;
   padding: 24px;
   flex-shrink: 0;
@@ -7,30 +7,32 @@
   flex-direction: column;
 }
 .buttonHere {
-  background-color: #313847;
-  color: white;
-  font-weight: 700;
-  font-size: 24px;
+  background-color: #f3f6fb;
+  color: #182031;
+  font-weight: 500;
+  font-size: 18px;
+  font-family: 'Noto Sans JP';
 
   border-radius: 10px;
-  padding: 12px;
-  margin-bottom: 24px;
+  padding: 8px 12px;
+  margin-bottom: 12px;
   display: flex;
   align-items: center;
 
   text-decoration: none;
   transition-duration: 0.2s;
+  cursor: default;
 }
 .buttonNotHere {
-  background-color: #eef3ff;
-  color: #555d6d;
+  background-color: white;
+  color: #828894;
   font-weight: 500;
-  font-size: 24px;
+  font-size: 18px;
+  font-family: 'Noto Sans JP';
 
-  border: 2px solid white;
   border-radius: 10px;
-  padding: 12px;
-  margin-bottom: 24px;
+  padding: 8px 12px;
+  margin-bottom: 12px;
   display: flex;
   align-items: center;
 
@@ -38,8 +40,10 @@
   transition-duration: 0.2s;
 }
 .buttonNotHere:hover {
-  border: 2px solid #95a0b6;
+  background-color: #eef3ff;
+  color: #313847;
 }
+
 .buttonIcon {
   margin-right: 12px;
 }

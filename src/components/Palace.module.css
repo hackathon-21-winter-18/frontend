@@ -1,15 +1,14 @@
 .palace {
-  background-color: #e2e9f7;
-  border-radius: 10px;
-  aspect-ratio: 7/6;
-  padding: 8px;
+  background-color: white;
+  border-radius: 4px;
 }
 .image {
   width: 100%;
-  border-radius: 8px;
   aspect-ratio: 16/9;
+  object-fit: cover;
   cursor: pointer;
 }
+
 .titleContainer {
   display: flex;
   justify-content: space-between;

@@ -54,7 +54,6 @@ const TemplatePage: React.VFC = () => {
 
   return (
     <div className={styles.templatePage}>
-      <Sidebar />
       <ul className={styles.templateContainer}>
         <CreateNewTemplateButton />
 

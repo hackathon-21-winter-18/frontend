@@ -1,4 +1,5 @@
 import * as React from 'react'
+import styles from './Edit.module.css'
 import {useParams, useLocation} from 'react-router'
 import AddNewWordDialog from '../components/AddNewWordDialog'
 import {EditAddedWord} from '../components/EditAddedWord'
@@ -8,7 +9,11 @@ import {UserContext} from '../components/UserProvider'
 import {Pins} from '../types'
 import Dialog from '@mui/material/Dialog'
 
-export const Edit: React.VFC = () => {
+interface EditProps {
+  imageUrl?: string
+}
+
+export const Edit: React.VFC<EditProps> = ({imageUrl}) => {
   const [open, setOpen] = React.useState(false)
   const [newWord, setNewWord] = React.useState('')
   const [words, setWords] = React.useState(new Array<string>())
@@ -140,13 +145,11 @@ export const Edit: React.VFC = () => {
   }
 
   return (
-    <div>
+    <div className={styles.edit}>
       {coodinates.map(([x, y]: [number, number], index) => (
         <PushPinIcon key={index} style={{position: 'absolute', top: y + 'px', left: x + 'px'}} />
       ))}
-      <div>
-        <img src={location.state.image} alt="map" onClick={handleOnClick} />
-      </div>
+      <img className={styles.layoutImage} src={imageUrl ?? location.state.image} alt="map" onClick={handleOnClick} />
       <div>
         {[...Array(words.length)].map((_, index: number) => (
           <EditAddedWord
