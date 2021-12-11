@@ -5,12 +5,10 @@ import axios from 'axios';
 import { FormControlLabel, Input, Radio, RadioGroup } from '@mui/material';
 import { PalaceType } from '../types';
 interface SortingButtonProps {
-  isMe: boolean
-  palaces: PalaceType[]
   setPalaces: React.Dispatch<React.SetStateAction<PalaceType[]>>
 }
 export const SortingButton = (props: SortingButtonProps) => {
-  const { isMe, palaces, setPalaces } = props;
+  const { setPalaces } = props;
   const [order, setOrder] = React.useState('first_shared_at');
   const [minPins, setMinPins] = React.useState(0);
   const [maxPins, setMaxPins] = React.useState(10000);
