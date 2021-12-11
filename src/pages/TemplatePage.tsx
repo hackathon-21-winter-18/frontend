@@ -7,15 +7,7 @@ import CreateNewTemplateButton from '../components/CreateNewTemplateButton'
 import useAuth from '../components/UserProvider'
 
 const TemplatePage: React.VFC = () => {
-  const [templates, setTemplates] = useState([
-    {
-      id: '',
-      name: '',
-      image: '',
-      pins: [{number: 0, x: 0, y: 0}],
-      share: false,
-    },
-  ])
+  const [templates, setTemplates] = useState(new Array<TemplateType>())
   const {user} = useAuth()
   const listItems = templates.map((template, index) => (
     <li key={template.id}>

@@ -5,18 +5,10 @@ import axios from 'axios'
 import Sidebar from '../components/Sidebar'
 import {useContext} from 'react'
 import {UserContext} from '../components/UserProvider'
+import {SharedPalaceType} from '../types'
 
 const SharedPalaces: React.VFC = () => {
-  const [palaces, setPalaces] = useState([
-    {
-      id: '',
-      name: '',
-      image: '',
-      embededPins: [{number: 0, x: 0, y: 0, word: '', place: '', do: ''}],
-      savedCount: 0,
-      createrName: '',
-    },
-  ])
+  const [palaces, setPalaces] = useState(new Array<SharedPalaceType>())
 
   const {user} = useContext(UserContext)
   const listItems = palaces.map((palace, index) => (

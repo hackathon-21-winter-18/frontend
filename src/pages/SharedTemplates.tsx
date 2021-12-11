@@ -5,18 +5,10 @@ import axios from 'axios'
 import Sidebar from '../components/Sidebar'
 import {useContext} from 'react'
 import {UserContext} from '../components/UserProvider'
+import {SharedTemplateType} from '../types'
 
 const SharedTemplates: React.VFC = () => {
-  const [templates, setTemplates] = useState([
-    {
-      id: '',
-      name: '',
-      image: '',
-      pins: [{number: 0, x: 0, y: 0}],
-      savedCount: 0,
-      createrName: '',
-    },
-  ])
+  const [templates, setTemplates] = useState(new Array<SharedTemplateType>())
 
   const {user} = useContext(UserContext)
   const listItems = templates.map((template, index) => (

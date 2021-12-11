@@ -9,15 +9,7 @@ import CreateNewPalaceButton from '../components/CreateNewPalaceButton'
 import useAuth from '../components/UserProvider'
 
 const Home: React.VFC = () => {
-  const [palaces, setPalaces] = useState([
-    {
-      id: '',
-      name: '',
-      image: '',
-      embededPins: [{number: 0, x: 0, y: 0, word: '', place: '', do: ''}],
-      share: false,
-    },
-  ])
+  const [palaces, setPalaces] = useState(new Array<PalaceType>())
 
   const listItems = palaces.map((palace, index) => (
     <li key={palace.id}>
