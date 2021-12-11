@@ -1,4 +1,4 @@
-import {useState} from 'react'
+import {useState, useContext} from 'react'
 import {Link, useNavigate} from 'react-router-dom'
 import styles from './Palace.module.css'
 import {SharedPalaceType} from '../types'
@@ -6,18 +6,19 @@ import axios from 'axios'
 import MoreVertIcon from '@mui/icons-material/MoreVert'
 import CommentIcon from '@mui/icons-material/Comment'
 import Dialog from '@mui/material/Dialog'
-
+import {UserContext} from '../components/UserProvider'
 interface PalaceProps {
   palace: SharedPalaceType
 }
 
 const SharedPalace: React.VFC<PalaceProps> = ({palace}) => {
   const [isOpen, setIsOpen] = useState(false)
-  const [deleteIsOpen, setDeleteIsOpen] = useState(false)
+  const [saveIsOpen, setSaveIsOpen] = useState(false)
   const navigate = useNavigate()
+  const {user} = useContext(UserContext)
 
   function handleSaveDialog() {
-    setDeleteIsOpen(true)
+    setSaveIsOpen(true)
   }
   function handleSave() {
     const data = {
@@ -25,8 +26,10 @@ const SharedPalace: React.VFC<PalaceProps> = ({palace}) => {
       name: palace.name,
       image: palace.image,
       embededPins: palace.embededPins,
+      createdBy: user.id,
     }
-    axios.post('http://localhost:8080/api/palaces', data, {withCredentials: true})
+    axios.post('http://localhost:8080/api/palaces/me', data, {withCredentials: true})
+    setSaveIsOpen(false)
   }
   function Extension() {
     switch (palace.image.substring(0, 5)) {
@@ -71,10 +74,10 @@ const SharedPalace: React.VFC<PalaceProps> = ({palace}) => {
       </div>
       <Dialog open={isOpen} onClose={handleDialogClose}>
         <button onClick={handleSaveDialog}>宮殿の保存</button>
-        <Dialog open={deleteIsOpen} onClose={() => setDeleteIsOpen(false)}>
+        <Dialog open={saveIsOpen} onClose={() => setSaveIsOpen(false)}>
           本当に宮殿を保存しますか？
           <button onClick={handleSave}>はい</button>
-          <button onClick={() => setDeleteIsOpen(false)}>いいえ</button>
+          <button onClick={() => setSaveIsOpen(false)}>いいえ</button>
         </Dialog>
       </Dialog>
     </div>

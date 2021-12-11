@@ -14,12 +14,12 @@ interface TemplateProps {
 
 const SharedTemplate: React.VFC<TemplateProps> = ({template}) => {
   const [isOpen, setIsOpen] = useState(false)
-  const [deleteIsOpen, setDeleteIsOpen] = useState(false)
+  const [saveIsOpen, setSaveIsOpen] = useState(false)
   const {user} = useContext(UserContext)
   const navigate = useNavigate()
 
   function handleSaveDialog() {
-    setDeleteIsOpen(true)
+    setSaveIsOpen(true)
   }
   function handleSave() {
     const data = {
@@ -30,6 +30,7 @@ const SharedTemplate: React.VFC<TemplateProps> = ({template}) => {
       createdBy: user.id,
     }
     axios.post('http://localhost:8080/api/templates/me', data, {withCredentials: true})
+    setSaveIsOpen(false)
   }
   function Extension() {
     switch (template.image.substring(0, 5)) {
@@ -74,10 +75,10 @@ const SharedTemplate: React.VFC<TemplateProps> = ({template}) => {
       </div>
       <Dialog open={isOpen} onClose={handleDialogClose}>
         <button onClick={handleSaveDialog}>テンプレートの保存</button>
-        <Dialog open={deleteIsOpen} onClose={() => setDeleteIsOpen(false)}>
+        <Dialog open={saveIsOpen} onClose={() => setSaveIsOpen(false)}>
           本当にテンプレートを保存しますか？
           <button onClick={handleSave}>はい</button>
-          <button onClick={() => setDeleteIsOpen(false)}>いいえ</button>
+          <button onClick={() => setSaveIsOpen(false)}>いいえ</button>
         </Dialog>
       </Dialog>
     </div>
