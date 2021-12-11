@@ -11,6 +11,10 @@ import {EmbededPins, PinContent} from '../types'
 import pinIcon from '../assets/pin.svg'
 import {FixWordDialog} from '../components/FixWordDialog'
 import {postPalace} from '../api/palace'
+import VisibilityIcon from '@mui/icons-material/Visibility'
+import VisibilityOffIcon from '@mui/icons-material/VisibilityOff'
+
+type Mode = 'edit' | 'memorization'
 
 interface EditProps {
   imageUrl?: string
@@ -21,7 +25,7 @@ export const Edit: React.VFC<EditProps> = ({imageUrl, isPlayground = false}) => 
   const [open, setOpen] = React.useState<number | boolean>(false)
   const [pinOpen, setPinOpen] = React.useState<EmbededPins | null>(null)
   const [pins, setPins] = React.useState<EmbededPins[]>([])
-
+  const [mode, setMode] = React.useState<Mode>('edit')
   const image = useParams() //あとで使うかも
   const location = useLocation()
   const [palaceName, setPalaceName] = React.useState('')
@@ -110,7 +114,7 @@ export const Edit: React.VFC<EditProps> = ({imageUrl, isPlayground = false}) => 
 
   return (
     <div className={styles.edit}>
-      <CustomCursor type="pin" isHover={isHovered} />
+      {mode === 'edit' && <CustomCursor type="pin" isHover={isHovered} />}
       <ClickAwayListener onClickAway={() => setPinOpen(null)}>
         <div>
           {pins.map((pin, i) => (
@@ -133,17 +137,22 @@ export const Edit: React.VFC<EditProps> = ({imageUrl, isPlayground = false}) => 
           {pinOpen && (
             <Portal>
               <Box sx={boxStyle()}>
-                <FixWordDialog open={pinOpen} deletePin={handleDeletePin} />
+                <FixWordDialog open={pinOpen} deletePin={handleDeletePin} isVisible={mode === 'edit'} />
               </Box>
             </Portal>
           )}
         </div>
       </ClickAwayListener>
 
-      <IconButton className={styles.togglPinList}>
-        <Badge badgeContent={pins.length} color="primary">
-          <img src={pinIcon} alt="" className={styles.pinIcon} />
-        </Badge>
+      <IconButton
+        className={styles.togglPinList}
+        onClick={() => isPlayground && setMode(mode === 'edit' ? 'memorization' : 'edit')}>
+        {mode === 'edit' && (
+          <Badge badgeContent={pins.length} color="primary">
+            <img src={pinIcon} alt="" className={styles.pinIcon} />
+          </Badge>
+        )}
+        {mode === 'memorization' && <VisibilityOffIcon />}
       </IconButton>
 
       <ClickAwayListener onClickAway={handleClickAway}>
@@ -152,7 +161,7 @@ export const Edit: React.VFC<EditProps> = ({imageUrl, isPlayground = false}) => 
             className={styles.layoutImage}
             src={imageUrl ?? location.state.image}
             alt="map"
-            onClick={() => setOpen(Math.random())}
+            onClick={() => mode === 'edit' && setOpen(Math.random())}
             ref={hoverRef}
           />
           {open && (

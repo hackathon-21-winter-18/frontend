@@ -1,0 +1,45 @@
+.card {
+  padding: 8px !important;
+}
+.question {
+  margin: 12px 0 16px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.question p {
+  font-size: 16px;
+  font-weight: 500;
+  font-family: 'Noto Sans JP';
+  color: #313847;
+}
+.question div {
+  display: flex;
+  align-items: center;
+}
+.pinIcon {
+  margin: 0 12px 0 8px;
+  width: 16px;
+  height: 26px;
+  object-fit: contain;
+}
+.inputContainer {
+  display: flex;
+  align-items: center;
+}
+.inputContainer > input {
+  margin: 0 8px;
+  padding: 8px 10px;
+  border: 1px solid white;
+  border-radius: 4px;
+  font-size: 16px;
+  font-weight: 700;
+  color: #313847;
+  background-color: #e2e9f7;
+  width: 100px;
+}
+.button {
+  margin-right: 10px;
+  color: #313847;
+  border-color: #313847;
+}
