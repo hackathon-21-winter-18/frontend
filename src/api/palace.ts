@@ -7,3 +7,10 @@ export const postPalace = (data: any, onSuccess?: () => any, onError?: () => any
     .then(onSuccess)
     .catch(onError)
 }
+
+export const putPalace = (palaceID: string, data: any, onSuccess?: () => any, onError?: () => any) => {
+  axios
+    .put(config() + palaceID, data, {withCredentials: true})
+    .then(onSuccess)
+    .catch(onError)
+}
