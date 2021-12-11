@@ -1,0 +1,25 @@
+{
+  "files": {
+    "main.css": "/frontend/static/css/main.ecc4b530.chunk.css",
+    "main.js": "/frontend/static/js/main.698e12cd.chunk.js",
+    "main.js.map": "/frontend/static/js/main.698e12cd.chunk.js.map",
+    "runtime-main.js": "/frontend/static/js/runtime-main.61c8f663.js",
+    "runtime-main.js.map": "/frontend/static/js/runtime-main.61c8f663.js.map",
+    "static/js/2.e4c5de6b.chunk.js": "/frontend/static/js/2.e4c5de6b.chunk.js",
+    "static/js/2.e4c5de6b.chunk.js.map": "/frontend/static/js/2.e4c5de6b.chunk.js.map",
+    "static/js/3.721af7bb.chunk.js": "/frontend/static/js/3.721af7bb.chunk.js",
+    "static/js/3.721af7bb.chunk.js.map": "/frontend/static/js/3.721af7bb.chunk.js.map",
+    "index.html": "/frontend/index.html",
+    "static/css/main.ecc4b530.chunk.css.map": "/frontend/static/css/main.ecc4b530.chunk.css.map",
+    "static/js/2.e4c5de6b.chunk.js.LICENSE.txt": "/frontend/static/js/2.e4c5de6b.chunk.js.LICENSE.txt",
+    "static/media/logo.e561e610.svg": "/frontend/static/media/logo.e561e610.svg",
+    "static/media/バッキンガム宮殿.ea1b157a.jpg": "/frontend/static/media/バッキンガム宮殿.ea1b157a.jpg",
+    "static/media/ヴェルサイユ宮殿.9d22252d.jpg": "/frontend/static/media/ヴェルサイユ宮殿.9d22252d.jpg"
+  },
+  "entrypoints": [
+    "static/js/runtime-main.61c8f663.js",
+    "static/js/2.e4c5de6b.chunk.js",
+    "static/css/main.ecc4b530.chunk.css",
+    "static/js/main.698e12cd.chunk.js"
+  ]
+}
