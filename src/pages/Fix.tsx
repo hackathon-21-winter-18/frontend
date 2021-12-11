@@ -7,6 +7,7 @@ import axios from 'axios'
 import {UserContext} from '../components/UserProvider'
 import {PalaceType} from '../types'
 import Dialog from '@mui/material/Dialog'
+import {Link} from 'react-router-dom'
 
 export const Fix: React.VFC = () => {
   const [open, setOpen] = React.useState(false)
@@ -23,6 +24,7 @@ export const Fix: React.VFC = () => {
   const [name, setName] = React.useState('')
   const {user} = React.useContext(UserContext)
   const [isOpen, setIsOpen] = React.useState(false)
+  const [completeIsOpen, setCompleteIsOpen] = React.useState(false)
 
   const [palace, setPalace] = React.useState<PalaceType>({
     id: '',
@@ -137,6 +139,7 @@ export const Fix: React.VFC = () => {
         .put('http://localhost:8080/api/palaces/' + palace.id, data, {withCredentials: true})
         .then((res) => {
           console.log(res.status)
+          setCompleteIsOpen(true)
         })
         .catch((error) => {
           console.log(error)
@@ -190,6 +193,11 @@ export const Fix: React.VFC = () => {
       <Dialog open={isOpen} onClose={() => setIsOpen(false)}>
         <span>単語もしくは宮殿の名前が登録されていません。</span>
         <button onClick={() => setIsOpen(false)}>OK</button>
+      </Dialog>
+      <Dialog open={completeIsOpen}>
+        宮殿が修正されました
+        <Link to={'/memorize/' + palace.id}>今すぐ覚える</Link>
+        <Link to="/">ホームへ戻る</Link>
       </Dialog>
     </div>
   )

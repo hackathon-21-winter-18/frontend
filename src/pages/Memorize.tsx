@@ -102,9 +102,7 @@ const Memorize: React.VFC = () => {
       {/*flagの中身が全部trueなら表示*/}
       <Dialog open={isOpen} onClose={() => setIsOpen(false)}>
         お疲れさまでした。
-        <Link to={'/'} state={{image: Extension()}}>
-          ホームへ戻る
-        </Link>
+        <Link to="/">ホームへ戻る</Link>
       </Dialog>
     </div>
   )

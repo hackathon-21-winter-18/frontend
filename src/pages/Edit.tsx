@@ -1,6 +1,7 @@
 import * as React from 'react'
 import styles from './Edit.module.css'
 import {useParams, useLocation} from 'react-router'
+import {Link} from 'react-router-dom'
 import AddNewWordDialog from '../components/AddNewWordDialog'
 import {EditAddedWord} from '../components/EditAddedWord'
 import PushPinIcon from '@mui/icons-material/PushPin'
@@ -28,6 +29,8 @@ export const Edit: React.VFC<EditProps> = ({imageUrl}) => {
   const [name, setName] = React.useState('')
   const {user} = React.useContext(UserContext)
   const [isOpen, setIsOpen] = React.useState(false)
+  const [palaceId, setPalaceId] = React.useState('')
+  const [completeIsOpen, setCompleteIsOpen] = React.useState(false)
 
   const handleOnClick = (e: React.MouseEvent<HTMLImageElement>) => {
     setNewCoodinate([e.pageX, e.pageY])
@@ -125,6 +128,7 @@ export const Edit: React.VFC<EditProps> = ({imageUrl}) => {
         .then((res) => {
           console.log(res.status)
           console.log(res.data)
+          setPalaceId(res.data.id)
         })
         .catch((error) => {
           console.log(error)
@@ -139,6 +143,7 @@ export const Edit: React.VFC<EditProps> = ({imageUrl}) => {
           console.log(error)
         })
         */
+      setCompleteIsOpen(true)
     } else {
       setIsOpen(true)
     }
@@ -186,6 +191,11 @@ export const Edit: React.VFC<EditProps> = ({imageUrl}) => {
       <Dialog open={isOpen} onClose={() => setIsOpen(false)}>
         <span>単語もしくは宮殿の名前が登録されていません。</span>
         <button onClick={() => setIsOpen(false)}>OK</button>
+      </Dialog>
+      <Dialog open={completeIsOpen}>
+        宮殿が完成しました
+        <Link to={'/memorize/' + palaceId}>今すぐ覚える</Link>
+        <Link to="/">ホームへ戻る</Link>
       </Dialog>
     </div>
   )

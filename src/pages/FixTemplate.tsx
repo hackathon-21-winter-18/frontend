@@ -5,7 +5,7 @@ import axios from 'axios'
 import {UserContext} from '../components/UserProvider'
 import {TemplateType, Pins} from '../types'
 import Dialog from '@mui/material/Dialog'
-
+import {Link} from 'react-router-dom'
 export const FixTemplate: React.VFC = () => {
   const [coodinates, setCoodinates] = React.useState(new Array<[number, number]>())
   const location = useLocation()
@@ -19,6 +19,7 @@ export const FixTemplate: React.VFC = () => {
   })
   const params = useParams()
   const [isOpen, setIsOpen] = React.useState(false)
+  const [completeIsOpen, setCompleteIsOpen] = React.useState(false)
 
   const handleOnClick = (e: React.MouseEvent<HTMLImageElement>) => {
     setCoodinates(coodinates.concat([[e.pageX, e.pageY]]))
@@ -71,6 +72,7 @@ export const FixTemplate: React.VFC = () => {
         .put('http://localhost:8080/api/templates/' + template.id, data, {withCredentials: true})
         .then((res) => {
           console.log(res.status)
+          setCompleteIsOpen(true)
         })
         .catch((error) => {
           console.log(error)
@@ -98,6 +100,10 @@ export const FixTemplate: React.VFC = () => {
       <Dialog open={isOpen} onClose={() => setIsOpen(false)}>
         <span>ピンもしくはテンプレートの名前が登録されていません。</span>
         <button onClick={() => setIsOpen(false)}>OK</button>
+      </Dialog>
+      <Dialog open={completeIsOpen}>
+        テンプレートが修正されました
+        <Link to="/">ホームへ戻る</Link>
       </Dialog>
     </div>
   )

@@ -5,6 +5,7 @@ import axios from 'axios'
 import {UserContext} from '../components/UserProvider'
 import {Pins} from '../types'
 import Dialog from '@mui/material/Dialog'
+import {Link} from 'react-router-dom'
 
 export const EditTemplate: React.VFC = () => {
   const [coodinates, setCoodinates] = React.useState(new Array<[number, number]>())
@@ -13,6 +14,7 @@ export const EditTemplate: React.VFC = () => {
   const [name, setName] = React.useState('')
   const {user} = React.useContext(UserContext)
   const [isOpen, setIsOpen] = React.useState(false)
+  const [completeIsOpen, setCompleteIsOpen] = React.useState(false)
 
   const handleOnClick = (e: React.MouseEvent<HTMLImageElement>) => {
     setCoodinates(coodinates.concat([[e.pageX, e.pageY]]))
@@ -47,6 +49,7 @@ export const EditTemplate: React.VFC = () => {
         .post('http://localhost:8080/api/templates/me', data, {withCredentials: true})
         .then((res) => {
           console.log(res.status)
+          setCompleteIsOpen(true)
         })
         .catch((error) => {
           console.log(error)
@@ -75,6 +78,10 @@ export const EditTemplate: React.VFC = () => {
       <Dialog open={isOpen} onClose={() => setIsOpen(false)}>
         <span>ピンもしくはテンプレートの名前が登録されていません。</span>
         <button onClick={() => setIsOpen(false)}>OK</button>
+      </Dialog>
+      <Dialog open={completeIsOpen}>
+        テンプレートが完成しました
+        <Link to="/">ホームへ戻る</Link>
       </Dialog>
     </div>
   )
