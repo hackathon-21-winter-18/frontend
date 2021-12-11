@@ -1,12 +1,11 @@
-import {useContext} from 'react'
 import styles from './Header.module.css'
 import {useNavigate} from 'react-router-dom'
 import logo from '../assets/logo.svg'
 import FromNewPalace from './DialogFromNewPalace'
-import {UserContext} from './UserProvider'
+import useAuth from './UserProvider'
 
 const Header: React.VFC = () => {
-  const {user} = useContext(UserContext)
+  const {user} = useAuth()
   const navigate = useNavigate()
   return (
     <>

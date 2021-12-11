@@ -14,3 +14,10 @@ export const postSignUp = async (user: UserRegistration) => {
   // TODO response error handling
   return res.data
 }
+
+export const getCurrentUser = async () => {
+  const res = await axios.get<RegistrationResponse | undefined>('http://localhost:8080/api/oauth/whoamI', {
+    withCredentials: true,
+  })
+  return res.data
+}

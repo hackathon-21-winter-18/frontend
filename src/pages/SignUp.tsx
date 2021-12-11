@@ -1,7 +1,7 @@
-import React, {useContext, useState} from 'react'
+import React, {useState} from 'react'
 import {Link} from 'react-router-dom'
 import styles from './SignUp.module.css'
-import {UserContext} from '../components/UserProvider'
+import useAuth from '../components/UserProvider'
 import logo from '../assets/logo.svg'
 
 const SignUp: React.VFC = () => {
@@ -9,7 +9,7 @@ const SignUp: React.VFC = () => {
   const [password, setPassword] = useState('')
   const [passwordConfirm, setPasswordConfirm] = useState('')
 
-  const {signup} = useContext(UserContext)
+  const {signup} = useAuth()
 
   const handleRegister = async (e: React.MouseEvent) => {
     e.preventDefault()

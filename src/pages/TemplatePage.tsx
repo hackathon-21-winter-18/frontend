@@ -1,13 +1,10 @@
-import {useEffect, useState, useContext} from 'react'
-import styles from 'TemplatePage.module.css'
-import Header from '../components/Header'
+import {useEffect, useState} from 'react'
 import Template from '../components/Template'
 import {TemplateType} from '../types'
 import palace1 from '../assets/ヴェルサイユ宮殿.jpg'
 import palace2 from '../assets/バッキンガム宮殿.jpg'
 import axios from 'axios'
-import {UserContext} from '../components/UserProvider'
-import Sidebar from '../components/Sidebar'
+import useAuth from '../components/UserProvider'
 
 const mockTemplates: TemplateType[] = [
   {
@@ -33,7 +30,7 @@ const TemplatePage: React.VFC = () => {
       pins: [{number: 0, x: 0, y: 0}],
     },
   ])
-  const {user} = useContext(UserContext)
+  const {user} = useAuth()
   const listItems = templates.map((template) => (
     <li key={template.id}>
       <Template template={template} />

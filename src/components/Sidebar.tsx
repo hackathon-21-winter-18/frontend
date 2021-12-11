@@ -1,4 +1,4 @@
-import React, {useContext, useState} from 'react'
+import React, {useState} from 'react'
 import styles from './Sidebar.module.css'
 import {useLocation} from 'react-router'
 import {Link} from 'react-router-dom'
@@ -8,14 +8,14 @@ import PersonPinIcon from '@mui/icons-material/PersonPin'
 import LogoutIcon from '@mui/icons-material/Logout'
 import MoreVertIcon from '@mui/icons-material/MoreVert'
 import AttractionsIcon from '@mui/icons-material/Attractions'
-import {UserContext} from './UserProvider'
+import useAuth from './UserProvider'
 import {Menu} from '@mui/material'
 
 const Sidebar: React.VFC = () => {
   const {pathname} = useLocation()
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null)
   const open = Boolean(anchorEl)
-  const {user, logout} = useContext(UserContext)
+  const {user, logout} = useAuth()
 
   const handleClick = (e: React.MouseEvent<HTMLButtonElement>) => {
     setAnchorEl(e.currentTarget)
