@@ -1,0 +1,14 @@
+.playground {
+  width: 100%;
+}
+.playground > h1 {
+  font-size: 28px;
+  font-weight: 700;
+  font-family: 'Noto Sans JP';
+  color: #313847;
+}
+.divider {
+  margin: 8px 0;
+  width: 100%;
+  border-top: 1px solid #c6d0e5;
+}
