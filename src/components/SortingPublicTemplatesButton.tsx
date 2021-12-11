@@ -2,9 +2,9 @@ import * as React from 'react'
 import Button from '@mui/material/Button'
 import axios from 'axios';
 import { FormControlLabel, Input, Radio, RadioGroup } from '@mui/material';
-import { PalaceType } from '../types';
+import { TemplateType } from '../types';
 interface SortingPublicTemplatesButtonProp {
-  setTemplates: React.Dispatch<React.SetStateAction<PalaceType[]>>
+  setTemplates: React.Dispatch<React.SetStateAction<TemplateType[]>>
 }
 export const SortingPublicTemplatesButton = (prop: SortingPublicTemplatesButtonProp) => {
   const { setTemplates } = prop;
