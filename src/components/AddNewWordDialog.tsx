@@ -1,34 +1,26 @@
 import {Button, Card, Grow, IconButton} from '@mui/material'
-import React from 'react'
+import React, {useState} from 'react'
 import styles from './AddNewWordDialog.module.css'
 import pin from '../assets/pin.svg'
 import ShuffleIcon from '@mui/icons-material/Shuffle'
-import AddLocationIcon from '@mui/icons-material/AddLocation'
+import {PinContent} from '../types'
 
 interface AddNewWordDialogProps {
   open: boolean
-  // handleClose: () => void
-  // handleClick: () => void
-  // newWord: string
-  // newPlace: string
-  // newCondition: string
-  // setNewWord: React.Dispatch<React.SetStateAction<string>>
-  // setNewPlace: React.Dispatch<React.SetStateAction<string>>
-  // setNewCondition: React.Dispatch<React.SetStateAction<string>>
+  putPin: (pin: PinContent) => void
 }
-export const AddNewWordDialog: React.VFC<AddNewWordDialogProps> = ({open}) => {
-  // const {open, handleClose, handleClick, newWord, setNewWord, newPlace, setNewPlace, newCondition, setNewCondition} =
-  //   props
+export const AddNewWordDialog: React.VFC<AddNewWordDialogProps> = ({open, putPin}) => {
+  const [word, setWord] = useState('')
+  const [place, setPlace] = useState('')
+  const [condition, setCondition] = useState('')
 
-  // const handleWordChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-  //   setNewWord(e.target.value)
-  // }
-  // const handlePlaceChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-  //   setNewPlace(e.target.value)
-  // }
-  // const handleConditionChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-  //   setNewCondition(e.target.value)
-  // }
+  const handlePutPin = () => {
+    putPin({
+      word,
+      place,
+      condition,
+    })
+  }
 
   return (
     <Grow in={open}>
@@ -38,16 +30,21 @@ export const AddNewWordDialog: React.VFC<AddNewWordDialogProps> = ({open}) => {
             <img className={styles.pinIcon} src={pin} alt="" />
             <p>誰が何してる？</p>
           </div>
-          <Button variant="outlined" className={styles.button}>
+          <Button variant="outlined" className={styles.button} onClick={handlePutPin}>
             登録する
           </Button>
         </div>
         <div className={styles.inputContainer}>
-          <input type="text" placeholder="パンダ🐼" />
+          <input type="text" placeholder="パンダ🐼" onChange={(e) => setWord(e.target.value)} value={word} />
           が
-          <input type="text" placeholder="リビング" />
+          <input type="text" placeholder="リビング" onChange={(e) => setPlace(e.target.value)} value={place} />
           で
-          <input type="text" placeholder="笹食ってる" />
+          <input
+            type="text"
+            placeholder="笹食ってる"
+            onChange={(e) => setCondition(e.target.value)}
+            value={condition}
+          />
           <IconButton color="warning">
             <ShuffleIcon />
           </IconButton>
