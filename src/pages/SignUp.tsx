@@ -1,5 +1,5 @@
 import React, {useState} from 'react'
-import {Link} from 'react-router-dom'
+import {Link, useNavigate} from 'react-router-dom'
 import styles from './SignUp.module.css'
 import useAuth from '../components/UserProvider'
 import logo from '../assets/logo.svg'
@@ -8,8 +8,8 @@ const SignUp: React.VFC = () => {
   const [name, setName] = useState('')
   const [password, setPassword] = useState('')
   const [passwordConfirm, setPasswordConfirm] = useState('')
-
   const {signup} = useAuth()
+  const navigate = useNavigate()
 
   const handleRegister = async (e: React.MouseEvent) => {
     e.preventDefault()
@@ -18,6 +18,7 @@ const SignUp: React.VFC = () => {
     await signup({name, password})
     setName('')
     setPassword('')
+    navigate('/')
   }
 
   return (
