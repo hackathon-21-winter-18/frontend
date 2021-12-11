@@ -90,7 +90,7 @@ export const FixTemplate: React.VFC = () => {
         <img src={location.state.image} alt="map" onClick={handleOnClick} />
       </div>
       <ol>{listItems}</ol>
-      <input type="text" value={name} placeholder="神殿の名前" onChange={handleNameChange} />
+      <input type="text" value={name} placeholder="テンプレートの名前" onChange={handleNameChange} />
       <button onClick={handleComplete}>完成!</button>
       <button onClick={handleCheck}>ボタン</button>
     </div>
