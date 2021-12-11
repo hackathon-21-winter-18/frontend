@@ -1,5 +1,5 @@
 .sidebar {
-  min-height: calc(100vh - 101px);
+  min-height: calc(100vh - 117px);
   width: 252px;
   padding: 24px;
   flex-shrink: 0;
@@ -8,14 +8,14 @@
 }
 .buttonHere {
   background-color: #f3f6fb;
-  color: #313847;
-  font-weight: 700;
-  font-size: 24px;
+  color: #182031;
+  font-weight: 500;
+  font-size: 18px;
   font-family: 'Noto Sans JP';
 
   border-radius: 10px;
   padding: 8px 12px;
-  margin-bottom: 24px;
+  margin-bottom: 12px;
   display: flex;
   align-items: center;
 
@@ -27,12 +27,12 @@
   background-color: white;
   color: #828894;
   font-weight: 500;
-  font-size: 24px;
+  font-size: 18px;
   font-family: 'Noto Sans JP';
 
   border-radius: 10px;
   padding: 8px 12px;
-  margin-bottom: 24px;
+  margin-bottom: 12px;
   display: flex;
   align-items: center;
 
