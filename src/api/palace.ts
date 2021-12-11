@@ -14,3 +14,10 @@ export const putPalace = (palaceID: string, data: any, onSuccess?: () => any, on
     .then(onSuccess)
     .catch(onError)
 }
+
+export const getPalace = (palaceID: string, data: any, onSuccess?: () => any, onError?: () => any) => {
+  axios
+    .get(config() + palaceID, data)
+    .then(onSuccess)
+    .catch(onError)
+}
