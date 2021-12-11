@@ -98,7 +98,7 @@ export const EditFromTemplate: React.VFC = () => {
       }
       const data = {
         name: name,
-        image: template.image.substring(22),
+        image: location.state.image.substring(22),
         embededPins: embededPins,
         createdBy: user.id,
       }
@@ -121,9 +121,11 @@ export const EditFromTemplate: React.VFC = () => {
       const data = res.data
       let name2 = name
       let coodinates2 = coodinates
+      let array = []
       for (let i = 0; i < data.length; i++) {
         if (data[i].id === params.id) {
           setTemplate(data[i])
+          array = Array(data[i].pins.length)
           for (let j = 0; j < data[i].pins.length; j++) {
             name2 = data[i].name
             coodinates2 = coodinates2.concat([[data[i].pins[j].x, data[i].pins[j].y]])
@@ -132,8 +134,7 @@ export const EditFromTemplate: React.VFC = () => {
       }
       setName(name2)
       setCoodinates(coodinates2)
-      const array = Array(coodinates.length)
-      array.fill('')
+      array = array.fill('')
       setWords(array)
       setPlaces(array)
       setConditions(array)
@@ -182,6 +183,7 @@ export const EditFromTemplate: React.VFC = () => {
       />
       <input type="text" value={name} placeholder="宮殿の名前" onChange={handleNameChange} />
       <button onClick={handleComplete}>完成!</button>
+      <button onClick={() => console.log(words)}>ボタン</button>
       <Dialog open={isOpen} onClose={() => setIsOpen(false)}>
         <span>単語もしくは宮殿の名前が登録されていません。</span>
         <button onClick={() => setIsOpen(false)}>OK</button>

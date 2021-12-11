@@ -129,7 +129,7 @@ export const Fix: React.VFC = () => {
       }
       const data = {
         name: name,
-        image: location.state.image.substr(22),
+        image: location.state.image.substring(22),
         embededPins: embededPins,
       }
       console.log(data)

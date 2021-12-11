@@ -98,6 +98,7 @@ export const Edit: React.VFC = () => {
         embededPins: embededPins,
         createdBy: user.id,
       }
+      /*
       let pins = new Array<Pins>()
       for (let i = 0; i < coodinates.length; i++) {
         pins.push({
@@ -112,6 +113,7 @@ export const Edit: React.VFC = () => {
         pins: pins,
         createdBy: user.id,
       }
+      */
       console.log(data)
       axios
         .post('http://localhost:8080/api/palaces/me', data, {withCredentials: true})
@@ -122,6 +124,7 @@ export const Edit: React.VFC = () => {
         .catch((error) => {
           console.log(error)
         })
+      /*
       axios
         .post('http://localhost:8080/api/templates/me', data2, {withCredentials: true})
         .then((res) => {
@@ -130,6 +133,7 @@ export const Edit: React.VFC = () => {
         .catch((error) => {
           console.log(error)
         })
+        */
     } else {
       setIsOpen(true)
     }

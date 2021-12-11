@@ -23,7 +23,7 @@ const Template: React.VFC<TemplateProps> = ({num, template, deleteTemplate}) => 
     setDeleteIsOpen(true)
   }
   function handleDelete() {
-    axios.delete('http://localhost:8080/api/temaplates/' + template.id, {withCredentials: true})
+    axios.delete('http://localhost:8080/api/templates/' + template.id, {withCredentials: true})
     deleteTemplate(num)
   }
   function Extension() {
@@ -48,7 +48,7 @@ const Template: React.VFC<TemplateProps> = ({num, template, deleteTemplate}) => 
         className={styles.image}
         src={Extension()}
         alt={template.name}
-        onClick={() => navigate('/fromTemplate' + template.id)}
+        onClick={() => navigate('/fromTemplate/' + template.id, {state: {image: Extension()}})}
       />
       <div className={styles.titleContainer}>
         <h1 className={styles.title}>{template.name}</h1>
@@ -61,9 +61,9 @@ const Template: React.VFC<TemplateProps> = ({num, template, deleteTemplate}) => 
         {template.pins.length + ' Words'}
       </div>
       <Dialog open={isOpen} onClose={handleDialogClose}>
-        <Link to={'fixTemplate/' + template.id} state={{image: Extension()}}>
+        <button onClick={() => navigate('/fixTemplate/' + template.id, {state: {image: Extension()}})}>
           テンプレートの編集
-        </Link>
+        </button>
         <button onClick={handleDeleteDialog}>テンプレートの削除</button>
         <Dialog open={deleteIsOpen} onClose={() => setDeleteIsOpen(false)}>
           本当にテンプレートを削除しますか？

@@ -32,7 +32,7 @@ function App() {
                 <Route path="/fixTemplate/:id" element={<FixTemplate />} />
                 <Route path="/template" element={<TemplatePage />} />
                 <Route path="/editTemplate/:base64/*" element={<EditTemplate />} />
-                <Route path="/fromTemplate" element={<EditFromTemplate />} />
+                <Route path="/fromTemplate/:id" element={<EditFromTemplate />} />
                 <Route path="/*" element={<NotFound />} />
               </Route>
             </Route>
