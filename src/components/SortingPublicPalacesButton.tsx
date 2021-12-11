@@ -1,13 +1,12 @@
 import * as React from 'react'
 import Button from '@mui/material/Button'
-import Dialog from '@mui/material/Dialog'
 import axios from 'axios';
 import { FormControlLabel, Input, Radio, RadioGroup } from '@mui/material';
 import { PalaceType } from '../types';
-interface SortingMyPalacesButtonProp {
+interface SortingPublicPalacesButtonProp {
   setPalaces: React.Dispatch<React.SetStateAction<PalaceType[]>>
 }
-export const SortingPublicPalacesButton = (prop: SortingMyPalacesButtonProp) => {
+export const SortingPublicPalacesButton = (prop: SortingPublicPalacesButtonProp) => {
   const { setPalaces } = prop;
   const [order, setOrder] = React.useState('first_shared_at');
   const [minPins, setMinPins] = React.useState(0);
