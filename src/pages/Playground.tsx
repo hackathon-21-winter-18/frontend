@@ -1,6 +1,5 @@
-import React, {useEffect, useState} from 'react'
+import React from 'react'
 import styles from './Playground.module.css'
-import {useLocation} from 'react-router'
 import {Edit} from './Edit'
 
 const Playground: React.VFC = () => {
