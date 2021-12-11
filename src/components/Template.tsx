@@ -75,6 +75,7 @@ const Template: React.VFC<TemplateProps> = ({num, template, deleteTemplate}) => 
         <CommentIcon className={styles.commentIcon} />
         {template.pins.length + ' Words'}
       </div>
+      {share ? <span>共有済</span> : <span>未共有</span>}
       <Dialog open={isOpen} onClose={handleDialogClose}>
         <button onClick={() => navigate('/fixTemplate/' + template.id, {state: {image: Extension()}})}>
           テンプレートの編集
