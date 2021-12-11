@@ -113,13 +113,27 @@ export const Edit: React.VFC<EditProps> = ({imageUrl}) => {
           do: conditions[i],
         })
       }
-      const data = {
+      let data = {
         name: name,
-        image: location.state.image.substr(22),
+        image: '',
         embededPins: embededPins,
         createdBy: user.id,
       }
-
+      if (location.state.image.substr(0, 23) === 'data:image/jpeg;base64,') {
+        data = {
+          name: name,
+          image: location.state.image.substr(23),
+          embededPins: embededPins,
+          createdBy: user.id,
+        }
+      } else {
+        data = {
+          name: name,
+          image: location.state.image.substr(22),
+          embededPins: embededPins,
+          createdBy: user.id,
+        }
+      }
       console.log(data)
       axios
         .post('http://localhost:8080/api/palaces/me', data, {withCredentials: true})
