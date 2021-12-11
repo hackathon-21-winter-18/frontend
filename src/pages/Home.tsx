@@ -57,8 +57,10 @@ const Home: React.VFC = () => {
     axios
       .get('http://localhost:8080/api/palaces/me', {withCredentials: true})
       .then((res) => {
-        setPalaces(res.data)
-        console.log(res.data)
+        if (res.data.length !== 0) {
+          setPalaces(res.data)
+          console.log(res.data)
+        }
       })
       .catch((error) => console.log(error))
   }, [])

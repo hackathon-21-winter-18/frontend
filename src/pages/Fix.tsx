@@ -6,6 +6,7 @@ import PushPinIcon from '@mui/icons-material/PushPin'
 import axios from 'axios'
 import {UserContext} from '../components/UserProvider'
 import {PalaceType} from '../types'
+import Dialog from '@mui/material/Dialog'
 
 export const Fix: React.VFC = () => {
   const [open, setOpen] = React.useState(false)
@@ -21,6 +22,8 @@ export const Fix: React.VFC = () => {
   const location = useLocation()
   const [name, setName] = React.useState('')
   const {user} = React.useContext(UserContext)
+  const [isOpen, setIsOpen] = React.useState(false)
+
   const [palace, setPalace] = React.useState<PalaceType>({
     id: '',
     name: '',
@@ -112,36 +115,35 @@ export const Fix: React.VFC = () => {
   }, [])
 
   function handleComplete() {
-    const embededPins = []
-    for (let i = 0; i < coodinates.length; i++) {
-      embededPins.push({
-        number: i,
-        x: coodinates[i][0],
-        y: coodinates[i][1],
-        word: words[i],
-        place: places[i],
-        do: conditions[i],
-      })
+    if (coodinates.length > 0 && name !== '') {
+      const embededPins = []
+      for (let i = 0; i < coodinates.length; i++) {
+        embededPins.push({
+          number: i,
+          x: coodinates[i][0],
+          y: coodinates[i][1],
+          word: words[i],
+          place: places[i],
+          do: conditions[i],
+        })
+      }
+      const data = {
+        name: name,
+        image: location.state.image.substr(22),
+        embededPins: embededPins,
+      }
+      console.log(data)
+      axios
+        .put('http://localhost:8080/api/palaces/' + palace.id, data, {withCredentials: true})
+        .then((res) => {
+          console.log(res.status)
+        })
+        .catch((error) => {
+          console.log(error)
+        })
+    } else {
+      setIsOpen(true)
     }
-    const data = {
-      name: name,
-      image: location.state.image.substr(22),
-      embededPins: embededPins,
-    }
-    console.log(data)
-    axios
-      .put('http://localhost:8080/api/palaces/' + palace.id, data, {withCredentials: true})
-      .then((res) => {
-        console.log(res.status)
-      })
-      .catch((error) => {
-        console.log(error)
-      })
-  }
-  function handleCheck() {
-    console.log(words)
-    console.log(coodinates)
-    console.log(name)
   }
 
   return (
@@ -185,7 +187,10 @@ export const Fix: React.VFC = () => {
       />
       <input type="text" value={name} placeholder="神殿の名前" onChange={handleNameChange} />
       <button onClick={handleComplete}>完成!</button>
-      <button onClick={handleCheck}>ボタン</button>
+      <Dialog open={isOpen} onClose={() => setIsOpen(false)}>
+        <span>単語もしくは宮殿の名前が登録されていません。</span>
+        <button onClick={() => setIsOpen(false)}>OK</button>
+      </Dialog>
     </div>
   )
 }

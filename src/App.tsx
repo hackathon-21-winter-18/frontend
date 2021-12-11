@@ -1,4 +1,4 @@
-import './App.module.css'
+import styles from './App.module.css'
 import {BrowserRouter, Route, Routes} from 'react-router-dom'
 import {UserProvider} from './components/UserProvider'
 import Home from './pages/Home'
@@ -17,7 +17,7 @@ import {FixTemplate} from './pages/FixTemplate'
 
 function App() {
   return (
-    <div className="App">
+    <div className={styles.app}>
       <UserProvider>
         <BrowserRouter>
           <Routes>

@@ -6,6 +6,7 @@ import PushPinIcon from '@mui/icons-material/PushPin'
 import axios from 'axios'
 import {UserContext} from '../components/UserProvider'
 import {Pins} from '../types'
+import Dialog from '@mui/material/Dialog'
 
 export const Edit: React.VFC = () => {
   const [open, setOpen] = React.useState(false)
@@ -21,6 +22,7 @@ export const Edit: React.VFC = () => {
   const location = useLocation()
   const [name, setName] = React.useState('')
   const {user} = React.useContext(UserContext)
+  const [isOpen, setIsOpen] = React.useState(false)
 
   const handleOnClick = (e: React.MouseEvent<HTMLImageElement>) => {
     setNewCoodinate([e.pageX, e.pageY])
@@ -34,6 +36,8 @@ export const Edit: React.VFC = () => {
   }
   const handleClick = () => {
     setWords([...words, newWord])
+    setPlaces([...places, newPlace])
+    setConditions([...conditions, newCondition])
     setCoodinates([...coodinates, newCoodinate])
     setOpen(false)
     setNewWord('')
@@ -76,55 +80,59 @@ export const Edit: React.VFC = () => {
   }
 
   function handleComplete() {
-    const embededPins = []
-    for (let i = 0; i < coodinates.length; i++) {
-      embededPins.push({
-        number: i,
-        x: coodinates[i][0],
-        y: coodinates[i][1],
-        word: words[i],
-        place: places[i],
-        do: conditions[i],
-      })
+    if (coodinates.length > 0 && name !== '') {
+      const embededPins = []
+      for (let i = 0; i < coodinates.length; i++) {
+        embededPins.push({
+          number: i,
+          x: coodinates[i][0],
+          y: coodinates[i][1],
+          word: words[i],
+          place: places[i],
+          do: conditions[i],
+        })
+      }
+      const data = {
+        name: name,
+        image: location.state.image.substr(22),
+        embededPins: embededPins,
+        createdBy: user.id,
+      }
+      let pins = new Array<Pins>()
+      for (let i = 0; i < coodinates.length; i++) {
+        pins.push({
+          number: i,
+          x: coodinates[i][0],
+          y: coodinates[i][1],
+        })
+      }
+      const data2 = {
+        name: name,
+        image: location.state.image.substring(22),
+        pins: pins,
+        createdBy: user.id,
+      }
+      console.log(data)
+      axios
+        .post('http://localhost:8080/api/palaces/me', data, {withCredentials: true})
+        .then((res) => {
+          console.log(res.status)
+          console.log(res.data)
+        })
+        .catch((error) => {
+          console.log(error)
+        })
+      axios
+        .post('http://localhost:8080/api/templates/me', data2, {withCredentials: true})
+        .then((res) => {
+          console.log(res.status)
+        })
+        .catch((error) => {
+          console.log(error)
+        })
+    } else {
+      setIsOpen(true)
     }
-    const data = {
-      name: name,
-      image: location.state.image.substr(22),
-      embededPins: embededPins,
-      createdBy: user.id,
-    }
-    let pins = new Array<Pins>()
-    for (let i = 0; i < coodinates.length; i++) {
-      pins.push({
-        number: i,
-        x: coodinates[i][0],
-        y: coodinates[i][1],
-      })
-    }
-    const data2 = {
-      name: name,
-      image: location.state.image.substring(22),
-      pins: pins,
-      createdBy: user.id,
-    }
-    console.log(data)
-    axios
-      .post('http://localhost:8080/api/palaces/me', data, {withCredentials: true})
-      .then((res) => {
-        console.log(res.status)
-        console.log(res.data)
-      })
-      .catch((error) => {
-        console.log(error)
-      })
-    axios
-      .post('http://localhost:8080/api/templates/me', data2, {withCredentials: true})
-      .then((res) => {
-        console.log(res.status)
-      })
-      .catch((error) => {
-        console.log(error)
-      })
   }
 
   return (
@@ -168,6 +176,10 @@ export const Edit: React.VFC = () => {
       />
       <input type="text" value={name} placeholder="宮殿の名前" onChange={handleNameChange} />
       <button onClick={handleComplete}>完成!</button>
+      <Dialog open={isOpen} onClose={() => setIsOpen(false)}>
+        <span>単語もしくは宮殿の名前が登録されていません。</span>
+        <button onClick={() => setIsOpen(false)}>OK</button>
+      </Dialog>
     </div>
   )
 }

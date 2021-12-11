@@ -1,33 +1,23 @@
 import {useContext} from 'react'
 import styles from './Header.module.css'
-import {Link, useNavigate} from 'react-router-dom'
-import logo from '../assets/脳みそ.png'
+import {useNavigate} from 'react-router-dom'
+import logo from '../assets/logo.svg'
 import FromNewPalace from './DialogFromNewPalace'
 import {UserContext} from './UserProvider'
 import FromNewTemplate from './DialogFromNewTemplate'
 
 const Header: React.VFC = () => {
-  const {user, logout} = useContext(UserContext)
+  const {user} = useContext(UserContext)
   const navigate = useNavigate()
   return (
-    <div className={styles.header}>
-      <img src={logo} alt="logo" width="2%" onClick={() => navigate('/')} />
-      <span>Palamo</span>
-      {user.auth ? (
-        <>
-          <span>{user.name}でログイン中</span>
+    <>
+      {user.auth && (
+        <div className={styles.header}>
+          <img className={styles.logo} src={logo} alt="logo" onClick={() => navigate('/')} />
           <FromNewPalace />
-          <FromNewTemplate />
-          <Link to="login" onClick={logout}>
-            ログアウト
-          </Link>
-        </>
-      ) : (
-        <>
-          <Link to="login">ログイン</Link>
-        </>
+        </div>
       )}
-    </div>
+    </>
   )
 }
 
