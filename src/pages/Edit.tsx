@@ -1,13 +1,16 @@
 import * as React from 'react'
-import { useParams, useLocation } from 'react-router'
+import styles from './Edit.module.css'
+import {useParams, useLocation} from 'react-router'
 import AddNewWordDialog from '../components/AddNewWordDialog'
-import { EditAddedWord } from '../components/EditAddedWord'
+import {EditAddedWord} from '../components/EditAddedWord'
 import PushPinIcon from '@mui/icons-material/PushPin'
 import axios from 'axios'
 
+interface EditProps {
+  imageUrl?: string
+}
 
-
-export const Edit: React.VFC = () => {
+export const Edit: React.VFC<EditProps> = ({imageUrl}) => {
   const [open, setOpen] = React.useState(false)
 
   const [newWord, setNewWord] = React.useState('')
@@ -113,13 +116,11 @@ export const Edit: React.VFC = () => {
   "createdBy": "3fa85f64-5717-4562-b3fc-2c963f66afa6"
 }*/
   return (
-    <div>
+    <div className={styles.edit}>
       {coodinates.map(([x, y]: [number, number], index) => (
-        <PushPinIcon key={index} style={{ position: 'absolute', top: y + 'px', left: x + 'px' }} />
+        <PushPinIcon key={index} style={{position: 'absolute', top: y + 'px', left: x + 'px'}} />
       ))}
-      <div>
-        <img src={location.state.image} alt="map" onClick={handleOnClick} />
-      </div>
+      <img className={styles.layoutImage} src={imageUrl ?? location.state.image} alt="map" onClick={handleOnClick} />
       <div>
         {[...Array(words.length)].map((_, index: number) => (
           <div>
@@ -128,9 +129,15 @@ export const Edit: React.VFC = () => {
               word={words[index]}
               place={places[index]}
               condition={conditions[index]}
-              handleWordChange={(e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => handleWordChange(e, index)}
-              handlePlaceChange={(e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => handlePlaceChange(e, index)}
-              handleConditionChange={(e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => handleConditionChange(e, index)}
+              handleWordChange={(e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) =>
+                handleWordChange(e, index)
+              }
+              handlePlaceChange={(e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) =>
+                handlePlaceChange(e, index)
+              }
+              handleConditionChange={(e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) =>
+                handleConditionChange(e, index)
+              }
               handleDelete={() => handleDelete(index)}
             />
           </div>
