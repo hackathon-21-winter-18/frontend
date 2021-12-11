@@ -1,4 +1,4 @@
-import { Button, Dialog, Input } from '@mui/material'
+import {Button, Dialog, Input} from '@mui/material'
 import * as React from 'react'
 
 interface AddNewWordDialogProps {
@@ -13,7 +13,7 @@ interface AddNewWordDialogProps {
   setNewCondition: React.Dispatch<React.SetStateAction<string>>
 }
 export default function AddNewWordDialog(props: AddNewWordDialogProps) {
-const {open, handleClose, handleClick, newWord, setNewWord, newPlace, setNewPlace, newCondition, setNewCondition} =
+  const {open, handleClose, handleClick, newWord, setNewWord, newPlace, setNewPlace, newCondition, setNewCondition} =
     props
 
   const handleWordChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
@@ -29,11 +29,11 @@ const {open, handleClose, handleClick, newWord, setNewWord, newPlace, setNewPlac
     <Dialog open={open} onClose={handleClose}>
       <div>追加する</div>
       <div>
-        <Input value={newWord} onChange={handleWordChange} />
+        <Input value={newWord} onChange={handleWordChange} placeholder="単語" />
         <span>が</span>
-        <Input value={newPlace} onChange={handlePlaceChange} />
+        <Input value={newPlace} onChange={handlePlaceChange} placeholder="場所" />
         <span>で</span>
-        <Input value={newCondition} onChange={handleConditionChange} />
+        <Input value={newCondition} onChange={handleConditionChange} placeholder="どうしてる" />
       </div>
       <Button onClick={handleClick}>登録</Button>
     </Dialog>
