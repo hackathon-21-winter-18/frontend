@@ -1,4 +1,4 @@
-import {useState, useEffect, useContext} from 'react'
+import {useState, useEffect} from 'react'
 import {useParams} from 'react-router'
 import {Link} from 'react-router-dom'
 import styles from 'Memorize.module.css'
@@ -8,7 +8,7 @@ import palace1 from '../assets/ヴェルサイユ宮殿.jpg'
 import palace2 from '../assets/バッキンガム宮殿.jpg'
 import axios from 'axios'
 import PushPinIcon from '@mui/icons-material/PushPin'
-import {UserContext} from '../components/UserProvider'
+import useAuth from '../components/UserProvider'
 import Dialog from '@mui/material/Dialog'
 
 const mockPalaces: PalaceType[] = [
@@ -41,7 +41,7 @@ const Memorize: React.VFC = () => {
   })
   const [flags, setFlags] = useState([...Array(palace.embededPins.length)].fill(false))
   const params = useParams()
-  const {user} = useContext(UserContext)
+  const {user} = useAuth()
   const [isOpen, setIsOpen] = useState(false)
 
   const listItems = palace.embededPins.map((pin: any) => (

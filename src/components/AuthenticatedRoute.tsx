@@ -1,9 +1,8 @@
 import {Navigate, Outlet} from 'react-router-dom'
-import {useContext} from 'react'
-import {UserContext} from './UserProvider'
+import useAuth from './UserProvider'
 
 const AuthenticatedRoute: React.VFC = () => {
-  const {user} = useContext(UserContext)
+  const {user} = useAuth()
 
   return user.auth ? <Outlet /> : <Navigate to="/login" />
 }

@@ -1,14 +1,13 @@
 import React, {useState} from 'react'
 import styles from './Login.module.css'
-import {useContext} from 'react'
-import {UserContext} from '../components/UserProvider'
+import useAuth from '../components/UserProvider'
 import {Link, useNavigate} from 'react-router-dom'
 import logo from '../assets/logo.svg'
 
 const Login: React.VFC = () => {
   const [name, setName] = useState('')
   const [password, setPassword] = useState('')
-  const {login} = useContext(UserContext)
+  const {login} = useAuth()
   const navigate = useNavigate()
 
   const handleLogin = async (e: React.MouseEvent) => {

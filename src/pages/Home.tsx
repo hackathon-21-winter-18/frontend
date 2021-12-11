@@ -5,10 +5,8 @@ import {PalaceType} from '../types'
 import palace1 from '../assets/ヴェルサイユ宮殿.jpg'
 import palace2 from '../assets/バッキンガム宮殿.jpg'
 import axios from 'axios'
-import Sidebar from '../components/Sidebar'
 import CreateNewPalaceButton from '../components/CreateNewPalaceButton'
-import {useContext} from 'react'
-import {UserContext} from '../components/UserProvider'
+import useAuth from '../components/UserProvider'
 
 const mockPalaces: PalaceType[] = [
   {
@@ -40,12 +38,12 @@ const Home: React.VFC = () => {
     },
   ])
 
-  const {user} = useContext(UserContext)
   const listItems = palaces.map((palace, index) => (
     <li key={palace.id}>
       <Palace num={index} palace={palace} deletePalace={DeletePalace} />
     </li>
   ))
+  const {user} = useAuth()
 
   function DeletePalace(number: number) {
     setPalaces(palaces.slice(0, number).concat(palaces.slice(number + 1)))

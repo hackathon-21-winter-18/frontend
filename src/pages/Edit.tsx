@@ -6,8 +6,8 @@ import AddNewWordDialog from '../components/AddNewWordDialog'
 import {EditAddedWord} from '../components/EditAddedWord'
 import PushPinIcon from '@mui/icons-material/PushPin'
 import axios from 'axios'
-import {UserContext} from '../components/UserProvider'
 import {Pins} from '../types'
+import useAuth from '../components/UserProvider'
 import Dialog from '@mui/material/Dialog'
 
 interface EditProps {
@@ -27,7 +27,7 @@ export const Edit: React.VFC<EditProps> = ({imageUrl}) => {
   const image = useParams() //あとで使うかも
   const location = useLocation()
   const [name, setName] = React.useState('')
-  const {user} = React.useContext(UserContext)
+  const {user} = useAuth()
   const [isOpen, setIsOpen] = React.useState(false)
   const [palaceId, setPalaceId] = React.useState('')
   const [completeIsOpen, setCompleteIsOpen] = React.useState(false)
