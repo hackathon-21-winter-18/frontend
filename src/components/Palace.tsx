@@ -1,36 +1,43 @@
 import {useState} from 'react'
 import {Link, useNavigate} from 'react-router-dom'
 import styles from './Palace.module.css'
-import ReactModal from 'react-modal'
 import {PalaceType} from '../types'
 import axios from 'axios'
 import MoreVertIcon from '@mui/icons-material/MoreVert'
 import CommentIcon from '@mui/icons-material/Comment'
+import Dialog from '@mui/material/Dialog'
 
 interface PalaceProps {
+  num: number
   palace: PalaceType
+  deletePalace: (number: number) => void
 }
 
-const Palace: React.VFC<PalaceProps> = ({palace}) => {
+const Palace: React.VFC<PalaceProps> = ({num, palace, deletePalace}) => {
   const [isOpen, setIsOpen] = useState(false)
+  const [deleteIsOpen, setDeleteIsOpen] = useState(false)
   const navigate = useNavigate()
-  const customStyles: ReactModal.Styles = {
-    // ダイアログ内のスタイル（中央に表示）
-    content: {
-      top: '30%',
-      bottom: 'auto',
-      right: 'auto',
-      left: '50%',
-    },
-    // 親ウィンドウのスタイル
-    overlay: {},
-  }
 
+  function handleDeleteDialog() {
+    setDeleteIsOpen(true)
+  }
   function handleDelete() {
-    //確認ダイアログ表示
-    axios.delete('/palace/' + palace.id)
+    axios.delete('http://localhost:8080/api/palaces/' + palace.id, {withCredentials: true})
+    deletePalace(num)
   }
-
+  function Extension() {
+    switch (palace.image.substring(0, 5)) {
+      case 'iVBOR':
+        return 'data:image/png;base64,' + palace.image
+      case 'R0IGO':
+        return 'data:image/gif;base64,' + palace.image
+      case '/9j/4':
+        return 'data:image/jpeg;base64,' + palace.image
+    }
+  }
+  const handleDialogClose = () => {
+    setIsOpen(false)
+  }
   return (
     <div className={styles.palace}>
       {/* <Link to={'/memorize/' + palace.id} className={styles.image}>
@@ -38,7 +45,7 @@ const Palace: React.VFC<PalaceProps> = ({palace}) => {
       </Link> */}
       <img
         className={styles.image}
-        src={palace.image}
+        src={Extension()}
         alt={palace.name}
         onClick={() => navigate('/memorize/' + palace.id)}
       />
@@ -52,11 +59,17 @@ const Palace: React.VFC<PalaceProps> = ({palace}) => {
         <CommentIcon className={styles.commentIcon} />
         {palace.embededPins.length + ' Words'}
       </div>
-      <ReactModal isOpen={isOpen} onRequestClose={() => setIsOpen(false)} style={customStyles}>
-        <Link to="/palaceEdit">宮殿の編集</Link>
-        <br />
-        <button onClick={handleDelete}>宮殿の削除</button>
-      </ReactModal>
+      <Dialog open={isOpen} onClose={handleDialogClose}>
+        <Link to={'fix/' + palace.id} state={{image: 'data:image/png;base64,' + palace.image}}>
+          宮殿の編集
+        </Link>
+        <button onClick={handleDeleteDialog}>宮殿の削除</button>
+        <Dialog open={deleteIsOpen} onClose={() => setDeleteIsOpen(false)}>
+          本当に宮殿を削除しますか？
+          <button onClick={handleDelete}>はい</button>
+          <button onClick={() => setDeleteIsOpen(false)}>いいえ</button>
+        </Dialog>
+      </Dialog>
     </div>
   )
 }

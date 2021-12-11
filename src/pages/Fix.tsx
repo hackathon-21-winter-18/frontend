@@ -1,18 +1,14 @@
 import * as React from 'react'
-import styles from './Edit.module.css'
 import {useParams, useLocation} from 'react-router'
 import AddNewWordDialog from '../components/AddNewWordDialog'
 import {EditAddedWord} from '../components/EditAddedWord'
 import PushPinIcon from '@mui/icons-material/PushPin'
 import axios from 'axios'
 import {UserContext} from '../components/UserProvider'
+import {PalaceType} from '../types'
 import Dialog from '@mui/material/Dialog'
 
-interface EditProps {
-  imageUrl?: string
-}
-
-export const Edit: React.VFC<EditProps> = ({imageUrl}) => {
+export const Fix: React.VFC = () => {
   const [open, setOpen] = React.useState(false)
   const [newWord, setNewWord] = React.useState('')
   const [words, setWords] = React.useState(new Array<string>())
@@ -27,6 +23,14 @@ export const Edit: React.VFC<EditProps> = ({imageUrl}) => {
   const [name, setName] = React.useState('')
   const {user} = React.useContext(UserContext)
   const [isOpen, setIsOpen] = React.useState(false)
+
+  const [palace, setPalace] = React.useState<PalaceType>({
+    id: '',
+    name: '',
+    image: '',
+    embededPins: [{number: 0, x: 0, y: 0, word: '', place: '', do: ''}],
+  })
+  const params = useParams()
 
   const handleOnClick = (e: React.MouseEvent<HTMLImageElement>) => {
     setNewCoodinate([e.pageX, e.pageY])
@@ -47,8 +51,6 @@ export const Edit: React.VFC<EditProps> = ({imageUrl}) => {
     setNewWord('')
     setNewPlace('')
     setNewCondition('')
-    setPlaces([...places, newPlace])
-    setConditions([...conditions, newCondition])
   }
   const handleWordChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>, index: number) => {
     const _words = words.slice()
@@ -79,9 +81,38 @@ export const Edit: React.VFC<EditProps> = ({imageUrl}) => {
     _coodinates.splice(index, 1)
     setCoodinates([..._coodinates])
   }
+
   function handleNameChange(e: any) {
     setName(e.target.value)
   }
+  React.useEffect(() => {
+    axios.get('http://localhost:8080/api/palaces/me', {withCredentials: true}).then((res) => {
+      const data = res.data
+      let words2 = words
+      let coodinates2 = coodinates
+      let name2 = name
+      let places2 = places
+      let conditions2 = conditions
+      for (let i = 0; i < data.length; i++) {
+        if (data[i].id === params.id) {
+          setPalace(data[i])
+          for (let j = 0; j < data[i].embededPins.length; j++) {
+            words2 = words2.concat([data[i].embededPins[j].word])
+            coodinates2 = coodinates2.concat([[data[i].embededPins[j].x, data[i].embededPins[j].y]])
+            name2 = data[i].name
+            places2 = places2.concat([data[i].embededPins[j].place])
+            conditions2 = conditions2.concat([data[i].embededPins[j].do])
+          }
+        }
+      }
+      setWords(words2)
+      setCoodinates(coodinates2)
+      setName(name2)
+      setPlaces(places2)
+      setConditions(conditions2)
+      console.log('set!')
+    })
+  }, [])
 
   function handleComplete() {
     if (coodinates.length > 0 && name !== '') {
@@ -100,11 +131,10 @@ export const Edit: React.VFC<EditProps> = ({imageUrl}) => {
         name: name,
         image: location.state.image.substr(22),
         embededPins: embededPins,
-        createdBy: user.id,
       }
       console.log(data)
       axios
-        .post('http://localhost:8080/api/palaces/me', data, {withCredentials: true})
+        .put('http://localhost:8080/api/palaces/' + palace.id, data, {withCredentials: true})
         .then((res) => {
           console.log(res.status)
         })
@@ -117,11 +147,13 @@ export const Edit: React.VFC<EditProps> = ({imageUrl}) => {
   }
 
   return (
-    <div className={styles.edit}>
+    <div>
       {coodinates.map(([x, y]: [number, number], index) => (
         <PushPinIcon key={index} style={{position: 'absolute', top: y + 'px', left: x + 'px'}} />
       ))}
-      <img className={styles.layoutImage} src={imageUrl ?? location.state.image} alt="map" onClick={handleOnClick} />
+      <div>
+        <img src={location.state.image} alt="map" onClick={handleOnClick} />
+      </div>
       <div>
         {[...Array(words.length)].map((_, index: number) => (
           <EditAddedWord
@@ -153,7 +185,7 @@ export const Edit: React.VFC<EditProps> = ({imageUrl}) => {
         handleClose={handleClose}
         handleClick={handleClick}
       />
-      <input type="text" value={name} placeholder="宮殿の名前" onChange={handleNameChange} />
+      <input type="text" value={name} placeholder="神殿の名前" onChange={handleNameChange} />
       <button onClick={handleComplete}>完成!</button>
       <Dialog open={isOpen} onClose={() => setIsOpen(false)}>
         <span>単語もしくは宮殿の名前が登録されていません。</span>

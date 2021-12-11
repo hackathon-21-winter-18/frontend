@@ -5,6 +5,7 @@ import Home from './pages/Home'
 import Login from './pages/Login'
 import Memorize from './pages/Memorize'
 import {Edit} from './pages/Edit'
+import {Fix} from './pages/Fix'
 import TemplatePage from './pages/TemplatePage'
 import NotFound from './pages/NotFound'
 import Layout from './components/Layout'
@@ -30,6 +31,7 @@ function App() {
                 </Route>
                 <Route path="/memorize/:id" element={<Memorize />} />
                 <Route path="/edit/:base64/*" element={<Edit />} />
+                <Route path="/fix/:id" element={<Fix />} />
                 <Route path="/*" element={<NotFound />} />
               </Route>
             </Route>

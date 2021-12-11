@@ -11,7 +11,9 @@ export interface EditAddedWordProps {
   handleDelete: React.MouseEventHandler<HTMLButtonElement>
 }
 export const EditAddedWord: React.VFC<EditAddedWordProps> = (props: EditAddedWordProps) => {
-  const { word, place, condition, handleWordChange, handlePlaceChange, handleConditionChange, handleDelete } = props
+
+  const {word, place, condition, handleWordChange, handlePlaceChange, handleConditionChange, handleDelete} = props
+
   return (
     <div>
       <Input value={word} onChange={handleWordChange} />

@@ -13,7 +13,9 @@ interface AddNewWordDialogProps {
   setNewCondition: React.Dispatch<React.SetStateAction<string>>
 }
 export default function AddNewWordDialog(props: AddNewWordDialogProps) {
-  const { open, handleClose, handleClick, newWord, setNewWord, newPlace, setNewPlace, newCondition, setNewCondition } = props
+const {open, handleClose, handleClick, newWord, setNewWord, newPlace, setNewPlace, newCondition, setNewCondition} =
+    props
+
   const handleWordChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     setNewWord(e.target.value)
   }

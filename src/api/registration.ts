@@ -4,13 +4,13 @@ import {RegistrationResponse, UserRegistration} from '../types'
 const endpoint = 'http://localhost:8080'
 
 export const postLogin = async (user: UserRegistration) => {
-  const res = await axios.post<RegistrationResponse>(endpoint + '/api/oauth/login', user)
+  const res = await axios.post<RegistrationResponse>(endpoint + '/api/oauth/login', user, {withCredentials: true})
   // TODO response error handling
   return res.data
 }
 
 export const postSignUp = async (user: UserRegistration) => {
-  const res = await axios.post<RegistrationResponse>(endpoint + '/api/oauth/signup', user)
+  const res = await axios.post<RegistrationResponse>(endpoint + '/api/oauth/signup', user, {withCredentials: true})
   // TODO response error handling
   return res.data
 }
