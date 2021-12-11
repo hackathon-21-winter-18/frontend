@@ -2,111 +2,41 @@ import * as React from 'react'
 import styles from './Edit.module.css'
 import {useParams, useLocation} from 'react-router'
 import {AddNewWordDialog} from '../components/AddNewWordDialog'
-import {EditAddedWord} from '../components/EditAddedWord'
-import PushPinIcon from '@mui/icons-material/PushPin'
 import axios from 'axios'
 import useAuth from '../components/UserProvider'
-import Dialog from '@mui/material/Dialog'
 import {useMousePosition} from '../hooks/useMousePosition'
 import {CustomCursor} from '../components/CustomCursor'
-import {Box, ClickAwayListener, Portal, SxProps} from '@mui/material'
+import {Badge, Box, ClickAwayListener, IconButton, Portal, SxProps} from '@mui/material'
 import {useHover} from '../hooks/useHover'
+import {EmbededPins, PinContent} from '../types'
+import pinIcon from '../assets/pin.svg'
+import {FixWordDialog} from '../components/FixWordDialog'
+import {postPalace} from '../api/palace'
 
 interface EditProps {
   imageUrl?: string
+  isPlayground?: boolean
 }
 
-export const Edit: React.VFC<EditProps> = ({imageUrl}) => {
-  const [open, setOpen] = React.useState(false)
-  const [newWord, setNewWord] = React.useState('')
-  const [words, setWords] = React.useState(new Array<string>())
-  const [newPlace, setNewPlace] = React.useState('')
-  const [places, setPlaces] = React.useState(new Array<string>())
-  const [newCondition, setNewCondition] = React.useState('')
-  const [conditions, setConditions] = React.useState(new Array<string>())
-  const [newCoodinate, setNewCoodinate] = React.useState<[number, number]>([0, 0])
-  const [coodinates, setCoodinates] = React.useState(new Array<[number, number]>())
+export const Edit: React.VFC<EditProps> = ({imageUrl, isPlayground = false}) => {
+  const [open, setOpen] = React.useState<number | boolean>(false)
+  const [pinOpen, setPinOpen] = React.useState<EmbededPins | null>(null)
+  const [pins, setPins] = React.useState<EmbededPins[]>([])
+
   const image = useParams() //あとで使うかも
   const location = useLocation()
-  const [name, setName] = React.useState('')
+  const [palaceName, setPalaceName] = React.useState('')
   const {user} = useAuth()
-  const [isOpen, setIsOpen] = React.useState(false)
 
   const [hoverRef, isHovered] = useHover<HTMLImageElement>()
   const {x, y} = useMousePosition()
 
-  const handleOnClick = () => {
-    setNewCoodinate([x, y])
-    setOpen(!open)
-  }
-  const handleClose = () => {
-    setOpen(false)
-    setNewWord('')
-    setNewPlace('')
-    setNewCondition('')
-  }
-  const handleClick = () => {
-    setWords([...words, newWord])
-    setPlaces([...places, newPlace])
-    setConditions([...conditions, newCondition])
-    setCoodinates([...coodinates, newCoodinate])
-    setOpen(false)
-    setNewWord('')
-    setNewPlace('')
-    setNewCondition('')
-    setPlaces([...places, newPlace])
-    setConditions([...conditions, newCondition])
-  }
-  const handleWordChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>, index: number) => {
-    const _words = words.slice()
-    _words[index] = e.target.value
-    setWords([..._words])
-  }
-  const handlePlaceChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>, index: number) => {
-    const _places = places.slice()
-    _places[index] = e.target.value
-    setPlaces([..._places])
-  }
-  const handleConditionChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>, index: number) => {
-    const _conditions = conditions.slice()
-    _conditions[index] = e.target.value
-    setConditions([..._conditions])
-  }
-  const handleDelete = (index: number) => {
-    const _words = words.slice()
-    _words.splice(index, 1)
-    setWords([..._words])
-    const _places = places.slice()
-    _places.splice(index, 1)
-    setPlaces([..._places])
-    const _conditions = conditions.slice()
-    _conditions.splice(index, 1)
-    setConditions([..._conditions])
-    const _coodinates = coodinates.slice()
-    _coodinates.splice(index, 1)
-    setCoodinates([..._coodinates])
-  }
-  function handleNameChange(e: any) {
-    setName(e.target.value)
-  }
-
-  function handleComplete() {
-    if (coodinates.length > 0 && name !== '') {
-      const embededPins = []
-      for (let i = 0; i < coodinates.length; i++) {
-        embededPins.push({
-          number: i,
-          x: coodinates[i][0],
-          y: coodinates[i][1],
-          word: words[i],
-          place: places[i],
-          do: conditions[i],
-        })
-      }
-      let data = {
-        name: name,
-        image: '',
-        embededPins: embededPins,
+  const handleComplete = () => {
+    if (pins.length > 0 && !isPlayground) {
+      const data = {
+        name: palaceName,
+        image: location.state.image.substr(22),
+        embededPins: pins,
         createdBy: user.id,
       }
       if (location.state.image.substr(0, 23) === 'data:image/jpeg;base64,') {
@@ -125,16 +55,7 @@ export const Edit: React.VFC<EditProps> = ({imageUrl}) => {
         }
       }
       console.log(data)
-      axios
-        .post('http://localhost:8080/api/palaces/me', data, {withCredentials: true})
-        .then((res) => {
-          console.log(res.status)
-        })
-        .catch((error) => {
-          console.log(error)
-        })
-    } else {
-      setIsOpen(true)
+      postPalace(data)
     }
   }
   React.useEffect(() => {
@@ -146,7 +67,6 @@ export const Edit: React.VFC<EditProps> = ({imageUrl}) => {
   }, [useLocation()])
 
   const handleClickAway = () => {
-    console.log('handle click away')
     setOpen(false)
   }
   const boxStyle = React.useCallback<() => SxProps>(
@@ -157,16 +77,84 @@ export const Edit: React.VFC<EditProps> = ({imageUrl}) => {
       transform: `translate(${window.innerWidth / 2 < x ? '-100%' : '0'}, -100%)`,
       p: 1,
       borderRadius: 2,
+      transitionDuration: '0.2s',
+    }),
+    [open, pinOpen]
+  )
+
+  const pinStyle = React.useCallback<() => React.CSSProperties>(
+    () => ({
+      position: 'fixed',
+      top: y,
+      left: x,
+      transform: `translate(-50%, -100%)`,
     }),
     [open]
+  )
+
+  const putPin = React.useCallback(
+    (pin: PinContent) => {
+      const data = {
+        word: pin.word,
+        place: pin.place,
+        do: pin.condition,
+        number: pins.length,
+        x: (x - hoverRef.current.x) / hoverRef.current.width,
+        y: (y - hoverRef.current.y) / hoverRef.current.height,
+      }
+      setPins([...pins, data])
+      setOpen(false)
+    },
+    [open]
+  )
+  const handlePinClick = React.useCallback((pin: EmbededPins) => {
+    setPinOpen(pin)
+  }, [])
+  const handleDeletePin = React.useCallback(
+    (pin: EmbededPins) => {
+      setPins(pins.filter((tmp) => tmp !== pin))
+      setPinOpen(null)
+    },
+    [pins]
   )
 
   return (
     <div className={styles.edit}>
       <CustomCursor type="pin" isHover={isHovered} />
-      {coodinates.map(([x, y]: [number, number], index) => (
-        <PushPinIcon key={index} style={{position: 'absolute', top: y + 'px', left: x + 'px'}} />
-      ))}
+      <ClickAwayListener onClickAway={() => setPinOpen(null)}>
+        <div>
+          {pins.map((pin, i) => (
+            <img
+              className={styles.pushedPin}
+              key={i}
+              src={pinIcon}
+              alt=""
+              style={{
+                position: 'absolute',
+                top: pin.y * hoverRef.current.height + 'px',
+                left: pin.x * hoverRef.current.width + 'px',
+                transform: `translate(-50%, -100%)`,
+              }}
+              onClick={() => {
+                handlePinClick(pin)
+              }}
+            />
+          ))}
+          {pinOpen && (
+            <Portal>
+              <Box sx={boxStyle()}>
+                <FixWordDialog open={pinOpen} deletePin={handleDeletePin} />
+              </Box>
+            </Portal>
+          )}
+        </div>
+      </ClickAwayListener>
+
+      <IconButton className={styles.togglPinList}>
+        <Badge badgeContent={pins.length} color="primary">
+          <img src={pinIcon} alt="" className={styles.pinIcon} />
+        </Badge>
+      </IconButton>
 
       <ClickAwayListener onClickAway={handleClickAway}>
         <div>
@@ -174,56 +162,32 @@ export const Edit: React.VFC<EditProps> = ({imageUrl}) => {
             className={styles.layoutImage}
             src={imageUrl ?? location.state.image}
             alt="map"
-            onClick={handleOnClick}
+            onClick={() => setOpen(Math.random())}
             ref={hoverRef}
           />
           {open && (
             <Portal>
               <Box sx={boxStyle()}>
-                <AddNewWordDialog open={open} />
+                <AddNewWordDialog open={!!open} putPin={putPin} />
               </Box>
+              <img src={pinIcon} alt="" className={styles.pinIcon} style={pinStyle()} />
             </Portal>
           )}
         </div>
       </ClickAwayListener>
 
-      <div>
-        {[...Array(words.length)].map((_, index: number) => (
-          <EditAddedWord
-            key={index}
-            word={words[index]}
-            place={places[index]}
-            condition={conditions[index]}
-            handleWordChange={(e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) =>
-              handleWordChange(e, index)
-            }
-            handlePlaceChange={(e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) =>
-              handlePlaceChange(e, index)
-            }
-            handleConditionChange={(e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) =>
-              handleConditionChange(e, index)
-            }
-            handleDelete={() => handleDelete(index)}
-          />
-        ))}
-      </div>
-      {/* <AddNewWordDialog
-        open={open}
-        newWord={newWord}
-        newPlace={newPlace}
-        newCondition={newCondition}
-        setNewWord={setNewWord}
-        setNewPlace={setNewPlace}
-        setNewCondition={setNewCondition}
-        handleClose={handleClose}
-        handleClick={handleClick}
-      /> */}
-      <input type="text" value={name} placeholder="宮殿の名前" onChange={handleNameChange} />
-      <button onClick={handleComplete}>完成!</button>
-      <Dialog open={isOpen} onClose={() => setIsOpen(false)}>
-        <span>単語もしくは宮殿の名前が登録されていません。</span>
-        <button onClick={() => setIsOpen(false)}>OK</button>
-      </Dialog>
+      <form>
+        <input
+          required
+          type="text"
+          value={palaceName}
+          placeholder="宮殿の名前"
+          onChange={(e) => setPalaceName(e.target.value)}
+        />
+        <button onClick={handleComplete} type="submit" disabled={pins.length <= 0}>
+          完成!
+        </button>
+      </form>
     </div>
   )
 }
