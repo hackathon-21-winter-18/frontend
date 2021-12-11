@@ -6,6 +6,7 @@ import PushPinIcon from '@mui/icons-material/PushPin'
 import axios from 'axios'
 import {UserContext} from '../components/UserProvider'
 import {TemplateType} from '../types'
+import Dialog from '@mui/material/Dialog'
 
 export const EditFromTemplate: React.VFC = () => {
   const [open, setOpen] = React.useState(false)
@@ -27,6 +28,7 @@ export const EditFromTemplate: React.VFC = () => {
     image: '',
     pins: [{number: 0, x: 0, y: 0}],
   })
+  const [isOpen, setIsOpen] = React.useState(false)
 
   const handleOnClick = (e: React.MouseEvent<HTMLImageElement>) => {
     setNewCoodinate([e.pageX, e.pageY])
@@ -82,33 +84,37 @@ export const EditFromTemplate: React.VFC = () => {
   }
 
   function handleComplete() {
-    const embededPins = []
-    for (let i = 0; i < coodinates.length; i++) {
-      embededPins.push({
-        number: i,
-        x: coodinates[i][0],
-        y: coodinates[i][1],
-        word: words[i],
-        place: places[i],
-        do: conditions[i],
-      })
+    if (coodinates.length > 0 && name !== '') {
+      const embededPins = []
+      for (let i = 0; i < coodinates.length; i++) {
+        embededPins.push({
+          number: i,
+          x: coodinates[i][0],
+          y: coodinates[i][1],
+          word: words[i],
+          place: places[i],
+          do: conditions[i],
+        })
+      }
+      const data = {
+        name: name,
+        image: template.image.substring(22),
+        embededPins: embededPins,
+        createdBy: user.id,
+      }
+      console.log(data)
+      axios
+        .post('http://localhost:8080/api/palaces/me', data, {withCredentials: true})
+        .then((res) => {
+          console.log(res.status)
+          console.log(res.data)
+        })
+        .catch((error) => {
+          console.log(error)
+        })
+    } else {
+      setIsOpen(true)
     }
-    const data = {
-      name: name,
-      image: template.image.substring(22),
-      embededPins: embededPins,
-      createdBy: user.id,
-    }
-    console.log(data)
-    axios
-      .post('http://localhost:8080/api/palaces/me', data, {withCredentials: true})
-      .then((res) => {
-        console.log(res.status)
-        console.log(res.data)
-      })
-      .catch((error) => {
-        console.log(error)
-      })
   }
   React.useEffect(() => {
     axios.get('http://localhost:8080/api/templates/me', {withCredentials: true}).then((res) => {
@@ -126,6 +132,11 @@ export const EditFromTemplate: React.VFC = () => {
       }
       setName(name2)
       setCoodinates(coodinates2)
+      const array = Array(coodinates.length)
+      array.fill('')
+      setWords(array)
+      setPlaces(array)
+      setConditions(array)
       console.log('set!')
     })
   }, [])
@@ -171,6 +182,10 @@ export const EditFromTemplate: React.VFC = () => {
       />
       <input type="text" value={name} placeholder="宮殿の名前" onChange={handleNameChange} />
       <button onClick={handleComplete}>完成!</button>
+      <Dialog open={isOpen} onClose={() => setIsOpen(false)}>
+        <span>単語もしくは宮殿の名前が登録されていません。</span>
+        <button onClick={() => setIsOpen(false)}>OK</button>
+      </Dialog>
     </div>
   )
 }

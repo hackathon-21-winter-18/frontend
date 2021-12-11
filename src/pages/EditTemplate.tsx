@@ -4,6 +4,7 @@ import PushPinIcon from '@mui/icons-material/PushPin'
 import axios from 'axios'
 import {UserContext} from '../components/UserProvider'
 import {Pins} from '../types'
+import Dialog from '@mui/material/Dialog'
 
 export const EditTemplate: React.VFC = () => {
   const [coodinates, setCoodinates] = React.useState(new Array<[number, number]>())
@@ -11,6 +12,7 @@ export const EditTemplate: React.VFC = () => {
   const location = useLocation()
   const [name, setName] = React.useState('')
   const {user} = React.useContext(UserContext)
+  const [isOpen, setIsOpen] = React.useState(false)
 
   const handleOnClick = (e: React.MouseEvent<HTMLImageElement>) => {
     setCoodinates(coodinates.concat([[e.pageX, e.pageY]]))
@@ -25,29 +27,33 @@ export const EditTemplate: React.VFC = () => {
   }
 
   function handleComplete() {
-    let pins = new Array<Pins>()
-    for (let i = 0; i < coodinates.length; i++) {
-      pins.push({
-        number: i,
-        x: coodinates[i][0],
-        y: coodinates[i][1],
-      })
+    if (coodinates.length > 0 && name !== '') {
+      let pins = new Array<Pins>()
+      for (let i = 0; i < coodinates.length; i++) {
+        pins.push({
+          number: i,
+          x: coodinates[i][0],
+          y: coodinates[i][1],
+        })
+      }
+      const data = {
+        name: name,
+        image: location.state.image.substring(22),
+        pins: pins,
+        createdBy: user.id,
+      }
+      console.log(data)
+      axios
+        .post('http://localhost:8080/api/templates/me', data, {withCredentials: true})
+        .then((res) => {
+          console.log(res.status)
+        })
+        .catch((error) => {
+          console.log(error)
+        })
+    } else {
+      setIsOpen(true)
     }
-    const data = {
-      name: name,
-      image: location.state.image.substring(22),
-      pins: pins,
-      createdBy: user.id,
-    }
-    console.log(data)
-    axios
-      .post('http://localhost:8080/api/templates/me', data, {withCredentials: true})
-      .then((res) => {
-        console.log(res.status)
-      })
-      .catch((error) => {
-        console.log(error)
-      })
   }
   const listItems = coodinates.map((coodinate, index) => (
     <li key={index}>
@@ -66,6 +72,10 @@ export const EditTemplate: React.VFC = () => {
       <ol>{listItems}</ol>
       <input type="text" value={name} placeholder="テンプレートの名前" onChange={handleNameChange} />
       <button onClick={handleComplete}>完成!</button>
+      <Dialog open={isOpen} onClose={() => setIsOpen(false)}>
+        <span>ピンもしくはテンプレートの名前が登録されていません。</span>
+        <button onClick={() => setIsOpen(false)}>OK</button>
+      </Dialog>
     </div>
   )
 }

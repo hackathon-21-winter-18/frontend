@@ -4,6 +4,7 @@ import PushPinIcon from '@mui/icons-material/PushPin'
 import axios from 'axios'
 import {UserContext} from '../components/UserProvider'
 import {TemplateType, Pins} from '../types'
+import Dialog from '@mui/material/Dialog'
 
 export const FixTemplate: React.VFC = () => {
   const [coodinates, setCoodinates] = React.useState(new Array<[number, number]>())
@@ -17,6 +18,7 @@ export const FixTemplate: React.VFC = () => {
     pins: [{number: 0, x: 0, y: 0}],
   })
   const params = useParams()
+  const [isOpen, setIsOpen] = React.useState(false)
 
   const handleOnClick = (e: React.MouseEvent<HTMLImageElement>) => {
     setCoodinates(coodinates.concat([[e.pageX, e.pageY]]))
@@ -50,31 +52,32 @@ export const FixTemplate: React.VFC = () => {
   }, [])
 
   function handleComplete() {
-    let pins = new Array<Pins>()
-    for (let i = 0; i < coodinates.length; i++) {
-      pins.push({
-        number: i,
-        x: coodinates[i][0],
-        y: coodinates[i][1],
-      })
+    if (coodinates.length > 0 && name !== '') {
+      let pins = new Array<Pins>()
+      for (let i = 0; i < coodinates.length; i++) {
+        pins.push({
+          number: i,
+          x: coodinates[i][0],
+          y: coodinates[i][1],
+        })
+      }
+      const data = {
+        name: name,
+        image: location.state.image.substring(22),
+        pins: pins,
+      }
+      console.log(data)
+      axios
+        .put('http://localhost:8080/api/templates/' + template.id, data, {withCredentials: true})
+        .then((res) => {
+          console.log(res.status)
+        })
+        .catch((error) => {
+          console.log(error)
+        })
+    } else {
+      setIsOpen(true)
     }
-    const data = {
-      name: name,
-      image: location.state.image.substr(22),
-      pins: pins,
-    }
-    console.log(data)
-    axios
-      .put('http://localhost:8080/api/templates/' + template.id, data, {withCredentials: true})
-      .then((res) => {
-        console.log(res.status)
-      })
-      .catch((error) => {
-        console.log(error)
-      })
-  }
-  function handleCheck() {
-    console.log(coodinates)
   }
   const listItems = coodinates.map((coodinate, index) => (
     <li key={index}>
@@ -92,7 +95,10 @@ export const FixTemplate: React.VFC = () => {
       <ol>{listItems}</ol>
       <input type="text" value={name} placeholder="テンプレートの名前" onChange={handleNameChange} />
       <button onClick={handleComplete}>完成!</button>
-      <button onClick={handleCheck}>ボタン</button>
+      <Dialog open={isOpen} onClose={() => setIsOpen(false)}>
+        <span>ピンもしくはテンプレートの名前が登録されていません。</span>
+        <button onClick={() => setIsOpen(false)}>OK</button>
+      </Dialog>
     </div>
   )
 }

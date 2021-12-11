@@ -15,6 +15,7 @@ const Header: React.VFC = () => {
         <div className={styles.header}>
           <img className={styles.logo} src={logo} alt="logo" onClick={() => navigate('/')} />
           <FromNewPalace />
+          <FromNewTemplate />
         </div>
       )}
     </>
