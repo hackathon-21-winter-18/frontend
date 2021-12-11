@@ -1,0 +1,12 @@
+.templatePage {
+  display: flex;
+}
+.templateContainer {
+  margin: 0;
+  padding: 24px 12px 0;
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  grid-column-gap: 24px;
+
+  list-style: none;
+}

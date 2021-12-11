@@ -5,10 +5,10 @@ import {EditAddedWord} from '../components/EditAddedWord'
 import PushPinIcon from '@mui/icons-material/PushPin'
 import axios from 'axios'
 import {UserContext} from '../components/UserProvider'
-import {Pins} from '../types'
+import {TemplateType} from '../types'
 import Dialog from '@mui/material/Dialog'
 
-export const Edit: React.VFC = () => {
+export const EditFromTemplate: React.VFC = () => {
   const [open, setOpen] = React.useState(false)
   const [newWord, setNewWord] = React.useState('')
   const [words, setWords] = React.useState(new Array<string>())
@@ -18,14 +18,17 @@ export const Edit: React.VFC = () => {
   const [conditions, setConditions] = React.useState(new Array<string>())
   const [newCoodinate, setNewCoodinate] = React.useState<[number, number]>([0, 0])
   const [coodinates, setCoodinates] = React.useState(new Array<[number, number]>())
-  const image = useParams() //あとで使うかも
+  const params = useParams() //あとで使うかも
   const location = useLocation()
   const [name, setName] = React.useState('')
   const {user} = React.useContext(UserContext)
+  const [template, setTemplate] = React.useState<TemplateType>({
+    id: '',
+    name: '',
+    image: '',
+    pins: [{number: 0, x: 0, y: 0}],
+  })
   const [isOpen, setIsOpen] = React.useState(false)
-  const [shareOption, setShareOptin] = React.useState(false)
-  const [templateOption, setTemplateOption] = React.useState(false)
-  const [palaceId, setPalaceId] = React.useState('')
 
   const handleOnClick = (e: React.MouseEvent<HTMLImageElement>) => {
     setNewCoodinate([e.pageX, e.pageY])
@@ -39,8 +42,6 @@ export const Edit: React.VFC = () => {
   }
   const handleClick = () => {
     setWords([...words, newWord])
-    setPlaces([...places, newPlace])
-    setConditions([...conditions, newCondition])
     setCoodinates([...coodinates, newCoodinate])
     setOpen(false)
     setNewWord('')
@@ -97,58 +98,49 @@ export const Edit: React.VFC = () => {
       }
       const data = {
         name: name,
-        image: location.state.image.substr(22),
+        image: location.state.image.substring(22),
         embededPins: embededPins,
         createdBy: user.id,
       }
-      /*
-      let pins = new Array<Pins>()
-      for (let i = 0; i < coodinates.length; i++) {
-        pins.push({
-          number: i,
-          x: coodinates[i][0],
-          y: coodinates[i][1],
-        })
-      }
-      const data2 = {
-        name: name,
-        image: location.state.image.substring(22),
-        pins: pins,
-        createdBy: user.id,
-      }
-      */
       console.log(data)
       axios
         .post('http://localhost:8080/api/palaces/me', data, {withCredentials: true})
         .then((res) => {
           console.log(res.status)
-          //setPalaceId(res.data.id)
+          console.log(res.data)
         })
         .catch((error) => {
           console.log(error)
         })
-      /*
-      axios
-        .post('http://localhost:8080/api/templates/me', data2, {withCredentials: true})
-        .then((res) => {
-          console.log(res.status)
-        })
-        .catch((error) => {
-          console.log(error)
-        })
-      */
-      if (shareOption) {
-        axios
-          .put('http://localhost:8080/api/palaces/share' + palaceId, shareOption, {withCredentials: true})
-          .then((res) => console.log(res.status))
-          .catch((error) => {
-            console.log(error)
-          })
-      }
     } else {
       setIsOpen(true)
     }
   }
+  React.useEffect(() => {
+    axios.get('http://localhost:8080/api/templates/me', {withCredentials: true}).then((res) => {
+      const data = res.data
+      let name2 = name
+      let coodinates2 = coodinates
+      let array = []
+      for (let i = 0; i < data.length; i++) {
+        if (data[i].id === params.id) {
+          setTemplate(data[i])
+          array = Array(data[i].pins.length)
+          for (let j = 0; j < data[i].pins.length; j++) {
+            name2 = data[i].name
+            coodinates2 = coodinates2.concat([[data[i].pins[j].x, data[i].pins[j].y]])
+          }
+        }
+      }
+      setName(name2)
+      setCoodinates(coodinates2)
+      array = array.fill('')
+      setWords(array)
+      setPlaces(array)
+      setConditions(array)
+      console.log('set!')
+    })
+  }, [])
 
   return (
     <div>
@@ -190,17 +182,8 @@ export const Edit: React.VFC = () => {
         handleClick={handleClick}
       />
       <input type="text" value={name} placeholder="宮殿の名前" onChange={handleNameChange} />
-      <div>
-        <div>
-          <input type="checkbox" onClick={() => setShareOptin(!shareOption)} />
-          <label>共有</label>
-        </div>
-        <div>
-          <input type="checkbox" onClick={() => setTemplateOption(!templateOption)} />
-          <label>テンプレートとして保存</label>
-        </div>
-      </div>
       <button onClick={handleComplete}>完成!</button>
+      <button onClick={() => console.log(words)}>ボタン</button>
       <Dialog open={isOpen} onClose={() => setIsOpen(false)}>
         <span>単語もしくは宮殿の名前が登録されていません。</span>
         <button onClick={() => setIsOpen(false)}>OK</button>

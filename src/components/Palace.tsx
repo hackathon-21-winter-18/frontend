@@ -60,7 +60,7 @@ const Palace: React.VFC<PalaceProps> = ({num, palace, deletePalace}) => {
         {palace.embededPins.length + ' Words'}
       </div>
       <Dialog open={isOpen} onClose={handleDialogClose}>
-        <Link to={'fix/' + palace.id} state={{image: 'data:image/png;base64,' + palace.image}}>
+        <Link to={'fix/' + palace.id} state={{image: Extension()}}>
           宮殿の編集
         </Link>
         <button onClick={handleDeleteDialog}>宮殿の削除</button>

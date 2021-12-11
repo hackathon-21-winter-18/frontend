@@ -4,6 +4,7 @@ import {useNavigate} from 'react-router-dom'
 import logo from '../assets/logo.svg'
 import FromNewPalace from './DialogFromNewPalace'
 import {UserContext} from './UserProvider'
+import FromNewTemplate from './DialogFromNewTemplate'
 
 const Header: React.VFC = () => {
   const {user} = useContext(UserContext)
@@ -14,6 +15,7 @@ const Header: React.VFC = () => {
         <div className={styles.header}>
           <img className={styles.logo} src={logo} alt="logo" onClick={() => navigate('/')} />
           <FromNewPalace />
+          <FromNewTemplate />
         </div>
       )}
     </>

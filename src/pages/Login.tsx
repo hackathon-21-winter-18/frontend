@@ -18,6 +18,7 @@ const Login: React.VFC = () => {
     await login({name, password})
     setName('')
     setPassword('')
+    navigate('/')
   }
 
   return (

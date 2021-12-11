@@ -1,5 +1,5 @@
 import {useEffect, useState, useContext} from 'react'
-import styles from 'TemplatePage.module.css'
+import styles from './TemplatePage.module.css'
 import Header from '../components/Header'
 import Template from '../components/Template'
 import {TemplateType} from '../types'
@@ -8,6 +8,7 @@ import palace2 from '../assets/バッキンガム宮殿.jpg'
 import axios from 'axios'
 import {UserContext} from '../components/UserProvider'
 import Sidebar from '../components/Sidebar'
+import CreateNewTemplateButton from '../components/CreateNewTemplateButton'
 
 const mockTemplates: TemplateType[] = [
   {
@@ -34,19 +35,31 @@ const TemplatePage: React.VFC = () => {
     },
   ])
   const {user} = useContext(UserContext)
-  const listItems = templates.map((template) => (
+  const listItems = templates.map((template, index) => (
     <li key={template.id}>
-      <Template template={template} />
+      <Template num={index} template={template} deleteTemplate={DeleteTemplate} />
     </li>
   ))
+  function DeleteTemplate(number: number) {
+    setTemplates(templates.slice(0, number).concat(templates.slice(number + 1)))
+  }
   useEffect(() => {
-    axios.get('http://localhost:8080/api/templates/me', {withCredentials: true}).then((res) => setTemplates(res.data))
+    axios.get('http://localhost:8080/api/templates/me', {withCredentials: true}).then((res) => {
+      if (res.data.length !== 0) {
+        setTemplates(res.data)
+        console.log(res.data)
+      }
+    })
   }, [])
 
   return (
-    <div>
+    <div className={styles.templatePage}>
       <Sidebar />
-      <ul>{listItems}</ul>
+      <ul className={styles.templateContainer}>
+        <CreateNewTemplateButton />
+
+        {listItems}
+      </ul>
     </div>
   )
 }

@@ -15,7 +15,7 @@ export type PalaceType = {
   embededPins: EmbededPins[]
 }
 //TemplateType
-type Pins = {
+export type Pins = {
   number: number
   x: number
   y: number
