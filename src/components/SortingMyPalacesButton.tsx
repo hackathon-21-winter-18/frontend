@@ -1,13 +1,12 @@
 import * as React from 'react'
 import Button from '@mui/material/Button'
-import Dialog from '@mui/material/Dialog'
 import axios from 'axios';
 import { FormControlLabel, Input, Radio, RadioGroup } from '@mui/material';
 import { PalaceType } from '../types';
-interface SortingMyPalaceButtonProp {
+interface SortingMyPalacesButtonProp {
   setPalaces: React.Dispatch<React.SetStateAction<PalaceType[]>>
 }
-export const SortingMyPalacesButton = (prop: SortingMyPalaceButtonProp) => {
+export const SortingMyPalacesButton = (prop: SortingMyPalacesButtonProp) => {
   const { setPalaces } = prop;
   const [order, setOrder] = React.useState('updated_at');
   const [minPins, setMinPins] = React.useState(0);
@@ -54,8 +53,3 @@ export const SortingMyPalacesButton = (prop: SortingMyPalaceButtonProp) => {
     </div>
   )
 }
-// http://localhost:3000/api/palaces?sort=a&maxpins=a&minpins=a
-// http://localhost:3000/api/palaces/me?sort=a&maxpins=a&minpins=a
-// http://localhost:3000/api/templates?sort=a&maxpins=a&minpins=a
-// http://localhost:3000/api/templates/me?sort=a&maxpins=a&minpins=a
-//最初の公開日時が新しい "first_shared_at", 公開日時が新しい "shared_at", 保存したユーザーが多い順 "savedcount"
