@@ -38,7 +38,8 @@ const Home: React.VFC = () => {
 */
   return (
     <div className={styles.home}>
-      <Sidebar />
+      <h1>My Palace</h1>
+      <div className={styles.divider} />
       <ul className={styles.palaceContainer}>
         <CreateNewPalaceButton />
 
