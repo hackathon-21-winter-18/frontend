@@ -1,8 +1,8 @@
 import * as React from 'react'
 import styles from './Edit.module.css'
-import {useParams, useLocation} from 'react-router'
+import { useParams, useLocation } from 'react-router'
 import AddNewWordDialog from '../components/AddNewWordDialog'
-import {EditAddedWord} from '../components/EditAddedWord'
+import { EditAddedWord } from '../components/EditAddedWord'
 import PushPinIcon from '@mui/icons-material/PushPin'
 import axios from 'axios'
 import useAuth from '../components/UserProvider'
@@ -12,7 +12,7 @@ interface EditProps {
   imageUrl?: string
 }
 
-export const Edit: React.VFC<EditProps> = ({imageUrl}) => {
+export const Edit: React.VFC<EditProps> = ({ imageUrl }) => {
   const [open, setOpen] = React.useState(false)
   const [newWord, setNewWord] = React.useState('')
   const [words, setWords] = React.useState(new Array<string>())
@@ -25,7 +25,7 @@ export const Edit: React.VFC<EditProps> = ({imageUrl}) => {
   const image = useParams() //あとで使うかも
   const location = useLocation()
   const [name, setName] = React.useState('')
-  const {user} = useAuth()
+  const { user } = useAuth()
   const [isOpen, setIsOpen] = React.useState(false)
 
   const handleOnClick = (e: React.MouseEvent<HTMLImageElement>) => {
@@ -119,7 +119,7 @@ export const Edit: React.VFC<EditProps> = ({imageUrl}) => {
       }
       console.log(data)
       axios
-        .post('http://localhost:8080/api/palaces/me', data, {withCredentials: true})
+        .post('http://localhost:8080/api/palaces/me', data, { withCredentials: true })
         .then((res) => {
           console.log(res.status)
         })
@@ -130,11 +130,18 @@ export const Edit: React.VFC<EditProps> = ({imageUrl}) => {
       setIsOpen(true)
     }
   }
+  React.useEffect(() => {
+    setWords([])
+    setPlaces([])
+    setConditions([])
+    setCoodinates([])
+    setName('')
+  }, [useLocation()])
 
   return (
     <div className={styles.edit}>
       {coodinates.map(([x, y]: [number, number], index) => (
-        <PushPinIcon key={index} style={{position: 'absolute', top: y + 'px', left: x + 'px'}} />
+        <PushPinIcon key={index} style={{ position: 'absolute', top: y + 'px', left: x + 'px' }} />
       ))}
       <img className={styles.layoutImage} src={imageUrl ?? location.state.image} alt="map" onClick={handleOnClick} />
       <div>
