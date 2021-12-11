@@ -1,11 +1,12 @@
-import {useState} from 'react'
+import {useState, useContext} from 'react'
 import {Link, useNavigate} from 'react-router-dom'
-import styles from './SharedTemplate.module.css'
+import styles from './Palace.module.css'
 import {SharedTemplateType} from '../types'
 import axios from 'axios'
 import MoreVertIcon from '@mui/icons-material/MoreVert'
 import CommentIcon from '@mui/icons-material/Comment'
 import Dialog from '@mui/material/Dialog'
+import {UserContext} from '../components/UserProvider'
 
 interface TemplateProps {
   template: SharedTemplateType
@@ -14,6 +15,7 @@ interface TemplateProps {
 const SharedTemplate: React.VFC<TemplateProps> = ({template}) => {
   const [isOpen, setIsOpen] = useState(false)
   const [deleteIsOpen, setDeleteIsOpen] = useState(false)
+  const {user} = useContext(UserContext)
   const navigate = useNavigate()
 
   function handleSaveDialog() {
@@ -24,9 +26,10 @@ const SharedTemplate: React.VFC<TemplateProps> = ({template}) => {
       id: template.id,
       name: template.name,
       image: template.image,
-      embededPins: template.pins,
+      pins: template.pins,
+      createdBy: user.id,
     }
-    axios.post('http://localhost:8080/api/templates', data, {withCredentials: true})
+    axios.post('http://localhost:8080/api/templates/me', data, {withCredentials: true})
   }
   function Extension() {
     switch (template.image.substring(0, 5)) {
@@ -42,7 +45,7 @@ const SharedTemplate: React.VFC<TemplateProps> = ({template}) => {
     setIsOpen(false)
   }
   return (
-    <div className={styles.template}>
+    <div className={styles.palace}>
       {/* <Link to={'/memorize/' + template.id} className={styles.image}>
         <img src={template.image} alt={template.name} />
       </Link> */}
@@ -50,7 +53,7 @@ const SharedTemplate: React.VFC<TemplateProps> = ({template}) => {
         className={styles.image}
         src={Extension()}
         alt={template.name}
-        onClick={() => navigate('/memorize/' + template.id, {state: {shared: true}})}
+        onClick={() => navigate('/fromTemplate/' + template.id, {state: {image: Extension(), shared: true}})}
       />
       {/*stateによって変える*/}
       <div className={styles.titleContainer}>
@@ -61,7 +64,7 @@ const SharedTemplate: React.VFC<TemplateProps> = ({template}) => {
       </div>
       <div className={styles.wordTag}>
         <CommentIcon className={styles.commentIcon} />
-        {template.pins.length + ' Words'}
+        {template.pins.length + ' pins'}
       </div>
       <div>
         <span>{template.savedCount}</span>

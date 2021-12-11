@@ -3,8 +3,6 @@ import styles from './TemplatePage.module.css'
 import Header from '../components/Header'
 import Template from '../components/Template'
 import {TemplateType} from '../types'
-import palace1 from '../assets/ヴェルサイユ宮殿.jpg'
-import palace2 from '../assets/バッキンガム宮殿.jpg'
 import axios from 'axios'
 import {UserContext} from '../components/UserProvider'
 import Sidebar from '../components/Sidebar'
@@ -31,7 +29,7 @@ const TemplatePage: React.VFC = () => {
   }
   useEffect(() => {
     axios.get('http://localhost:8080/api/templates/me', {withCredentials: true}).then((res) => {
-      if (res.data.length !== 0) {
+      if (res.data) {
         setTemplates(res.data)
         console.log(res.data)
       }
