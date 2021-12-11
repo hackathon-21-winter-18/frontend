@@ -15,9 +15,9 @@ export const putPalace = (palaceID: string, data: any, onSuccess?: () => any, on
     .catch(onError)
 }
 
-export const getPalace = (palaceID: string, data: any, onSuccess?: () => any, onError?: () => any) => {
+export const getPalace = (palaceID: string, onSuccess?: () => any, onError?: () => any) => {
   axios
-    .get(config() + palaceID, data)
+    .get(config() + palaceID, {withCredentials: true})
     .then(onSuccess)
     .catch(onError)
 }
