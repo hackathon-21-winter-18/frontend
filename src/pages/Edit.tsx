@@ -30,7 +30,7 @@ export const Edit: React.VFC<EditProps> = ({imageUrl, isPlayground = false}) => 
   const location = useLocation()
   const [palaceName, setPalaceName] = React.useState('')
   const {user} = useAuth()
-  const navigate = useNavigate
+  const navigate = useNavigate()
 
   const [hoverRef, isHovered] = useHover<HTMLImageElement>()
   const {x, y} = useMousePosition()
