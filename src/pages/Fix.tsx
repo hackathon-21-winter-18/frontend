@@ -86,7 +86,7 @@ export const Fix: React.VFC = () => {
     setName(e.target.value)
   }
   React.useEffect(() => {
-    axios.get('http://localhost:8080/api/palaces/me', {withCredentials: true}).then((res) => {
+    axios.get('https://hackathon-21-winter-18.trap.show/backend/api/palaces/me', {withCredentials: true}).then((res) => {
       const data = res.data
       let words2 = words
       let coodinates2 = coodinates
@@ -134,7 +134,7 @@ export const Fix: React.VFC = () => {
       }
       console.log(data)
       axios
-        .put('http://localhost:8080/api/palaces/' + palace.id, data, {withCredentials: true})
+        .put('https://hackathon-21-winter-18.trap.show/backend/api/palaces/' + palace.id, data, {withCredentials: true})
         .then((res) => {
           console.log(res.status)
         })

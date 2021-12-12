@@ -70,7 +70,7 @@ const Memorize: React.VFC = () => {
     setIsOpen(true)
   }
   useEffect(() => {
-    axios.get('http://localhost:8080/api/palaces/me', {withCredentials: true}).then((res) => {
+    axios.get('https://hackathon-21-winter-18.trap.show/backend/api/palaces/me', {withCredentials: true}).then((res) => {
       const data = res.data
       for (let i = 0; i < data.length; i++) {
         if (data[i].id === params.id) {

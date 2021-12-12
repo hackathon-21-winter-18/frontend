@@ -104,7 +104,7 @@ export const Edit: React.VFC<EditProps> = ({imageUrl}) => {
       }
       console.log(data)
       axios
-        .post('http://localhost:8080/api/palaces/me', data, {withCredentials: true})
+        .post('https://hackathon-21-winter-18.trap.show/backend/api/palaces/me', data, {withCredentials: true})
         .then((res) => {
           console.log(res.status)
         })

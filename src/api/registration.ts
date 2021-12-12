@@ -2,7 +2,7 @@ import axios from 'axios'
 import {config} from '../config'
 import {RegistrationResponse, UserRegistration} from '../types'
 
-const endpoint = config()
+const endpoint = 'https://hackathon-21-winter-18.trap.show/backend'
 
 export const postLogin = async (user: UserRegistration) => {
   const res = await axios.post<RegistrationResponse>(endpoint + '/api/oauth/login', user, {withCredentials: true})

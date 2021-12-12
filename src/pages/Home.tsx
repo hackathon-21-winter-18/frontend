@@ -44,11 +44,11 @@ const Home: React.VFC = () => {
     setPalaces(palaces.slice(0, number).concat(palaces.slice(number + 1)))
   }
   useEffect(() => {
-    axios.get('http://localhost:8080/api/oauth/whoamI', {withCredentials: true}).then((res) => {
+    axios.get('https://hackathon-21-winter-18.trap.show/backend/api/oauth/whoamI', {withCredentials: true}).then((res) => {
       console.log(res.data)
     })
     axios
-      .get('http://localhost:8080/api/palaces/me', {withCredentials: true})
+      .get('https://hackathon-21-winter-18.trap.show/backend/api/palaces/me', {withCredentials: true})
       .then((res) => {
         if (res.data.length !== 0) {
           setPalaces(res.data)
