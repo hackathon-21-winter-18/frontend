@@ -1,26 +1,27 @@
 {
   "files": {
-    "main.css": "/frontend/static/css/main.41649ac4.chunk.css",
-    "main.js": "/frontend/static/js/main.3684b1ca.chunk.js",
-    "main.js.map": "/frontend/static/js/main.3684b1ca.chunk.js.map",
-    "runtime-main.js": "/frontend/static/js/runtime-main.33c7a535.js",
-    "runtime-main.js.map": "/frontend/static/js/runtime-main.33c7a535.js.map",
-    "static/js/2.7e1c6170.chunk.js": "/frontend/static/js/2.7e1c6170.chunk.js",
-    "static/js/2.7e1c6170.chunk.js.map": "/frontend/static/js/2.7e1c6170.chunk.js.map",
-    "static/js/3.dcb51122.chunk.js": "/frontend/static/js/3.dcb51122.chunk.js",
-    "static/js/3.dcb51122.chunk.js.map": "/frontend/static/js/3.dcb51122.chunk.js.map",
+    "main.css": "/frontend/static/css/main.5f29046b.chunk.css",
+    "main.js": "/frontend/static/js/main.890c7f55.chunk.js",
+    "main.js.map": "/frontend/static/js/main.890c7f55.chunk.js.map",
+    "runtime-main.js": "/frontend/static/js/runtime-main.9b51fe8c.js",
+    "runtime-main.js.map": "/frontend/static/js/runtime-main.9b51fe8c.js.map",
+    "static/js/2.e42d20c9.chunk.js": "/frontend/static/js/2.e42d20c9.chunk.js",
+    "static/js/2.e42d20c9.chunk.js.map": "/frontend/static/js/2.e42d20c9.chunk.js.map",
+    "static/js/3.acd8899a.chunk.js": "/frontend/static/js/3.acd8899a.chunk.js",
+    "static/js/3.acd8899a.chunk.js.map": "/frontend/static/js/3.acd8899a.chunk.js.map",
     "index.html": "/frontend/index.html",
-    "static/css/main.41649ac4.chunk.css.map": "/frontend/static/css/main.41649ac4.chunk.css.map",
-    "static/js/2.7e1c6170.chunk.js.LICENSE.txt": "/frontend/static/js/2.7e1c6170.chunk.js.LICENSE.txt",
+    "static/css/main.5f29046b.chunk.css.map": "/frontend/static/css/main.5f29046b.chunk.css.map",
+    "static/js/2.e42d20c9.chunk.js.LICENSE.txt": "/frontend/static/js/2.e42d20c9.chunk.js.LICENSE.txt",
     "static/media/loading.ec6d19a7.gif": "/frontend/static/media/loading.ec6d19a7.gif",
     "static/media/logo.e561e610.svg": "/frontend/static/media/logo.e561e610.svg",
+    "static/media/pin.596d94a1.svg": "/frontend/static/media/pin.596d94a1.svg",
     "static/media/バッキンガム宮殿.ea1b157a.jpg": "/frontend/static/media/バッキンガム宮殿.ea1b157a.jpg",
     "static/media/ヴェルサイユ宮殿.9d22252d.jpg": "/frontend/static/media/ヴェルサイユ宮殿.9d22252d.jpg"
   },
   "entrypoints": [
-    "static/js/runtime-main.33c7a535.js",
-    "static/js/2.7e1c6170.chunk.js",
-    "static/css/main.41649ac4.chunk.css",
-    "static/js/main.3684b1ca.chunk.js"
+    "static/js/runtime-main.9b51fe8c.js",
+    "static/js/2.e42d20c9.chunk.js",
+    "static/css/main.5f29046b.chunk.css",
+    "static/js/main.890c7f55.chunk.js"
   ]
 }
