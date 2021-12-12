@@ -159,6 +159,7 @@ export const Edit: React.VFC<EditProps> = ({imageUrl, isPlayground = false}) => 
         <div>
           <img
             className={styles.layoutImage}
+
             src={imageUrl ?? location.state.image}
             alt="map"
             onClick={() => mode === 'edit' && setOpen(Math.random())}

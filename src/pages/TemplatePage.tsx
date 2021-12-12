@@ -37,7 +37,7 @@ const TemplatePage: React.VFC = () => {
     </li>
   ))
   useEffect(() => {
-    axios.get('http://localhost:8080/api/templates/me', {withCredentials: true}).then((res) => setTemplates(res.data))
+    axios.get('https://hackathon-21-winter-18.trap.show/backend/api/templates/me', {withCredentials: true}).then((res) => setTemplates(res.data))
   }, [])
 
   return (

@@ -22,7 +22,7 @@ const Palace: React.VFC<PalaceProps> = ({num, palace, deletePalace}) => {
     setDeleteIsOpen(true)
   }
   function handleDelete() {
-    axios.delete('http://localhost:8080/api/palaces/' + palace.id, {withCredentials: true})
+    axios.delete('https://hackathon-21-winter-18.trap.show/backend/' + palace.id, {withCredentials: true})
     deletePalace(num)
   }
   function Extension() {
