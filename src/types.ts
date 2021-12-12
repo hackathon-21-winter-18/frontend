@@ -1,5 +1,5 @@
 //PalaceType
-type EmbededPins = {
+export type EmbededPins = {
   number: number
   x: number
   y: number
@@ -16,18 +16,22 @@ export type PalaceType = {
   share: boolean
 }
 //TemplateType
-export type Pins = {
+type Pin = {
   number: number
   x: number
   y: number
+}
+export type PinContent = {
+  word: string
+  place: string
+  condition: string
 }
 
 export type TemplateType = {
   id: string
   name: string
   image: string
-  pins: Pins[]
-  share: boolean
+  pins: Pin[]
 }
 //SharedPalaceType
 export type SharedPalaceType = {
@@ -43,7 +47,7 @@ export type SharedTemplateType = {
   id: string
   name: string
   image: string
-  pins: Pins[]
+  pins: Pin[]
   savedCount: number
   createrName: string
 }
