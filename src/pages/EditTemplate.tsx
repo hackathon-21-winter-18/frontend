@@ -1,108 +1,185 @@
 import * as React from 'react'
+import styles from './Edit.module.css'
 import {useParams, useLocation} from 'react-router'
-import PushPinIcon from '@mui/icons-material/PushPin'
+import AddNewWordDialog from '../components/AddNewWordDialog'
+import useAuth from '../components/UserProvider'
+import {useMousePosition} from '../hooks/useMousePosition'
+import {CustomCursor} from '../components/CustomCursor'
+import {Badge, Box, ClickAwayListener, IconButton, Portal, SxProps} from '@mui/material'
+import {useHover} from '../hooks/useHover'
+import {Pin, PinContent} from '../types'
+import pinIcon from '../assets/pin.svg'
+import {FixWordDialog} from '../components/FixWordDialog'
+import VisibilityIcon from '@mui/icons-material/Visibility'
+import VisibilityOffIcon from '@mui/icons-material/VisibilityOff'
+import {config} from '../config'
 import axios from 'axios'
-import {UserContext} from '../components/UserProvider'
-import {Pins} from '../types'
-import Dialog from '@mui/material/Dialog'
-import {Link} from 'react-router-dom'
 
-export const EditTemplate: React.VFC = () => {
-  const [coodinates, setCoodinates] = React.useState(new Array<[number, number]>())
+type Mode = 'edit' | 'memorization'
+
+interface EditProps {
+  imageUrl?: string
+  isPlayground?: boolean
+}
+
+export const EditTemplate: React.VFC<EditProps> = ({imageUrl, isPlayground = false}) => {
+  const [open, setOpen] = React.useState<number | boolean>(false)
+  const [pinOpen, setPinOpen] = React.useState<Pin | null>(null)
+  const [pins, setPins] = React.useState<Pin[]>([])
+  const [mode, setMode] = React.useState<Mode>('edit')
   const image = useParams() //あとで使うかも
   const location = useLocation()
-  const [name, setName] = React.useState('')
-  const {user} = React.useContext(UserContext)
-  const [isOpen, setIsOpen] = React.useState(false)
-  const [shareOption, setShareOptin] = React.useState(false)
-  const [completeIsOpen, setCompleteIsOpen] = React.useState(false)
+  const [templateName, setTemplateName] = React.useState('')
+  const [shareOption, setShareOption] = React.useState(false)
+  const {user} = useAuth()
 
-  const handleOnClick = (e: React.MouseEvent<HTMLImageElement>) => {
-    setCoodinates(coodinates.concat([[e.pageX, e.pageY]]))
-  }
-  const handleDelete = (index: number) => {
-    const _coodinates = coodinates.slice()
-    _coodinates.splice(index, 1)
-    setCoodinates([..._coodinates])
-  }
-  function handleNameChange(e: any) {
-    setName(e.target.value)
-  }
+  const [hoverRef, isHovered] = useHover<HTMLImageElement>()
+  const {x, y} = useMousePosition()
 
-  function handleComplete() {
-    if (coodinates.length > 0 && name !== '') {
-      let pins = new Array<Pins>()
-      for (let i = 0; i < coodinates.length; i++) {
-        pins.push({
-          number: i,
-          x: coodinates[i][0],
-          y: coodinates[i][1],
-        })
-      }
-      const data = {
-        name: name,
-        image: location.state.image.substring(22),
-        pins: pins,
-        createdBy: user.id,
+  const handleComplete = () => {
+    if (pins.length > 0 && !isPlayground) {
+      let data
+      if (location.state.image.substr(0, 23) === 'data:image/jpeg;base64,') {
+        data = {
+          name: templateName,
+          image: location.state.image.substr(23),
+          pins: pins,
+          createdBy: user.id,
+        }
+      } else {
+        data = {
+          name: templateName,
+          image: location.state.image.substr(22),
+          pins: pins,
+          createdBy: user.id,
+        }
       }
       console.log(data)
       axios
-        .post('http://localhost:8080/api/templates/me', data, {withCredentials: true})
-        .then((res) => {
+        .post(config() + '/api/templates/me', data, {withCredentials: true})
+        .then((res: any) => {
           console.log(res.status)
           const templateId = res.data.id
           if (shareOption) {
             axios
-              .put(
-                'http://localhost:8080/api/templates/share/' + templateId,
-                {share: shareOption},
-                {withCredentials: true}
-              )
-              .then((res) => console.log(res.status))
-              .catch((error) => {
+              .put(config() + '/api/templates/share/' + templateId, {share: shareOption}, {withCredentials: true})
+              .then((res: any) => console.log(res.status))
+              .catch((error: any) => {
                 console.log(error)
               })
           }
-          setCompleteIsOpen(true)
         })
-        .catch((error) => {
+        .catch((error: any) => {
           console.log(error)
         })
-    } else {
-      setIsOpen(true)
     }
   }
-  const listItems = coodinates.map((coodinate, index) => (
-    <li key={index}>
-      ({coodinate[0]},{coodinate[1]})<button onClick={() => handleDelete(index)}>削除</button>
-    </li>
-  ))
+  React.useEffect(() => {
+    setPins([])
+  }, [useLocation()])
+
+  const handleClickAway = () => {
+    setOpen(false)
+  }
+  const boxStyle = React.useCallback<() => SxProps>(
+    () => ({
+      position: 'fixed',
+      top: y,
+      left: x,
+      transform: `translate(${window.innerWidth / 2 < x ? '-100%' : '0'}, -100%)`,
+      p: 1,
+      borderRadius: 2,
+      transitionDuration: '0.2s',
+    }),
+    [open, pinOpen]
+  )
+
+  const pinStyle = React.useCallback<() => React.CSSProperties>(
+    () => ({
+      position: 'fixed',
+      top: y,
+      left: x,
+      transform: `translate(-50%, -100%)`,
+    }),
+    [open]
+  )
+
+  const putPin = React.useCallback(
+    (pin: PinContent) => {
+      const data = {
+        word: pin.word,
+        place: pin.place,
+        do: pin.condition,
+        number: pins.length,
+        x: (x - hoverRef.current.x) / hoverRef.current.width,
+        y: (y - hoverRef.current.y) / hoverRef.current.height,
+      }
+      setPins([...pins, data])
+      setOpen(false)
+    },
+    [open]
+  )
+  const handlePinClick = React.useCallback((pin: Pin) => {
+    setPinOpen(pin)
+  }, [])
+  const handleDeletePin = React.useCallback(
+    (pin: Pin) => {
+      setPins(pins.filter((tmp) => tmp !== pin))
+      setPinOpen(null)
+    },
+    [pins]
+  )
 
   return (
     <div>
-      {coodinates.map(([x, y]: [number, number], index) => (
-        <PushPinIcon key={index} style={{position: 'absolute', top: y + 'px', left: x + 'px'}} />
-      ))}
-      <div>
-        <img src={location.state.image} alt="map" onClick={handleOnClick} />
-      </div>
-      <ol>{listItems}</ol>
-      <input type="text" value={name} placeholder="テンプレートの名前" onChange={handleNameChange} />
-      <div>
+      {mode === 'edit' && <CustomCursor type="pin" isHover={isHovered} />}
+      <IconButton
+        className={styles.togglPinList}
+        onClick={() => isPlayground && setMode(mode === 'edit' ? 'memorization' : 'edit')}>
+        {mode === 'edit' && (
+          <Badge badgeContent={pins.length} color="primary">
+            <img src={pinIcon} alt="" className={styles.pinIcon} />
+          </Badge>
+        )}
+        {mode === 'memorization' && <VisibilityOffIcon />}
+      </IconButton>
+
+      <ClickAwayListener onClickAway={handleClickAway}>
+        <div>
+          <img
+            className={styles.layoutImage}
+            src={imageUrl ?? location.state.image}
+            alt="map"
+            onClick={() => mode === 'edit' && setOpen(Math.random())}
+            ref={hoverRef}
+          />
+          {open && (
+            <Portal>
+              <Box sx={boxStyle()}>
+                <AddNewWordDialog open={!!open} putPin={putPin} />
+              </Box>
+              <img src={pinIcon} alt="" className={styles.pinIcon} style={pinStyle()} />
+            </Portal>
+          )}
+        </div>
+      </ClickAwayListener>
+
+      <form>
+        <input
+          required
+          type="text"
+          value={templateName}
+          placeholder="テンプレートの名前"
+          onChange={(e) => setTemplateName(e.target.value)}
+        />
         <label>
-          <input type="checkbox" onClick={() => setShareOptin(!shareOption)} id="sharedCheckBox" />
+          <input type="checkbox" onClick={() => setShareOption(!shareOption)} id="sharedCheckBox" />
           共有
         </label>
-      </div>
-      <button onClick={handleComplete}>完成!</button>
-      <Dialog open={isOpen} onClose={() => setIsOpen(false)}>
-        <span>ピンもしくはテンプレートの名前が登録されていません。</span>
-        <button onClick={() => setIsOpen(false)}>OK</button>
-      </Dialog>
-      <Dialog open={completeIsOpen}>
-        テンプレートが完成しました
-        <Link to="/">ホームへ戻る</Link>
-      </Dialog>
+        <button onClick={handleComplete} type="submit" disabled={pins.length <= 0}>
+          完成!
+        </button>
+      </form>
     </div>
   )
 }

@@ -1,7 +1,7 @@
 import * as React from 'react'
 import styles from './Edit.module.css'
 import {useParams, useLocation} from 'react-router'
-import {AddNewWordDialog} from '../components/AddNewWordDialog'
+import AddNewWordDialog from '../components/AddNewWordDialog'
 import useAuth from '../components/UserProvider'
 import {useMousePosition} from '../hooks/useMousePosition'
 import {CustomCursor} from '../components/CustomCursor'

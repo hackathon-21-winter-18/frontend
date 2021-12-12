@@ -16,7 +16,7 @@ export type PalaceType = {
   share: boolean
 }
 //TemplateType
-type Pin = {
+export type Pin = {
   number: number
   x: number
   y: number
@@ -32,6 +32,7 @@ export type TemplateType = {
   name: string
   image: string
   pins: Pin[]
+  share: boolean
 }
 //SharedPalaceType
 export type SharedPalaceType = {

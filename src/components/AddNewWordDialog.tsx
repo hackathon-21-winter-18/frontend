@@ -10,7 +10,7 @@ interface AddNewWordDialogProps {
   putPin: (pin: PinContent) => void
 }
 
-export const AddNewWordDialog: React.VFC<AddNewWordDialogProps> = ({open, putPin}) => {
+const AddNewWordDialog: React.VFC<AddNewWordDialogProps> = ({open, putPin}) => {
   const [word, setWord] = useState('')
   const [place, setPlace] = useState('')
   const [condition, setCondition] = useState('')
@@ -54,3 +54,5 @@ export const AddNewWordDialog: React.VFC<AddNewWordDialogProps> = ({open, putPin
     </Grow>
   )
 }
+
+export default AddNewWordDialog
