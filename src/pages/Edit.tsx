@@ -1,6 +1,6 @@
 import * as React from 'react'
 import styles from './Edit.module.css'
-import {useParams, useLocation} from 'react-router'
+import {useParams, useLocation, useNavigate} from 'react-router'
 import {AddNewWordDialog} from '../components/AddNewWordDialog'
 import useAuth from '../components/UserProvider'
 import {useMousePosition} from '../hooks/useMousePosition'
@@ -30,6 +30,7 @@ export const Edit: React.VFC<EditProps> = ({imageUrl, isPlayground = false}) => 
   const location = useLocation()
   const [palaceName, setPalaceName] = React.useState('')
   const {user} = useAuth()
+  const navigate = useNavigate
 
   const [hoverRef, isHovered] = useHover<HTMLImageElement>()
   const {x, y} = useMousePosition()
@@ -54,11 +55,9 @@ export const Edit: React.VFC<EditProps> = ({imageUrl, isPlayground = false}) => 
       }
       console.log(data)
       postPalace(data)
+      navigate('/')
     }
   }
-  React.useEffect(() => {
-    setPins([])
-  }, [useLocation()])
 
   const handleClickAway = () => {
     setOpen(false)
