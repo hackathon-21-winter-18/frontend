@@ -183,6 +183,14 @@ export const Edit: React.VFC<EditProps> = ({imageUrl}) => {
       setIsOpen(true)
     }
   }
+  React.useEffect(() => {
+    setWords([])
+    setPlaces([])
+    setConditions([])
+    setCoodinates([])
+    setName('')
+    console.log('set')
+  }, [useLocation()])
 
   return (
     <div className={styles.edit}>
