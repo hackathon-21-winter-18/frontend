@@ -1,0 +1,36 @@
+.visible {
+  margin: 0 8px;
+  padding: 8px 10px;
+  border: 1px solid white;
+  border-radius: 4px;
+  font-size: 16px;
+  font-weight: 700;
+  color: #313847;
+  background-color: #e2e9f7;
+  white-space: nowrap;
+}
+.notHide {
+  margin: 0 8px;
+  padding: 8px 10px;
+  border: 1px solid white;
+  border-radius: 4px;
+  font-size: 16px;
+  font-weight: 700;
+  color: #313847;
+  background-color: #e2e9f7;
+  cursor: pointer;
+  white-space: nowrap;
+}
+.hide {
+  user-select: none;
+  margin: 0 8px;
+  padding: 8px 10px;
+  border: 1px solid white;
+  border-radius: 4px;
+  font-size: 16px;
+  font-weight: 700;
+  color: #313847;
+  background-color: #313847;
+  cursor: pointer;
+  white-space: nowrap;
+}

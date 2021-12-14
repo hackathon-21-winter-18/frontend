@@ -8,36 +8,8 @@ import axios from 'axios'
 import CreateNewPalaceButton from '../components/CreateNewPalaceButton'
 import useAuth from '../components/UserProvider'
 
-const mockPalaces: PalaceType[] = [
-  {
-    id: '0',
-    name: 'Versailles',
-    image: palace1,
-    embededPins: [
-      {number: 0, x: 0, y: 0, word: 'apple', place: 'aaa', do: 'aaa'},
-      {number: 1, x: 1, y: 1, word: 'banana', place: 'bbb', do: 'bbb'},
-    ],
-  },
-  {
-    id: '1',
-    name: 'Buckingham',
-    image: palace2,
-    embededPins: [
-      {number: 0, x: 0, y: 0, word: 'apple', place: 'aaa', do: 'aaa'},
-      {number: 1, x: 1, y: 1, word: 'banana', place: 'bbb', do: 'bbb'},
-    ],
-  },
-]
 const Home: React.VFC = () => {
-  const [palaces, setPalaces] = useState([
-    {
-      id: '',
-      name: '',
-      image: '',
-      embededPins: [{number: 0, x: 0, y: 0, word: '', place: '', do: ''}],
-    },
-  ])
-
+  const [palaces, setPalaces] = useState(new Array<PalaceType>())
   const listItems = palaces.map((palace, index) => (
     <li key={palace.id}>
       <Palace num={index} palace={palace} deletePalace={DeletePalace} />

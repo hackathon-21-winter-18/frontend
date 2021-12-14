@@ -23,10 +23,10 @@ function App() {
       <UserProvider>
         <BrowserRouter>
           <Routes>
-            <Route element={<Layout />}>
-              <Route path="/login" element={<Login />} />
-              <Route path="/signup" element={<SignUp />} />
-              <Route element={<AuthenticatedRoute />}>
+            <Route path="/login" element={<Login />} />
+            <Route path="/signup" element={<SignUp />} />
+            <Route element={<AuthenticatedRoute />}>
+              <Route element={<Layout />}>
                 <Route element={<SideLayout />}>
                   <Route path="/" element={<Home />} />
                   <Route path="/template" element={<TemplatePage />} />

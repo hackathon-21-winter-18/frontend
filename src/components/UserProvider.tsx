@@ -1,5 +1,6 @@
 import React, {createContext, useContext, useEffect, useMemo, useState} from 'react'
 import {postLogin, postSignUp, getCurrentUser} from '../api/registration'
+import Loading from '../pages/Loading'
 import {UserRegistration} from '../types'
 
 interface UserContextInterface {
@@ -62,7 +63,7 @@ export const UserProvider: React.FC = ({children}) => {
     }),
     [user, loading]
   )
-  return <UserContext.Provider value={memoedValue}>{!loadingInitial && children}</UserContext.Provider>
+  return <UserContext.Provider value={memoedValue}>{loadingInitial ? <Loading /> : children}</UserContext.Provider>
 }
 
 export default function useAuth() {

@@ -1,0 +1,7 @@
+.pin {
+  position: fixed;
+  top: 0;
+  left: 0;
+  transform: translate(-50%, -80%);
+  pointer-events: none;
+}
