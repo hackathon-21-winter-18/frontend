@@ -88,22 +88,16 @@ export const FixTemplate: React.VFC = () => {
     [open]
   )
 
-  const putPin = React.useCallback(
-    (pin: PinContent) => {
-      const data = {
-        word: pin.word,
-        place: pin.place,
-        do: pin.condition,
-        number: pins.length,
-        x: (x - hoverRef.current.x) / hoverRef.current.width,
-        y: (y - hoverRef.current.y) / hoverRef.current.height,
-      }
-      setPins([...pins, data])
-      setOpen(false)
-    },
-    [open]
-  )
-  const handlePinClick = React.useCallback((pin: EmbededPins) => {
+  const putPin = React.useCallback(() => {
+    const data = {
+      number: pins.length,
+      x: (x - hoverRef.current.x) / hoverRef.current.width,
+      y: (y - hoverRef.current.y) / hoverRef.current.height,
+    }
+    setPins([...pins, data])
+    setOpen(false)
+  }, [open])
+  const handlePinClick = React.useCallback((pin: Pin) => {
     setPinOpen(pin)
   }, [])
   const handleDeletePin = React.useCallback(
@@ -131,6 +125,9 @@ export const FixTemplate: React.VFC = () => {
                 left: pin.x * hoverRef.current.width + 'px',
                 transform: `translate(-50%, -100%)`,
               }}
+              onClick={() => {
+                handlePinClick(pin)
+              }}
             />
           ))}
         </div>
@@ -151,14 +148,7 @@ export const FixTemplate: React.VFC = () => {
             onClick={() => setOpen(Math.random())}
             ref={hoverRef}
           />
-          {open && (
-            <Portal>
-              <Box sx={boxStyle()}>
-                <AddNewWordDialog open={!!open} putPin={putPin} />
-              </Box>
-              <img src={pinIcon} alt="" className={styles.pinIcon} style={pinStyle()} />
-            </Portal>
-          )}
+          {open && putPin()}
         </div>
       </ClickAwayListener>
 
