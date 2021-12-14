@@ -1,84 +1,178 @@
 import * as React from 'react'
-import {useParams, useLocation} from 'react-router'
-import PushPinIcon from '@mui/icons-material/PushPin'
-import axios from 'axios'
-import {UserContext} from '../components/UserProvider'
-import {Pins} from '../types'
-import Dialog from '@mui/material/Dialog'
+import styles from './Edit.module.css'
 import {Link} from 'react-router-dom'
+import {EditAddedWord} from '../components/EditAddedWord'
+import PushPinIcon from '@mui/icons-material/PushPin'
+import {Pin} from '../types'
+import {useParams, useLocation, useNavigate} from 'react-router'
+import {AddNewWordDialog} from '../components/AddNewWordDialog'
+import useAuth from '../components/UserProvider'
+import {useMousePosition} from '../hooks/useMousePosition'
+import {CustomCursor} from '../components/CustomCursor'
+import {Badge, Box, ClickAwayListener, IconButton, Portal, SxProps} from '@mui/material'
+import {useHover} from '../hooks/useHover'
+import {EmbededPins, PinContent} from '../types'
+import pinIcon from '../assets/pin.svg'
+import {FixWordDialog} from '../components/FixWordDialog'
+import {postPalace} from '../api/palace'
+import VisibilityIcon from '@mui/icons-material/Visibility'
+import VisibilityOffIcon from '@mui/icons-material/VisibilityOff'
+import Dialog from '@mui/material/Dialog'
+import {postTemplate} from '../api/template'
 
-export const EditTemplate: React.VFC = () => {
-  const [coodinates, setCoodinates] = React.useState(new Array<[number, number]>())
+type Mode = 'edit' | 'memorization'
+
+interface EditProps {
+  imageUrl?: string
+  isPlayground?: boolean
+}
+
+export const EditTemplate: React.VFC<EditProps> = ({imageUrl, isPlayground = false}) => {
+  const [open, setOpen] = React.useState<number | boolean>(false)
+  const [pinOpen, setPinOpen] = React.useState<Pin | null>(null)
+  const [pins, setPins] = React.useState<Pin[]>([])
+  const [mode, setMode] = React.useState<Mode>('edit')
   const image = useParams() //あとで使うかも
   const location = useLocation()
-  const [name, setName] = React.useState('')
-  const {user} = React.useContext(UserContext)
-  const [isOpen, setIsOpen] = React.useState(false)
+  const [templateName, setTemplateName] = React.useState('')
+  const {user} = useAuth()
+  const [templateId, setTemplateId] = React.useState('')
   const [completeIsOpen, setCompleteIsOpen] = React.useState(false)
+  const navigate = useNavigate()
+  const [templateOption, setTemplateOption] = React.useState(false)
 
-  const handleOnClick = (e: React.MouseEvent<HTMLImageElement>) => {
-    setCoodinates(coodinates.concat([[e.pageX, e.pageY]]))
-  }
-  const handleDelete = (index: number) => {
-    const _coodinates = coodinates.slice()
-    _coodinates.splice(index, 1)
-    setCoodinates([..._coodinates])
-  }
-  function handleNameChange(e: any) {
-    setName(e.target.value)
-  }
+  const [hoverRef, isHovered] = useHover<HTMLImageElement>()
+  const {x, y} = useMousePosition()
 
-  function handleComplete() {
-    if (coodinates.length > 0 && name !== '') {
-      let pins = new Array<Pins>()
-      for (let i = 0; i < coodinates.length; i++) {
-        pins.push({
+  const handleComplete = (e: any) => {
+    e.preventDefault()
+    if (pins.length > 0 && !isPlayground) {
+      let templatePins = new Array<Pin>()
+      for (let i = 0; i < templatePins.length; i++) {
+        templatePins.push({
           number: i,
-          x: coodinates[i][0],
-          y: coodinates[i][1],
+          x: pins[i].x,
+          y: pins[i].y,
         })
       }
-      const data = {
-        name: name,
+      const data2 = {
+        name: templateName,
         image: location.state.image.substring(22),
         pins: pins,
         createdBy: user.id,
       }
-      console.log(data)
-      axios
-        .post('http://localhost:8080/api/templates/me', data, {withCredentials: true})
-        .then((res) => {
-          console.log(res.status)
-          setCompleteIsOpen(true)
-        })
-        .catch((error) => {
-          console.log(error)
-        })
-    } else {
-      setIsOpen(true)
+      postTemplate(data2)
     }
+    setCompleteIsOpen(true)
   }
-  const listItems = coodinates.map((coodinate, index) => (
-    <li key={index}>
-      ({coodinate[0]},{coodinate[1]})<button onClick={() => handleDelete(index)}>削除</button>
-    </li>
-  ))
+
+  const handleClickAway = () => {
+    setOpen(false)
+  }
+  const boxStyle = React.useCallback<() => SxProps>(
+    () => ({
+      position: 'fixed',
+      top: y,
+      left: x,
+      transform: `translate(${window.innerWidth / 2 < x ? '-100%' : '0'}, -100%)`,
+      p: 1,
+      borderRadius: 2,
+      transitionDuration: '0.2s',
+    }),
+    [open, pinOpen]
+  )
+
+  const pinStyle = React.useCallback<() => React.CSSProperties>(
+    () => ({
+      position: 'fixed',
+      top: y,
+      left: x,
+      transform: `translate(-50%, -100%)`,
+    }),
+    [open]
+  )
+
+  const putPin = React.useCallback(() => {
+    const data = {
+      number: pins.length,
+      x: (x - hoverRef.current.x) / hoverRef.current.width,
+      y: (y - hoverRef.current.y) / hoverRef.current.height,
+    }
+    setPins([...pins, data])
+    setOpen(false)
+  }, [open])
+  const handlePinClick = React.useCallback((pin: Pin) => {
+    setPinOpen(pin)
+  }, [])
+  const handleDeletePin = React.useCallback(
+    (pin: EmbededPins) => {
+      setPins(pins.filter((tmp) => tmp !== pin))
+      setPinOpen(null)
+    },
+    [pins]
+  )
 
   return (
-    <div>
-      {coodinates.map(([x, y]: [number, number], index) => (
-        <PushPinIcon key={index} style={{position: 'absolute', top: y + 'px', left: x + 'px'}} />
-      ))}
-      <div>
-        <img src={location.state.image} alt="map" onClick={handleOnClick} />
-      </div>
-      <ol>{listItems}</ol>
-      <input type="text" value={name} placeholder="テンプレートの名前" onChange={handleNameChange} />
-      <button onClick={handleComplete}>完成!</button>
-      <Dialog open={isOpen} onClose={() => setIsOpen(false)}>
-        <span>ピンもしくはテンプレートの名前が登録されていません。</span>
-        <button onClick={() => setIsOpen(false)}>OK</button>
-      </Dialog>
+    <div className={styles.edit}>
+      {mode === 'edit' && <CustomCursor type="pin" isHover={isHovered} />}
+      <ClickAwayListener onClickAway={() => setPinOpen(null)}>
+        <div>
+          {pins.map((pin, i) => (
+            <img
+              className={styles.pushedPin}
+              key={i}
+              src={pinIcon}
+              alt=""
+              style={{
+                position: 'absolute',
+                top: pin.y * hoverRef.current.height + 'px',
+                left: pin.x * hoverRef.current.width + 'px',
+                transform: `translate(-50%, -100%)`,
+              }}
+              onClick={() => {
+                handlePinClick(pin)
+              }}
+            />
+          ))}
+        </div>
+      </ClickAwayListener>
+
+      <IconButton
+        className={styles.togglPinList}
+        onClick={() => isPlayground && setMode(mode === 'edit' ? 'memorization' : 'edit')}>
+        {mode === 'edit' && (
+          <Badge badgeContent={pins.length} color="primary">
+            <img src={pinIcon} alt="" className={styles.pinIcon} />
+          </Badge>
+        )}
+        {mode === 'memorization' && <VisibilityOffIcon />}
+      </IconButton>
+
+      <ClickAwayListener onClickAway={handleClickAway}>
+        <div>
+          <img
+            className={styles.layoutImage}
+            src={imageUrl ?? location.state.image}
+            alt="map"
+            onClick={() => mode === 'edit' && setOpen(Math.random())}
+            ref={hoverRef}
+          />
+          {open && putPin()}
+        </div>
+      </ClickAwayListener>
+
+      <form>
+        <input
+          required
+          type="text"
+          value={templateName}
+          placeholder="テンプレートの名前"
+          onChange={(e) => setTemplateName(e.target.value)}
+        />
+        <button onClick={handleComplete} type="submit" disabled={pins.length <= 0 || templateName === ''}>
+          完成!
+        </button>
+      </form>
       <Dialog open={completeIsOpen}>
         テンプレートが完成しました
         <Link to="/">ホームへ戻る</Link>

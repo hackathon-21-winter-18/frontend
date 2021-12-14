@@ -1,106 +1,169 @@
 import * as React from 'react'
+import styles from './Edit.module.css'
 import {useParams, useLocation} from 'react-router'
-import PushPinIcon from '@mui/icons-material/PushPin'
-import axios from 'axios'
-import {UserContext} from '../components/UserProvider'
-import {TemplateType, Pins} from '../types'
+import {AddNewWordDialog} from '../components/AddNewWordDialog'
+import useAuth from '../components/UserProvider'
+import {PalaceType} from '../types'
 import Dialog from '@mui/material/Dialog'
 import {Link} from 'react-router-dom'
+import {useMousePosition} from '../hooks/useMousePosition'
+import {CustomCursor} from '../components/CustomCursor'
+import {Badge, Box, ClickAwayListener, IconButton, Portal, SxProps} from '@mui/material'
+import {useHover} from '../hooks/useHover'
+import {EmbededPins, PinContent} from '../types'
+import pinIcon from '../assets/pin.svg'
+import {FixWordDialog} from '../components/FixWordDialog'
+import {getTemplate, postTemplate, putTemplate} from '../api/template'
+import {Pin} from '../types'
+
 export const FixTemplate: React.VFC = () => {
-  const [coodinates, setCoodinates] = React.useState(new Array<[number, number]>())
-  const location = useLocation()
-  const [name, setName] = React.useState('')
-  const {user} = React.useContext(UserContext)
-  const [template, setTemplate] = React.useState<TemplateType>({
-    id: '',
-    name: '',
-    image: '',
-    pins: [{number: 0, x: 0, y: 0}],
-  })
+  const [open, setOpen] = React.useState<number | boolean>(false)
+  const [pinOpen, setPinOpen] = React.useState<Pin | null>(null)
+  const [pins, setPins] = React.useState<Pin[]>([])
   const params = useParams()
+  const location = useLocation()
+  const [templateName, setTemplateName] = React.useState('')
+  const {user} = useAuth()
+  const [hoverRef, isHovered] = useHover<HTMLImageElement>()
+  const {x, y} = useMousePosition()
   const [isOpen, setIsOpen] = React.useState(false)
   const [completeIsOpen, setCompleteIsOpen] = React.useState(false)
 
-  const handleOnClick = (e: React.MouseEvent<HTMLImageElement>) => {
-    setCoodinates(coodinates.concat([[e.pageX, e.pageY]]))
-  }
-  const handleDelete = (index: number) => {
-    const _coodinates = coodinates.slice()
-    _coodinates.splice(index, 1)
-    setCoodinates([..._coodinates])
-  }
-  function handleNameChange(e: any) {
-    setName(e.target.value)
-  }
   React.useEffect(() => {
-    axios.get('http://localhost:8080/api/templates/me', {withCredentials: true}).then((res) => {
-      const data = res.data
-      let name2 = name
-      let coodinates2 = coodinates
-      for (let i = 0; i < data.length; i++) {
-        if (data[i].id === params.id) {
-          setTemplate(data[i])
-          for (let j = 0; j < data[i].pins.length; j++) {
-            name2 = data[i].name
-            coodinates2 = coodinates2.concat([[data[i].pins[j].x, data[i].pins[j].y]])
-          }
-        }
-      }
-      setName(name2)
-      setCoodinates(coodinates2)
-      console.log('set!')
-    })
+    const templateID = params.id
+    templateID &&
+      getTemplate().then((template) => {
+        setTemplateName(template.name)
+        setPins(template.pin)
+      })
   }, [])
 
-  function handleComplete() {
-    if (coodinates.length > 0 && name !== '') {
-      let pins = new Array<Pins>()
-      for (let i = 0; i < coodinates.length; i++) {
-        pins.push({
-          number: i,
-          x: coodinates[i][0],
-          y: coodinates[i][1],
-        })
-      }
+  const handleComplete = (e: any) => {
+    e.preventDefault()
+    if (pins.length > 0) {
       const data = {
-        name: name,
-        image: location.state.image.substring(22),
-        pins: pins,
+        name: templateName,
+        image: location.state.image.substr(22),
+        embededPins: pins,
       }
       console.log(data)
-      axios
-        .put('http://localhost:8080/api/templates/' + template.id, data, {withCredentials: true})
-        .then((res) => {
-          console.log(res.status)
-          setCompleteIsOpen(true)
-        })
-        .catch((error) => {
-          console.log(error)
-        })
-    } else {
-      setIsOpen(true)
+      params.id && putTemplate(params.id, data)
+      setCompleteIsOpen(true)
     }
   }
-  const listItems = coodinates.map((coodinate, index) => (
-    <li key={index}>
-      ({coodinate[0]},{coodinate[1]})<button onClick={() => handleDelete(index)}>削除</button>
-    </li>
-  ))
+
+  const handleClickAway = () => {
+    setOpen(false)
+  }
+  const boxStyle = React.useCallback<() => SxProps>(
+    () => ({
+      position: 'fixed',
+      top: y,
+      left: x,
+      transform: `translate(${window.innerWidth / 2 < x ? '-100%' : '0'}, -100%)`,
+      p: 1,
+      borderRadius: 2,
+      transitionDuration: '0.2s',
+    }),
+    [open, pinOpen]
+  )
+
+  const pinStyle = React.useCallback<() => React.CSSProperties>(
+    () => ({
+      position: 'fixed',
+      top: y,
+      left: x,
+      transform: `translate(-50%, -100%)`,
+    }),
+    [open]
+  )
+
+  const putPin = React.useCallback(
+    (pin: PinContent) => {
+      const data = {
+        word: pin.word,
+        place: pin.place,
+        do: pin.condition,
+        number: pins.length,
+        x: (x - hoverRef.current.x) / hoverRef.current.width,
+        y: (y - hoverRef.current.y) / hoverRef.current.height,
+      }
+      setPins([...pins, data])
+      setOpen(false)
+    },
+    [open]
+  )
+  const handlePinClick = React.useCallback((pin: EmbededPins) => {
+    setPinOpen(pin)
+  }, [])
+  const handleDeletePin = React.useCallback(
+    (pin: EmbededPins) => {
+      setPins(pins.filter((tmp) => tmp !== pin))
+      setPinOpen(null)
+    },
+    [pins]
+  )
+
   return (
-    <div>
-      {coodinates.map(([x, y]: [number, number], index) => (
-        <PushPinIcon key={index} style={{position: 'absolute', top: y + 'px', left: x + 'px'}} />
-      ))}
-      <div>
-        <img src={location.state.image} alt="map" onClick={handleOnClick} />
-      </div>
-      <ol>{listItems}</ol>
-      <input type="text" value={name} placeholder="テンプレートの名前" onChange={handleNameChange} />
-      <button onClick={handleComplete}>完成!</button>
-      <Dialog open={isOpen} onClose={() => setIsOpen(false)}>
-        <span>ピンもしくはテンプレートの名前が登録されていません。</span>
-        <button onClick={() => setIsOpen(false)}>OK</button>
-      </Dialog>
+    <div className={styles.edit}>
+      <CustomCursor type="pin" isHover={isHovered} />
+      <ClickAwayListener onClickAway={() => setPinOpen(null)}>
+        <div>
+          {pins.map((pin, i) => (
+            <img
+              className={styles.pushedPin}
+              key={i}
+              src={pinIcon}
+              alt=""
+              style={{
+                position: 'absolute',
+                top: pin.y * hoverRef.current.height + 'px',
+                left: pin.x * hoverRef.current.width + 'px',
+                transform: `translate(-50%, -100%)`,
+              }}
+            />
+          ))}
+        </div>
+      </ClickAwayListener>
+
+      <IconButton className={styles.togglPinList}>
+        <Badge badgeContent={pins.length} color="primary">
+          <img src={pinIcon} alt="" className={styles.pinIcon} />
+        </Badge>
+      </IconButton>
+
+      <ClickAwayListener onClickAway={handleClickAway}>
+        <div>
+          <img
+            className={styles.layoutImage}
+            src={location.state.image}
+            alt="map"
+            onClick={() => setOpen(Math.random())}
+            ref={hoverRef}
+          />
+          {open && (
+            <Portal>
+              <Box sx={boxStyle()}>
+                <AddNewWordDialog open={!!open} putPin={putPin} />
+              </Box>
+              <img src={pinIcon} alt="" className={styles.pinIcon} style={pinStyle()} />
+            </Portal>
+          )}
+        </div>
+      </ClickAwayListener>
+
+      <form>
+        <input
+          required
+          type="text"
+          value={templateName}
+          placeholder="テンプレートの名前"
+          onChange={(e) => setTemplateName(e.target.value)}
+        />
+        <button onClick={handleComplete} type="submit" disabled={pins.length <= 0 || templateName === ''}>
+          完成!
+        </button>
+      </form>
       <Dialog open={completeIsOpen}>
         テンプレートが修正されました
         <Link to="/">ホームへ戻る</Link>
