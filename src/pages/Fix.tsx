@@ -44,9 +44,15 @@ export const Fix: React.VFC = () => {
   const handleComplete = (e: any) => {
     e.preventDefault()
     if (pins.length > 0) {
+      let willSendImage = ''
+      if (location.state.image.substr(0, 23) === 'data:image/jpeg;base64,') {
+        willSendImage = location.state.image.substring(23)
+      } else {
+        willSendImage = location.state.image.substring(22)
+      }
       const data = {
         name: palaceName,
-        image: location.state.image.substr(22),
+        image: willSendImage,
         embededPins: pins,
       }
       console.log(data)

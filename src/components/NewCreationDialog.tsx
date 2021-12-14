@@ -25,7 +25,7 @@ const NewCreationDialog: React.VFC<NewCreationDialogProps> = ({onClose}) => {
   const handleUploadFile = async () => {
     if (image) {
       const base64 = await getBase64(image)
-      navigate('/edit/' + base64.substr(27, 100), {replace: true, state: {image: base64}})
+      navigate('/edit/' + base64.substring(27, 100), {replace: true, state: {image: base64}})
     }
     onClose()
   }

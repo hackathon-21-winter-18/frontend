@@ -2,36 +2,12 @@ import styles from './TemplatePage.module.css'
 import {useEffect, useState} from 'react'
 import Template from '../components/Template'
 import {TemplateType} from '../types'
-import palace1 from '../assets/ヴェルサイユ宮殿.jpg'
-import palace2 from '../assets/バッキンガム宮殿.jpg'
 import axios from 'axios'
 import CreateNewTemplateButton from '../components/CreateNewTemplateButton'
 import useAuth from '../components/UserProvider'
 
-const mockTemplates: TemplateType[] = [
-  {
-    id: '0',
-    name: 'Versailles',
-    image: palace1,
-    pins: [{number: 0, x: 0, y: 0}],
-  },
-  {
-    id: '1',
-    name: 'Buckingham',
-    image: palace2,
-    pins: [{number: 0, x: 1, y: 1}],
-  },
-]
-
 const TemplatePage: React.VFC = () => {
-  const [templates, setTemplates] = useState([
-    {
-      id: '',
-      name: '',
-      image: '',
-      pins: [{number: 0, x: 0, y: 0}],
-    },
-  ])
+  const [templates, setTemplates] = useState(new Array<TemplateType>())
   const {user} = useAuth()
   const listItems = templates.map((template, index) => (
     <li key={template.id}>
@@ -52,6 +28,8 @@ const TemplatePage: React.VFC = () => {
 
   return (
     <div className={styles.templatePage}>
+      <h1>My Templates</h1>
+      <div className={styles.divider} />
       <ul className={styles.templateContainer}>
         <CreateNewTemplateButton />
 

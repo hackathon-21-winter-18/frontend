@@ -47,6 +47,12 @@ export const EditTemplate: React.VFC<EditProps> = ({imageUrl, isPlayground = fal
   const handleComplete = (e: any) => {
     e.preventDefault()
     if (pins.length > 0 && !isPlayground) {
+      let willSendImage = ''
+      if (location.state.image.substr(0, 23) === 'data:image/jpeg;base64,') {
+        willSendImage = location.state.image.substring(23)
+      } else {
+        willSendImage = location.state.image.substring(22)
+      }
       let templatePins = new Array<Pin>()
       for (let i = 0; i < templatePins.length; i++) {
         templatePins.push({
@@ -57,7 +63,7 @@ export const EditTemplate: React.VFC<EditProps> = ({imageUrl, isPlayground = fal
       }
       const data2 = {
         name: templateName,
-        image: location.state.image.substring(22),
+        image: willSendImage,
         pins: pins,
         createdBy: user.id,
       }

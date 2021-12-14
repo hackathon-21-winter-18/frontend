@@ -47,21 +47,17 @@ export const Edit: React.VFC<EditProps> = ({imageUrl, isPlayground = false}) => 
   const handleComplete = (e: any) => {
     e.preventDefault()
     if (pins.length > 0 && !isPlayground) {
-      let data
+      let willSendImage = ''
       if (location.state.image.substr(0, 23) === 'data:image/jpeg;base64,') {
-        data = {
-          name: palaceName,
-          image: location.state.image.substr(23),
-          embededPins: pins,
-          createdBy: user.id,
-        }
+        willSendImage = location.state.image.substring(23)
       } else {
-        data = {
-          name: palaceName,
-          image: location.state.image.substr(22),
-          embededPins: pins,
-          createdBy: user.id,
-        }
+        willSendImage = location.state.image.substring(22)
+      }
+      const data = {
+        name: palaceName,
+        image: willSendImage,
+        embededPins: pins,
+        createdBy: user.id,
       }
       console.log(data)
       postPalace(data)
@@ -76,7 +72,7 @@ export const Edit: React.VFC<EditProps> = ({imageUrl, isPlayground = false}) => 
         }
         const data2 = {
           name: palaceName,
-          image: location.state.image.substring(22),
+          image: willSendImage,
           pins: pins,
           createdBy: user.id,
         }

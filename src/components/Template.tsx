@@ -1,6 +1,6 @@
 import {useState} from 'react'
 import {Link, useNavigate} from 'react-router-dom'
-import styles from './Palace.module.css'
+import styles from './Template.module.css'
 import ReactModal from 'react-modal'
 import {TemplateType} from '../types'
 import axios from 'axios'
@@ -40,7 +40,7 @@ const Template: React.VFC<TemplateProps> = ({num, template, deleteTemplate}) => 
     setIsOpen(false)
   }
   return (
-    <div className={styles.palace}>
+    <div className={styles.template}>
       {/* <Link to={'/memorize/' + palace.id} className={styles.image}>
         <img src={palace.image} alt={palace.name} />
       </Link> */}
@@ -58,7 +58,7 @@ const Template: React.VFC<TemplateProps> = ({num, template, deleteTemplate}) => 
       </div>
       <div className={styles.wordTag}>
         <CommentIcon className={styles.commentIcon} />
-        {template.pins.length + ' Words'}
+        {template.pins.length + ' Pins'}
       </div>
       <Dialog open={isOpen} onClose={handleDialogClose}>
         <button onClick={() => navigate('/fixTemplate/' + template.id, {state: {image: Extension()}})}>
