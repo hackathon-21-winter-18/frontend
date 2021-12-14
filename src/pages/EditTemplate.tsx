@@ -117,6 +117,11 @@ export const EditTemplate: React.VFC<EditProps> = ({imageUrl, isPlayground = fal
     },
     [pins]
   )
+  React.useEffect(() => {
+    setPins([])
+    setTemplateName('')
+    console.log('a')
+  }, [location])
 
   return (
     <div className={styles.edit}>
