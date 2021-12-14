@@ -31,9 +31,13 @@ export const Fix: React.VFC = () => {
   React.useEffect(() => {
     const palaceID = params.id
     palaceID &&
-      getPalace().then((palace) => {
-        setPalaceName(palace.name)
-        setPins(palace.embededPins)
+      getPalace().then((data) => {
+        for (let i = 0; i < data.length; i++) {
+          if (data[i].id === palaceID) {
+            setPalaceName(data[i].name)
+            setPins(data[i].embededPins)
+          }
+        }
       })
   }, [])
 

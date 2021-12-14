@@ -32,9 +32,13 @@ export const FixTemplate: React.VFC = () => {
   React.useEffect(() => {
     const templateID = params.id
     templateID &&
-      getTemplate().then((template) => {
-        setTemplateName(template.name)
-        setPins(template.pin)
+      getTemplate().then((data) => {
+        for (let i = 0; i < data.length; i++) {
+          if (data[i].id === templateID) {
+            setTemplateName(data[i].name)
+            setPins(data[i].pins)
+          }
+        }
       })
   }, [])
 
