@@ -31,7 +31,7 @@ const SharedTemplates: React.VFC = () => {
 
   return (
     <div className={styles.sharedTemplates}>
-      <h1>My Templates</h1>
+      <h1>Shared Templates</h1>
       <div className={styles.divider} />
       <ul className={styles.templateContainer}>{listItems}</ul>
     </div>
