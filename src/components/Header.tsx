@@ -2,7 +2,6 @@ import styles from './Header.module.css'
 import {useNavigate} from 'react-router-dom'
 import logo from '../assets/logo.svg'
 import FromNewPalace from './DialogFromNewPalace'
-import FromNewTemplate from './DialogFromNewTemplate'
 import useAuth from './UserProvider'
 
 const Header: React.VFC = () => {

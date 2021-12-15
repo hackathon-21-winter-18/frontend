@@ -4,7 +4,6 @@ import Palace from '../components/Palace'
 import {PalaceType} from '../types'
 import axios from 'axios'
 import CreateNewPalaceButton from '../components/CreateNewPalaceButton'
-import useAuth from '../components/UserProvider'
 
 const Home: React.VFC = () => {
   const [palaces, setPalaces] = useState(new Array<PalaceType>())
@@ -13,7 +12,6 @@ const Home: React.VFC = () => {
       <Palace num={index} palace={palace} deletePalace={DeletePalace} />
     </li>
   ))
-  const {user} = useAuth()
 
   function DeletePalace(number: number) {
     setPalaces(palaces.slice(0, number).concat(palaces.slice(number + 1)))

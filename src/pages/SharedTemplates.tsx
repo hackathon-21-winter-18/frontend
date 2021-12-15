@@ -2,15 +2,11 @@ import {useEffect, useState} from 'react'
 import styles from './SharedTemplates.module.css'
 import SharedTemplate from '../components/SharedTemplate'
 import axios from 'axios'
-import Sidebar from '../components/Sidebar'
-import {useContext} from 'react'
-import {UserContext} from '../components/UserProvider'
 import {SharedTemplateType} from '../types'
 
 const SharedTemplates: React.VFC = () => {
   const [templates, setTemplates] = useState(new Array<SharedTemplateType>())
 
-  const {user} = useContext(UserContext)
   const listItems = templates.map((template, index) => (
     <li key={template.id}>
       <SharedTemplate template={template} />

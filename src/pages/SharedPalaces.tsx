@@ -2,14 +2,11 @@ import {useEffect, useState} from 'react'
 import styles from './SharedPalaces.module.css'
 import SharedPalace from '../components/SharedPalace'
 import axios from 'axios'
-import {useContext} from 'react'
-import {UserContext} from '../components/UserProvider'
 import {SharedPalaceType} from '../types'
 
 const SharedPalaces: React.VFC = () => {
   const [palaces, setPalaces] = useState(new Array<SharedPalaceType>())
 
-  const {user} = useContext(UserContext)
   const listItems = palaces.map((palace, index) => (
     <li key={palace.id}>
       <SharedPalace palace={palace} />

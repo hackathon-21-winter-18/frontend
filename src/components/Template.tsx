@@ -1,7 +1,6 @@
 import {useState} from 'react'
-import {Link, useNavigate} from 'react-router-dom'
+import {useNavigate} from 'react-router-dom'
 import styles from './Template.module.css'
-import ReactModal from 'react-modal'
 import {TemplateType} from '../types'
 import axios from 'axios'
 import MoreVertIcon from '@mui/icons-material/MoreVert'

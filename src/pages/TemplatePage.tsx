@@ -4,11 +4,9 @@ import Template from '../components/Template'
 import {TemplateType} from '../types'
 import axios from 'axios'
 import CreateNewTemplateButton from '../components/CreateNewTemplateButton'
-import useAuth from '../components/UserProvider'
 
 const TemplatePage: React.VFC = () => {
   const [templates, setTemplates] = useState(new Array<TemplateType>())
-  const {user} = useAuth()
   const listItems = templates.map((template, index) => (
     <li key={template.id}>
       <Template num={index} template={template} deleteTemplate={DeleteTemplate} />

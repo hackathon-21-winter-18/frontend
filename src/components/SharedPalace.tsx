@@ -1,5 +1,5 @@
 import {useState, useContext} from 'react'
-import {Link, useNavigate} from 'react-router-dom'
+import {useNavigate} from 'react-router-dom'
 import styles from './SharedPalace.module.css'
 import {SharedPalaceType} from '../types'
 import axios from 'axios'

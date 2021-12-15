@@ -1,5 +1,5 @@
 import {useState, useContext} from 'react'
-import {Link, useNavigate} from 'react-router-dom'
+import {useNavigate} from 'react-router-dom'
 import styles from './SharedTemplate.module.css'
 import {SharedTemplateType} from '../types'
 import axios from 'axios'

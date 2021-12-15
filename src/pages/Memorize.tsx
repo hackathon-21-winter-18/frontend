@@ -1,4 +1,4 @@
-import {useState, useEffect, useContext} from 'react'
+import {useState, useEffect} from 'react'
 import {useParams, useLocation} from 'react-router'
 import {Link} from 'react-router-dom'
 import styles from 'Memorize.module.css'
@@ -6,7 +6,6 @@ import Word from '../components/Word'
 import {PalaceType} from '../types'
 import axios from 'axios'
 import PushPinIcon from '@mui/icons-material/PushPin'
-import useAuth from '../components/UserProvider'
 import Dialog from '@mui/material/Dialog'
 
 const Memorize: React.VFC = () => {
@@ -19,7 +18,6 @@ const Memorize: React.VFC = () => {
   })
   const [flags, setFlags] = useState([...Array(palace.embededPins.length)].fill(false))
   const params = useParams()
-  const {user} = useAuth()
   const [isOpen, setIsOpen] = useState(false)
   let location = useLocation()
 
