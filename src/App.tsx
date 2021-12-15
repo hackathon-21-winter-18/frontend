@@ -32,6 +32,8 @@ function App() {
                 <Route element={<SideLayout />}>
                   <Route path="/" element={<Home />} />
                   <Route path="/template" element={<TemplatePage />} />
+                  <Route path="/sharedPalaces" element={<SharedPalaces />} />
+                  <Route path="/sharedTemplates" element={<SharedTemplates />} />
                   <Route path="/playground" element={<Playground />} />
                 </Route>
                 <Route path="/memorize/:id" element={<Memorize />} />
@@ -41,8 +43,6 @@ function App() {
                 <Route path="/template" element={<TemplatePage />} />
                 <Route path="/editTemplate/:base64/*" element={<EditTemplate />} />
                 <Route path="/fromTemplate/:id" element={<EditFromTemplate />} />
-                <Route path="/sharedPalaces" element={<SharedPalaces />} />
-                <Route path="/sharedTemplates" element={<SharedTemplates />} />
                 <Route path="/*" element={<NotFound />} />
               </Route>
             </Route>

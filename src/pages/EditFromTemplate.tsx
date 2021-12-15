@@ -14,7 +14,7 @@ import {useHover} from '../hooks/useHover'
 import {EmbededPins, PinContent} from '../types'
 import pinIcon from '../assets/pin.svg'
 import {FixWordDialog} from '../components/FixWordDialog'
-import {postPalace} from '../api/palace'
+import {postPalace, putSharePalace} from '../api/palace'
 import VisibilityIcon from '@mui/icons-material/Visibility'
 import VisibilityOffIcon from '@mui/icons-material/VisibilityOff'
 import Dialog from '@mui/material/Dialog'
@@ -82,7 +82,7 @@ export const EditFromTemplate: React.VFC<EditProps> = ({imageUrl, isPlayground =
         }
       }
       console.log(data)
-      postPalace(data) //resにidを入れる
+      postPalace(data, (res) => (shareOption ? putSharePalace(res.data.id, shareOption) : null))
       setCompleteIsOpen(true)
     }
   }
@@ -212,7 +212,7 @@ export const EditFromTemplate: React.VFC<EditProps> = ({imageUrl, isPlayground =
         />
         <label>
           <input type="checkbox" onClick={() => setShareOption(!shareOption)} id="sharedCheckBox" />
-          共有
+          宮殿を共有
         </label>
         <button onClick={handleComplete} type="submit" disabled={pins.length <= 0 || palaceName === ''}>
           完成!

@@ -1,8 +1,7 @@
 import {useEffect, useState} from 'react'
-import styles from './Home.module.css'
+import styles from './SharedPalaces.module.css'
 import SharedPalace from '../components/SharedPalace'
 import axios from 'axios'
-import Sidebar from '../components/Sidebar'
 import {useContext} from 'react'
 import {UserContext} from '../components/UserProvider'
 import {SharedPalaceType} from '../types'
@@ -30,9 +29,10 @@ const SharedPalaces: React.VFC = () => {
   }, [])
 
   return (
-    <div className={styles.home}>
-      <Sidebar />
-      <ul>{listItems}</ul>
+    <div className={styles.sharedPalaces}>
+      <h1>Shared Palaces</h1>
+      <div className={styles.divider} />
+      <ul className={styles.palaceContainer}>{listItems}</ul>
     </div>
   )
 }

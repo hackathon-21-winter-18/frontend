@@ -13,7 +13,7 @@ import {useHover} from '../hooks/useHover'
 import {EmbededPins, PinContent} from '../types'
 import pinIcon from '../assets/pin.svg'
 import {FixWordDialog} from '../components/FixWordDialog'
-import {getPalace, postPalace, putPalace} from '../api/palace'
+import {getPalace, putPalace, putSharePalace} from '../api/palace'
 
 export const Fix: React.VFC = () => {
   const [open, setOpen] = React.useState<number | boolean>(false)
@@ -27,6 +27,8 @@ export const Fix: React.VFC = () => {
   const {x, y} = useMousePosition()
   const [isOpen, setIsOpen] = React.useState(false)
   const [completeIsOpen, setCompleteIsOpen] = React.useState(false)
+  const [shareOption, setShareOption] = React.useState(false)
+  const [palaceId, setPalaceId] = React.useState('')
 
   React.useEffect(() => {
     const palaceID = params.id
@@ -36,6 +38,7 @@ export const Fix: React.VFC = () => {
           if (data[i].id === palaceID) {
             setPalaceName(data[i].name)
             setPins(data[i].embededPins)
+            setPalaceId(data[i].id)
           }
         }
       })
@@ -56,7 +59,7 @@ export const Fix: React.VFC = () => {
         embededPins: pins,
       }
       console.log(data)
-      params.id && putPalace(params.id, data)
+      params.id && putPalace(params.id, data, () => (shareOption ? putSharePalace(palaceId, shareOption) : null))
       setCompleteIsOpen(true)
     }
   }
@@ -179,6 +182,10 @@ export const Fix: React.VFC = () => {
           placeholder="宮殿の名前"
           onChange={(e) => setPalaceName(e.target.value)}
         />
+        <label>
+          <input type="checkbox" onClick={() => setShareOption(!shareOption)} id="sharedCheckBox" />
+          共有
+        </label>
         <button onClick={handleComplete} type="submit" disabled={pins.length <= 0 || palaceName === ''}>
           完成!
         </button>

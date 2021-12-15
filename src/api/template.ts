@@ -20,9 +20,9 @@ export const putTemplate = (templateID: string, data: any, onSuccess?: () => any
     .catch(onError)
 }
 
-export const putShareTemplate = (templateID: string, data: any, onSuccess?: () => any, onError?: () => any) => {
+export const putShareTemplate = (templateID: string, share: boolean, onSuccess?: () => any, onError?: () => any) => {
   axios
-    .put(config() + '/api/templates/share/' + templateID, data, {withCredentials: true})
+    .put(config() + '/api/templates/share/' + templateID, share, {withCredentials: true})
     .then(onSuccess)
     .catch(onError)
 }

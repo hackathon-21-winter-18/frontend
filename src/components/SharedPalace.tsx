@@ -1,6 +1,6 @@
 import {useState, useContext} from 'react'
 import {Link, useNavigate} from 'react-router-dom'
-import styles from './Palace.module.css'
+import styles from './SharedPalace.module.css'
 import {SharedPalaceType} from '../types'
 import axios from 'axios'
 import MoreVertIcon from '@mui/icons-material/MoreVert'
@@ -29,7 +29,7 @@ const SharedPalace: React.VFC<PalaceProps> = ({palace}) => {
       createdBy: user.id,
     }
     axios.post('http://localhost:8080/api/palaces/me', data, {withCredentials: true})
-    setSaveIsOpen(false)
+    setIsOpen(false)
   }
   function Extension() {
     switch (palace.image.substring(0, 5)) {
@@ -45,7 +45,7 @@ const SharedPalace: React.VFC<PalaceProps> = ({palace}) => {
     setIsOpen(false)
   }
   return (
-    <div className={styles.palace}>
+    <div className={styles.sharedPalace}>
       {/* <Link to={'/memorize/' + palace.id} className={styles.image}>
         <img src={palace.image} alt={palace.name} />
       </Link> */}
@@ -77,7 +77,7 @@ const SharedPalace: React.VFC<PalaceProps> = ({palace}) => {
         <Dialog open={saveIsOpen} onClose={() => setSaveIsOpen(false)}>
           本当に宮殿を保存しますか？
           <button onClick={handleSave}>はい</button>
-          <button onClick={() => setSaveIsOpen(false)}>いいえ</button>
+          <button onClick={() => setIsOpen(false)}>いいえ</button>
         </Dialog>
       </Dialog>
     </div>

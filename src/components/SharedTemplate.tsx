@@ -1,6 +1,6 @@
 import {useState, useContext} from 'react'
 import {Link, useNavigate} from 'react-router-dom'
-import styles from './Palace.module.css'
+import styles from './SharedTemplate.module.css'
 import {SharedTemplateType} from '../types'
 import axios from 'axios'
 import MoreVertIcon from '@mui/icons-material/MoreVert'
@@ -30,7 +30,7 @@ const SharedTemplate: React.VFC<TemplateProps> = ({template}) => {
       createdBy: user.id,
     }
     axios.post('http://localhost:8080/api/templates/me', data, {withCredentials: true})
-    setSaveIsOpen(false)
+    setIsOpen(false)
   }
   function Extension() {
     switch (template.image.substring(0, 5)) {
@@ -46,7 +46,7 @@ const SharedTemplate: React.VFC<TemplateProps> = ({template}) => {
     setIsOpen(false)
   }
   return (
-    <div className={styles.palace}>
+    <div className={styles.sharedTemplate}>
       {/* <Link to={'/memorize/' + template.id} className={styles.image}>
         <img src={template.image} alt={template.name} />
       </Link> */}
@@ -78,7 +78,7 @@ const SharedTemplate: React.VFC<TemplateProps> = ({template}) => {
         <Dialog open={saveIsOpen} onClose={() => setSaveIsOpen(false)}>
           本当にテンプレートを保存しますか？
           <button onClick={handleSave}>はい</button>
-          <button onClick={() => setSaveIsOpen(false)}>いいえ</button>
+          <button onClick={() => setIsOpen(false)}>いいえ</button>
         </Dialog>
       </Dialog>
     </div>

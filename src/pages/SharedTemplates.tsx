@@ -1,5 +1,5 @@
 import {useEffect, useState} from 'react'
-import styles from './Home.module.css'
+import styles from './SharedTemplates.module.css'
 import SharedTemplate from '../components/SharedTemplate'
 import axios from 'axios'
 import Sidebar from '../components/Sidebar'
@@ -30,9 +30,10 @@ const SharedTemplates: React.VFC = () => {
   }, [])
 
   return (
-    <div className={styles.home}>
-      <Sidebar />
-      <ul>{listItems}</ul>
+    <div className={styles.sharedTemplates}>
+      <h1>My Templates</h1>
+      <div className={styles.divider} />
+      <ul className={styles.templateContainer}>{listItems}</ul>
     </div>
   )
 }

@@ -18,7 +18,7 @@ import {postPalace} from '../api/palace'
 import VisibilityIcon from '@mui/icons-material/Visibility'
 import VisibilityOffIcon from '@mui/icons-material/VisibilityOff'
 import Dialog from '@mui/material/Dialog'
-import {postTemplate} from '../api/template'
+import {postTemplate, putShareTemplate} from '../api/template'
 
 type Mode = 'edit' | 'memorization'
 
@@ -47,7 +47,7 @@ export const EditTemplate: React.VFC<EditProps> = ({imageUrl, isPlayground = fal
 
   const handleComplete = (e: any) => {
     e.preventDefault()
-    if (pins.length > 0 && !isPlayground) {
+    if (pins.length > 0) {
       let willSendImage = ''
       if (location.state.image.substr(0, 23) === 'data:image/jpeg;base64,') {
         willSendImage = location.state.image.substring(23)
@@ -62,13 +62,13 @@ export const EditTemplate: React.VFC<EditProps> = ({imageUrl, isPlayground = fal
           y: pins[i].y,
         })
       }
-      const data2 = {
+      const data = {
         name: templateName,
         image: willSendImage,
         pins: pins,
         createdBy: user.id,
       }
-      postTemplate(data2)
+      postTemplate(data, (res) => (shareOption ? putShareTemplate(res.data.id, shareOption) : null))
     }
     setCompleteIsOpen(true)
   }

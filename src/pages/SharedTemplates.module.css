@@ -1,7 +1,7 @@
-.template {
+.sharedTemplates {
   flex: 1;
 }
-.template > h1 {
+.sharedTemplates > h1 {
   font-size: 28px;
   font-weight: 700;
   font-family: 'Noto Sans JP';

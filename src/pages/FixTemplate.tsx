@@ -13,7 +13,7 @@ import {useHover} from '../hooks/useHover'
 import {EmbededPins, PinContent} from '../types'
 import pinIcon from '../assets/pin.svg'
 import {FixWordDialog} from '../components/FixWordDialog'
-import {getTemplate, postTemplate, putTemplate} from '../api/template'
+import {getTemplate, postTemplate, putShareTemplate, putTemplate} from '../api/template'
 import {Pin} from '../types'
 
 export const FixTemplate: React.VFC = () => {
@@ -29,6 +29,7 @@ export const FixTemplate: React.VFC = () => {
   const [isOpen, setIsOpen] = React.useState(false)
   const [completeIsOpen, setCompleteIsOpen] = React.useState(false)
   const [shareOption, setShareOption] = React.useState(false)
+  const [templateId, setTemplateId] = React.useState('')
 
   React.useEffect(() => {
     const templateID = params.id
@@ -38,6 +39,7 @@ export const FixTemplate: React.VFC = () => {
           if (data[i].id === templateID) {
             setTemplateName(data[i].name)
             setPins(data[i].pins)
+            setTemplateId(data[i].id)
           }
         }
       })
@@ -72,6 +74,9 @@ export const FixTemplate: React.VFC = () => {
       }
       console.log(data)
       params.id && putTemplate(params.id, data)
+      if (shareOption) {
+        putTemplate(templateId, shareOption, () => putShareTemplate(templateId, shareOption))
+      }
       setCompleteIsOpen(true)
     }
   }
@@ -164,7 +169,7 @@ export const FixTemplate: React.VFC = () => {
         />
         <label>
           <input type="checkbox" onClick={() => setShareOption(!shareOption)} id="sharedCheckBox" />
-          共有
+          テンプレートを共有
         </label>
         <button onClick={handleComplete} type="submit" disabled={pins.length <= 0 || templateName === ''}>
           完成!

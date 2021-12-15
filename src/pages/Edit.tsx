@@ -14,11 +14,11 @@ import {useHover} from '../hooks/useHover'
 import {EmbededPins, PinContent} from '../types'
 import pinIcon from '../assets/pin.svg'
 import {FixWordDialog} from '../components/FixWordDialog'
-import {postPalace} from '../api/palace'
 import VisibilityIcon from '@mui/icons-material/Visibility'
 import VisibilityOffIcon from '@mui/icons-material/VisibilityOff'
 import Dialog from '@mui/material/Dialog'
-import {postTemplate} from '../api/template'
+import {postTemplate, putShareTemplate} from '../api/template'
+import {postPalace, putSharePalace} from '../api/palace'
 
 type Mode = 'edit' | 'memorization'
 
@@ -37,10 +37,12 @@ export const Edit: React.VFC<EditProps> = ({imageUrl, isPlayground = false}) => 
   const [palaceName, setPalaceName] = React.useState('')
   const {user} = useAuth()
   const [palaceId, setPalaceId] = React.useState('')
-  const [templateId, setTemplateId] = React.useState('')
   const [completeIsOpen, setCompleteIsOpen] = React.useState(false)
   const navigate = useNavigate()
+  const [shareOption, setShareOption] = React.useState(false)
   const [templateOption, setTemplateOption] = React.useState(false)
+  const [templateShareOption, setTemplateShareOption] = React.useState(false)
+  const [templateId, setTemplateId] = React.useState('')
 
   const [hoverRef, isHovered] = useHover<HTMLImageElement>()
   const {x, y} = useMousePosition()
@@ -61,7 +63,8 @@ export const Edit: React.VFC<EditProps> = ({imageUrl, isPlayground = false}) => 
         createdBy: user.id,
       }
       console.log(data)
-      postPalace(data, (res) => setPalaceId(res.data.id))
+      postPalace(data, (res: any) => (shareOption ? putSharePalace(res.data.id, shareOption) : null))
+
       if (templateOption) {
         let templatePins = new Array<Pin>()
         for (let i = 0; i < templatePins.length; i++) {
@@ -77,7 +80,9 @@ export const Edit: React.VFC<EditProps> = ({imageUrl, isPlayground = false}) => 
           pins: pins,
           createdBy: user.id,
         }
-        postTemplate(data2, (res) => setTemplateId(res.data.id))
+        postTemplate(data2, (res: any) =>
+          templateShareOption ? putShareTemplate(res.data.id, templateShareOption) : null
+        )
       }
       setCompleteIsOpen(true)
     }
@@ -213,6 +218,18 @@ export const Edit: React.VFC<EditProps> = ({imageUrl, isPlayground = false}) => 
         <label>
           <input type="checkbox" onClick={() => setTemplateOption(!templateOption)} />
           テンプレートとして保存
+        </label>
+        <label>
+          <input type="checkbox" onClick={() => setShareOption(!shareOption)} id="sharedCheckBox" />
+          宮殿を共有
+        </label>
+        <label>
+          <input
+            type="checkbox"
+            onClick={() => setTemplateShareOption(!templateShareOption)}
+            disabled={!templateOption}
+          />
+          テンプレートとして共有
         </label>
         <button onClick={handleComplete} type="submit" disabled={pins.length <= 0 || palaceName === ''}>
           完成!

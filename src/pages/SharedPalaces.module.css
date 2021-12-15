@@ -1,7 +1,7 @@
-.template {
+.sharedPalaces {
   flex: 1;
 }
-.template > h1 {
+.sharedPalaces > h1 {
   font-size: 28px;
   font-weight: 700;
   font-family: 'Noto Sans JP';
@@ -12,7 +12,7 @@
   width: 100%;
   border-top: 1px solid #c6d0e5;
 }
-.templateContainer {
+.palaceContainer {
   margin: 0;
   padding: 24px 12px 0;
   display: grid;
@@ -22,12 +22,12 @@
   list-style: none;
 }
 @media screen and (min-width: 1300px) {
-  .templateContainer {
+  .palaceContainer {
     grid-template-columns: 1fr 1fr 1fr 1fr;
   }
 }
 @media screen and (min-width: 1500px) {
-  .templateContainer {
+  .palaceContainer {
     grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
   }
 }
