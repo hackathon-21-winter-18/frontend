@@ -28,12 +28,12 @@ const Template: React.VFC<TemplateProps> = ({num, template, deleteTemplate}) => 
     setShareIsOpen(true)
   }
   function handleDelete() {
-    axios.delete('http://localhost:8080/api/templates/share/' + template.id, {withCredentials: true})
+    axios.delete('https://hackathon-21-winter-18.trap.show/backend/api/templates/share/' + template.id, {withCredentials: true})
     deleteTemplate(num)
   }
   function handleShare() {
     axios.put(
-      'http://localhost:8080/api/templates/share/' + template.id,
+      'https://hackathon-21-winter-18.trap.show/backend/api/templates/share/' + template.id,
       {share: !template.share},
       {withCredentials: true}
     )

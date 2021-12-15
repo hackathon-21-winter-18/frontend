@@ -28,7 +28,7 @@ const SharedPalace: React.VFC<PalaceProps> = ({palace}) => {
       embededPins: palace.embededPins,
       createdBy: user.id,
     }
-    axios.post('http://localhost:8080/api/palaces/me', data, {withCredentials: true})
+    axios.post('https://hackathon-21-winter-18.trap.show/backend/api/palaces/me', data, {withCredentials: true})
     setIsOpen(false)
   }
   function Extension() {

@@ -31,6 +31,8 @@ function App() {
               <Route element={<Layout />}>
                 <Route element={<SideLayout />}>
                   <Route path="/" element={<Home />} />
+                  <Route path="/frontend" element={<Home />} />
+                  <Route path="/frontend/" element={<Home />} />
                   <Route path="/template" element={<TemplatePage />} />
                   <Route path="/sharedPalaces" element={<SharedPalaces />} />
                   <Route path="/sharedTemplates" element={<SharedTemplates />} />

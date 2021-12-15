@@ -29,7 +29,7 @@ const SharedTemplate: React.VFC<TemplateProps> = ({template}) => {
       pins: template.pins,
       createdBy: user.id,
     }
-    axios.post('http://localhost:8080/api/templates/me', data, {withCredentials: true})
+    axios.post('https://hackathon-21-winter-18.trap.show/backend/api/templates/me', data, {withCredentials: true})
     setIsOpen(false)
   }
   function Extension() {
