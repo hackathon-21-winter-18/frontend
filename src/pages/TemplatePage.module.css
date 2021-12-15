@@ -1,5 +1,16 @@
-.templatePage {
-  display: flex;
+.template {
+  flex: 1;
+}
+.template > h1 {
+  font-size: 28px;
+  font-weight: 700;
+  font-family: 'Noto Sans JP';
+  color: #313847;
+}
+.divider {
+  margin: 8px 0;
+  width: 100%;
+  border-top: 1px solid #c6d0e5;
 }
 .templateContainer {
   margin: 0;
@@ -9,4 +20,14 @@
   grid-column-gap: 24px;
 
   list-style: none;
+}
+@media screen and (min-width: 1300px) {
+  .palaceContainer {
+    grid-template-columns: 1fr 1fr 1fr 1fr;
+  }
+}
+@media screen and (min-width: 1500px) {
+  .palaceContainer {
+    grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
+  }
 }

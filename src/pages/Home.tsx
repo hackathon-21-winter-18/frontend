@@ -2,15 +2,12 @@ import {useEffect, useState} from 'react'
 import styles from './Home.module.css'
 import Palace from '../components/Palace'
 import {PalaceType} from '../types'
-import palace1 from '../assets/ヴェルサイユ宮殿.jpg'
-import palace2 from '../assets/バッキンガム宮殿.jpg'
 import axios from 'axios'
 import CreateNewPalaceButton from '../components/CreateNewPalaceButton'
 import useAuth from '../components/UserProvider'
 
 const Home: React.VFC = () => {
   const [palaces, setPalaces] = useState(new Array<PalaceType>())
-
   const listItems = palaces.map((palace, index) => (
     <li key={palace.id}>
       <Palace num={index} palace={palace} deletePalace={DeletePalace} />
@@ -22,9 +19,6 @@ const Home: React.VFC = () => {
     setPalaces(palaces.slice(0, number).concat(palaces.slice(number + 1)))
   }
   useEffect(() => {
-    axios.get('http://localhost:8080/api/oauth/whoamI', {withCredentials: true}).then((res) => {
-      console.log(res.data)
-    })
     axios
       .get('http://localhost:8080/api/palaces/me', {withCredentials: true})
       .then((res) => {
@@ -38,7 +32,7 @@ const Home: React.VFC = () => {
 
   return (
     <div className={styles.home}>
-      <h1>My Palace</h1>
+      <h1>My Palaces</h1>
       <div className={styles.divider} />
       <ul className={styles.palaceContainer}>
         <CreateNewPalaceButton />

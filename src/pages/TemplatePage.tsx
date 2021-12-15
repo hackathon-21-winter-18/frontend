@@ -28,6 +28,8 @@ const TemplatePage: React.VFC = () => {
 
   return (
     <div className={styles.templatePage}>
+      <h1>My Templates</h1>
+      <div className={styles.divider} />
       <ul className={styles.templateContainer}>
         <CreateNewTemplateButton />
 

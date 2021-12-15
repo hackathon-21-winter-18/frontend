@@ -3,6 +3,9 @@ import styles from './Edit.module.css'
 import {useParams, useLocation} from 'react-router'
 import AddNewWordDialog from '../components/AddNewWordDialog'
 import useAuth from '../components/UserProvider'
+import {PalaceType} from '../types'
+import Dialog from '@mui/material/Dialog'
+import {Link} from 'react-router-dom'
 import {useMousePosition} from '../hooks/useMousePosition'
 import {CustomCursor} from '../components/CustomCursor'
 import {Badge, Box, ClickAwayListener, IconButton, Portal, SxProps} from '@mui/material'
@@ -12,9 +15,7 @@ import pinIcon from '../assets/pin.svg'
 import {FixWordDialog} from '../components/FixWordDialog'
 import {getPalace, postPalace, putPalace} from '../api/palace'
 
-interface FixProps {}
-
-export const Fix: React.VFC<FixProps> = () => {
+export const Fix: React.VFC = () => {
   const [open, setOpen] = React.useState<number | boolean>(false)
   const [pinOpen, setPinOpen] = React.useState<EmbededPins | null>(null)
   const [pins, setPins] = React.useState<EmbededPins[]>([])
@@ -24,26 +25,39 @@ export const Fix: React.VFC<FixProps> = () => {
   const {user} = useAuth()
   const [hoverRef, isHovered] = useHover<HTMLImageElement>()
   const {x, y} = useMousePosition()
+  const [isOpen, setIsOpen] = React.useState(false)
+  const [completeIsOpen, setCompleteIsOpen] = React.useState(false)
 
   React.useEffect(() => {
     const palaceID = params.id
     palaceID &&
-      getPalace(palaceID).then((palace) => {
-        setPalaceName(palace.name)
-        setPins(palace.embededPins)
+      getPalace().then((data) => {
+        for (let i = 0; i < data.length; i++) {
+          if (data[i].id === palaceID) {
+            setPalaceName(data[i].name)
+            setPins(data[i].embededPins)
+          }
+        }
       })
   }, [])
 
-  const handleComplete = () => {
+  const handleComplete = (e: any) => {
+    e.preventDefault()
     if (pins.length > 0) {
+      let willSendImage = ''
+      if (location.state.image.substr(0, 23) === 'data:image/jpeg;base64,') {
+        willSendImage = location.state.image.substring(23)
+      } else {
+        willSendImage = location.state.image.substring(22)
+      }
       const data = {
         name: palaceName,
-        image: location.state.image.substr(22),
+        image: willSendImage,
         embededPins: pins,
-        createdBy: user.id,
       }
       console.log(data)
       params.id && putPalace(params.id, data)
+      setCompleteIsOpen(true)
     }
   }
 
@@ -142,7 +156,7 @@ export const Fix: React.VFC<FixProps> = () => {
           <img
             className={styles.layoutImage}
             src={location.state.image}
-            alt="map"
+            alt="mapImage"
             onClick={() => setOpen(Math.random())}
             ref={hoverRef}
           />
@@ -165,10 +179,15 @@ export const Fix: React.VFC<FixProps> = () => {
           placeholder="宮殿の名前"
           onChange={(e) => setPalaceName(e.target.value)}
         />
-        <button onClick={handleComplete} type="submit" disabled={pins.length <= 0}>
+        <button onClick={handleComplete} type="submit" disabled={pins.length <= 0 || palaceName === ''}>
           完成!
         </button>
       </form>
+      <Dialog open={completeIsOpen}>
+        宮殿が修正されました
+        <Link to={'/memorize/' + params.id}>今すぐ覚える</Link>
+        <Link to="/">ホームへ戻る</Link>
+      </Dialog>
     </div>
   )
 }

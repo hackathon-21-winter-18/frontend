@@ -1,6 +1,10 @@
 import * as React from 'react'
 import styles from './Edit.module.css'
-import {useParams, useLocation} from 'react-router'
+import {Link} from 'react-router-dom'
+import {EditAddedWord} from '../components/EditAddedWord'
+import PushPinIcon from '@mui/icons-material/PushPin'
+import {Pin} from '../types'
+import {useParams, useLocation, useNavigate} from 'react-router'
 import AddNewWordDialog from '../components/AddNewWordDialog'
 import useAuth from '../components/UserProvider'
 import {useMousePosition} from '../hooks/useMousePosition'
@@ -13,6 +17,8 @@ import {FixWordDialog} from '../components/FixWordDialog'
 import {postPalace} from '../api/palace'
 import VisibilityIcon from '@mui/icons-material/Visibility'
 import VisibilityOffIcon from '@mui/icons-material/VisibilityOff'
+import Dialog from '@mui/material/Dialog'
+import {postTemplate} from '../api/template'
 
 type Mode = 'edit' | 'memorization'
 
@@ -30,35 +36,53 @@ export const Edit: React.VFC<EditProps> = ({imageUrl, isPlayground = false}) => 
   const location = useLocation()
   const [palaceName, setPalaceName] = React.useState('')
   const {user} = useAuth()
+  const [palaceId, setPalaceId] = React.useState('')
+  const [templateId, setTemplateId] = React.useState('')
+  const [completeIsOpen, setCompleteIsOpen] = React.useState(false)
+  const navigate = useNavigate()
+  const [templateOption, setTemplateOption] = React.useState(false)
 
   const [hoverRef, isHovered] = useHover<HTMLImageElement>()
   const {x, y} = useMousePosition()
 
-  const handleComplete = () => {
+  const handleComplete = (e: any) => {
+    e.preventDefault()
     if (pins.length > 0 && !isPlayground) {
-      let data
+      let willSendImage = ''
       if (location.state.image.substr(0, 23) === 'data:image/jpeg;base64,') {
-        data = {
-          name: palaceName,
-          image: location.state.image.substr(23),
-          embededPins: pins,
-          createdBy: user.id,
-        }
+        willSendImage = location.state.image.substring(23)
       } else {
-        data = {
-          name: palaceName,
-          image: location.state.image.substr(22),
-          embededPins: pins,
-          createdBy: user.id,
-        }
+        willSendImage = location.state.image.substring(22)
+      }
+      const data = {
+        name: palaceName,
+        image: willSendImage,
+        embededPins: pins,
+        createdBy: user.id,
       }
       console.log(data)
-      postPalace(data)
+      postPalace(data, (res) => setPalaceId(res.data.id))
+      if (templateOption) {
+        let templatePins = new Array<Pin>()
+        for (let i = 0; i < templatePins.length; i++) {
+          templatePins.push({
+            number: i,
+            x: pins[i].x,
+            y: pins[i].y,
+          })
+        }
+        const data2 = {
+          name: palaceName,
+          image: willSendImage,
+          pins: pins,
+          createdBy: user.id,
+        }
+        postTemplate(data2, (res) => setTemplateId(res.data.id))
+      }
+      setCompleteIsOpen(true)
     }
+    setCompleteIsOpen(true)
   }
-  React.useEffect(() => {
-    setPins([])
-  }, [useLocation()])
 
   const handleClickAway = () => {
     setOpen(false)
@@ -112,6 +136,12 @@ export const Edit: React.VFC<EditProps> = ({imageUrl, isPlayground = false}) => 
     [pins]
   )
 
+  React.useEffect(() => {
+    setPins([])
+    setPalaceName('')
+    console.log('a')
+  }, [location])
+
   return (
     <div className={styles.edit}>
       {mode === 'edit' && <CustomCursor type="pin" isHover={isHovered} />}
@@ -143,7 +173,6 @@ export const Edit: React.VFC<EditProps> = ({imageUrl, isPlayground = false}) => 
           )}
         </div>
       </ClickAwayListener>
-
       <IconButton
         className={styles.togglPinList}
         onClick={() => isPlayground && setMode(mode === 'edit' ? 'memorization' : 'edit')}>
@@ -154,7 +183,6 @@ export const Edit: React.VFC<EditProps> = ({imageUrl, isPlayground = false}) => 
         )}
         {mode === 'memorization' && <VisibilityOffIcon />}
       </IconButton>
-
       <ClickAwayListener onClickAway={handleClickAway}>
         <div>
           <img
@@ -174,7 +202,6 @@ export const Edit: React.VFC<EditProps> = ({imageUrl, isPlayground = false}) => 
           )}
         </div>
       </ClickAwayListener>
-
       <form>
         <input
           required
@@ -183,10 +210,23 @@ export const Edit: React.VFC<EditProps> = ({imageUrl, isPlayground = false}) => 
           placeholder="宮殿の名前"
           onChange={(e) => setPalaceName(e.target.value)}
         />
-        <button onClick={handleComplete} type="submit" disabled={pins.length <= 0}>
+        <label>
+          <input type="checkbox" onClick={() => setTemplateOption(!templateOption)} />
+          テンプレートとして保存
+        </label>
+        <button onClick={handleComplete} type="submit" disabled={pins.length <= 0 || palaceName === ''}>
           完成!
         </button>
       </form>
+      <Dialog open={completeIsOpen && !isPlayground}>
+        宮殿が完成しました
+        <Link to={'/memorize/' + palaceId}>今すぐ覚える</Link>
+        <Link to="/">ホームへ戻る</Link>
+      </Dialog>
+      <Dialog open={completeIsOpen && isPlayground}>
+        次は実際に宮殿を作成してみましょう!
+        <button onClick={() => setCompleteIsOpen(false)}>OK</button>
+      </Dialog>
     </div>
   )
 }

@@ -72,7 +72,7 @@ const Palace: React.VFC<PalaceProps> = ({num, palace, deletePalace}) => {
       </div>
       {share ? <span>共有済</span> : <span>未共有</span>}
       <Dialog open={isOpen} onClose={handleDialogClose}>
-        <Link to={'fix/' + palace.id} state={{image: Extension()}}>
+        <Link to={'/fix/' + palace.id} state={{image: Extension()}}>
           宮殿の編集
         </Link>
         <button onClick={handleDeleteDialog}>宮殿の削除</button>

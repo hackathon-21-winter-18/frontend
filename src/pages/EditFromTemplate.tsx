@@ -1,6 +1,10 @@
 import * as React from 'react'
 import styles from './Edit.module.css'
-import {useParams, useLocation} from 'react-router'
+import {Link} from 'react-router-dom'
+import {EditAddedWord} from '../components/EditAddedWord'
+import PushPinIcon from '@mui/icons-material/PushPin'
+import {Pin} from '../types'
+import {useParams, useLocation, useNavigate} from 'react-router'
 import AddNewWordDialog from '../components/AddNewWordDialog'
 import useAuth from '../components/UserProvider'
 import {useMousePosition} from '../hooks/useMousePosition'
@@ -10,10 +14,11 @@ import {useHover} from '../hooks/useHover'
 import {EmbededPins, PinContent} from '../types'
 import pinIcon from '../assets/pin.svg'
 import {FixWordDialog} from '../components/FixWordDialog'
-import {postPalace, putSharePalace} from '../api/palace'
+import {postPalace} from '../api/palace'
 import VisibilityIcon from '@mui/icons-material/Visibility'
 import VisibilityOffIcon from '@mui/icons-material/VisibilityOff'
-import {config} from '../config'
+import Dialog from '@mui/material/Dialog'
+import {postTemplate, getTemplate} from '../api/template'
 import axios from 'axios'
 
 type Mode = 'edit' | 'memorization'
@@ -32,52 +37,55 @@ export const EditFromTemplate: React.VFC<EditProps> = ({imageUrl, isPlayground =
   const location = useLocation()
   const [palaceName, setPalaceName] = React.useState('')
   const [shareOption, setShareOption] = React.useState(false)
+  const [templateName, setTemplateName] = React.useState('')
   const {user} = useAuth()
+  const [isOpen, setIsOpen] = React.useState(false)
+  const [templateId, setTemplateId] = React.useState('')
+  const [completeIsOpen, setCompleteIsOpen] = React.useState(false)
+  const navigate = useNavigate()
+  const params = useParams()
+  const [palaceId, setPalaceId] = React.useState('')
 
   const [hoverRef, isHovered] = useHover<HTMLImageElement>()
   const {x, y} = useMousePosition()
 
-  const handleComplete = () => {
-    if (pins.length > 0 && !isPlayground) {
+  React.useEffect(() => {
+    const templateID = params.id
+    templateID &&
+      getTemplate().then((data) => {
+        for (let i = 0; i < data.length; i++) {
+          if (data[i].id === templateID) {
+            setTemplateName(data[i].name)
+            setPins(data[i].pins)
+          }
+        }
+      })
+  }, [])
+
+  const handleComplete = (e: any) => {
+    e.preventDefault()
+    if (pins.length > 0) {
       let data
       if (location.state.image.substr(0, 23) === 'data:image/jpeg;base64,') {
         data = {
           name: palaceName,
           image: location.state.image.substr(23),
-          embededPins: pins,
+          pins: pins,
           createdBy: user.id,
         }
       } else {
         data = {
           name: palaceName,
           image: location.state.image.substr(22),
-          embededPins: pins,
+          pins: pins,
           createdBy: user.id,
         }
       }
       console.log(data)
-      axios
-        .post(config() + '/api/palaces/me', data, {withCredentials: true})
-        .then((res) => {
-          console.log(res.status)
-          const palaceId = res.data.id
-          if (shareOption) {
-            axios
-              .put(config() + '/api/palaces/share/' + palaceId, {share: shareOption}, {withCredentials: true})
-              .then((res) => console.log(res.status))
-              .catch((error) => {
-                console.log(error)
-              })
-          }
-        })
-        .catch((error) => {
-          console.log(error)
-        })
+      postPalace(data) //resにidを入れる
+      setCompleteIsOpen(true)
     }
   }
-  React.useEffect(() => {
-    setPins([])
-  }, [useLocation()])
 
   const handleClickAway = () => {
     setOpen(false)
@@ -206,10 +214,15 @@ export const EditFromTemplate: React.VFC<EditProps> = ({imageUrl, isPlayground =
           <input type="checkbox" onClick={() => setShareOption(!shareOption)} id="sharedCheckBox" />
           共有
         </label>
-        <button onClick={handleComplete} type="submit" disabled={pins.length <= 0}>
+        <button onClick={handleComplete} type="submit" disabled={pins.length <= 0 || palaceName === ''}>
           完成!
         </button>
       </form>
+      <Dialog open={completeIsOpen}>
+        宮殿が完成しました
+        <Link to={'/memorize/' + palaceId}>今すぐ覚える</Link>
+        <Link to="/">ホームへ戻る</Link>
+      </Dialog>
     </div>
   )
 }

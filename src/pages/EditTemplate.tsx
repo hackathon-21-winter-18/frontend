@@ -1,19 +1,24 @@
 import * as React from 'react'
 import styles from './Edit.module.css'
-import {useParams, useLocation} from 'react-router'
+import {Link} from 'react-router-dom'
+import {EditAddedWord} from '../components/EditAddedWord'
+import PushPinIcon from '@mui/icons-material/PushPin'
+import {Pin} from '../types'
+import {useParams, useLocation, useNavigate} from 'react-router'
 import AddNewWordDialog from '../components/AddNewWordDialog'
 import useAuth from '../components/UserProvider'
 import {useMousePosition} from '../hooks/useMousePosition'
 import {CustomCursor} from '../components/CustomCursor'
 import {Badge, Box, ClickAwayListener, IconButton, Portal, SxProps} from '@mui/material'
 import {useHover} from '../hooks/useHover'
-import {Pin, PinContent} from '../types'
+import {EmbededPins, PinContent} from '../types'
 import pinIcon from '../assets/pin.svg'
 import {FixWordDialog} from '../components/FixWordDialog'
+import {postPalace} from '../api/palace'
 import VisibilityIcon from '@mui/icons-material/Visibility'
 import VisibilityOffIcon from '@mui/icons-material/VisibilityOff'
-import {config} from '../config'
-import axios from 'axios'
+import Dialog from '@mui/material/Dialog'
+import {postTemplate} from '../api/template'
 
 type Mode = 'edit' | 'memorization'
 
@@ -30,53 +35,43 @@ export const EditTemplate: React.VFC<EditProps> = ({imageUrl, isPlayground = fal
   const image = useParams() //あとで使うかも
   const location = useLocation()
   const [templateName, setTemplateName] = React.useState('')
-  const [shareOption, setShareOption] = React.useState(false)
   const {user} = useAuth()
+  const [templateId, setTemplateId] = React.useState('')
+  const [completeIsOpen, setCompleteIsOpen] = React.useState(false)
+  const navigate = useNavigate()
+  const [templateOption, setTemplateOption] = React.useState(false)
+  const [shareOption, setShareOption] = React.useState(false)
 
   const [hoverRef, isHovered] = useHover<HTMLImageElement>()
   const {x, y} = useMousePosition()
 
-  const handleComplete = () => {
+  const handleComplete = (e: any) => {
+    e.preventDefault()
     if (pins.length > 0 && !isPlayground) {
-      let data
+      let willSendImage = ''
       if (location.state.image.substr(0, 23) === 'data:image/jpeg;base64,') {
-        data = {
-          name: templateName,
-          image: location.state.image.substr(23),
-          pins: pins,
-          createdBy: user.id,
-        }
+        willSendImage = location.state.image.substring(23)
       } else {
-        data = {
-          name: templateName,
-          image: location.state.image.substr(22),
-          pins: pins,
-          createdBy: user.id,
-        }
+        willSendImage = location.state.image.substring(22)
       }
-      console.log(data)
-      axios
-        .post(config() + '/api/templates/me', data, {withCredentials: true})
-        .then((res: any) => {
-          console.log(res.status)
-          const templateId = res.data.id
-          if (shareOption) {
-            axios
-              .put(config() + '/api/templates/share/' + templateId, {share: shareOption}, {withCredentials: true})
-              .then((res: any) => console.log(res.status))
-              .catch((error: any) => {
-                console.log(error)
-              })
-          }
+      let templatePins = new Array<Pin>()
+      for (let i = 0; i < templatePins.length; i++) {
+        templatePins.push({
+          number: i,
+          x: pins[i].x,
+          y: pins[i].y,
         })
-        .catch((error: any) => {
-          console.log(error)
-        })
+      }
+      const data2 = {
+        name: templateName,
+        image: willSendImage,
+        pins: pins,
+        createdBy: user.id,
+      }
+      postTemplate(data2)
     }
+    setCompleteIsOpen(true)
   }
-  React.useEffect(() => {
-    setPins([])
-  }, [useLocation()])
 
   const handleClickAway = () => {
     setOpen(false)
@@ -104,21 +99,15 @@ export const EditTemplate: React.VFC<EditProps> = ({imageUrl, isPlayground = fal
     [open]
   )
 
-  const putPin = React.useCallback(
-    (pin: PinContent) => {
-      const data = {
-        word: pin.word,
-        place: pin.place,
-        do: pin.condition,
-        number: pins.length,
-        x: (x - hoverRef.current.x) / hoverRef.current.width,
-        y: (y - hoverRef.current.y) / hoverRef.current.height,
-      }
-      setPins([...pins, data])
-      setOpen(false)
-    },
-    [open]
-  )
+  const putPin = React.useCallback(() => {
+    const data = {
+      number: pins.length,
+      x: (x - hoverRef.current.x) / hoverRef.current.width,
+      y: (y - hoverRef.current.y) / hoverRef.current.height,
+    }
+    setPins([...pins, data])
+    setOpen(false)
+  }, [open])
   const handlePinClick = React.useCallback((pin: Pin) => {
     setPinOpen(pin)
   }, [])
@@ -129,10 +118,37 @@ export const EditTemplate: React.VFC<EditProps> = ({imageUrl, isPlayground = fal
     },
     [pins]
   )
+  React.useEffect(() => {
+    setPins([])
+    setTemplateName('')
+    console.log('a')
+  }, [location])
 
   return (
-    <div>
+    <div className={styles.edit}>
       {mode === 'edit' && <CustomCursor type="pin" isHover={isHovered} />}
+      <ClickAwayListener onClickAway={() => setPinOpen(null)}>
+        <div>
+          {pins.map((pin, i) => (
+            <img
+              className={styles.pushedPin}
+              key={i}
+              src={pinIcon}
+              alt=""
+              style={{
+                position: 'absolute',
+                top: pin.y * hoverRef.current.height + 'px',
+                left: pin.x * hoverRef.current.width + 'px',
+                transform: `translate(-50%, -100%)`,
+              }}
+              onClick={() => {
+                handlePinClick(pin)
+              }}
+            />
+          ))}
+        </div>
+      </ClickAwayListener>
+
       <IconButton
         className={styles.togglPinList}
         onClick={() => isPlayground && setMode(mode === 'edit' ? 'memorization' : 'edit')}>
@@ -153,14 +169,7 @@ export const EditTemplate: React.VFC<EditProps> = ({imageUrl, isPlayground = fal
             onClick={() => mode === 'edit' && setOpen(Math.random())}
             ref={hoverRef}
           />
-          {open && (
-            <Portal>
-              <Box sx={boxStyle()}>
-                <AddNewWordDialog open={!!open} putPin={putPin} />
-              </Box>
-              <img src={pinIcon} alt="" className={styles.pinIcon} style={pinStyle()} />
-            </Portal>
-          )}
+          {open && putPin()}
         </div>
       </ClickAwayListener>
 
@@ -176,10 +185,14 @@ export const EditTemplate: React.VFC<EditProps> = ({imageUrl, isPlayground = fal
           <input type="checkbox" onClick={() => setShareOption(!shareOption)} id="sharedCheckBox" />
           共有
         </label>
-        <button onClick={handleComplete} type="submit" disabled={pins.length <= 0}>
+        <button onClick={handleComplete} type="submit" disabled={pins.length <= 0 || templateName === ''}>
           完成!
         </button>
       </form>
+      <Dialog open={completeIsOpen}>
+        テンプレートが完成しました
+        <Link to="/">ホームへ戻る</Link>
+      </Dialog>
     </div>
   )
 }
