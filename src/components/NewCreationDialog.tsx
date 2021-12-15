@@ -101,7 +101,7 @@ const NewCreationDialog: React.VFC<NewCreationDialogProps> = ({onClose}) => {
               {'新規作成 '}
               <ArrowRightIcon />{' '}
             </span>
-            画像をアップロードして作成
+            テンプレートを作成
           </h1>
           <div className={styles.divider} />
           <p>家の間取りをアップロードしてあなたのテンプレートを作成しましょう</p>

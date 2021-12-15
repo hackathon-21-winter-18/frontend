@@ -1,7 +1,7 @@
 import axios from 'axios'
 import {config} from '../config'
 
-export const postTemplate = (data: any, onSuccess?: () => any, onError?: () => any) => {
+export const postTemplate = (data: any, onSuccess?: (res: any) => any, onError?: () => any) => {
   axios
     .post(config() + '/api/templates/me', data, {withCredentials: true})
     .then(onSuccess)

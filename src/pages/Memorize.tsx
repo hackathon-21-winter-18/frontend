@@ -11,27 +11,6 @@ import PushPinIcon from '@mui/icons-material/PushPin'
 import useAuth from '../components/UserProvider'
 import Dialog from '@mui/material/Dialog'
 
-const mockPalaces: PalaceType[] = [
-  {
-    id: '0',
-    name: 'Versailles',
-    image: palace1,
-    embededPins: [
-      {number: 0, x: 100, y: 100, word: 'apple', place: 'aaa', do: 'aaa'},
-      {number: 1, x: 200, y: 200, word: 'banana', place: 'bbb', do: 'bbb'},
-    ],
-  },
-  {
-    id: '1',
-    name: 'Buckingham',
-    image: palace2,
-    embededPins: [
-      {number: 0, x: 100, y: 100, word: 'apple', place: 'aaa', do: 'aaa'},
-      {number: 1, x: 200, y: 200, word: 'banana', place: 'bbb', do: 'bbb'},
-    ],
-  },
-]
-
 const Memorize: React.VFC = () => {
   const [palace, setPalace] = useState<PalaceType>({
     id: '',

@@ -37,6 +37,7 @@ export const Edit: React.VFC<EditProps> = ({imageUrl, isPlayground = false}) => 
   const [palaceName, setPalaceName] = React.useState('')
   const {user} = useAuth()
   const [palaceId, setPalaceId] = React.useState('')
+  const [templateId, setTemplateId] = React.useState('')
   const [completeIsOpen, setCompleteIsOpen] = React.useState(false)
   const navigate = useNavigate()
   const [templateOption, setTemplateOption] = React.useState(false)
@@ -60,7 +61,7 @@ export const Edit: React.VFC<EditProps> = ({imageUrl, isPlayground = false}) => 
         createdBy: user.id,
       }
       console.log(data)
-      postPalace(data)
+      postPalace(data, (res) => setPalaceId(res.data.id))
       if (templateOption) {
         let templatePins = new Array<Pin>()
         for (let i = 0; i < templatePins.length; i++) {
@@ -76,7 +77,7 @@ export const Edit: React.VFC<EditProps> = ({imageUrl, isPlayground = false}) => 
           pins: pins,
           createdBy: user.id,
         }
-        postTemplate(data2)
+        postTemplate(data2, (res) => setTemplateId(res.data.id))
       }
       setCompleteIsOpen(true)
     }
