@@ -19,7 +19,7 @@ const SharedTemplates: React.VFC = () => {
 
   useEffect(() => {
     axios
-      .get('http://localhost:8080/api/templates', {withCredentials: true})
+      .get('https://hackathon-21-winter-18.trap.show/backend/api/templates', {withCredentials: true})
       .then((res) => {
         if (res.data) {
           setTemplates(res.data)

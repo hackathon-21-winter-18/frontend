@@ -20,7 +20,7 @@ const Home: React.VFC = () => {
   }
   useEffect(() => {
     axios
-      .get('http://localhost:8080/api/palaces/me', {withCredentials: true})
+      .get('https://hackathon-21-winter-18.trap.show/backend/api/palaces/me', {withCredentials: true})
       .then((res) => {
         if (res.data) {
           setPalaces(res.data)

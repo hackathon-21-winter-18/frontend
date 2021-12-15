@@ -18,7 +18,7 @@ const TemplatePage: React.VFC = () => {
     setTemplates(templates.slice(0, number).concat(templates.slice(number + 1)))
   }
   useEffect(() => {
-    axios.get('http://localhost:8080/api/templates/me', {withCredentials: true}).then((res) => {
+    axios.get('https://hackathon-21-winter-18.trap.show/backend/api/templates/me', {withCredentials: true}).then((res) => {
       if (res.data) {
         setTemplates(res.data)
         console.log(res.data)

@@ -50,7 +50,7 @@ const Memorize: React.VFC = () => {
   }
   useEffect(() => {
     if (location.state.shared) {
-      axios.get('http://localhost:8080/api/palaces', {withCredentials: true}).then((res) => {
+      axios.get('https://hackathon-21-winter-18.trap.show/backend/api/palaces', {withCredentials: true}).then((res) => {
         const data = res.data
         for (let i = 0; i < data.length; i++) {
           if (data[i].id === params.id) {
@@ -59,7 +59,7 @@ const Memorize: React.VFC = () => {
         }
       })
     } else {
-      axios.get('http://localhost:8080/api/palaces/me', {withCredentials: true}).then((res) => {
+      axios.get('https://hackathon-21-winter-18.trap.show/backend/api/palaces/me', {withCredentials: true}).then((res) => {
         const data = res.data
         for (let i = 0; i < data.length; i++) {
           if (data[i].id === params.id) {
