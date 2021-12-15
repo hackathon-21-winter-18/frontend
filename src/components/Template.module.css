@@ -1,0 +1,43 @@
+.template {
+  background-color: white;
+  border-radius: 4px;
+}
+.image {
+  width: 100%;
+  aspect-ratio: 16/9;
+  object-fit: cover;
+  cursor: pointer;
+}
+
+.titleContainer {
+  display: flex;
+  justify-content: space-between;
+}
+.title {
+  margin: 0;
+  font-size: 24px;
+  font-weight: 500;
+  color: #313847;
+}
+.moreVertIcon {
+  color: #555d6d;
+  background-color: transparent;
+  border: none;
+
+  cursor: pointer;
+}
+.wordTag {
+  margin-top: 8px;
+  padding: 2px 6px;
+  background-color: white;
+  color: #555d6d;
+  border-radius: 6px;
+
+  display: inline-flex;
+  align-items: flex-end;
+}
+.commentIcon {
+  width: 16px !important;
+  height: 16px !important;
+  margin-right: 4px !important;
+}

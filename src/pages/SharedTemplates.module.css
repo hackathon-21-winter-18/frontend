@@ -1,0 +1,33 @@
+.sharedTemplates {
+  flex: 1;
+}
+.sharedTemplates > h1 {
+  font-size: 28px;
+  font-weight: 700;
+  font-family: 'Noto Sans JP';
+  color: #313847;
+}
+.divider {
+  margin: 8px 0;
+  width: 100%;
+  border-top: 1px solid #c6d0e5;
+}
+.templateContainer {
+  margin: 0;
+  padding: 24px 12px 0;
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  grid-column-gap: 24px;
+
+  list-style: none;
+}
+@media screen and (min-width: 1300px) {
+  .templateContainer {
+    grid-template-columns: 1fr 1fr 1fr 1fr;
+  }
+}
+@media screen and (min-width: 1500px) {
+  .templateContainer {
+    grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
+  }
+}

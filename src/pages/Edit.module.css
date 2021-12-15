@@ -1,0 +1,33 @@
+.edit {
+  position: relative;
+  width: 100%;
+}
+.layoutImage {
+  width: 100%;
+  object-fit: contain;
+}
+.pushedPin {
+  cursor: pointer;
+  width: 32px;
+  height: 32px;
+  object-fit: contain;
+  transition-duration: 0.2s;
+}
+.pushedPin:hover {
+  transform-origin: bottom;
+  transform: translate(-50%, -100%) scale(1.3) !important;
+}
+
+.pinIcon {
+  width: 24px;
+  height: 24px;
+  object-fit: contain;
+}
+.togglPinList {
+  position: absolute !important;
+  right: 24px;
+  background-color: #e2e9f7d2 !important;
+}
+.togglPinList:hover {
+  background-color: #e2e9f7d2 !important;
+}

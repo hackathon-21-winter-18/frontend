@@ -12,6 +12,12 @@
   content: '';
   height: 64px;
 }
+.logo {
+  display: block;
+  margin: 0 auto 16px;
+  height: 32px;
+  object-fit: contain;
+}
 .signup {
   margin: 0 auto;
   padding: 32px;
@@ -24,6 +30,7 @@
   margin: 0;
   font-size: 30px;
   font-weight: bold;
+  font-family: 'Noto Sans JP';
   color: #313847;
 }
 .divider {
@@ -34,6 +41,7 @@
   margin: 16px 0 40px 0;
   font-size: 16px;
   font-weight: normal;
+  font-family: 'Noto Sans JP';
   color: #555d6d;
 }
 .signup h2 > span {
@@ -58,13 +66,13 @@
 .registerButton {
   padding: 8px 12px;
   font-size: 16px;
-
+  font-family: 'Noto Sans JP';
   color: white;
   border: none;
   border-radius: 8px;
 }
 .registerButton:enabled {
-  font-weight: bold;
+  font-weight: 700;
   background-color: #313847;
 }
 .registerButton:disabled {
@@ -75,6 +83,7 @@
   text-decoration: none;
   color: #313847;
   font-size: 14px;
+  font-family: 'Noto Sans JP';
   padding: 8px 12px;
   border-radius: 8px;
   transition-duration: 0.3s;

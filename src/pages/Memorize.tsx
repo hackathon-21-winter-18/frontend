@@ -1,36 +1,13 @@
 import {useState, useEffect, useContext} from 'react'
-import {useParams} from 'react-router'
+import {useParams, useLocation} from 'react-router'
 import {Link} from 'react-router-dom'
 import styles from 'Memorize.module.css'
 import Word from '../components/Word'
 import {PalaceType} from '../types'
-import palace1 from '../assets/ヴェルサイユ宮殿.jpg'
-import palace2 from '../assets/バッキンガム宮殿.jpg'
 import axios from 'axios'
 import PushPinIcon from '@mui/icons-material/PushPin'
-import {UserContext} from '../components/UserProvider'
+import useAuth from '../components/UserProvider'
 import Dialog from '@mui/material/Dialog'
-
-const mockPalaces: PalaceType[] = [
-  {
-    id: '0',
-    name: 'Versailles',
-    image: palace1,
-    embededPins: [
-      {number: 0, x: 100, y: 100, word: 'apple', place: 'aaa', do: 'aaa'},
-      {number: 1, x: 200, y: 200, word: 'banana', place: 'bbb', do: 'bbb'},
-    ],
-  },
-  {
-    id: '1',
-    name: 'Buckingham',
-    image: palace2,
-    embededPins: [
-      {number: 0, x: 100, y: 100, word: 'apple', place: 'aaa', do: 'aaa'},
-      {number: 1, x: 200, y: 200, word: 'banana', place: 'bbb', do: 'bbb'},
-    ],
-  },
-]
 
 const Memorize: React.VFC = () => {
   const [palace, setPalace] = useState<PalaceType>({
@@ -38,11 +15,13 @@ const Memorize: React.VFC = () => {
     name: '',
     image: '',
     embededPins: [{number: 0, x: 0, y: 0, word: '', place: '', do: ''}],
+    share: false,
   })
   const [flags, setFlags] = useState([...Array(palace.embededPins.length)].fill(false))
   const params = useParams()
-  const {user} = useContext(UserContext)
+  const {user} = useAuth()
   const [isOpen, setIsOpen] = useState(false)
+  let location = useLocation()
 
   const listItems = palace.embededPins.map((pin: any) => (
     <li key={pin.number}>
@@ -70,14 +49,25 @@ const Memorize: React.VFC = () => {
     setIsOpen(true)
   }
   useEffect(() => {
-    axios.get('http://localhost:8080/api/palaces/me', {withCredentials: true}).then((res) => {
-      const data = res.data
-      for (let i = 0; i < data.length; i++) {
-        if (data[i].id === params.id) {
-          setPalace(data[i])
+    if (location.state.shared) {
+      axios.get('http://localhost:8080/api/palaces', {withCredentials: true}).then((res) => {
+        const data = res.data
+        for (let i = 0; i < data.length; i++) {
+          if (data[i].id === params.id) {
+            setPalace(data[i])
+          }
         }
-      }
-    })
+      })
+    } else {
+      axios.get('http://localhost:8080/api/palaces/me', {withCredentials: true}).then((res) => {
+        const data = res.data
+        for (let i = 0; i < data.length; i++) {
+          if (data[i].id === params.id) {
+            setPalace(data[i])
+          }
+        }
+      })
+    }
   }, [])
   return (
     <div>
@@ -102,9 +92,7 @@ const Memorize: React.VFC = () => {
       {/*flagの中身が全部trueなら表示*/}
       <Dialog open={isOpen} onClose={() => setIsOpen(false)}>
         お疲れさまでした。
-        <Link to={'/'} state={{image: Extension()}}>
-          ホームへ戻る
-        </Link>
+        <Link to="/">ホームへ戻る</Link>
       </Dialog>
     </div>
   )
