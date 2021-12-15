@@ -73,10 +73,8 @@ export const FixTemplate: React.VFC = () => {
         embededPins: pins,
       }
       console.log(data)
-      params.id && putTemplate(params.id, data)
-      if (shareOption) {
-        putTemplate(templateId, shareOption, () => putShareTemplate(templateId, shareOption))
-      }
+
+      putTemplate(templateId, data, () => (shareOption ? putShareTemplate(templateId, shareOption) : null))
       setCompleteIsOpen(true)
     }
   }
