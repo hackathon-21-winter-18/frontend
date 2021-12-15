@@ -68,10 +68,10 @@ const SharedTemplate: React.VFC<TemplateProps> = ({template}) => {
         {template.pins.length + ' pins'}
       </div>
       <div>
-        <span>{template.savedCount}</span>
+        <span>{template.savedCount}回保存されました</span>
       </div>
       <div>
-        <span>{template.createrName}</span>
+        <span>Creater:{template.createrName}</span>
       </div>
       <Dialog open={isOpen} onClose={handleDialogClose}>
         <button onClick={handleSaveDialog}>テンプレートの保存</button>

@@ -67,10 +67,10 @@ const SharedPalace: React.VFC<PalaceProps> = ({palace}) => {
         {palace.embededPins.length + ' Words'}
       </div>
       <div>
-        <span>{palace.savedCount}</span>
+        <span>{palace.savedCount}回保存されました</span>
       </div>
       <div>
-        <span>{palace.createrName}</span>
+        <span>Creater:{palace.createrName}</span>
       </div>
       <Dialog open={isOpen} onClose={handleDialogClose}>
         <button onClick={handleSaveDialog}>宮殿の保存</button>
