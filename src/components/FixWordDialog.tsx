@@ -34,7 +34,7 @@ export const FixWordDialog: React.VFC<FixWordDialogProps> = ({open, deletePin, i
           )}
           <div>
             {!isVisible && (
-              <IconButton onClick={flags && handleComplete} color={flags && flags![open.number] ? 'error' : 'primary'}>
+              <IconButton onClick={flags && handleComplete} color={flags && flags![open.number] ? 'primary' : 'error'}>
                 完了
               </IconButton>
             )}
