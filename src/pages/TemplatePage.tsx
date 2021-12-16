@@ -4,6 +4,7 @@ import Template from '../components/Template'
 import {TemplateType} from '../types'
 import axios from 'axios'
 import CreateNewTemplateButton from '../components/CreateNewTemplateButton'
+import {config} from '../config'
 
 const TemplatePage: React.VFC = () => {
   const [templates, setTemplates] = useState(new Array<TemplateType>())
@@ -16,7 +17,7 @@ const TemplatePage: React.VFC = () => {
     setTemplates(templates.slice(0, number).concat(templates.slice(number + 1)))
   }
   useEffect(() => {
-    axios.get('http://localhost:8080/api/templates/me', {withCredentials: true}).then((res) => {
+    axios.get(config() + '/api/templates/me', {withCredentials: true}).then((res) => {
       if (res.data) {
         setTemplates(res.data)
         console.log(res.data)

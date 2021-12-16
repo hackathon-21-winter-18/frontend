@@ -9,7 +9,7 @@ import {CustomCursor} from '../components/CustomCursor'
 import {Badge, Box, ClickAwayListener, IconButton, Portal, SxProps} from '@mui/material'
 import {useHover} from '../hooks/useHover'
 import pinIcon from '../assets/pin.svg'
-import {getTemplate, putShareTemplate, putTemplate} from '../api/template'
+import {getTemplate, getSharedTemplate, putShareTemplate, putTemplate} from '../api/template'
 import {Pin} from '../types'
 
 export const FixTemplate: React.VFC = () => {
@@ -29,16 +29,29 @@ export const FixTemplate: React.VFC = () => {
 
   React.useEffect(() => {
     const templateID = params.id
-    templateID &&
-      getTemplate().then((data) => {
-        for (let i = 0; i < data.length; i++) {
-          if (data[i].id === templateID) {
-            setTemplateName(data[i].name)
-            setPins(data[i].pins)
-            setTemplateId(data[i].id)
+    if (location.state.share) {
+      templateID &&
+        getSharedTemplate().then((data) => {
+          for (let i = 0; i < data.length; i++) {
+            if (data[i].id === templateID) {
+              setTemplateName(data[i].name)
+              setPins(data[i].pins)
+              setTemplateId(data[i].id)
+            }
           }
-        }
-      })
+        })
+    } else {
+      templateID &&
+        getTemplate().then((data) => {
+          for (let i = 0; i < data.length; i++) {
+            if (data[i].id === templateID) {
+              setTemplateName(data[i].name)
+              setPins(data[i].pins)
+              setTemplateId(data[i].id)
+            }
+          }
+        })
+    }
   }, [])
 
   const boxStyle = React.useCallback<() => SxProps>(

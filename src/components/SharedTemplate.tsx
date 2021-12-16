@@ -7,6 +7,7 @@ import MoreVertIcon from '@mui/icons-material/MoreVert'
 import CommentIcon from '@mui/icons-material/Comment'
 import Dialog from '@mui/material/Dialog'
 import {UserContext} from '../components/UserProvider'
+import {config} from '../config'
 
 interface TemplateProps {
   template: SharedTemplateType
@@ -29,7 +30,7 @@ const SharedTemplate: React.VFC<TemplateProps> = ({template}) => {
       pins: template.pins,
       createdBy: user.id,
     }
-    axios.post('http://localhost:8080/api/templates/me', data, {withCredentials: true})
+    axios.post(config() + '/api/templates/me', data, {withCredentials: true})
     setIsOpen(false)
   }
   function Extension() {

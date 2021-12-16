@@ -18,7 +18,7 @@ import VisibilityIcon from '@mui/icons-material/Visibility'
 import VisibilityOffIcon from '@mui/icons-material/VisibilityOff'
 import Dialog from '@mui/material/Dialog'
 import {postTemplate, putShareTemplate} from '../api/template'
-import {postPalace, putSharePalace, getPalace} from '../api/palace'
+import {postPalace, putSharePalace, getPalace, getSharedPalace} from '../api/palace'
 
 const Memorize: React.VFC = () => {
   const [open, setOpen] = React.useState<number | boolean>(false)
@@ -53,19 +53,35 @@ const Memorize: React.VFC = () => {
   }
   React.useEffect(() => {
     const palaceID = params.id
-    palaceID &&
-      getPalace().then((data) => {
-        for (let i = 0; i < data.length; i++) {
-          if (data[i].id === palaceID) {
-            setPalaceName(data[i].name)
-            setPins(data[i].embededPins)
-            setPalaceId(data[i].id)
-            setPalaceImage(data[i].image)
-            let preFlags = Array(data[i].embededPins.length)
-            setFlags(preFlags.fill(false))
+    if (location.state.share) {
+      palaceID &&
+        getSharedPalace().then((data) => {
+          for (let i = 0; i < data.length; i++) {
+            if (data[i].id === palaceID) {
+              setPalaceName(data[i].name)
+              setPins(data[i].embededPins)
+              setPalaceId(data[i].id)
+              setPalaceImage(data[i].image)
+              let preFlags = Array(data[i].embededPins.length)
+              setFlags(preFlags.fill(false))
+            }
           }
-        }
-      })
+        })
+    } else {
+      palaceID &&
+        getPalace().then((data) => {
+          for (let i = 0; i < data.length; i++) {
+            if (data[i].id === palaceID) {
+              setPalaceName(data[i].name)
+              setPins(data[i].embededPins)
+              setPalaceId(data[i].id)
+              setPalaceImage(data[i].image)
+              let preFlags = Array(data[i].embededPins.length)
+              setFlags(preFlags.fill(false))
+            }
+          }
+        })
+    }
   }, [])
 
   const handleComplete = (e: any) => {
@@ -173,12 +189,7 @@ const Memorize: React.VFC = () => {
       </IconButton>
       <ClickAwayListener onClickAway={handleClickAway}>
         <div>
-          <img
-            className={styles.layoutImage}
-            src={Extension(palaceImage) ?? location.state.image}
-            alt="map"
-            ref={hoverRef}
-          />
+          <img className={styles.layoutImage} src={Extension(palaceImage)} alt="map" ref={hoverRef} />
         </div>
       </ClickAwayListener>
 

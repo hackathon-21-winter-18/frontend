@@ -12,6 +12,10 @@ export const getPalace = async (onSuccess?: () => any, onError?: () => any) => {
   const res = await axios.get(config() + '/api/palaces/me', {withCredentials: true})
   return res.data
 }
+export const getSharedPalace = async (onSuccess?: () => any, onError?: () => any) => {
+  const res = await axios.get(config() + '/api/palaces', {withCredentials: true})
+  return res.data
+}
 
 export const putPalace = (palaceID: string, data: any, onSuccess?: () => any, onError?: () => any) => {
   axios

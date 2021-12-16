@@ -6,6 +6,7 @@ import axios from 'axios'
 import MoreVertIcon from '@mui/icons-material/MoreVert'
 import CommentIcon from '@mui/icons-material/Comment'
 import Dialog from '@mui/material/Dialog'
+import {config} from '../config'
 
 interface TemplateProps {
   num: number
@@ -27,15 +28,11 @@ const Template: React.VFC<TemplateProps> = ({num, template, deleteTemplate}) => 
     setShareIsOpen(true)
   }
   function handleDelete() {
-    axios.delete('http://localhost:8080/api/templates/share/' + template.id, {withCredentials: true})
+    axios.delete(config() + '/api/templates/share/' + template.id, {withCredentials: true})
     deleteTemplate(num)
   }
   function handleShare() {
-    axios.put(
-      'http://localhost:8080/api/templates/share/' + template.id,
-      {share: !template.share},
-      {withCredentials: true}
-    )
+    axios.put(config() + '/api/templates/share/' + template.id, {share: !template.share}, {withCredentials: true})
     setShare(!share)
     setShareIsOpen(false)
     setIsOpen(false)

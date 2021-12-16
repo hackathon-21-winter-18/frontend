@@ -6,6 +6,7 @@ import axios from 'axios'
 import MoreVertIcon from '@mui/icons-material/MoreVert'
 import CommentIcon from '@mui/icons-material/Comment'
 import Dialog from '@mui/material/Dialog'
+import {config} from '../config'
 
 interface PalaceProps {
   num: number
@@ -27,11 +28,11 @@ const Palace: React.VFC<PalaceProps> = ({num, palace, deletePalace}) => {
     setShareIsOpen(true)
   }
   function handleDelete() {
-    axios.delete('http://localhost:8080/api/palaces/' + palace.id, {withCredentials: true})
+    axios.delete(config() + '/api/palaces/' + palace.id, {withCredentials: true})
     deletePalace(num)
   }
   function handleShare() {
-    axios.put('http://localhost:8080/api/palaces/share/' + palace.id, {share: !palace.share}, {withCredentials: true})
+    axios.put(config() + '/api/palaces/share/' + palace.id, {share: !palace.share}, {withCredentials: true})
     setShare(!share)
     setShareIsOpen(false)
     setIsOpen(false)

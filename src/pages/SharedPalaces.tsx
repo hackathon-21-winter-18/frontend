@@ -3,6 +3,7 @@ import styles from './SharedPalaces.module.css'
 import SharedPalace from '../components/SharedPalace'
 import axios from 'axios'
 import {SharedPalaceType} from '../types'
+import {config} from '../config'
 
 const SharedPalaces: React.VFC = () => {
   const [palaces, setPalaces] = useState(new Array<SharedPalaceType>())
@@ -15,7 +16,7 @@ const SharedPalaces: React.VFC = () => {
 
   useEffect(() => {
     axios
-      .get('http://localhost:8080/api/palaces', {withCredentials: true})
+      .get(config() + '/api/palaces', {withCredentials: true})
       .then((res) => {
         if (res.data) {
           setPalaces(res.data)

@@ -63,7 +63,12 @@ export const Edit: React.VFC<EditProps> = ({imageUrl, isPlayground = false}) => 
         createdBy: user.id,
       }
       console.log(data)
-      postPalace(data, (res: any) => (shareOption ? putSharePalace(res.data.id, shareOption) : null))
+      postPalace(data, (res: any) => {
+        if (shareOption) {
+          putSharePalace(res.data.id, shareOption)
+          setPalaceId(res.data.id)
+        }
+      })
 
       if (templateOption) {
         let templatePins = new Array<Pin>()
@@ -237,7 +242,7 @@ export const Edit: React.VFC<EditProps> = ({imageUrl, isPlayground = false}) => 
       </form>
       <Dialog open={completeIsOpen && !isPlayground}>
         宮殿が完成しました
-        <Link to={'/memorize/' + palaceId}>今すぐ覚える</Link>
+        <button onClick={() => navigate('/memorize/' + palaceId, {state: {shared: false}})}>今すぐ覚える</button>
         <Link to="/">ホームへ戻る</Link>
       </Dialog>
       <Dialog open={completeIsOpen && isPlayground}>

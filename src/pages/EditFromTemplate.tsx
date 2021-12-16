@@ -18,7 +18,7 @@ import {postPalace, putSharePalace} from '../api/palace'
 import VisibilityIcon from '@mui/icons-material/Visibility'
 import VisibilityOffIcon from '@mui/icons-material/VisibilityOff'
 import Dialog from '@mui/material/Dialog'
-import {postTemplate, getTemplate} from '../api/template'
+import {postTemplate, getTemplate, getSharedTemplate} from '../api/template'
 import axios from 'axios'
 
 type Mode = 'edit' | 'memorization'
@@ -51,15 +51,27 @@ export const EditFromTemplate: React.VFC<EditProps> = ({imageUrl, isPlayground =
 
   React.useEffect(() => {
     const templateID = params.id
-    templateID &&
-      getTemplate().then((data) => {
-        for (let i = 0; i < data.length; i++) {
-          if (data[i].id === templateID) {
-            setTemplateName(data[i].name)
-            setPins(data[i].pins)
+    if (location.state.share) {
+      templateID &&
+        getSharedTemplate().then((data) => {
+          for (let i = 0; i < data.length; i++) {
+            if (data[i].id === templateID) {
+              setTemplateName(data[i].name)
+              setPins(data[i].pins)
+            }
           }
-        }
-      })
+        })
+    } else {
+      templateID &&
+        getTemplate().then((data) => {
+          for (let i = 0; i < data.length; i++) {
+            if (data[i].id === templateID) {
+              setTemplateName(data[i].name)
+              setPins(data[i].pins)
+            }
+          }
+        })
+    }
   }, [])
 
   const handleComplete = (e: any) => {
@@ -82,7 +94,12 @@ export const EditFromTemplate: React.VFC<EditProps> = ({imageUrl, isPlayground =
         }
       }
       console.log(data)
-      postPalace(data, (res) => (shareOption ? putSharePalace(res.data.id, shareOption) : null))
+      postPalace(data, (res: any) => {
+        if (shareOption) {
+          putSharePalace(res.data.id, shareOption)
+          setPalaceId(res.data.id)
+        }
+      })
       setCompleteIsOpen(true)
     }
   }

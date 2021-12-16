@@ -3,6 +3,7 @@ import styles from './SharedTemplates.module.css'
 import SharedTemplate from '../components/SharedTemplate'
 import axios from 'axios'
 import {SharedTemplateType} from '../types'
+import {config} from '../config'
 
 const SharedTemplates: React.VFC = () => {
   const [templates, setTemplates] = useState(new Array<SharedTemplateType>())
@@ -15,7 +16,7 @@ const SharedTemplates: React.VFC = () => {
 
   useEffect(() => {
     axios
-      .get('http://localhost:8080/api/templates', {withCredentials: true})
+      .get(config() + '/api/templates', {withCredentials: true})
       .then((res) => {
         if (res.data) {
           setTemplates(res.data)

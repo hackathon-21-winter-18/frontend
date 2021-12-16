@@ -12,6 +12,10 @@ export const getTemplate = async (onSuccess?: () => any, onError?: () => any) =>
   const res = await axios.get(config() + '/api/templates/me', {withCredentials: true})
   return res.data
 }
+export const getSharedTemplate = async (onSuccess?: () => any, onError?: () => any) => {
+  const res = await axios.get(config() + '/api/templates', {withCredentials: true})
+  return res.data
+}
 
 export const putTemplate = (templateID: string, data: any, onSuccess?: () => any, onError?: () => any) => {
   axios

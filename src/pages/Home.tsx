@@ -4,6 +4,7 @@ import Palace from '../components/Palace'
 import {PalaceType} from '../types'
 import axios from 'axios'
 import CreateNewPalaceButton from '../components/CreateNewPalaceButton'
+import {config} from '../config'
 
 const Home: React.VFC = () => {
   const [palaces, setPalaces] = useState(new Array<PalaceType>())
@@ -18,7 +19,7 @@ const Home: React.VFC = () => {
   }
   useEffect(() => {
     axios
-      .get('http://localhost:8080/api/palaces/me', {withCredentials: true})
+      .get(config() + '/api/palaces/me', {withCredentials: true})
       .then((res) => {
         if (res.data) {
           setPalaces(res.data)
