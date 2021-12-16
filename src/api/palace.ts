@@ -25,6 +25,6 @@ export const putPalace = (palaceID: string, data: any, onSuccess?: () => any, on
 }
 
 export const putSharePalace = async (palaceID: string, share: boolean, onSuccess?: () => any, onError?: () => any) => {
-  const res = await axios.put(config() + '/api/palaces/share/' + palaceID, share, {withCredentials: true})
+  const res = await axios.put(config() + '/api/palaces/share/' + palaceID, {share: share}, {withCredentials: true})
   return res.data
 }
