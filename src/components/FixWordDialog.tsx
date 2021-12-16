@@ -10,8 +10,14 @@ interface FixWordDialogProps {
   isVisible?: boolean
   open: EmbededPins
   deletePin: (pin: EmbededPins) => void
+  flags?: boolean[]
+  setFlags?: (flags: boolean[]) => void
 }
-export const FixWordDialog: React.VFC<FixWordDialogProps> = ({open, deletePin, isVisible = true}) => {
+export const FixWordDialog: React.VFC<FixWordDialogProps> = ({open, deletePin, isVisible = true, flags, setFlags}) => {
+  function handleComplete() {
+    flags![open.number] = !flags![open.number]
+    setFlags!(flags!)
+  }
   return (
     <Grow in={!!open}>
       <Card elevation={1} className={styles.card}>
@@ -26,6 +32,13 @@ export const FixWordDialog: React.VFC<FixWordDialogProps> = ({open, deletePin, i
               <DeleteIcon />
             </IconButton>
           )}
+          <div>
+            {!isVisible && (
+              <IconButton onClick={flags && handleComplete} color={flags && flags![open.number] ? 'error' : 'primary'}>
+                完了
+              </IconButton>
+            )}
+          </div>
         </div>
       </Card>
     </Grow>
