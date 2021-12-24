@@ -27,7 +27,7 @@ const SharedTemplate: React.VFC<TemplateProps> = ({template}) => {
       name: template.name,
       image: template.image,
       pins: template.pins,
-      createdBy: user.id,
+      createdBy: template.createdBy,
       originalID: template.id,
     }
     axios.post(config() + '/api/templates/me', data, {withCredentials: true})
@@ -72,7 +72,7 @@ const SharedTemplate: React.VFC<TemplateProps> = ({template}) => {
         <span>{template.savedCount}回保存されました</span>
       </div>
       <div>
-        <span>Creater:{template.createrName}</span>
+        <span>Creater:{template.createdBy}</span>
       </div>
       <Dialog open={isOpen} onClose={handleDialogClose}>
         <button onClick={handleSaveDialog}>テンプレートの保存</button>

@@ -27,7 +27,7 @@ const SharedPalace: React.VFC<PalaceProps> = ({palace}) => {
       name: palace.name,
       image: palace.image,
       embededPins: palace.embededPins,
-      createdBy: user.id,
+      createdBy: palace.createdBy,
       originalID: palace.id,
     }
     axios.post(config() + '/api/palaces/me', data, {withCredentials: true})
@@ -72,7 +72,7 @@ const SharedPalace: React.VFC<PalaceProps> = ({palace}) => {
         <span>{palace.savedCount}回保存されました</span>
       </div>
       <div>
-        <span>Creater:{palace.createrName}</span>
+        <span>Creater:{palace.createdBy}</span>
       </div>
       <Dialog open={isOpen} onClose={handleDialogClose}>
         <button onClick={handleSaveDialog}>宮殿の保存</button>

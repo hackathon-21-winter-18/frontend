@@ -43,7 +43,7 @@ export type SharedPalaceType = {
   image: string
   embededPins: EmbededPins[]
   savedCount: number
-  createrName: string
+  createdBy: string
 }
 //SharedTemplateType
 export type SharedTemplateType = {
@@ -52,7 +52,7 @@ export type SharedTemplateType = {
   image: string
   pins: Pin[]
   savedCount: number
-  createrName: string
+  createdBy: string
 }
 //login周り
 export type UserRegistration = {
