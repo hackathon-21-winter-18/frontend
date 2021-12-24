@@ -53,7 +53,7 @@ const Memorize: React.VFC = () => {
   }
   React.useEffect(() => {
     const palaceID = params.id
-    if (location.state.share) {
+    if (location.state.shared) {
       palaceID &&
         getSharedPalace().then((data) => {
           for (let i = 0; i < data.length; i++) {
