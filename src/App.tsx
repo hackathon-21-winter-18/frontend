@@ -26,6 +26,8 @@ function App() {
               <Route element={<Layout />}>
                 <Route element={<SideLayout />}>
                   <Route path="/" element={<Home />} />
+                  <Route path="/frontend/" element={<Home />} />
+                  <Route path="/frontend" element={<Home />} />
                   <Route path="/template" element={<TemplatePage />} />
                   <Route path="/playground" element={<Playground />} />
                 </Route>
