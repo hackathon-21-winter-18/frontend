@@ -24,11 +24,11 @@ const SharedTemplate: React.VFC<TemplateProps> = ({template}) => {
   }
   function handleSave() {
     const data = {
-      id: template.id,
       name: template.name,
       image: template.image,
       pins: template.pins,
       createdBy: user.id,
+      originalID: template.id,
     }
     axios.post(config() + '/api/templates/me', data, {withCredentials: true})
     setIsOpen(false)

@@ -24,11 +24,11 @@ const SharedPalace: React.VFC<PalaceProps> = ({palace}) => {
   }
   function handleSave() {
     const data = {
-      id: palace.id,
       name: palace.name,
       image: palace.image,
       embededPins: palace.embededPins,
       createdBy: user.id,
+      originalID: palace.id,
     }
     axios.post(config() + '/api/palaces/me', data, {withCredentials: true})
     setIsOpen(false)
