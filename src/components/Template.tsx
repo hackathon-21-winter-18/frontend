@@ -69,7 +69,10 @@ const Template: React.VFC<TemplateProps> = ({num, template, deleteTemplate}) => 
       </div>
       <div className={styles.wordTag}>
         <CommentIcon className={styles.commentIcon} />
-        {template.pins.length + ' Pins'}
+        {template.pins.length + ' pins'}
+      </div>
+      <div>
+        <span>{template.savedCount}回保存されました</span>
       </div>
       {share ? <span>共有済</span> : <span>未共有</span>}
       <Dialog open={isOpen} onClose={handleDialogClose}>

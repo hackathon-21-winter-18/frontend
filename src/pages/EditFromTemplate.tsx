@@ -135,7 +135,7 @@ export const EditFromTemplate: React.VFC<EditProps> = ({imageUrl, isPlayground =
       const data = {
         word: pin.word,
         place: pin.place,
-        do: pin.condition,
+        condition: pin.condition,
         number: pins.length,
         x: (x - hoverRef.current.x) / hoverRef.current.width,
         y: (y - hoverRef.current.y) / hoverRef.current.height,

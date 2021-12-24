@@ -71,6 +71,9 @@ const Palace: React.VFC<PalaceProps> = ({num, palace, deletePalace}) => {
         <CommentIcon className={styles.commentIcon} />
         {palace.embededPins.length + ' Words'}
       </div>
+      <div>
+        <span>{palace.savedCount}回保存されました</span>
+      </div>
       {share ? <span>共有済</span> : <span>未共有</span>}
       <Dialog open={isOpen} onClose={handleDialogClose}>
         <Link to={'/fix/' + palace.id} state={{image: Extension()}}>
