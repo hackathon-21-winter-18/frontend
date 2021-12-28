@@ -38,7 +38,9 @@ const Sidebar: React.VFC = () => {
         <TravelExploreIcon className={styles.buttonIcon} />
         Shared Palaces
       </Link>
-      <Link to="/sharedTemplates" className={pathname === '/template' ? styles.buttonHere : styles.buttonNotHere}>
+      <Link
+        to="/sharedTemplates"
+        className={pathname === '/sharedTemplates' ? styles.buttonHere : styles.buttonNotHere}>
         <TravelExploreIcon className={styles.buttonIcon} />
         Shared Templates
       </Link>
