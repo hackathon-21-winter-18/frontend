@@ -8,6 +8,7 @@ import CommentIcon from '@mui/icons-material/Comment'
 import Dialog from '@mui/material/Dialog'
 import {UserContext} from '../components/UserProvider'
 import {config} from '../config'
+import {DialogActions, DialogTitle} from '@mui/material'
 
 interface TemplateProps {
   template: SharedTemplateType
@@ -74,13 +75,24 @@ const SharedTemplate: React.VFC<TemplateProps> = ({template}) => {
       <div>
         <span>Creater:{template.createdBy}</span>
       </div>
+
       <Dialog open={isOpen} onClose={handleDialogClose}>
-        <button onClick={handleSaveDialog}>テンプレートの保存</button>
-        <Dialog open={saveIsOpen} onClose={() => setSaveIsOpen(false)}>
-          本当にテンプレートを保存しますか？
-          <button onClick={handleSave}>はい</button>
-          <button onClick={() => setIsOpen(false)}>いいえ</button>
-        </Dialog>
+        <DialogActions>
+          <button onClick={handleSaveDialog} className={styles.button1}>
+            テンプレートの保存
+          </button>
+          <Dialog open={saveIsOpen} onClose={() => setSaveIsOpen(false)}>
+            <DialogTitle>本当にテンプレートを保存しますか？</DialogTitle>
+            <DialogActions>
+              <button onClick={handleSave} className={styles.button1}>
+                はい
+              </button>
+              <button onClick={() => setIsOpen(false)} className={styles.button2}>
+                いいえ
+              </button>
+            </DialogActions>
+          </Dialog>
+        </DialogActions>
       </Dialog>
     </div>
   )

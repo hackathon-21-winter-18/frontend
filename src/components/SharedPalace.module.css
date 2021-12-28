@@ -41,3 +41,29 @@
   height: 16px !important;
   margin-right: 4px !important;
 }
+
+.button1 {
+  font-size: 24px;
+  width: 316px;
+  height: 54px;
+  border-radius: 8px;
+  border: none;
+  background-color: #313847;
+  margin: 0 auto;
+  color: #ffffff;
+  cursor: pointer;
+  text-decoration: none;
+}
+
+.button2 {
+  font-size: 24px;
+  width: 316px;
+  height: 54px;
+  border-radius: 8px;
+  border: 1px solid #7a8498;
+  background-color: #ffffff;
+  margin: 0 auto;
+  cursor: pointer;
+  color: #7a8498;
+  text-decoration: none;
+}
