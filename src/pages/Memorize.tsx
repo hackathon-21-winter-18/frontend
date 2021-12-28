@@ -17,6 +17,9 @@ import {FixWordDialog} from '../components/FixWordDialog'
 import VisibilityIcon from '@mui/icons-material/Visibility'
 import VisibilityOffIcon from '@mui/icons-material/VisibilityOff'
 import Dialog from '@mui/material/Dialog'
+import CheckCircleIcon from '@mui/icons-material/CheckCircle'
+import DialogActions from '@mui/material/DialogActions'
+import DialogTitle from '@mui/material/DialogTitle'
 import {postTemplate, putShareTemplate} from '../api/template'
 import {postPalace, putSharePalace, getPalace, getSharedPalace} from '../api/palace'
 
@@ -188,17 +191,37 @@ const Memorize: React.VFC = () => {
         </Badge>
       </IconButton>
       <ClickAwayListener onClickAway={handleClickAway}>
-        <div>
+        <div className={styles.image}>
           <img className={styles.layoutImage} src={Extension(palaceImage)} alt="map" ref={hoverRef} />
         </div>
       </ClickAwayListener>
-
-      <button onClick={handleComplete} type="submit" disabled={!flags.every((value) => value)}>
-        暗記完了!
-      </button>
-      <Dialog open={completeIsOpen}>
-        お疲れさまでした。
-        <Link to="/">ホームへ戻る</Link>
+      <div className={styles.form}>
+        <button onClick={handleComplete} type="submit" className={styles.completeButton}>
+          <CheckCircleIcon />
+          <span>暗記完了!</span>
+        </button>
+      </div>
+      <Dialog
+        open={completeIsOpen && flags.every((value) => value)}
+        PaperProps={{style: {width: '381px', height: '309px', borderRadius: '10px'}}}>
+        <DialogTitle style={{textAlign: 'center'}}>🎉お疲れさまでした🎉</DialogTitle>
+        <DialogActions>
+          <button className={styles.button2}>
+            <Link to="/" style={{textDecoration: 'none', color: '#7a8498'}}>
+              ホームへ戻る
+            </Link>
+          </button>
+        </DialogActions>
+      </Dialog>
+      <Dialog
+        open={completeIsOpen && !flags.every((value) => value)}
+        PaperProps={{style: {width: '381px', height: '309px', borderRadius: '10px'}}}>
+        <DialogTitle style={{textAlign: 'center'}}>まだ暗記が終わってません</DialogTitle>
+        <DialogActions>
+          <button onClick={() => setCompleteIsOpen(false)} className={styles.button2}>
+            戻る
+          </button>
+        </DialogActions>
       </Dialog>
     </div>
   )

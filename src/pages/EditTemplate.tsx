@@ -14,6 +14,9 @@ import pinIcon from '../assets/pin.svg'
 import VisibilityIcon from '@mui/icons-material/Visibility'
 import VisibilityOffIcon from '@mui/icons-material/VisibilityOff'
 import Dialog from '@mui/material/Dialog'
+import CheckCircleIcon from '@mui/icons-material/CheckCircle'
+import DialogActions from '@mui/material/DialogActions'
+import DialogTitle from '@mui/material/DialogTitle'
 import {postTemplate, putShareTemplate} from '../api/template'
 
 type Mode = 'edit' | 'memorization'
@@ -43,7 +46,7 @@ export const EditTemplate: React.VFC<EditProps> = ({imageUrl, isPlayground = fal
 
   const handleComplete = (e: any) => {
     e.preventDefault()
-    if (pins.length > 0) {
+    if (!(pins.length <= 0 || templateName === '')) {
       let willSendImage = ''
       if (location.state.image.substr(0, 23) === 'data:image/jpeg;base64,') {
         willSendImage = location.state.image.substring(23)
@@ -157,37 +160,62 @@ export const EditTemplate: React.VFC<EditProps> = ({imageUrl, isPlayground = fal
       </IconButton>
 
       <ClickAwayListener onClickAway={handleClickAway}>
-        <div>
+        <div className={styles.image}>
           <img
             className={styles.layoutImage}
             src={imageUrl ?? location.state.image}
-            alt="map"
+            alt=""
             onClick={() => mode === 'edit' && setOpen(Math.random())}
             ref={hoverRef}
           />
           {open && putPin()}
         </div>
       </ClickAwayListener>
-
-      <form>
+      <div className={styles.nameInputForm}>
         <input
           required
           type="text"
           value={templateName}
-          placeholder="テンプレートの名前"
+          placeholder="Untitled Template"
           onChange={(e) => setTemplateName(e.target.value)}
         />
-        <label>
-          <input type="checkbox" onClick={() => setShareOption(!shareOption)} id="sharedCheckBox" />
-          共有
-        </label>
-        <button onClick={handleComplete} type="submit" disabled={pins.length <= 0 || templateName === ''}>
-          完成!
-        </button>
-      </form>
-      <Dialog open={completeIsOpen}>
-        テンプレートが完成しました
-        <Link to="/">ホームへ戻る</Link>
+      </div>
+      <div className={styles.form}>
+        <form>
+          <label>
+            <input type="checkbox" onClick={() => setShareOption(!shareOption)} />
+            テンプレートを共有
+          </label>
+          <br />
+          <button onClick={handleComplete} type="submit" className={styles.completeButton}>
+            <CheckCircleIcon />
+            <span>テンプレートを作成する</span>
+          </button>
+        </form>
+      </div>
+      <Dialog
+        open={completeIsOpen && !(pins.length <= 0 || templateName === '')}
+        PaperProps={{style: {width: '381px', height: '309px', borderRadius: '10px'}}}>
+        <DialogTitle style={{textAlign: 'center'}}>🎉テンプレートが完成しました🎉</DialogTitle>
+        <DialogActions>
+          <button className={styles.button2}>
+            <Link to="/" style={{textDecoration: 'none', color: '#7a8498'}}>
+              ホームへ戻る
+            </Link>
+          </button>
+        </DialogActions>
+      </Dialog>
+      <Dialog
+        open={completeIsOpen && (pins.length <= 0 || templateName === '')}
+        PaperProps={{style: {width: '381px', height: '309px', borderRadius: '10px'}}}>
+        <DialogTitle style={{textAlign: 'center'}}>
+          ピンが登録されていないか、テンプレートの名前が登録されていません
+        </DialogTitle>
+        <DialogActions>
+          <button onClick={() => setCompleteIsOpen(false)} className={styles.button2}>
+            戻る
+          </button>
+        </DialogActions>
       </Dialog>
     </div>
   )

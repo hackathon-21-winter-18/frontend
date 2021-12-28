@@ -17,8 +17,12 @@ import {FixWordDialog} from '../components/FixWordDialog'
 import VisibilityIcon from '@mui/icons-material/Visibility'
 import VisibilityOffIcon from '@mui/icons-material/VisibilityOff'
 import Dialog from '@mui/material/Dialog'
+import CheckCircleIcon from '@mui/icons-material/CheckCircle'
+import DialogActions from '@mui/material/DialogActions'
+import DialogTitle from '@mui/material/DialogTitle'
 import {postTemplate, putShareTemplate} from '../api/template'
 import {postPalace, putSharePalace} from '../api/palace'
+import {style} from '@mui/system'
 
 type Mode = 'edit' | 'memorization'
 
@@ -49,7 +53,7 @@ export const Edit: React.VFC<EditProps> = ({imageUrl, isPlayground = false}) => 
 
   const handleComplete = (e: any) => {
     e.preventDefault()
-    if (pins.length > 0 && !isPlayground) {
+    if (!isPlayground && !(pins.length <= 0 || palaceName === '')) {
       let willSendImage = ''
       if (location.state.image.substr(0, 23) === 'data:image/jpeg;base64,') {
         willSendImage = location.state.image.substring(23)
@@ -90,8 +94,9 @@ export const Edit: React.VFC<EditProps> = ({imageUrl, isPlayground = false}) => 
         )
       }
       setCompleteIsOpen(true)
+    } else {
+      setCompleteIsOpen(true)
     }
-    setCompleteIsOpen(true)
   }
 
   const handleClickAway = () => {
@@ -194,11 +199,11 @@ export const Edit: React.VFC<EditProps> = ({imageUrl, isPlayground = false}) => 
         {mode === 'memorization' && <VisibilityOffIcon />}
       </IconButton>
       <ClickAwayListener onClickAway={handleClickAway}>
-        <div>
+        <div className={styles.image}>
           <img
             className={styles.layoutImage}
             src={imageUrl ?? location.state.image}
-            alt="map"
+            alt=""
             onClick={() => mode === 'edit' && setOpen(Math.random())}
             ref={hoverRef}
           />
@@ -212,42 +217,82 @@ export const Edit: React.VFC<EditProps> = ({imageUrl, isPlayground = false}) => 
           )}
         </div>
       </ClickAwayListener>
-      <form>
+      <div className={styles.nameInputForm}>
         <input
           required
           type="text"
           value={palaceName}
-          placeholder="宮殿の名前"
+          placeholder="Untitled Palace"
           onChange={(e) => setPalaceName(e.target.value)}
         />
-        <label>
-          <input type="checkbox" onClick={() => setTemplateOption(!templateOption)} />
-          テンプレートとして保存
-        </label>
-        <label>
-          <input type="checkbox" onClick={() => setShareOption(!shareOption)} id="sharedCheckBox" />
-          宮殿を共有
-        </label>
-        <label>
-          <input
-            type="checkbox"
-            onClick={() => setTemplateShareOption(!templateShareOption)}
-            disabled={!templateOption}
-          />
-          テンプレートとして共有
-        </label>
-        <button onClick={handleComplete} type="submit" disabled={pins.length <= 0 || palaceName === ''}>
-          完成!
-        </button>
-      </form>
-      <Dialog open={completeIsOpen && !isPlayground}>
-        宮殿が完成しました
-        <button onClick={() => navigate('/memorize/' + palaceId, {state: {shared: false}})}>今すぐ覚える</button>
-        <Link to="/">ホームへ戻る</Link>
+      </div>
+      <div className={styles.form}>
+        <form>
+          <label>
+            <input type="checkbox" onClick={() => setTemplateOption(!templateOption)} />
+            テンプレートとして保存
+          </label>
+          <br />
+          <label>
+            <input type="checkbox" onClick={() => setShareOption(!shareOption)} id="sharedCheckBox" />
+            宮殿を共有
+          </label>
+          <br />
+          <label>
+            <input
+              type="checkbox"
+              onClick={() => setTemplateShareOption(!templateShareOption)}
+              disabled={!templateOption}
+            />
+            テンプレートとして共有
+          </label>
+          <br />
+          <button onClick={handleComplete} type="submit" className={styles.completeButton}>
+            <CheckCircleIcon />
+            <span>記憶の宮殿を作成する</span>
+          </button>
+        </form>
+      </div>
+      <Dialog
+        open={completeIsOpen && !isPlayground && !(pins.length <= 0 || palaceName === '')}
+        PaperProps={{style: {width: '381px', height: '309px', borderRadius: '10px'}}}>
+        <DialogTitle style={{textAlign: 'center'}}>🎉宮殿が完成しました🎉</DialogTitle>
+        <DialogActions>
+          <button
+            onClick={() => navigate('/memorize/' + palaceId, {state: {shared: false}})}
+            className={styles.button1}>
+            今すぐ覚える
+          </button>
+        </DialogActions>
+        <DialogActions>
+          <button className={styles.button2}>
+            <Link to="/" style={{textDecoration: 'none', color: '#7a8498'}}>
+              ホームへ戻る
+            </Link>
+          </button>
+        </DialogActions>
       </Dialog>
-      <Dialog open={completeIsOpen && isPlayground}>
-        次は実際に宮殿を作成してみましょう!
-        <button onClick={() => setCompleteIsOpen(false)}>OK</button>
+      <Dialog
+        open={completeIsOpen && !isPlayground && (pins.length <= 0 || palaceName === '')}
+        PaperProps={{style: {width: '381px', height: '309px', borderRadius: '10px'}}}>
+        <DialogTitle style={{textAlign: 'center'}}>
+          単語が登録されていないか、宮殿の名前が登録されていません
+        </DialogTitle>
+        <DialogActions>
+          <button onClick={() => setCompleteIsOpen(false)} className={styles.button2}>
+            戻る
+          </button>
+        </DialogActions>
+      </Dialog>
+      <Dialog
+        open={completeIsOpen && isPlayground}
+        PaperProps={{style: {width: '381px', height: '309px', borderRadius: '10px'}}}>
+        <DialogTitle style={{textAlign: 'center'}}>次は実際に宮殿を作成してみましょう!</DialogTitle>
+        <DialogActions>
+          <button onClick={() => setCompleteIsOpen(false)} className={styles.button2}>
+            OK
+          </button>
+        </DialogActions>
       </Dialog>
     </div>
   )
