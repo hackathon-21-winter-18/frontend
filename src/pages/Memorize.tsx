@@ -65,7 +65,7 @@ const Memorize: React.VFC = () => {
           }
         })
     }
-  }, [])
+  }, []) // eslint-disable-line react-hooks/exhaustive-deps
 
   const handleComplete = (e: any) => {
     e.preventDefault()
@@ -85,7 +85,7 @@ const Memorize: React.VFC = () => {
       borderRadius: 2,
       transitionDuration: '0.2s',
     }),
-    [open, pinOpen]
+    [open, pinOpen] // eslint-disable-line react-hooks/exhaustive-deps
   )
 
   const handlePinClick = React.useCallback((pin: EmbededPins) => {

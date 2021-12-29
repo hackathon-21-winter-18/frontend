@@ -92,7 +92,7 @@ export const EditFromTemplate: React.VFC<EditProps> = ({imageUrl, isPlayground =
           }
         })
     }
-  }, [])
+  }, []) // eslint-disable-line react-hooks/exhaustive-deps
 
   const handleComplete = (e: any) => {
     e.preventDefault()
@@ -139,7 +139,7 @@ export const EditFromTemplate: React.VFC<EditProps> = ({imageUrl, isPlayground =
       borderRadius: 2,
       transitionDuration: '0.2s',
     }),
-    [open, pinOpen]
+    [open, pinOpen] // eslint-disable-line react-hooks/exhaustive-deps
   )
 
   const pinStyle = React.useCallback<() => React.CSSProperties>(
@@ -149,7 +149,7 @@ export const EditFromTemplate: React.VFC<EditProps> = ({imageUrl, isPlayground =
       left: x,
       transform: `translate(-50%, -100%)`,
     }),
-    [open]
+    [open] // eslint-disable-line react-hooks/exhaustive-deps
   )
 
   const putPin = React.useCallback(
@@ -165,7 +165,7 @@ export const EditFromTemplate: React.VFC<EditProps> = ({imageUrl, isPlayground =
       setPins([...pins, data])
       setOpen(false)
     },
-    [open]
+    [open] // eslint-disable-line react-hooks/exhaustive-deps
   )
   const handlePinClick = React.useCallback((pin: EmbededPins) => {
     setPinOpen(pin)

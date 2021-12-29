@@ -43,7 +43,7 @@ export const Fix: React.VFC = () => {
           }
         }
       })
-  }, [])
+  }, []) // eslint-disable-line react-hooks/exhaustive-deps
 
   const handleComplete = (e: any) => {
     e.preventDefault()
@@ -79,7 +79,7 @@ export const Fix: React.VFC = () => {
       borderRadius: 2,
       transitionDuration: '0.2s',
     }),
-    [open, pinOpen]
+    [open, pinOpen] // eslint-disable-line react-hooks/exhaustive-deps
   )
 
   const pinStyle = React.useCallback<() => React.CSSProperties>(
@@ -89,7 +89,7 @@ export const Fix: React.VFC = () => {
       left: x,
       transform: `translate(-50%, -100%)`,
     }),
-    [open]
+    [open] // eslint-disable-line react-hooks/exhaustive-deps
   )
 
   const putPin = React.useCallback(
@@ -105,7 +105,7 @@ export const Fix: React.VFC = () => {
       setPins([...pins, data])
       setOpen(false)
     },
-    [open]
+    [open] // eslint-disable-line react-hooks/exhaustive-deps
   )
   const handlePinClick = React.useCallback((pin: EmbededPins) => {
     setPinOpen(pin)

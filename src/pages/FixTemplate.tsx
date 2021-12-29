@@ -40,7 +40,7 @@ export const FixTemplate: React.VFC = () => {
           }
         }
       })
-  }, [])
+  }, []) // eslint-disable-line react-hooks/exhaustive-deps
 
   const boxStyle = React.useCallback<() => SxProps>(
     () => ({
@@ -52,7 +52,7 @@ export const FixTemplate: React.VFC = () => {
       borderRadius: 2,
       transitionDuration: '0.2s',
     }),
-    [open, pinOpen]
+    [open, pinOpen] // eslint-disable-line react-hooks/exhaustive-deps
   )
 
   const handleComplete = (e: any) => {
@@ -88,7 +88,7 @@ export const FixTemplate: React.VFC = () => {
       left: x,
       transform: `translate(-50%, -100%)`,
     }),
-    [open]
+    [open] // eslint-disable-line react-hooks/exhaustive-deps
   )
 
   const putPin = React.useCallback(() => {
@@ -99,7 +99,8 @@ export const FixTemplate: React.VFC = () => {
     }
     setPins([...pins, data])
     setOpen(false)
-  }, [open])
+  }, [open]) // eslint-disable-line react-hooks/exhaustive-deps
+
   const handlePinClick = React.useCallback((pin: Pin) => {
     setPinOpen(pin)
   }, [])
