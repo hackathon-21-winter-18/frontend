@@ -4,18 +4,21 @@ import SharedTemplate from '../components/SharedTemplate'
 import axios from 'axios'
 import {SharedTemplateType} from '../types'
 import {config} from '../config'
-import {useLocation, useNavigate, Link} from 'react-router-dom'
+import {useLocation, Link} from 'react-router-dom'
 
 const SharedTemplates: React.VFC = () => {
   const [templates, setTemplates] = useState(new Array<SharedTemplateType>())
-  const navigate = useNavigate()
   const {pathname} = useLocation()
 
   const listItems = templates.map((template, index) => (
     <li key={template.id}>
-      <SharedTemplate template={template} />
+      <SharedTemplate num={index} template={template} deleteTemplate={DeleteTemplate} />
     </li>
   ))
+
+  function DeleteTemplate(number: number) {
+    setTemplates(templates.slice(0, number).concat(templates.slice(number + 1)))
+  }
 
   useEffect(() => {
     axios

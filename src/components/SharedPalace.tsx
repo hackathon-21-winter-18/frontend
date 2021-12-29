@@ -1,4 +1,4 @@
-import {useState, useContext} from 'react'
+import {useState} from 'react'
 import {useNavigate} from 'react-router-dom'
 import styles from './SharedPalace.module.css'
 import {SharedPalaceType} from '../types'
@@ -6,22 +6,34 @@ import axios from 'axios'
 import MoreVertIcon from '@mui/icons-material/MoreVert'
 import CommentIcon from '@mui/icons-material/Comment'
 import Dialog from '@mui/material/Dialog'
-import {UserContext} from '../components/UserProvider'
+import useAuth from '../components/UserProvider'
 import {config} from '../config'
 import {DialogActions, DialogTitle} from '@mui/material'
 
 interface PalaceProps {
+  num: number
   palace: SharedPalaceType
+  deletePalace: (number: number) => void
 }
 
-const SharedPalace: React.VFC<PalaceProps> = ({palace}) => {
+const SharedPalace: React.VFC<PalaceProps> = ({num, palace, deletePalace}) => {
   const [isOpen, setIsOpen] = useState(false)
   const [saveIsOpen, setSaveIsOpen] = useState(false)
   const navigate = useNavigate()
-  const {user} = useContext(UserContext)
+  const {user} = useAuth()
+  const [shareIsOpen, setShareIsOpen] = useState(false)
 
   function handleSaveDialog() {
     setSaveIsOpen(true)
+  }
+  function handleShareDialog() {
+    setShareIsOpen(true)
+  }
+  function handleShare() {
+    axios.put(config() + '/api/palaces/share/' + palace.id, {share: false}, {withCredentials: true})
+    deletePalace(num)
+    setShareIsOpen(false)
+    setIsOpen(false)
   }
   function handleSave() {
     const data = {
@@ -76,7 +88,7 @@ const SharedPalace: React.VFC<PalaceProps> = ({palace}) => {
         <span>保存者数:{palace.savedCount}</span>
       </div>
 
-      <Dialog open={isOpen} onClose={handleDialogClose}>
+      <Dialog open={isOpen && !(palace.createdBy === user.name)} onClose={handleDialogClose}>
         <DialogActions>
           <button onClick={handleSaveDialog} className={styles.button1}>
             宮殿の保存
@@ -87,7 +99,25 @@ const SharedPalace: React.VFC<PalaceProps> = ({palace}) => {
               <button onClick={handleSave} className={styles.button1}>
                 はい
               </button>
-              <button onClick={() => setIsOpen(false)} className={styles.button2}>
+              <button onClick={() => setSaveIsOpen(false)} className={styles.button2}>
+                いいえ
+              </button>
+            </DialogActions>
+          </Dialog>
+        </DialogActions>
+      </Dialog>
+      <Dialog open={isOpen && palace.createdBy === user.name} onClose={handleDialogClose}>
+        <DialogActions>
+          <button onClick={handleShareDialog} className={styles.button2}>
+            宮殿の共有設定
+          </button>
+          <Dialog open={shareIsOpen} onClose={() => setShareIsOpen(false)}>
+            <DialogTitle>宮殿の共有をやめますか？</DialogTitle>
+            <DialogActions>
+              <button onClick={handleShare} className={styles.button1}>
+                はい
+              </button>
+              <button onClick={() => setShareIsOpen(false)} className={styles.button2}>
                 いいえ
               </button>
             </DialogActions>

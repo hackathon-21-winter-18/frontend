@@ -4,18 +4,21 @@ import SharedPalace from '../components/SharedPalace'
 import axios from 'axios'
 import {SharedPalaceType} from '../types'
 import {config} from '../config'
-import {useLocation, useNavigate, Link} from 'react-router-dom'
+import {useLocation, Link} from 'react-router-dom'
 
 const SharedPalaces: React.VFC = () => {
   const [palaces, setPalaces] = useState(new Array<SharedPalaceType>())
-  const navigate = useNavigate()
   const {pathname} = useLocation()
 
   const listItems = palaces.map((palace, index) => (
     <li key={palace.id}>
-      <SharedPalace palace={palace} />
+      <SharedPalace num={index} palace={palace} deletePalace={DeletePalace} />
     </li>
   ))
+
+  function DeletePalace(number: number) {
+    setPalaces(palaces.slice(0, number).concat(palaces.slice(number + 1)))
+  }
 
   useEffect(() => {
     axios

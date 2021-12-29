@@ -1,4 +1,4 @@
-import {useState, useContext} from 'react'
+import {useState} from 'react'
 import {useNavigate} from 'react-router-dom'
 import styles from './SharedTemplate.module.css'
 import {SharedTemplateType} from '../types'
@@ -6,22 +6,34 @@ import axios from 'axios'
 import MoreVertIcon from '@mui/icons-material/MoreVert'
 import CommentIcon from '@mui/icons-material/Comment'
 import Dialog from '@mui/material/Dialog'
-import {UserContext} from '../components/UserProvider'
+import useAuth from '../components/UserProvider'
 import {config} from '../config'
 import {DialogActions, DialogTitle} from '@mui/material'
 
 interface TemplateProps {
+  num: number
   template: SharedTemplateType
+  deleteTemplate: (number: number) => void
 }
 
-const SharedTemplate: React.VFC<TemplateProps> = ({template}) => {
+const SharedTemplate: React.VFC<TemplateProps> = ({num, template, deleteTemplate}) => {
   const [isOpen, setIsOpen] = useState(false)
   const [saveIsOpen, setSaveIsOpen] = useState(false)
-  const {user} = useContext(UserContext)
   const navigate = useNavigate()
+  const {user} = useAuth()
+  const [shareIsOpen, setShareIsOpen] = useState(false)
 
   function handleSaveDialog() {
     setSaveIsOpen(true)
+  }
+  function handleShareDialog() {
+    setShareIsOpen(true)
+  }
+  function handleShare() {
+    axios.put(config() + '/api/palaces/share/' + template.id, {share: false}, {withCredentials: true})
+    deleteTemplate(num)
+    setShareIsOpen(false)
+    setIsOpen(false)
   }
   function handleSave() {
     const data = {
@@ -76,7 +88,7 @@ const SharedTemplate: React.VFC<TemplateProps> = ({template}) => {
         <span>作成者:{template.createdBy}</span>
       </div>
 
-      <Dialog open={isOpen} onClose={handleDialogClose}>
+      <Dialog open={isOpen && !(template.createdBy === user.name)} onClose={handleDialogClose}>
         <DialogActions>
           <button onClick={handleSaveDialog} className={styles.button1}>
             テンプレートの保存
@@ -88,6 +100,24 @@ const SharedTemplate: React.VFC<TemplateProps> = ({template}) => {
                 はい
               </button>
               <button onClick={() => setIsOpen(false)} className={styles.button2}>
+                いいえ
+              </button>
+            </DialogActions>
+          </Dialog>
+        </DialogActions>
+      </Dialog>
+      <Dialog open={isOpen && template.createdBy === user.name} onClose={handleDialogClose}>
+        <DialogActions>
+          <button onClick={handleShareDialog} className={styles.button2}>
+            テンプレートの共有設定
+          </button>
+          <Dialog open={shareIsOpen} onClose={() => setShareIsOpen(false)}>
+            <DialogTitle>テンプレートの共有をやめますか？</DialogTitle>
+            <DialogActions>
+              <button onClick={handleShare} className={styles.button1}>
+                はい
+              </button>
+              <button onClick={() => setShareIsOpen(false)} className={styles.button2}>
                 いいえ
               </button>
             </DialogActions>
