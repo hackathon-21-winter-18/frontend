@@ -60,7 +60,6 @@ export const Edit: React.VFC<EditProps> = ({imageUrl, isPlayground = false}) => 
         embededPins: pins,
         createdBy: user.id,
       }
-      console.log(data)
       postPalace(data, (res: any) => {
         if (shareOption) {
           putSharePalace(res.data.id, shareOption)
@@ -148,7 +147,6 @@ export const Edit: React.VFC<EditProps> = ({imageUrl, isPlayground = false}) => 
   React.useEffect(() => {
     setPins([])
     setPalaceName('')
-    console.log('a')
   }, [location])
 
   return (

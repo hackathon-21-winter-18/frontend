@@ -69,7 +69,6 @@ export const FixTemplate: React.VFC = () => {
         image: willSendImage,
         pins: pins,
       }
-      console.log(data)
 
       putTemplate(templateId, data, () => (shareOption ? putShareTemplate(templateId, shareOption) : null))
       setCompleteIsOpen(true)

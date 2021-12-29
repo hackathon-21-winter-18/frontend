@@ -113,7 +113,6 @@ export const EditTemplate: React.VFC<EditProps> = ({imageUrl, isPlayground = fal
   React.useEffect(() => {
     setPins([])
     setTemplateName('')
-    console.log('a')
   }, [location])
 
   return (

@@ -59,7 +59,6 @@ export const Fix: React.VFC = () => {
         image: willSendImage,
         embededPins: pins,
       }
-      console.log(data)
       params.id && putPalace(params.id, data, () => (shareOption ? putSharePalace(palaceId, shareOption) : null))
       setCompleteIsOpen(true)
     } else {

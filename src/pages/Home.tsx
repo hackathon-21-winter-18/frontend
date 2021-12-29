@@ -20,7 +20,6 @@ const Home: React.VFC = () => {
     getPalace((res) => {
       if (res.data) {
         setPalaces(res.data)
-        console.log(res.data)
       }
     })
   }, [])

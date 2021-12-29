@@ -23,7 +23,6 @@ const SharedPalaces: React.VFC = () => {
     getSharedPalace((res) => {
       if (res.data) {
         setPalaces(res.data)
-        console.log(res.data)
       }
     })
   }, [])

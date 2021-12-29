@@ -19,7 +19,6 @@ const TemplatePage: React.VFC = () => {
     getTemplate((res) => {
       if (res.data) {
         setTemplates(res.data)
-        console.log(res.data)
       }
     })
   }, [])
