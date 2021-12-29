@@ -107,10 +107,10 @@ const Template: React.VFC<TemplateProps> = ({num, template, handleDeleteTemplate
         </DialogActions>
         <DialogActions>
           <button onClick={handleShareDialog} className={styles.button2}>
-            宮殿の共有設定
+            テンプレートの共有設定
           </button>
           <Dialog open={shareIsOpen} onClose={() => setShareIsOpen(false)}>
-            <DialogTitle>{share ? 'テンプレートを未共有にしますか？' : 'テンプレートを共有しますか？'}</DialogTitle>
+            <DialogTitle>{share ? 'テンプレートの共有をやめますか？' : 'テンプレートを共有しますか？'}</DialogTitle>
             <DialogActions>
               <button onClick={handleShare} className={styles.button1}>
                 はい

@@ -112,7 +112,7 @@ const Palace: React.VFC<PalaceProps> = ({num, palace, handleDeletePalace}) => {
             宮殿の共有設定
           </button>
           <Dialog open={shareIsOpen} onClose={() => setShareIsOpen(false)}>
-            <DialogTitle>{share ? '宮殿を未共有にしますか？' : '宮殿を共有しますか？'}</DialogTitle>
+            <DialogTitle>{share ? '宮殿の共有をやめますか？' : '宮殿を共有しますか？'}</DialogTitle>
             <DialogActions>
               <button onClick={handleShare} className={styles.button1}>
                 はい
