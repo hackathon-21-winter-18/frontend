@@ -2,21 +2,20 @@ import {useState} from 'react'
 import {useNavigate} from 'react-router-dom'
 import styles from './Template.module.css'
 import {TemplateType} from '../types'
-import axios from 'axios'
 import MoreVertIcon from '@mui/icons-material/MoreVert'
 import CommentIcon from '@mui/icons-material/Comment'
 import Dialog from '@mui/material/Dialog'
 import DialogActions from '@mui/material/DialogActions'
 import DialogTitle from '@mui/material/DialogTitle'
-import {config} from '../config'
+import {deleteTemplate, putShareTemplate} from '../api/template'
 
 interface TemplateProps {
   num: number
   template: TemplateType
-  deleteTemplate: (number: number) => void
+  handleDeleteTemplate: (number: number) => void
 }
 
-const Template: React.VFC<TemplateProps> = ({num, template, deleteTemplate}) => {
+const Template: React.VFC<TemplateProps> = ({num, template, handleDeleteTemplate}) => {
   const [isOpen, setIsOpen] = useState(false)
   const [deleteIsOpen, setDeleteIsOpen] = useState(false)
   const [shareIsOpen, setShareIsOpen] = useState(false)
@@ -30,11 +29,11 @@ const Template: React.VFC<TemplateProps> = ({num, template, deleteTemplate}) => 
     setShareIsOpen(true)
   }
   function handleDelete() {
-    axios.delete(config() + '/api/templates/' + template.id, {withCredentials: true})
-    deleteTemplate(num)
+    deleteTemplate(template.id)
+    handleDeleteTemplate(num)
   }
   function handleShare() {
-    axios.put(config() + '/api/templates/share/' + template.id, {share: !template.share}, {withCredentials: true})
+    putShareTemplate(template.id, !template.share)
     setShare(!share)
     setShareIsOpen(false)
     setIsOpen(false)

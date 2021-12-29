@@ -8,13 +8,17 @@ export const postPalace = (data: any, onSuccess?: (res: any) => any, onError?: (
     .catch(onError)
 }
 
-export const getPalace = async (onSuccess?: () => any, onError?: () => any) => {
-  const res = await axios.get(config() + '/api/palaces/me', {withCredentials: true})
-  return res.data
+export const getPalace = async (onSuccess?: (res: any) => any, onError?: () => any) => {
+  axios
+    .get(config() + '/api/palaces/me', {withCredentials: true})
+    .then(onSuccess)
+    .catch(onError)
 }
-export const getSharedPalace = async (onSuccess?: () => any, onError?: () => any) => {
-  const res = await axios.get(config() + '/api/palaces', {withCredentials: true})
-  return res.data
+export const getSharedPalace = async (onSuccess?: (res: any) => any, onError?: () => any) => {
+  axios
+    .get(config() + '/api/palaces', {withCredentials: true})
+    .then(onSuccess)
+    .catch(onError)
 }
 
 export const putPalace = (palaceID: string, data: any, onSuccess?: () => any, onError?: () => any) => {
@@ -25,6 +29,15 @@ export const putPalace = (palaceID: string, data: any, onSuccess?: () => any, on
 }
 
 export const putSharePalace = async (palaceID: string, share: boolean, onSuccess?: () => any, onError?: () => any) => {
-  const res = await axios.put(config() + '/api/palaces/share/' + palaceID, {share: share}, {withCredentials: true})
-  return res.data
+  axios
+    .put(config() + '/api/palaces/share/' + palaceID, {share: share}, {withCredentials: true})
+    .then(onSuccess)
+    .catch(onError)
+}
+
+export const deletePalace = async (palaceID: string, onSuccess?: (res: any) => any, onError?: () => any) => {
+  axios
+    .delete(config() + '/api/palaces/' + palaceID, {withCredentials: true})
+    .then(onSuccess)
+    .catch(onError)
 }

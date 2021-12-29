@@ -2,7 +2,6 @@ import * as React from 'react'
 import styles from './Edit.module.css'
 import {useParams, useLocation, useNavigate} from 'react-router'
 import AddNewWordDialog from '../components/AddNewWordDialog'
-import useAuth from '../components/UserProvider'
 import Dialog from '@mui/material/Dialog'
 import CheckCircleIcon from '@mui/icons-material/CheckCircle'
 import DialogActions from '@mui/material/DialogActions'
@@ -25,10 +24,8 @@ export const Fix: React.VFC = () => {
   const location = useLocation()
   const navigate = useNavigate()
   const [palaceName, setPalaceName] = React.useState('')
-  const {user} = useAuth()
   const [hoverRef, isHovered] = useHover<HTMLImageElement>()
   const {x, y} = useMousePosition()
-  const [isOpen, setIsOpen] = React.useState(false)
   const [completeIsOpen, setCompleteIsOpen] = React.useState(false)
   const [shareOption, setShareOption] = React.useState(false)
   const [palaceId, setPalaceId] = React.useState('')
@@ -36,7 +33,8 @@ export const Fix: React.VFC = () => {
   React.useEffect(() => {
     const palaceID = params.id
     palaceID &&
-      getPalace().then((data) => {
+      getPalace((res) => {
+        let data = res.data
         for (let i = 0; i < data.length; i++) {
           if (data[i].id === palaceID) {
             setPalaceName(data[i].name)

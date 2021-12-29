@@ -1,7 +1,6 @@
 import * as React from 'react'
 import styles from './Edit.module.css'
 import {useParams, useLocation} from 'react-router'
-import useAuth from '../components/UserProvider'
 import Dialog from '@mui/material/Dialog'
 import CheckCircleIcon from '@mui/icons-material/CheckCircle'
 import DialogActions from '@mui/material/DialogActions'
@@ -9,10 +8,10 @@ import DialogTitle from '@mui/material/DialogTitle'
 import {Link} from 'react-router-dom'
 import {useMousePosition} from '../hooks/useMousePosition'
 import {CustomCursor} from '../components/CustomCursor'
-import {Badge, Box, ClickAwayListener, IconButton, Portal, SxProps} from '@mui/material'
+import {Badge, ClickAwayListener, IconButton, SxProps} from '@mui/material'
 import {useHover} from '../hooks/useHover'
 import pinIcon from '../assets/pin.svg'
-import {getTemplate, getSharedTemplate, putShareTemplate, putTemplate} from '../api/template'
+import {getTemplate, putShareTemplate, putTemplate} from '../api/template'
 import {Pin} from '../types'
 
 export const FixTemplate: React.VFC = () => {
@@ -22,39 +21,25 @@ export const FixTemplate: React.VFC = () => {
   const params = useParams()
   const location = useLocation()
   const [templateName, setTemplateName] = React.useState('')
-  const {user} = useAuth()
   const [hoverRef, isHovered] = useHover<HTMLImageElement>()
   const {x, y} = useMousePosition()
-  const [isOpen, setIsOpen] = React.useState(false)
   const [completeIsOpen, setCompleteIsOpen] = React.useState(false)
   const [shareOption, setShareOption] = React.useState(false)
   const [templateId, setTemplateId] = React.useState('')
 
   React.useEffect(() => {
     const templateID = params.id
-    if (location.state.share) {
-      templateID &&
-        getSharedTemplate().then((data) => {
-          for (let i = 0; i < data.length; i++) {
-            if (data[i].id === templateID) {
-              setTemplateName(data[i].name)
-              setPins(data[i].pins)
-              setTemplateId(data[i].id)
-            }
+    templateID &&
+      getTemplate((res) => {
+        let data = res.data
+        for (let i = 0; i < data.length; i++) {
+          if (data[i].id === templateID) {
+            setTemplateName(data[i].name)
+            setPins(data[i].pins)
+            setTemplateId(data[i].id)
           }
-        })
-    } else {
-      templateID &&
-        getTemplate().then((data) => {
-          for (let i = 0; i < data.length; i++) {
-            if (data[i].id === templateID) {
-              setTemplateName(data[i].name)
-              setPins(data[i].pins)
-              setTemplateId(data[i].id)
-            }
-          }
-        })
-    }
+        }
+      })
   }, [])
 
   const boxStyle = React.useCallback<() => SxProps>(
@@ -188,7 +173,7 @@ export const FixTemplate: React.VFC = () => {
           <br />
           <button onClick={handleComplete} type="submit" className={styles.completeButton}>
             <CheckCircleIcon />
-            <span>テンプレートを作成する</span>
+            <span>テンプレートの修正を完了する</span>
           </button>
         </form>
       </div>

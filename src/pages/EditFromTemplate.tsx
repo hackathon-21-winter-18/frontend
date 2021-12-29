@@ -1,9 +1,6 @@
 import * as React from 'react'
 import styles from './Edit.module.css'
 import {Link} from 'react-router-dom'
-import {EditAddedWord} from '../components/EditAddedWord'
-import PushPinIcon from '@mui/icons-material/PushPin'
-import {Pin} from '../types'
 import {useParams, useLocation, useNavigate} from 'react-router'
 import AddNewWordDialog from '../components/AddNewWordDialog'
 import useAuth from '../components/UserProvider'
@@ -15,14 +12,12 @@ import {EmbededPins, PinContent} from '../types'
 import pinIcon from '../assets/pin.svg'
 import {FixWordDialog} from '../components/FixWordDialog'
 import {postPalace, putSharePalace} from '../api/palace'
-import VisibilityIcon from '@mui/icons-material/Visibility'
 import VisibilityOffIcon from '@mui/icons-material/VisibilityOff'
 import Dialog from '@mui/material/Dialog'
 import CheckCircleIcon from '@mui/icons-material/CheckCircle'
 import DialogActions from '@mui/material/DialogActions'
 import DialogTitle from '@mui/material/DialogTitle'
-import {postTemplate, getTemplate, getSharedTemplate} from '../api/template'
-import axios from 'axios'
+import {getTemplate, getSharedTemplate} from '../api/template'
 
 type Mode = 'edit' | 'memorization'
 
@@ -36,19 +31,14 @@ export const EditFromTemplate: React.VFC<EditProps> = ({imageUrl, isPlayground =
   const [pinOpen, setPinOpen] = React.useState<EmbededPins | null>(null)
   const [pins, setPins] = React.useState<EmbededPins[]>([])
   const [mode, setMode] = React.useState<Mode>('edit')
-  const image = useParams() //あとで使うかも
   const location = useLocation()
   const [palaceName, setPalaceName] = React.useState('')
   const [shareOption, setShareOption] = React.useState(false)
-  const [templateName, setTemplateName] = React.useState('')
   const {user} = useAuth()
-  const [isOpen, setIsOpen] = React.useState(false)
-  const [templateId, setTemplateId] = React.useState('')
   const [completeIsOpen, setCompleteIsOpen] = React.useState(false)
   const navigate = useNavigate()
   const params = useParams()
   const [palaceId, setPalaceId] = React.useState('')
-
   const [hoverRef, isHovered] = useHover<HTMLImageElement>()
   const {x, y} = useMousePosition()
 
@@ -56,11 +46,10 @@ export const EditFromTemplate: React.VFC<EditProps> = ({imageUrl, isPlayground =
     const templateID = params.id
     if (location.state.share) {
       templateID &&
-        getSharedTemplate().then((data) => {
+        getSharedTemplate((res) => {
+          let data = res.data
           for (let i = 0; i < data.length; i++) {
             if (data[i].id === templateID) {
-              setTemplateName(data[i].name)
-              console.log(data[i].pins)
               for (let j = 0; j < data[i].pins.length; j++) {
                 setPins(
                   pins.concat([
@@ -80,11 +69,10 @@ export const EditFromTemplate: React.VFC<EditProps> = ({imageUrl, isPlayground =
         })
     } else {
       templateID &&
-        getTemplate().then((data) => {
+        getTemplate((res) => {
+          let data = res.data
           for (let i = 0; i < data.length; i++) {
             if (data[i].id === templateID) {
-              setTemplateName(data[i].name)
-              console.log(data[i].pins)
               for (let j = 0; j < data[i].pins.length; j++) {
                 console.log(data[i].pins[j])
                 setPins(
@@ -127,9 +115,9 @@ export const EditFromTemplate: React.VFC<EditProps> = ({imageUrl, isPlayground =
       }
       console.log(data)
       postPalace(data, (res: any) => {
+        setPalaceId(res.data.id)
         if (shareOption) {
           putSharePalace(res.data.id, shareOption)
-          setPalaceId(res.data.id)
         }
       })
       setCompleteIsOpen(true)

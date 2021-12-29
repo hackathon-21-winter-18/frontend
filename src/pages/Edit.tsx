@@ -1,10 +1,8 @@
 import * as React from 'react'
 import styles from './Edit.module.css'
 import {Link} from 'react-router-dom'
-import {EditAddedWord} from '../components/EditAddedWord'
-import PushPinIcon from '@mui/icons-material/PushPin'
 import {Pin} from '../types'
-import {useParams, useLocation, useNavigate} from 'react-router'
+import {useLocation, useNavigate} from 'react-router'
 import AddNewWordDialog from '../components/AddNewWordDialog'
 import useAuth from '../components/UserProvider'
 import {useMousePosition} from '../hooks/useMousePosition'
@@ -14,7 +12,6 @@ import {useHover} from '../hooks/useHover'
 import {EmbededPins, PinContent} from '../types'
 import pinIcon from '../assets/pin.svg'
 import {FixWordDialog} from '../components/FixWordDialog'
-import VisibilityIcon from '@mui/icons-material/Visibility'
 import VisibilityOffIcon from '@mui/icons-material/VisibilityOff'
 import Dialog from '@mui/material/Dialog'
 import CheckCircleIcon from '@mui/icons-material/CheckCircle'
@@ -22,7 +19,6 @@ import DialogActions from '@mui/material/DialogActions'
 import DialogTitle from '@mui/material/DialogTitle'
 import {postTemplate, putShareTemplate} from '../api/template'
 import {postPalace, putSharePalace} from '../api/palace'
-import {style} from '@mui/system'
 
 type Mode = 'edit' | 'memorization'
 
@@ -36,7 +32,6 @@ export const Edit: React.VFC<EditProps> = ({imageUrl, isPlayground = false}) => 
   const [pinOpen, setPinOpen] = React.useState<EmbededPins | null>(null)
   const [pins, setPins] = React.useState<EmbededPins[]>([])
   const [mode, setMode] = React.useState<Mode>('edit')
-  const image = useParams() //あとで使うかも
   const location = useLocation()
   const [palaceName, setPalaceName] = React.useState('')
   const {user} = useAuth()
@@ -46,7 +41,6 @@ export const Edit: React.VFC<EditProps> = ({imageUrl, isPlayground = false}) => 
   const [shareOption, setShareOption] = React.useState(false)
   const [templateOption, setTemplateOption] = React.useState(false)
   const [templateShareOption, setTemplateShareOption] = React.useState(false)
-  const [templateId, setTemplateId] = React.useState('')
 
   const [hoverRef, isHovered] = useHover<HTMLImageElement>()
   const {x, y} = useMousePosition()

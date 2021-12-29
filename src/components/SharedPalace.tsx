@@ -2,13 +2,12 @@ import {useState} from 'react'
 import {useNavigate} from 'react-router-dom'
 import styles from './SharedPalace.module.css'
 import {SharedPalaceType} from '../types'
-import axios from 'axios'
 import MoreVertIcon from '@mui/icons-material/MoreVert'
 import CommentIcon from '@mui/icons-material/Comment'
 import Dialog from '@mui/material/Dialog'
 import useAuth from '../components/UserProvider'
-import {config} from '../config'
 import {DialogActions, DialogTitle} from '@mui/material'
+import {putSharePalace, postPalace} from '../api/palace'
 
 interface PalaceProps {
   num: number
@@ -30,7 +29,7 @@ const SharedPalace: React.VFC<PalaceProps> = ({num, palace, deletePalace}) => {
     setShareIsOpen(true)
   }
   function handleShare() {
-    axios.put(config() + '/api/palaces/share/' + palace.id, {share: false}, {withCredentials: true})
+    putSharePalace(palace.id, false)
     deletePalace(num)
     setShareIsOpen(false)
     setIsOpen(false)
@@ -43,7 +42,7 @@ const SharedPalace: React.VFC<PalaceProps> = ({num, palace, deletePalace}) => {
       createdBy: palace.createdBy,
       originalID: palace.id,
     }
-    axios.post(config() + '/api/palaces/me', data, {withCredentials: true})
+    postPalace(data)
     setIsOpen(false)
   }
   function Extension() {

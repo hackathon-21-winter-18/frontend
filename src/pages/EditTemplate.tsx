@@ -1,17 +1,14 @@
 import * as React from 'react'
 import styles from './Edit.module.css'
 import {Link} from 'react-router-dom'
-import {EditAddedWord} from '../components/EditAddedWord'
-import PushPinIcon from '@mui/icons-material/PushPin'
 import {Pin} from '../types'
-import {useParams, useLocation, useNavigate} from 'react-router'
+import {useLocation} from 'react-router'
 import useAuth from '../components/UserProvider'
 import {useMousePosition} from '../hooks/useMousePosition'
 import {CustomCursor} from '../components/CustomCursor'
-import {Badge, Box, ClickAwayListener, IconButton, Portal, SxProps} from '@mui/material'
+import {Badge, ClickAwayListener, IconButton, SxProps} from '@mui/material'
 import {useHover} from '../hooks/useHover'
 import pinIcon from '../assets/pin.svg'
-import VisibilityIcon from '@mui/icons-material/Visibility'
 import VisibilityOffIcon from '@mui/icons-material/VisibilityOff'
 import Dialog from '@mui/material/Dialog'
 import CheckCircleIcon from '@mui/icons-material/CheckCircle'
@@ -31,14 +28,10 @@ export const EditTemplate: React.VFC<EditProps> = ({imageUrl, isPlayground = fal
   const [pinOpen, setPinOpen] = React.useState<Pin | null>(null)
   const [pins, setPins] = React.useState<Pin[]>([])
   const [mode, setMode] = React.useState<Mode>('edit')
-  const image = useParams() //あとで使うかも
   const location = useLocation()
   const [templateName, setTemplateName] = React.useState('')
   const {user} = useAuth()
-  const [templateId, setTemplateId] = React.useState('')
   const [completeIsOpen, setCompleteIsOpen] = React.useState(false)
-  const navigate = useNavigate()
-  const [templateOption, setTemplateOption] = React.useState(false)
   const [shareOption, setShareOption] = React.useState(false)
 
   const [hoverRef, isHovered] = useHover<HTMLImageElement>()

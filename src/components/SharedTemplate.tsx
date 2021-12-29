@@ -2,21 +2,20 @@ import {useState} from 'react'
 import {useNavigate} from 'react-router-dom'
 import styles from './SharedTemplate.module.css'
 import {SharedTemplateType} from '../types'
-import axios from 'axios'
 import MoreVertIcon from '@mui/icons-material/MoreVert'
 import CommentIcon from '@mui/icons-material/Comment'
 import Dialog from '@mui/material/Dialog'
 import useAuth from '../components/UserProvider'
-import {config} from '../config'
 import {DialogActions, DialogTitle} from '@mui/material'
+import {putShareTemplate, postTemplate} from '../api/template'
 
 interface TemplateProps {
   num: number
   template: SharedTemplateType
-  deleteTemplate: (number: number) => void
+  handleDeleteTemplate: (number: number) => void
 }
 
-const SharedTemplate: React.VFC<TemplateProps> = ({num, template, deleteTemplate}) => {
+const SharedTemplate: React.VFC<TemplateProps> = ({num, template, handleDeleteTemplate}) => {
   const [isOpen, setIsOpen] = useState(false)
   const [saveIsOpen, setSaveIsOpen] = useState(false)
   const navigate = useNavigate()
@@ -30,8 +29,8 @@ const SharedTemplate: React.VFC<TemplateProps> = ({num, template, deleteTemplate
     setShareIsOpen(true)
   }
   function handleShare() {
-    axios.put(config() + '/api/palaces/share/' + template.id, {share: false}, {withCredentials: true})
-    deleteTemplate(num)
+    putShareTemplate(template.id, false)
+    handleDeleteTemplate(num)
     setShareIsOpen(false)
     setIsOpen(false)
   }
@@ -43,7 +42,7 @@ const SharedTemplate: React.VFC<TemplateProps> = ({num, template, deleteTemplate
       createdBy: template.createdBy,
       originalID: template.id,
     }
-    axios.post(config() + '/api/templates/me', data, {withCredentials: true})
+    postTemplate(data)
     setIsOpen(false)
   }
   function Extension() {

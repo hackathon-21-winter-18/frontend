@@ -1,27 +1,18 @@
 import * as React from 'react'
 import styles from './Edit.module.css'
 import {Link} from 'react-router-dom'
-import {EditAddedWord} from '../components/EditAddedWord'
-import PushPinIcon from '@mui/icons-material/PushPin'
-import {Pin} from '../types'
-import {useParams, useLocation, useNavigate} from 'react-router'
-import AddNewWordDialog from '../components/AddNewWordDialog'
-import useAuth from '../components/UserProvider'
+import {useParams, useLocation} from 'react-router'
 import {useMousePosition} from '../hooks/useMousePosition'
-import {CustomCursor} from '../components/CustomCursor'
 import {Badge, Box, ClickAwayListener, IconButton, Portal, SxProps} from '@mui/material'
 import {useHover} from '../hooks/useHover'
-import {EmbededPins, PinContent} from '../types'
+import {EmbededPins} from '../types'
 import pinIcon from '../assets/pin.svg'
 import {FixWordDialog} from '../components/FixWordDialog'
-import VisibilityIcon from '@mui/icons-material/Visibility'
-import VisibilityOffIcon from '@mui/icons-material/VisibilityOff'
 import Dialog from '@mui/material/Dialog'
 import CheckCircleIcon from '@mui/icons-material/CheckCircle'
 import DialogActions from '@mui/material/DialogActions'
 import DialogTitle from '@mui/material/DialogTitle'
-import {postTemplate, putShareTemplate} from '../api/template'
-import {postPalace, putSharePalace, getPalace, getSharedPalace} from '../api/palace'
+import {getPalace, getSharedPalace} from '../api/palace'
 
 const Memorize: React.VFC = () => {
   const [open, setOpen] = React.useState<number | boolean>(false)
@@ -29,18 +20,9 @@ const Memorize: React.VFC = () => {
   const [pins, setPins] = React.useState<EmbededPins[]>([])
   const params = useParams()
   const location = useLocation()
-  const [palaceName, setPalaceName] = React.useState('')
-  const {user} = useAuth()
-  const [palaceId, setPalaceId] = React.useState('')
   const [completeIsOpen, setCompleteIsOpen] = React.useState(false)
-  const navigate = useNavigate()
-  const [shareOption, setShareOption] = React.useState(false)
-  const [templateOption, setTemplateOption] = React.useState(false)
-  const [templateShareOption, setTemplateShareOption] = React.useState(false)
-  const [templateId, setTemplateId] = React.useState('')
   const [palaceImage, setPalaceImage] = React.useState('')
   const [flags, setFlags] = React.useState(new Array<boolean>())
-
   const [hoverRef, isHovered] = useHover<HTMLImageElement>()
   const {x, y} = useMousePosition()
 
@@ -58,12 +40,11 @@ const Memorize: React.VFC = () => {
     const palaceID = params.id
     if (location.state.shared) {
       palaceID &&
-        getSharedPalace().then((data) => {
+        getSharedPalace((res) => {
+          let data = res.data
           for (let i = 0; i < data.length; i++) {
             if (data[i].id === palaceID) {
-              setPalaceName(data[i].name)
               setPins(data[i].embededPins)
-              setPalaceId(data[i].id)
               setPalaceImage(data[i].image)
               let preFlags = Array(data[i].embededPins.length)
               setFlags(preFlags.fill(false))
@@ -72,12 +53,11 @@ const Memorize: React.VFC = () => {
         })
     } else {
       palaceID &&
-        getPalace().then((data) => {
+        getPalace((res) => {
+          let data = res.data
           for (let i = 0; i < data.length; i++) {
             if (data[i].id === palaceID) {
-              setPalaceName(data[i].name)
               setPins(data[i].embededPins)
-              setPalaceId(data[i].id)
               setPalaceImage(data[i].image)
               let preFlags = Array(data[i].embededPins.length)
               setFlags(preFlags.fill(false))
@@ -108,31 +88,6 @@ const Memorize: React.VFC = () => {
     [open, pinOpen]
   )
 
-  const pinStyle = React.useCallback<() => React.CSSProperties>(
-    () => ({
-      position: 'fixed',
-      top: y,
-      left: x,
-      transform: `translate(-50%, -100%)`,
-    }),
-    [open]
-  )
-
-  const putPin = React.useCallback(
-    (pin: PinContent) => {
-      const data = {
-        word: pin.word,
-        place: pin.place,
-        condition: pin.condition,
-        number: pins.length,
-        x: (x - hoverRef.current.x) / hoverRef.current.width,
-        y: (y - hoverRef.current.y) / hoverRef.current.height,
-      }
-      setPins([...pins, data])
-      setOpen(false)
-    },
-    [open]
-  )
   const handlePinClick = React.useCallback((pin: EmbededPins) => {
     setPinOpen(pin)
   }, [])
@@ -146,7 +101,6 @@ const Memorize: React.VFC = () => {
 
   React.useEffect(() => {
     setPins([])
-    setPalaceName('')
   }, [location])
 
   return (

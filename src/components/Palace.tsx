@@ -2,21 +2,20 @@ import {useState} from 'react'
 import {Link, useNavigate} from 'react-router-dom'
 import styles from './Palace.module.css'
 import {PalaceType} from '../types'
-import axios from 'axios'
 import MoreVertIcon from '@mui/icons-material/MoreVert'
 import CommentIcon from '@mui/icons-material/Comment'
 import Dialog from '@mui/material/Dialog'
 import DialogActions from '@mui/material/DialogActions'
 import DialogTitle from '@mui/material/DialogTitle'
-import {config} from '../config'
+import {deletePalace, putSharePalace} from '../api/palace'
 
 interface PalaceProps {
   num: number
   palace: PalaceType
-  deletePalace: (number: number) => void
+  handleDeletePalace: (number: number) => void
 }
 
-const Palace: React.VFC<PalaceProps> = ({num, palace, deletePalace}) => {
+const Palace: React.VFC<PalaceProps> = ({num, palace, handleDeletePalace}) => {
   const [isOpen, setIsOpen] = useState(false)
   const [deleteIsOpen, setDeleteIsOpen] = useState(false)
   const [shareIsOpen, setShareIsOpen] = useState(false)
@@ -30,11 +29,11 @@ const Palace: React.VFC<PalaceProps> = ({num, palace, deletePalace}) => {
     setShareIsOpen(true)
   }
   function handleDelete() {
-    axios.delete(config() + '/api/palaces/' + palace.id, {withCredentials: true})
-    deletePalace(num)
+    deletePalace(palace.id)
+    handleDeletePalace(num)
   }
   function handleShare() {
-    axios.put(config() + '/api/palaces/share/' + palace.id, {share: !palace.share}, {withCredentials: true})
+    putSharePalace(palace.id, !palace.share)
     setShare(!share)
     setShareIsOpen(false)
     setIsOpen(false)
