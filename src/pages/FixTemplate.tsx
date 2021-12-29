@@ -82,7 +82,7 @@ export const FixTemplate: React.VFC = () => {
       const data = {
         name: templateName,
         image: willSendImage,
-        embededPins: pins,
+        pins: pins,
       }
       console.log(data)
 
@@ -179,17 +179,19 @@ export const FixTemplate: React.VFC = () => {
           onChange={(e) => setTemplateName(e.target.value)}
         />
       </div>
-      <form>
-        <label>
-          <input type="checkbox" onClick={() => setShareOption(!shareOption)} id="sharedCheckBox" />
-          テンプレートを共有
-        </label>
-        <br />
-        <button onClick={handleComplete} type="submit" className={styles.completeButton}>
-          <CheckCircleIcon />
-          <span>テンプレートを作成する</span>
-        </button>
-      </form>
+      <div className={styles.form}>
+        <form>
+          <label>
+            <input type="checkbox" onClick={() => setShareOption(!shareOption)} id="sharedCheckBox" />
+            テンプレートを共有
+          </label>
+          <br />
+          <button onClick={handleComplete} type="submit" className={styles.completeButton}>
+            <CheckCircleIcon />
+            <span>テンプレートを作成する</span>
+          </button>
+        </form>
+      </div>
       <Dialog
         open={completeIsOpen && !(pins.length <= 0 || templateName === '')}
         PaperProps={{style: {width: '381px', height: '309px', borderRadius: '10px'}}}>

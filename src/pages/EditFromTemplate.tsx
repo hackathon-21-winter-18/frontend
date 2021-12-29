@@ -60,7 +60,21 @@ export const EditFromTemplate: React.VFC<EditProps> = ({imageUrl, isPlayground =
           for (let i = 0; i < data.length; i++) {
             if (data[i].id === templateID) {
               setTemplateName(data[i].name)
-              setPins(data[i].pins)
+              console.log(data[i].pins)
+              for (let j = 0; j < data[i].pins.length; j++) {
+                setPins(
+                  pins.concat([
+                    {
+                      number: data[i].pins[j].number,
+                      x: data[i].pins[j].x,
+                      y: data[i].pins[j].y,
+                      word: '',
+                      place: '',
+                      condition: '',
+                    },
+                  ])
+                )
+              }
             }
           }
         })
@@ -70,7 +84,22 @@ export const EditFromTemplate: React.VFC<EditProps> = ({imageUrl, isPlayground =
           for (let i = 0; i < data.length; i++) {
             if (data[i].id === templateID) {
               setTemplateName(data[i].name)
-              setPins(data[i].pins)
+              console.log(data[i].pins)
+              for (let j = 0; j < data[i].pins.length; j++) {
+                console.log(data[i].pins[j])
+                setPins(
+                  pins.concat([
+                    {
+                      number: data[i].pins[j].number,
+                      x: data[i].pins[j].x,
+                      y: data[i].pins[j].y,
+                      word: '',
+                      place: '',
+                      condition: '',
+                    },
+                  ])
+                )
+              }
             }
           }
         })
@@ -85,14 +114,14 @@ export const EditFromTemplate: React.VFC<EditProps> = ({imageUrl, isPlayground =
         data = {
           name: palaceName,
           image: location.state.image.substr(23),
-          pins: pins,
+          embededPins: pins,
           createdBy: user.id,
         }
       } else {
         data = {
           name: palaceName,
           image: location.state.image.substr(22),
-          pins: pins,
+          embededPins: pins,
           createdBy: user.id,
         }
       }
@@ -232,6 +261,7 @@ export const EditFromTemplate: React.VFC<EditProps> = ({imageUrl, isPlayground =
           onChange={(e) => setPalaceName(e.target.value)}
         />
       </div>
+      <button onClick={() => console.log(pins)}>ボタン</button>
       <div className={styles.form}>
         <form>
           <label>
