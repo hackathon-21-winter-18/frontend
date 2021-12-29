@@ -30,7 +30,7 @@ const Template: React.VFC<TemplateProps> = ({num, template, deleteTemplate}) => 
     setShareIsOpen(true)
   }
   function handleDelete() {
-    axios.delete(config() + '/api/templates/share/' + template.id, {withCredentials: true})
+    axios.delete(config() + '/api/templates/' + template.id, {withCredentials: true})
     deleteTemplate(num)
   }
   function handleShare() {
@@ -74,7 +74,7 @@ const Template: React.VFC<TemplateProps> = ({num, template, deleteTemplate}) => 
         {template.pins.length + ' pins'}
       </div>
       <div>
-        <span>{template.savedCount}回保存されました</span>
+        <span>保存者数:{template.savedCount}</span>
       </div>
       {share ? <span>共有済</span> : <span>未共有</span>}
 
@@ -85,7 +85,7 @@ const Template: React.VFC<TemplateProps> = ({num, template, deleteTemplate}) => 
         <DialogActions>
           <button
             onClick={() => navigate('/fixTemplate/' + template.id, {state: {image: Extension()}})}
-            style={{textDecoration: 'none', color: '#7a8498'}}>
+            className={styles.button2}>
             テンプレートの編集
           </button>
         </DialogActions>

@@ -74,7 +74,7 @@ const Palace: React.VFC<PalaceProps> = ({num, palace, deletePalace}) => {
         {palace.embededPins.length + ' Words'}
       </div>
       <div>
-        <span>{palace.savedCount}回保存されました</span>
+        <span>保存者数:{palace.savedCount}</span>
       </div>
       {share ? <span>共有済</span> : <span>未共有</span>}
 
