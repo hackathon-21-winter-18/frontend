@@ -34,17 +34,14 @@ const Sidebar: React.VFC = () => {
         <BalconyIcon className={styles.buttonIcon} />
         My Template
       </Link>
-      <Link to="/sharedPalaces" className={pathname === '/sharedPalaces' ? styles.buttonHere : styles.buttonNotHere}>
-        <TravelExploreIcon className={styles.buttonIcon} />
-        Shared Palaces
-      </Link>
       <Link
-        to="/sharedTemplates"
-        className={pathname === '/sharedTemplates' ? styles.buttonHere : styles.buttonNotHere}>
+        to="/sharedPalaces"
+        className={
+          pathname === '/sharedPalaces' || pathname === '/sharedTemplates' ? styles.buttonHere : styles.buttonNotHere
+        }>
         <TravelExploreIcon className={styles.buttonIcon} />
-        Shared Templates
+        Explorer
       </Link>
-      {/*TODO:Explorerとしてまとめてそのページにタブを作る*/}
       <Link to="/playground" className={pathname === '/playground' ? styles.buttonHere : styles.buttonNotHere}>
         <AttractionsIcon className={styles.buttonIcon} />
         Playground
