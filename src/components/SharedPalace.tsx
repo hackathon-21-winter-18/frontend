@@ -81,13 +81,13 @@ const SharedPalace: React.VFC<PalaceProps> = ({num, palace, deletePalace}) => {
         {palace.embededPins.length + ' Words'}
       </div>
       <div>
-        <span>作成者:{palace.createdBy}</span>
+        <span>作成者:{palace.createrName}</span>
       </div>
       <div>
         <span>保存者数:{palace.savedCount}</span>
       </div>
 
-      <Dialog open={isOpen && !(palace.createdBy === user.name)} onClose={handleDialogClose}>
+      <Dialog open={isOpen && !(palace.createrName === user.name)} onClose={handleDialogClose}>
         <DialogActions>
           <button onClick={handleSaveDialog} className={styles.button1}>
             宮殿の保存
@@ -105,7 +105,7 @@ const SharedPalace: React.VFC<PalaceProps> = ({num, palace, deletePalace}) => {
           </Dialog>
         </DialogActions>
       </Dialog>
-      <Dialog open={isOpen && palace.createdBy === user.name} onClose={handleDialogClose}>
+      <Dialog open={isOpen && palace.createrName === user.name} onClose={handleDialogClose}>
         <DialogActions>
           <button onClick={handleShareDialog} className={styles.button2}>
             宮殿の共有設定

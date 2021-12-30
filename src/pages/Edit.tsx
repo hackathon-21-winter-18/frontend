@@ -123,7 +123,7 @@ export const Edit: React.VFC<EditProps> = ({imageUrl, isPlayground = false}) => 
       const data = {
         word: pin.word,
         place: pin.place,
-        condition: pin.condition,
+        situation: pin.situation,
         number: pins.length,
         x: (x - hoverRef.current.x) / hoverRef.current.width,
         y: (y - hoverRef.current.y) / hoverRef.current.height,

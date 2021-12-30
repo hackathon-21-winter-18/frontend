@@ -59,7 +59,7 @@ export const EditFromTemplate: React.VFC<EditProps> = ({imageUrl, isPlayground =
                       y: data[i].pins[j].y,
                       word: '',
                       place: '',
-                      condition: '',
+                      situation: '',
                     },
                   ])
                 )
@@ -83,7 +83,7 @@ export const EditFromTemplate: React.VFC<EditProps> = ({imageUrl, isPlayground =
                       y: data[i].pins[j].y,
                       word: '',
                       place: '',
-                      condition: '',
+                      situation: '',
                     },
                   ])
                 )
@@ -157,7 +157,7 @@ export const EditFromTemplate: React.VFC<EditProps> = ({imageUrl, isPlayground =
       const data = {
         word: pin.word,
         place: pin.place,
-        condition: pin.condition,
+        situation: pin.situation,
         number: pins.length,
         x: (x - hoverRef.current.x) / hoverRef.current.width,
         y: (y - hoverRef.current.y) / hoverRef.current.height,

@@ -13,13 +13,13 @@ interface AddNewWordDialogProps {
 const AddNewWordDialog: React.VFC<AddNewWordDialogProps> = ({open, putPin}) => {
   const [word, setWord] = useState('')
   const [place, setPlace] = useState('')
-  const [condition, setCondition] = useState('')
+  const [situation, setSituation] = useState('')
 
   const handlePutPin = () => {
     putPin({
       word,
       place,
-      condition,
+      situation,
     })
   }
 
@@ -43,8 +43,8 @@ const AddNewWordDialog: React.VFC<AddNewWordDialogProps> = ({open, putPin}) => {
           <input
             type="text"
             placeholder="笹食ってる"
-            onChange={(e) => setCondition(e.target.value)}
-            value={condition}
+            onChange={(e) => setSituation(e.target.value)}
+            value={situation}
           />
           <IconButton color="warning">
             <ShuffleIcon />

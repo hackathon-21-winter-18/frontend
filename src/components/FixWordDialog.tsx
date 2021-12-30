@@ -26,7 +26,7 @@ export const FixWordDialog: React.VFC<FixWordDialogProps> = ({open, deletePin, i
           が
           <HidableWord text={open.place} isVisible={isVisible} />
           で
-          <HidableWord text={open.condition} isVisible={isVisible} />
+          <HidableWord text={open.situation} isVisible={isVisible} />
           {isVisible && (
             <IconButton onClick={() => deletePin(open)}>
               <DeleteIcon />

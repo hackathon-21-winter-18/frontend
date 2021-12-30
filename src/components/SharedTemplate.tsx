@@ -84,10 +84,10 @@ const SharedTemplate: React.VFC<TemplateProps> = ({num, template, handleDeleteTe
         <span>保存者数:{template.savedCount}</span>
       </div>
       <div>
-        <span>作成者:{template.createdBy}</span>
+        <span>作成者:{template.createrName}</span>
       </div>
 
-      <Dialog open={isOpen && !(template.createdBy === user.name)} onClose={handleDialogClose}>
+      <Dialog open={isOpen && !(template.createrName === user.name)} onClose={handleDialogClose}>
         <DialogActions>
           <button onClick={handleSaveDialog} className={styles.button1}>
             テンプレートの保存
@@ -105,7 +105,7 @@ const SharedTemplate: React.VFC<TemplateProps> = ({num, template, handleDeleteTe
           </Dialog>
         </DialogActions>
       </Dialog>
-      <Dialog open={isOpen && template.createdBy === user.name} onClose={handleDialogClose}>
+      <Dialog open={isOpen && template.createrName === user.name} onClose={handleDialogClose}>
         <DialogActions>
           <button onClick={handleShareDialog} className={styles.button2}>
             テンプレートの共有設定
