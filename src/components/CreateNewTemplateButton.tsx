@@ -1,11 +1,11 @@
 import React from 'react'
-import styles from './CreateNewPalaceButton.module.css'
+import styles from './CreateNewTemplateButton.module.css'
 import img from '../assets/createPalace.png'
 import gif from '../assets/createPalace.gif'
 import NewCreationDialog from './NewCreationDialog'
 import Dialog from '@mui/material/Dialog'
 
-const CreateNewPalaceButton: React.VFC = () => {
+const CreateNewTemplateButton: React.VFC = () => {
   const [open, setOpen] = React.useState(false)
   const handleClickOpen = () => {
     setOpen(true)
@@ -15,16 +15,16 @@ const CreateNewPalaceButton: React.VFC = () => {
   }
   return (
     <>
-      <button className={styles.createNewPalaceButton} onClick={handleClickOpen}>
+      <button className={styles.createNewTemplateButton} onClick={handleClickOpen}>
         <img src={gif} alt="" className={styles.gif} />
         <img src={img} alt="" className={styles.img} />
-        宮殿を作成する
+        テンプレートを作成する
       </button>
       <Dialog open={open} onClose={handleClose} maxWidth={false}>
-        <NewCreationDialog onClose={handleClose} modeProp="createPalace" />
+        <NewCreationDialog onClose={handleClose} modeProp="createTemplate" />
       </Dialog>
     </>
   )
 }
 
-export default CreateNewPalaceButton
+export default CreateNewTemplateButton

@@ -1,41 +1,48 @@
 import {useState} from 'react'
 import {useNavigate} from 'react-router-dom'
-import styles from './Template.module.css'
-import {TemplateType} from '../types'
+import styles from './SharedTemplate.module.css'
+import {SharedTemplateType} from '../types'
 import MoreVertIcon from '@mui/icons-material/MoreVert'
 import CommentIcon from '@mui/icons-material/Comment'
 import Dialog from '@mui/material/Dialog'
-import DialogActions from '@mui/material/DialogActions'
-import DialogTitle from '@mui/material/DialogTitle'
-import {deleteTemplate, putShareTemplate} from '../api/template'
+import useAuth from '../components/UserProvider'
+import {DialogActions, DialogTitle} from '@mui/material'
+import {putShareTemplate, postTemplate} from '../api/template'
 
 interface TemplateProps {
   num: number
-  template: TemplateType
+  template: SharedTemplateType
   handleDeleteTemplate: (number: number) => void
 }
 
-const Template: React.VFC<TemplateProps> = ({num, template, handleDeleteTemplate}) => {
+const SharedTemplate: React.VFC<TemplateProps> = ({num, template, handleDeleteTemplate}) => {
   const [isOpen, setIsOpen] = useState(false)
-  const [deleteIsOpen, setDeleteIsOpen] = useState(false)
-  const [shareIsOpen, setShareIsOpen] = useState(false)
-  const [share, setShare] = useState(template.share)
+  const [saveIsOpen, setSaveIsOpen] = useState(false)
   const navigate = useNavigate()
+  const {user} = useAuth()
+  const [shareIsOpen, setShareIsOpen] = useState(false)
 
-  function handleDeleteDialog() {
-    setDeleteIsOpen(true)
+  function handleSaveDialog() {
+    setSaveIsOpen(true)
   }
   function handleShareDialog() {
     setShareIsOpen(true)
   }
-  function handleDelete() {
-    deleteTemplate(template.id)
-    handleDeleteTemplate(num)
-  }
   function handleShare() {
-    putShareTemplate(template.id, !template.share)
-    setShare(!share)
+    putShareTemplate(template.id, false)
+    handleDeleteTemplate(num)
     setShareIsOpen(false)
+    setIsOpen(false)
+  }
+  function handleSave() {
+    const data = {
+      name: template.name,
+      image: template.image,
+      pins: template.pins,
+      createdBy: template.createdBy,
+      originalID: template.id,
+    }
+    postTemplate(data)
     setIsOpen(false)
   }
   function Extension() {
@@ -52,9 +59,9 @@ const Template: React.VFC<TemplateProps> = ({num, template, handleDeleteTemplate
     setIsOpen(false)
   }
   return (
-    <div className={styles.template}>
-      {/* <Link to={'/memorize/' + palace.id} className={styles.image}>
-        <img src={palace.image} alt={palace.name} />
+    <div className={styles.sharedTemplate}>
+      {/* <Link to={'/memorize/' + template.id} className={styles.image}>
+        <img src={template.image} alt={template.name} />
       </Link> */}
       <img
         className={styles.image}
@@ -62,6 +69,7 @@ const Template: React.VFC<TemplateProps> = ({num, template, handleDeleteTemplate
         alt={template.name}
         onClick={() => navigate('/fromTemplate/' + template.id, {state: {image: Extension(), shared: true}})}
       />
+      {/*stateによって変える*/}
       <div className={styles.titleContainer}>
         <h1 className={styles.title}>{template.name}</h1>
         <button className={styles.moreVertIcon} onClick={() => setIsOpen(true)}>
@@ -75,42 +83,35 @@ const Template: React.VFC<TemplateProps> = ({num, template, handleDeleteTemplate
       <div>
         <span>保存者数:{template.savedCount}</span>
       </div>
-      {share ? <span>共有済</span> : <span>未共有</span>}
+      <div>
+        <span>作成者:{template.createrName}</span>
+      </div>
 
-      <Dialog
-        open={isOpen}
-        onClose={handleDialogClose}
-        PaperProps={{style: {width: '381px', height: '309px', borderRadius: '10px'}}}>
+      <Dialog open={isOpen && !(template.createrName === user.name)} onClose={handleDialogClose}>
         <DialogActions>
-          <button
-            onClick={() => navigate('/fixTemplate/' + template.id, {state: {image: Extension()}})}
-            className={styles.button2}>
-            テンプレートの編集
+          <button onClick={handleSaveDialog} className={styles.button1}>
+            テンプレートの保存
           </button>
-        </DialogActions>
-
-        <DialogActions>
-          <button onClick={handleDeleteDialog} className={styles.button2}>
-            テンプレートの削除
-          </button>
-          <Dialog open={deleteIsOpen} onClose={() => setDeleteIsOpen(false)}>
-            <DialogTitle>本当にテンプレートを削除しますか？</DialogTitle>
+          <Dialog open={saveIsOpen} onClose={() => setSaveIsOpen(false)}>
+            <DialogTitle>本当にテンプレートを保存しますか？</DialogTitle>
             <DialogActions>
-              <button onClick={handleDelete} className={styles.button1}>
+              <button onClick={handleSave} className={styles.button1}>
                 はい
               </button>
-              <button onClick={() => setDeleteIsOpen(false)} className={styles.button2}>
+              <button onClick={() => setIsOpen(false)} className={styles.button2}>
                 いいえ
               </button>
             </DialogActions>
           </Dialog>
         </DialogActions>
+      </Dialog>
+      <Dialog open={isOpen && template.createrName === user.name} onClose={handleDialogClose}>
         <DialogActions>
           <button onClick={handleShareDialog} className={styles.button2}>
             テンプレートの共有設定
           </button>
           <Dialog open={shareIsOpen} onClose={() => setShareIsOpen(false)}>
-            <DialogTitle>{share ? 'テンプレートの共有をやめますか？' : 'テンプレートを共有しますか？'}</DialogTitle>
+            <DialogTitle>テンプレートの共有をやめますか？</DialogTitle>
             <DialogActions>
               <button onClick={handleShare} className={styles.button1}>
                 はい
@@ -126,4 +127,4 @@ const Template: React.VFC<TemplateProps> = ({num, template, handleDeleteTemplate
   )
 }
 
-export default Template
+export default SharedTemplate
