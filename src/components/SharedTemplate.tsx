@@ -81,10 +81,10 @@ const SharedTemplate: React.VFC<TemplateProps> = ({num, template, handleDeleteTe
         {template.pins.length + ' pins'}
       </div>
       <div>
-        <span>保存者数:{template.savedCount}</span>
+        <span>作成者:{template.createrName}</span>
       </div>
       <div>
-        <span>作成者:{template.createrName}</span>
+        <span>保存者数:{template.savedCount}</span>
       </div>
 
       <Dialog open={isOpen && !(template.createrName === user.name)} onClose={handleDialogClose}>
