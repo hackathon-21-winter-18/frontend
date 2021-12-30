@@ -94,8 +94,8 @@ export const FixTemplate: React.VFC = () => {
   const putPin = React.useCallback(() => {
     const data = {
       number: pins.length,
-      x: (x - hoverRef.current.x) / hoverRef.current.width,
-      y: (y - hoverRef.current.y) / hoverRef.current.height,
+      x: x,
+      y: y,
     }
     setPins([...pins, data])
     setOpen(false)
@@ -125,8 +125,8 @@ export const FixTemplate: React.VFC = () => {
               alt=""
               style={{
                 position: 'absolute',
-                top: pin.y * hoverRef.current.height + 'px',
-                left: pin.x * hoverRef.current.width + 'px',
+                top: pin.y - 68 + 'px',
+                left: pin.x + 'px',
                 transform: `translate(-50%, -100%)`,
               }}
               onClick={() => {

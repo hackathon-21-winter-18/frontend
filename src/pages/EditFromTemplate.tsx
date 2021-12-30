@@ -159,8 +159,8 @@ export const EditFromTemplate: React.VFC<EditProps> = ({imageUrl, isPlayground =
         place: pin.place,
         situation: pin.situation,
         number: pins.length,
-        x: (x - hoverRef.current.x) / hoverRef.current.width,
-        y: (y - hoverRef.current.y) / hoverRef.current.height,
+        x: x,
+        y: y,
       }
       setPins([...pins, data])
       setOpen(false)
@@ -191,8 +191,8 @@ export const EditFromTemplate: React.VFC<EditProps> = ({imageUrl, isPlayground =
               alt=""
               style={{
                 position: 'absolute',
-                top: pin.y * hoverRef.current.height + 'px',
-                left: pin.x * hoverRef.current.width + 'px',
+                top: pin.y - 68 + 'px',
+                left: pin.x + 'px',
                 transform: `translate(-50%, -100%)`,
               }}
               onClick={() => {

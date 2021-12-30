@@ -115,8 +115,8 @@ const Memorize: React.VFC = () => {
               alt=""
               style={{
                 position: 'absolute',
-                top: pin.y * hoverRef.current.height + 'px',
-                left: pin.x * hoverRef.current.width + 'px',
+                top: pin.y - 68 + 'px',
+                left: pin.x + 'px',
                 transform: `translate(-50%, -100%)`,
               }}
               onClick={() => {
