@@ -29,20 +29,20 @@ interface EditProps {
   yGap?: number
 }
 
-export const Edit: React.VFC<EditProps> = ({imageUrl, isPlayground = false, xGap = 0,yGap=0}) => {
+export const Edit: React.VFC<EditProps> = ({imageUrl, isPlayground = false, xGap = 0, yGap = 0}) => {
   const [open, setOpen] = React.useState<number | boolean>(false)
   const [pinOpen, setPinOpen] = React.useState<EmbededPins | null>(null)
   const [pins, setPins] = React.useState<EmbededPins[]>([])
   const [mode, setMode] = React.useState<Mode>('edit')
-  const location = useLocation()
   const [palaceName, setPalaceName] = React.useState('')
-  const {user} = useAuth()
   const [palaceId, setPalaceId] = React.useState('')
   const [completeIsOpen, setCompleteIsOpen] = React.useState(false)
-  const navigate = useNavigate()
   const [shareOption, setShareOption] = React.useState(false)
   const [templateOption, setTemplateOption] = React.useState(false)
   const [templateShareOption, setTemplateShareOption] = React.useState(false)
+  const {user} = useAuth()
+  const location = useLocation()
+  const navigate = useNavigate()
 
   const [hoverRef, isHovered] = useHover<HTMLImageElement>()
   const {x, y} = useMousePosition()
@@ -164,7 +164,7 @@ export const Edit: React.VFC<EditProps> = ({imageUrl, isPlayground = false, xGap
               alt=""
               style={{
                 position: 'absolute',
-                top: pin.y - 68-yGap + 'px',
+                top: pin.y - 68 - yGap + 'px',
                 left: pin.x - xGap + 'px',
                 transform: `translate(-50%, -100%)`,
               }}
