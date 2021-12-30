@@ -10,7 +10,7 @@ export const postTemplate = (data: any, onSuccess?: (res: any) => any, onError?:
 
 export const getTemplate = async (onSuccess?: (res: any) => any, onError?: () => any) => {
   axios
-    .get(config() + '/api/templates', {withCredentials: true})
+    .get(config() + '/api/templates/me', {withCredentials: true})
     .then(onSuccess)
     .catch(onError)
 }
