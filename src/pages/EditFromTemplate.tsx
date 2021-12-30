@@ -249,7 +249,6 @@ export const EditFromTemplate: React.VFC<EditProps> = ({imageUrl, isPlayground =
           onChange={(e) => setPalaceName(e.target.value)}
         />
       </div>
-      <button onClick={() => console.log(pins)}>ボタン</button>
       <div className={styles.form}>
         <form>
           <label>
