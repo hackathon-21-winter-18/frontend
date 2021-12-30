@@ -21,7 +21,7 @@ const CreateNewPalaceButton: React.VFC = () => {
         宮殿を作成する
       </button>
       <Dialog open={open} onClose={handleClose} maxWidth={false}>
-        <NewCreationDialog onClose={handleClose} />
+        <NewCreationDialog onClose={handleClose} modeProp="createPalace" />
       </Dialog>
     </>
   )

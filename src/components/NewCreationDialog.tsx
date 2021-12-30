@@ -10,10 +10,11 @@ type CreationMode = 'general' | 'createPalace' | 'createTemplate'
 
 interface NewCreationDialogProps {
   onClose: () => void
+  modeProp: CreationMode
 }
 
-const NewCreationDialog: React.VFC<NewCreationDialogProps> = ({onClose}) => {
-  const [mode, setMode] = useState<CreationMode>('general')
+const NewCreationDialog: React.VFC<NewCreationDialogProps> = ({onClose, modeProp}) => {
+  const [mode, setMode] = useState<CreationMode>(modeProp)
   const [image, setImage] = useState<File | null>(null)
   const inputRef = useRef<HTMLInputElement>(null)
   const navigate = useNavigate()
@@ -43,10 +44,10 @@ const NewCreationDialog: React.VFC<NewCreationDialogProps> = ({onClose}) => {
         <div className={styles.dialog}>
           <h1>新規作成</h1>
           <div className={styles.divider} />
-          <p>作成方法を選んでください。既存の宮殿から作成することも可能です。</p>
+          <p>作成するものを選んでください。</p>
           <div className={styles.container}>
             <div className={styles.buttonContainer}>
-              <button onClick={() => setMode('createPalace')}>画像をアップロードして作成</button>
+              <button onClick={() => setMode('createPalace')}>宮殿を作成</button>
               <button onClick={() => setMode('createTemplate')}>テンプレートを作成</button>
             </div>
             <img src="" alt="" />
@@ -60,7 +61,7 @@ const NewCreationDialog: React.VFC<NewCreationDialogProps> = ({onClose}) => {
               {'新規作成 '}
               <ArrowRightIcon />{' '}
             </span>
-            画像をアップロードして作成
+            宮殿を作成
           </h1>
           <div className={styles.divider} />
           <p>家の間取りをアップロードしてあなたの宮殿を作成しましょう</p>
