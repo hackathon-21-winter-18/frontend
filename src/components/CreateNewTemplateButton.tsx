@@ -21,7 +21,7 @@ const CreateNewTemplateButton: React.VFC = () => {
         テンプレートを作成する
       </button>
       <Dialog open={open} onClose={handleClose} maxWidth={false}>
-        <NewCreationDialog onClose={handleClose} modeProp="createTemplate" />
+        <NewCreationDialog modeProp="createTemplate" />
       </Dialog>
     </>
   )

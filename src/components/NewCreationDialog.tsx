@@ -9,11 +9,10 @@ import {getBase64} from '../util/convert'
 type CreationMode = 'general' | 'createPalace' | 'createTemplate'
 
 interface NewCreationDialogProps {
-  onClose: () => void
   modeProp: CreationMode
 }
 
-const NewCreationDialog: React.VFC<NewCreationDialogProps> = ({onClose, modeProp}) => {
+const NewCreationDialog: React.VFC<NewCreationDialogProps> = ({modeProp}) => {
   const [mode, setMode] = useState<CreationMode>(modeProp)
   const [image, setImage] = useState<File | null>(null)
   const inputRef = useRef<HTMLInputElement>(null)
@@ -28,14 +27,12 @@ const NewCreationDialog: React.VFC<NewCreationDialogProps> = ({onClose, modeProp
       const base64 = await getBase64(image)
       navigate('/edit/' + base64.substring(27, 100), {replace: true, state: {image: base64}})
     }
-    onClose()
   }
   const handleUploadTemplateFile = async () => {
     if (image) {
       const base64 = await getBase64(image)
       navigate('/editTemplate/' + base64.substring(27, 100), {replace: true, state: {image: base64}})
     }
-    onClose()
   }
 
   return (

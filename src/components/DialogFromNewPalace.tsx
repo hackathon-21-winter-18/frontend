@@ -19,7 +19,7 @@ export default function FromNewPalace() {
         新規画像から
       </Button>
       <Dialog open={open} onClose={handleClose} maxWidth={false}>
-        <NewCreationDialog onClose={handleClose} modeProp="general" />
+        <NewCreationDialog modeProp="general" />
       </Dialog>
     </span>
   )
