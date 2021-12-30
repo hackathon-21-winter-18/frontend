@@ -7,17 +7,22 @@ import logo from '../assets/logo.svg'
 const Login: React.VFC = () => {
   const [name, setName] = useState('')
   const [password, setPassword] = useState('')
+  const [errStatus, setErrStatus] = useState('')
   const {login} = useAuth()
   const navigate = useNavigate()
 
   const handleLogin = async (e: React.MouseEvent) => {
     e.preventDefault()
     if (name === '' || password === '') return
-
     await login({name, password})
-    setName('')
-    setPassword('')
-    navigate('/')
+      .then(() => {
+        setName('')
+        setPassword('')
+        navigate('/')
+      })
+      .catch((err) => {
+        setErrStatus(err.response.status.toString())
+      })
   }
 
   return (
@@ -36,6 +41,13 @@ const Login: React.VFC = () => {
             onChange={(e) => setPassword(e.target.value)}
             required
           />
+          <span className={styles.errorMessage}>
+            {errStatus === '404'
+              ? 'ユーザー名が間違っています'
+              : errStatus === '403'
+              ? 'パスワードが間違っています'
+              : null}
+          </span>
           <div className={styles.buttonContainer}>
             <Link className={styles.signupButton} to="/signup">
               アカウントを作成する

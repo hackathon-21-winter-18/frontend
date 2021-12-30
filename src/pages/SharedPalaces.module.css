@@ -1,0 +1,70 @@
+.sharedPalaces {
+  flex: 1;
+}
+.sharedPalaces > h1 {
+  font-size: 28px;
+  font-weight: 700;
+  font-family: 'Noto Sans JP';
+  color: #313847;
+}
+.divider {
+  margin: 8px 0;
+  width: 100%;
+  border-top: 1px solid #c6d0e5;
+}
+.palaceContainer {
+  margin: 0;
+  padding: 24px 12px 0;
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  grid-column-gap: 24px;
+
+  list-style: none;
+}
+@media screen and (min-width: 1300px) {
+  .palaceContainer {
+    grid-template-columns: 1fr 1fr 1fr 1fr;
+  }
+}
+@media screen and (min-width: 1500px) {
+  .palaceContainer {
+    grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
+  }
+}
+
+.buttonHere {
+  background-color: #f3f6fb;
+  color: #182031;
+  font-weight: 500;
+  font-size: 18px;
+  font-family: 'Noto Sans JP';
+
+  border-radius: 10px;
+  padding: 8px 12px;
+  margin-bottom: 12px;
+  align-items: center;
+
+  text-decoration: none;
+  transition-duration: 0.2s;
+  cursor: default;
+}
+.buttonNotHere {
+  background-color: white;
+  color: #828894;
+  font-weight: 500;
+  font-size: 18px;
+  font-family: 'Noto Sans JP';
+
+  border-radius: 10px;
+  padding: 8px 12px;
+  margin-bottom: 12px;
+  align-items: center;
+
+  text-decoration: none;
+  transition-duration: 0.2s;
+}
+
+.buttonNotHere:hover {
+  background-color: #eef3ff;
+  color: #313847;
+}

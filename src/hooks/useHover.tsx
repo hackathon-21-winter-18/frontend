@@ -17,7 +17,7 @@ export function useHover<T>(): [MutableRefObject<T>, boolean] {
         }
       }
     },
-    [ref.current] // Recall only if ref changes
-  )
+    [ref.current] // eslint-disable-line react-hooks/exhaustive-deps
+  ) // Recall only if ref changes
   return [ref, value]
 }

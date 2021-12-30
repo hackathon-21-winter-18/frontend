@@ -9,16 +9,17 @@ interface AddNewWordDialogProps {
   open: boolean
   putPin: (pin: PinContent) => void
 }
-export const AddNewWordDialog: React.VFC<AddNewWordDialogProps> = ({open, putPin}) => {
+
+const AddNewWordDialog: React.VFC<AddNewWordDialogProps> = ({open, putPin}) => {
   const [word, setWord] = useState('')
   const [place, setPlace] = useState('')
-  const [condition, setCondition] = useState('')
+  const [situation, setSituation] = useState('')
 
   const handlePutPin = () => {
     putPin({
       word,
       place,
-      condition,
+      situation,
     })
   }
 
@@ -42,8 +43,8 @@ export const AddNewWordDialog: React.VFC<AddNewWordDialogProps> = ({open, putPin
           <input
             type="text"
             placeholder="笹食ってる"
-            onChange={(e) => setCondition(e.target.value)}
-            value={condition}
+            onChange={(e) => setSituation(e.target.value)}
+            value={situation}
           />
           <IconButton color="warning">
             <ShuffleIcon />
@@ -53,3 +54,5 @@ export const AddNewWordDialog: React.VFC<AddNewWordDialogProps> = ({open, putPin
     </Grow>
   )
 }
+
+export default AddNewWordDialog

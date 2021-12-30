@@ -93,3 +93,7 @@
 }
 
 /* TODO @media screen and (width<600px){} */
+
+.errorMessage {
+  color: red;
+}

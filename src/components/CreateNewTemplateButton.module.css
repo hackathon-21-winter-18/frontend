@@ -1,0 +1,33 @@
+.createNewTemplateButton {
+  border: 2px dashed #a1b0d3;
+  border-radius: 10px;
+  background-color: white;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+
+  color: #7a8498;
+  font-size: 18px;
+  font-weight: 500;
+  font-family: 'Noto Sans JP';
+
+  aspect-ratio: 7/6;
+
+  cursor: pointer;
+}
+.img {
+  width: 120px;
+  height: 120px;
+}
+.createNewTemplateButton:hover .gif {
+  display: initial;
+}
+.createNewTemplateButton:hover .img {
+  display: none;
+}
+.gif {
+  width: 120px;
+  height: 120px;
+  display: none;
+}
