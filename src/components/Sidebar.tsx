@@ -28,11 +28,11 @@ const Sidebar: React.VFC = () => {
     <div className={styles.sidebar}>
       <Link to="/" className={pathname === '/' ? styles.buttonHere : styles.buttonNotHere}>
         <HomeIcon className={styles.buttonIcon} />
-        My Palace
+        My Palaces
       </Link>
       <Link to="/template" className={pathname === '/template' ? styles.buttonHere : styles.buttonNotHere}>
         <BalconyIcon className={styles.buttonIcon} />
-        My Template
+        My Templates
       </Link>
       <Link
         to="/sharedPalaces"
