@@ -5,8 +5,8 @@ export function useMousePosition() {
 
   useEffect(() => {
     const mouseMoveHandler = (event: MouseEvent) => {
-      const {offsetX, clientY} = event
-      setMousePosition({x: offsetX, y: clientY})
+      const {clientX, clientY} = event
+      setMousePosition({x: clientX, y: clientY})
     }
     document.addEventListener('mousemove', mouseMoveHandler)
 

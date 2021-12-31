@@ -2,15 +2,6 @@
   position: relative;
   width: 100%;
 }
-.base {
-  position: relative;
-  width: 500px;
-  margin-right: auto;
-  margin-left: auto;
-}
-.cursor {
-  position: absolute;
-}
 .image {
   text-align: center;
 }
