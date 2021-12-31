@@ -7,6 +7,8 @@ import CommentIcon from '@mui/icons-material/Comment'
 import Dialog from '@mui/material/Dialog'
 import DialogActions from '@mui/material/DialogActions'
 import DialogTitle from '@mui/material/DialogTitle'
+import GradeIcon from '@mui/icons-material/Grade'
+import ShareIcon from '@mui/icons-material/Share'
 import {deletePalace, putSharePalace} from '../api/palace'
 
 interface PalaceProps {
@@ -68,14 +70,18 @@ const Palace: React.VFC<PalaceProps> = ({num, palace, handleDeletePalace}) => {
           <MoreVertIcon />
         </button>
       </div>
-      <div className={styles.wordTag}>
-        <CommentIcon className={styles.commentIcon} />
-        {palace.embededPins.length + ' Words'}
+      <div className={styles.tag}>
+        <CommentIcon className={styles.icon} />
+        単語数:{palace.embededPins.length}
       </div>
-      <div>
+      <div className={styles.tag}>
+        <GradeIcon className={styles.icon} />
         <span>保存者数:{palace.savedCount}</span>
       </div>
-      {share ? <span>共有済</span> : <span>未共有</span>}
+      <div className={styles.tag}>
+        <ShareIcon className={styles.icon} />
+        {share ? <span>共有済</span> : <span>未共有</span>}
+      </div>
 
       <Dialog
         open={isOpen}
