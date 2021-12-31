@@ -113,7 +113,6 @@ export const EditFromTemplate: React.VFC<EditProps> = ({imageUrl, isPlayground =
           createdBy: user.id,
         }
       }
-      console.log(data)
       postPalace(data, (res: any) => {
         setPalaceId(res.data.id)
         if (shareOption) {

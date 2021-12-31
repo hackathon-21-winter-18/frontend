@@ -1,16 +1,19 @@
 import * as React from 'react'
 import Button from '@mui/material/Button'
-import axios from 'axios';
-import { FormControlLabel, Input, Radio, RadioGroup } from '@mui/material';
-import { TemplateType } from '../types';
+import axios from 'axios'
+import styles from './Sorting.module.css'
+import {FormControlLabel, Input, Radio, RadioGroup} from '@mui/material'
+import {SharedTemplateType} from '../types'
+import {config} from '../config'
+
 interface SortingPublicTemplatesButtonProp {
-  setTemplates: React.Dispatch<React.SetStateAction<TemplateType[]>>
+  setTemplates: React.Dispatch<React.SetStateAction<SharedTemplateType[]>>
 }
 export const SortingPublicTemplatesButton = (prop: SortingPublicTemplatesButtonProp) => {
-  const { setTemplates } = prop;
-  const [order, setOrder] = React.useState('first_shared_at');
-  const [minPins, setMinPins] = React.useState(0);
-  const [maxPins, setMaxPins] = React.useState(10000);
+  const {setTemplates} = prop
+  const [order, setOrder] = React.useState('first_shared_at')
+  const [minPins, setMinPins] = React.useState(0)
+  const [maxPins, setMaxPins] = React.useState(10000)
   const handleMinPinsChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     setMinPins(Number(e.target.value))
   }
@@ -20,7 +23,9 @@ export const SortingPublicTemplatesButton = (prop: SortingPublicTemplatesButtonP
 
   const handleClick = () => {
     axios
-      .get(`http://localhost:8080/api/templates?sort=${order}&maxpins=${maxPins}&minpins=${minPins}`, { withCredentials: true })
+      .get(config() + `/api/templates?sort=${order}&maxpins=${maxPins}&minpins=${minPins}`, {
+        withCredentials: true,
+      })
       .then((res) => {
         if (res.data.length !== 0) {
           setTemplates(res.data)
@@ -28,7 +33,6 @@ export const SortingPublicTemplatesButton = (prop: SortingPublicTemplatesButtonP
         }
       })
       .catch((error) => console.log(error))
-
   }
   const handleOrderChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     setOrder(e.target.value)
@@ -40,17 +44,18 @@ export const SortingPublicTemplatesButton = (prop: SortingPublicTemplatesButtonP
         defaultValue="first_shared_at"
         value={order}
         name="radio-buttons-group"
-        onChange={handleOrderChange}
-      >
+        onChange={handleOrderChange}>
         <FormControlLabel label="最初の公開日時が新しい順" control={<Radio />} value="first_shared_at" />
         <FormControlLabel label="公開日時が新しい順" control={<Radio />} value="shared_at" />
         <FormControlLabel label="保存したユーザーが多い順" control={<Radio />} value="savedcount" />
       </RadioGroup>
-      <div>min</div>
-      <Input type="number" value={minPins} onChange={handleMinPinsChange} ></Input>
-      <div>max</div>
-      <Input type="number" value={maxPins} onChange={handleMaxPinsChange}></Input>
-      <Button onClick={handleClick}>SORT</Button>
+      <span>ピンの数: </span>
+      <Input type="number" value={minPins} onChange={handleMinPinsChange} className={styles.pinNumberInput}></Input>
+      <span>～</span>
+      <Input type="number" value={maxPins} onChange={handleMaxPinsChange} className={styles.pinNumberInput}></Input>
+      <div className={styles.sortingButton}>
+        <Button onClick={handleClick}>並び替える</Button>
+      </div>
     </div>
   )
 }
