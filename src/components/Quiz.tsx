@@ -1,13 +1,64 @@
 import styles from './Quiz.module.css'
 import ExploreIcon from '@mui/icons-material/Explore'
-import {useState} from 'react'
+import {useState, useEffect, useRef} from 'react'
+import {getPalace} from '../api/palace'
+import {PalaceType} from '../types'
 
+type quizType = {
+  place: string
+  situation: string
+  choice1: string
+  choice2: string
+}
+type judge = 'AC' | 'WA' | 'yet'
+//type randomNumType = 0 | 1
 const Quiz: React.VFC = () => {
-  const [judge, setJudge] = useState(0)
-  //どこからからpalaceリストをとってきてpalaceとその中のピンを選ぶ数字をランダムに選ばせる
-  //次へを押したらまたランダムに数字を選んでクイズを表示
-  //選択肢をクリックしたときにjudgeを1か2に変えるけど正解の選択肢と不正解の選択肢の上下をどうするか、不正解の選択肢をどこから持ってくるを考える
-  //(候補: 上下もランダムに0or1で決めて、不正解の選択肢はまたランダムにもう１つピンを取ってくればよさそう)
+  const [judge, setJudge] = useState<judge>('yet')
+  const [palaces, setPalaces] = useState(new Array<PalaceType>())
+  const [quiz, setQuiz] = useState<quizType>({} as quizType)
+  const [randomNum, setRandomNum] = useState(0)
+
+  function getRandomInt(min: number, max: number) {
+    min = Math.ceil(min)
+    max = Math.floor(max)
+    return Math.floor(Math.random() * (max - min + 1) + min) //The maximum is inclusive and the minimum is inclusive
+  }
+  const ref1 = useRef<HTMLButtonElement>(null!)
+  const ref2 = useRef<HTMLButtonElement>(null!)
+  function RandomSelect(passedPalaces: PalaceType[]) {
+    const palaceNum = getRandomInt(0, passedPalaces.length - 1)
+    const pinNum = getRandomInt(0, passedPalaces[palaceNum].embededPins.length - 1)
+    const pin = palaces[palaceNum].embededPins[pinNum]
+    const palaceDummyNum = getRandomInt(0, passedPalaces.length - 1)
+    const pinDummyNum = getRandomInt(0, passedPalaces[palaceDummyNum].embededPins.length - 1)
+    const pinDummy = passedPalaces[palaceDummyNum].embededPins[pinDummyNum]
+    //const preRandomNum: randomNumType = getRandomInt(0, 1)
+    setRandomNum(getRandomInt(0, 1))
+    setQuiz({
+      place: pin.place,
+      situation: pin.situation,
+      choice1: pin.word,
+      choice2: pinDummy.word,
+    })
+    setJudge('yet')
+  }
+  function handleJudge(value: string) {
+    if (judge === 'yet') {
+      if (value === quiz.choice1) {
+        setJudge('AC')
+      } else {
+        setJudge('WA')
+      }
+    }
+  }
+  useEffect(() => {
+    getPalace((res) => {
+      if (res.data) {
+        setPalaces(res.data)
+        RandomSelect(res.data)
+      }
+    })
+  }, []) // eslint-disable-line react-hooks/exhaustive-deps
   return (
     <div className={styles.quiz}>
       <div className={styles.header}>
@@ -15,21 +66,43 @@ const Quiz: React.VFC = () => {
         <span>Quick Quiz</span>
       </div>
       <div className={styles.question}>
-        <p className={styles.questionText}>placeでsituationのは？</p>
-        <button onClick={() => console.log('1')} className={styles.button1}>
-          選択肢
+        <p className={styles.questionText}>
+          {quiz.place !== '' ? quiz.place : '場所未設定'}で{quiz.situation !== '' ? quiz.situation : '状況未設定'}のは？
+        </p>
+        <button
+          onClick={() => handleJudge(ref1.current.value)}
+          className={styles.button1}
+          ref={ref1}
+          value={quiz.choice1}>
+          {randomNum === 0
+            ? quiz.choice1 !== ''
+              ? quiz.choice1
+              : '単語未設定'
+            : quiz.choice2 !== ''
+            ? quiz.choice2
+            : '単語未設定'}
         </button>
         <br />
         <span className={styles.or}>or</span>
         <br />
-        <button onClick={() => console.log('2')} className={styles.button2}>
-          選択肢
+        <button
+          onClick={() => handleJudge(ref2.current.value)}
+          className={styles.button2}
+          ref={ref2}
+          value={quiz.choice2}>
+          {randomNum === 0
+            ? quiz.choice2 !== ''
+              ? quiz.choice2
+              : '単語未設定'
+            : quiz.choice1 !== ''
+            ? quiz.choice1
+            : '単語未設定'}
         </button>
       </div>
       <div className={styles.answer}>
-        <span>{judge === 2 ? '正解!' : judge === 1 ? '不正解!' : null}</span>
+        <span>{judge === 'AC' ? '正解!' : judge === 'WA' ? '不正解!' : null}</span>
       </div>
-      <button onClick={() => console.log('つぎへ')} className={styles.button3}>
+      <button onClick={() => RandomSelect(palaces)} className={styles.button3}>
         次の問題へ
       </button>
     </div>
