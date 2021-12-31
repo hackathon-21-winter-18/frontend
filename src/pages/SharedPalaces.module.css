@@ -31,3 +31,40 @@
     grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
   }
 }
+
+.buttonHere {
+  background-color: #f3f6fb;
+  color: #182031;
+  font-weight: 500;
+  font-size: 18px;
+  font-family: 'Noto Sans JP';
+
+  border-radius: 10px;
+  padding: 8px 12px;
+  margin-bottom: 12px;
+  align-items: center;
+
+  text-decoration: none;
+  transition-duration: 0.2s;
+  cursor: default;
+}
+.buttonNotHere {
+  background-color: white;
+  color: #828894;
+  font-weight: 500;
+  font-size: 18px;
+  font-family: 'Noto Sans JP';
+
+  border-radius: 10px;
+  padding: 8px 12px;
+  margin-bottom: 12px;
+  align-items: center;
+
+  text-decoration: none;
+  transition-duration: 0.2s;
+}
+
+.buttonNotHere:hover {
+  background-color: #eef3ff;
+  color: #313847;
+}

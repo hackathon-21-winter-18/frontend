@@ -1,35 +1,48 @@
-import {useState, useContext} from 'react'
-import {Link, useNavigate} from 'react-router-dom'
+import {useState} from 'react'
+import {useNavigate} from 'react-router-dom'
 import styles from './SharedTemplate.module.css'
 import {SharedTemplateType} from '../types'
-import axios from 'axios'
 import MoreVertIcon from '@mui/icons-material/MoreVert'
 import CommentIcon from '@mui/icons-material/Comment'
 import Dialog from '@mui/material/Dialog'
-import {UserContext} from '../components/UserProvider'
+import useAuth from '../components/UserProvider'
+import {DialogActions, DialogTitle} from '@mui/material'
+import {putShareTemplate, postTemplate} from '../api/template'
 
 interface TemplateProps {
+  num: number
   template: SharedTemplateType
+  handleDeleteTemplate: (number: number) => void
 }
 
-const SharedTemplate: React.VFC<TemplateProps> = ({template}) => {
+const SharedTemplate: React.VFC<TemplateProps> = ({num, template, handleDeleteTemplate}) => {
   const [isOpen, setIsOpen] = useState(false)
   const [saveIsOpen, setSaveIsOpen] = useState(false)
-  const {user} = useContext(UserContext)
   const navigate = useNavigate()
+  const {user} = useAuth()
+  const [shareIsOpen, setShareIsOpen] = useState(false)
 
   function handleSaveDialog() {
     setSaveIsOpen(true)
   }
+  function handleShareDialog() {
+    setShareIsOpen(true)
+  }
+  function handleShare() {
+    putShareTemplate(template.id, false)
+    handleDeleteTemplate(num)
+    setShareIsOpen(false)
+    setIsOpen(false)
+  }
   function handleSave() {
     const data = {
-      id: template.id,
       name: template.name,
       image: template.image,
       pins: template.pins,
-      createdBy: user.id,
+      createdBy: template.createdBy,
+      originalID: template.id,
     }
-    axios.post('http://localhost:8080/api/templates/me', data, {withCredentials: true})
+    postTemplate(data)
     setIsOpen(false)
   }
   function Extension() {
@@ -68,18 +81,47 @@ const SharedTemplate: React.VFC<TemplateProps> = ({template}) => {
         {template.pins.length + ' pins'}
       </div>
       <div>
-        <span>{template.savedCount}回保存されました</span>
+        <span>作成者:{template.createrName}</span>
       </div>
       <div>
-        <span>Creater:{template.createrName}</span>
+        <span>保存者数:{template.savedCount}</span>
       </div>
-      <Dialog open={isOpen} onClose={handleDialogClose}>
-        <button onClick={handleSaveDialog}>テンプレートの保存</button>
-        <Dialog open={saveIsOpen} onClose={() => setSaveIsOpen(false)}>
-          本当にテンプレートを保存しますか？
-          <button onClick={handleSave}>はい</button>
-          <button onClick={() => setIsOpen(false)}>いいえ</button>
-        </Dialog>
+
+      <Dialog open={isOpen && !(template.createrName === user.name)} onClose={handleDialogClose}>
+        <DialogActions>
+          <button onClick={handleSaveDialog} className={styles.button1}>
+            テンプレートの保存
+          </button>
+          <Dialog open={saveIsOpen} onClose={() => setSaveIsOpen(false)}>
+            <DialogTitle>本当にテンプレートを保存しますか？</DialogTitle>
+            <DialogActions>
+              <button onClick={handleSave} className={styles.button1}>
+                はい
+              </button>
+              <button onClick={() => setIsOpen(false)} className={styles.button2}>
+                いいえ
+              </button>
+            </DialogActions>
+          </Dialog>
+        </DialogActions>
+      </Dialog>
+      <Dialog open={isOpen && template.createrName === user.name} onClose={handleDialogClose}>
+        <DialogActions>
+          <button onClick={handleShareDialog} className={styles.button2}>
+            テンプレートの共有設定
+          </button>
+          <Dialog open={shareIsOpen} onClose={() => setShareIsOpen(false)}>
+            <DialogTitle>テンプレートの共有をやめますか？</DialogTitle>
+            <DialogActions>
+              <button onClick={handleShare} className={styles.button1}>
+                はい
+              </button>
+              <button onClick={() => setShareIsOpen(false)} className={styles.button2}>
+                いいえ
+              </button>
+            </DialogActions>
+          </Dialog>
+        </DialogActions>
       </Dialog>
     </div>
   )

@@ -8,6 +8,7 @@ import PersonPinIcon from '@mui/icons-material/PersonPin'
 import LogoutIcon from '@mui/icons-material/Logout'
 import MoreVertIcon from '@mui/icons-material/MoreVert'
 import AttractionsIcon from '@mui/icons-material/Attractions'
+import TravelExploreIcon from '@mui/icons-material/TravelExplore'
 import useAuth from './UserProvider'
 import {Menu} from '@mui/material'
 
@@ -33,10 +34,16 @@ const Sidebar: React.VFC = () => {
         <BalconyIcon className={styles.buttonIcon} />
         My Template
       </Link>
-      <Link to="/sharedPalaces">SharedPalace</Link>
-      <Link to="/sharedTemplates">SharedTemplates</Link>
+      <Link
+        to="/sharedPalaces"
+        className={
+          pathname === '/sharedPalaces' || pathname === '/sharedTemplates' ? styles.buttonHere : styles.buttonNotHere
+        }>
+        <TravelExploreIcon className={styles.buttonIcon} />
+        Explorer
+      </Link>
       <Link to="/playground" className={pathname === '/playground' ? styles.buttonHere : styles.buttonNotHere}>
-        <AttractionsIcon className={styles.buttonIcon} style={{color: '#2C9212'}} />
+        <AttractionsIcon className={styles.buttonIcon} />
         Playground
       </Link>
       <button className={styles.userSetting} onClick={handleClick}>

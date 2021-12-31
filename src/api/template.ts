@@ -8,9 +8,17 @@ export const postTemplate = (data: any, onSuccess?: (res: any) => any, onError?:
     .catch(onError)
 }
 
-export const getTemplate = async (onSuccess?: () => any, onError?: () => any) => {
-  const res = await axios.get(config() + '/api/templates/me', {withCredentials: true})
-  return res.data
+export const getTemplate = async (onSuccess?: (res: any) => any, onError?: () => any) => {
+  axios
+    .get(config() + '/api/templates/me', {withCredentials: true})
+    .then(onSuccess)
+    .catch(onError)
+}
+export const getSharedTemplate = async (onSuccess?: (res: any) => any, onError?: () => any) => {
+  axios
+    .get(config() + '/api/templates', {withCredentials: true})
+    .then(onSuccess)
+    .catch(onError)
 }
 
 export const putTemplate = (templateID: string, data: any, onSuccess?: () => any, onError?: () => any) => {
@@ -22,7 +30,14 @@ export const putTemplate = (templateID: string, data: any, onSuccess?: () => any
 
 export const putShareTemplate = (templateID: string, share: boolean, onSuccess?: () => any, onError?: () => any) => {
   axios
-    .put(config() + '/api/templates/share/' + templateID, share, {withCredentials: true})
+    .put(config() + '/api/templates/share/' + templateID, {share: share}, {withCredentials: true})
+    .then(onSuccess)
+    .catch(onError)
+}
+
+export const deleteTemplate = async (templateID: string, onSuccess?: (res: any) => any, onError?: () => any) => {
+  axios
+    .delete(config() + '/api/templates/' + templateID, {withCredentials: true})
     .then(onSuccess)
     .catch(onError)
 }

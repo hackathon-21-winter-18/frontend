@@ -1,20 +1,21 @@
 import {useState} from 'react'
-import {Link, useNavigate} from 'react-router-dom'
+import {useNavigate} from 'react-router-dom'
 import styles from './Template.module.css'
-import ReactModal from 'react-modal'
 import {TemplateType} from '../types'
-import axios from 'axios'
 import MoreVertIcon from '@mui/icons-material/MoreVert'
 import CommentIcon from '@mui/icons-material/Comment'
 import Dialog from '@mui/material/Dialog'
+import DialogActions from '@mui/material/DialogActions'
+import DialogTitle from '@mui/material/DialogTitle'
+import {deleteTemplate, putShareTemplate} from '../api/template'
 
 interface TemplateProps {
   num: number
   template: TemplateType
-  deleteTemplate: (number: number) => void
+  handleDeleteTemplate: (number: number) => void
 }
 
-const Template: React.VFC<TemplateProps> = ({num, template, deleteTemplate}) => {
+const Template: React.VFC<TemplateProps> = ({num, template, handleDeleteTemplate}) => {
   const [isOpen, setIsOpen] = useState(false)
   const [deleteIsOpen, setDeleteIsOpen] = useState(false)
   const [shareIsOpen, setShareIsOpen] = useState(false)
@@ -28,15 +29,11 @@ const Template: React.VFC<TemplateProps> = ({num, template, deleteTemplate}) => 
     setShareIsOpen(true)
   }
   function handleDelete() {
-    axios.delete('http://localhost:8080/api/templates/share/' + template.id, {withCredentials: true})
-    deleteTemplate(num)
+    deleteTemplate(template.id)
+    handleDeleteTemplate(num)
   }
   function handleShare() {
-    axios.put(
-      'http://localhost:8080/api/templates/share/' + template.id,
-      {share: !template.share},
-      {withCredentials: true}
-    )
+    putShareTemplate(template.id, !template.share)
     setShare(!share)
     setShareIsOpen(false)
     setIsOpen(false)
@@ -73,25 +70,57 @@ const Template: React.VFC<TemplateProps> = ({num, template, deleteTemplate}) => 
       </div>
       <div className={styles.wordTag}>
         <CommentIcon className={styles.commentIcon} />
-        {template.pins.length + ' Pins'}
+        {template.pins.length + ' pins'}
+      </div>
+      <div>
+        <span>保存者数:{template.savedCount}</span>
       </div>
       {share ? <span>共有済</span> : <span>未共有</span>}
-      <Dialog open={isOpen} onClose={handleDialogClose}>
-        <button onClick={() => navigate('/fixTemplate/' + template.id, {state: {image: Extension()}})}>
-          テンプレートの編集
-        </button>
-        <button onClick={handleDeleteDialog}>テンプレートの削除</button>
-        <Dialog open={deleteIsOpen} onClose={() => setDeleteIsOpen(false)}>
-          本当にテンプレートを削除しますか？
-          <button onClick={handleDelete}>はい</button>
-          <button onClick={() => setDeleteIsOpen(false)}>いいえ</button>
-        </Dialog>
-        <button onClick={handleShareDialog}>テンプレートの共有設定</button>
-        <Dialog open={shareIsOpen} onClose={() => setShareIsOpen(false)}>
-          {share ? 'テンプレートを未共有にしますか？' : 'テンプレートを共有しますか？'}
-          <button onClick={handleShare}>はい</button>
-          <button onClick={() => setShareIsOpen(false)}>いいえ</button>
-        </Dialog>
+
+      <Dialog
+        open={isOpen}
+        onClose={handleDialogClose}
+        PaperProps={{style: {width: '381px', height: '309px', borderRadius: '10px'}}}>
+        <DialogActions>
+          <button
+            onClick={() => navigate('/fixTemplate/' + template.id, {state: {image: Extension()}})}
+            className={styles.button2}>
+            テンプレートの編集
+          </button>
+        </DialogActions>
+
+        <DialogActions>
+          <button onClick={handleDeleteDialog} className={styles.button2}>
+            テンプレートの削除
+          </button>
+          <Dialog open={deleteIsOpen} onClose={() => setDeleteIsOpen(false)}>
+            <DialogTitle>本当にテンプレートを削除しますか？</DialogTitle>
+            <DialogActions>
+              <button onClick={handleDelete} className={styles.button1}>
+                はい
+              </button>
+              <button onClick={() => setDeleteIsOpen(false)} className={styles.button2}>
+                いいえ
+              </button>
+            </DialogActions>
+          </Dialog>
+        </DialogActions>
+        <DialogActions>
+          <button onClick={handleShareDialog} className={styles.button2}>
+            テンプレートの共有設定
+          </button>
+          <Dialog open={shareIsOpen} onClose={() => setShareIsOpen(false)}>
+            <DialogTitle>{share ? 'テンプレートの共有をやめますか？' : 'テンプレートを共有しますか？'}</DialogTitle>
+            <DialogActions>
+              <button onClick={handleShare} className={styles.button1}>
+                はい
+              </button>
+              <button onClick={() => setShareIsOpen(false)} className={styles.button2}>
+                いいえ
+              </button>
+            </DialogActions>
+          </Dialog>
+        </DialogActions>
       </Dialog>
     </div>
   )

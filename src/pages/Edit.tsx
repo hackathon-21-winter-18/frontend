@@ -1,10 +1,8 @@
 import * as React from 'react'
 import styles from './Edit.module.css'
 import {Link} from 'react-router-dom'
-import {EditAddedWord} from '../components/EditAddedWord'
-import PushPinIcon from '@mui/icons-material/PushPin'
 import {Pin} from '../types'
-import {useParams, useLocation, useNavigate} from 'react-router'
+import {useLocation, useNavigate} from 'react-router'
 import AddNewWordDialog from '../components/AddNewWordDialog'
 import useAuth from '../components/UserProvider'
 import {useMousePosition} from '../hooks/useMousePosition'
@@ -14,9 +12,11 @@ import {useHover} from '../hooks/useHover'
 import {EmbededPins, PinContent} from '../types'
 import pinIcon from '../assets/pin.svg'
 import {FixWordDialog} from '../components/FixWordDialog'
-import VisibilityIcon from '@mui/icons-material/Visibility'
 import VisibilityOffIcon from '@mui/icons-material/VisibilityOff'
 import Dialog from '@mui/material/Dialog'
+import CheckCircleIcon from '@mui/icons-material/CheckCircle'
+import DialogActions from '@mui/material/DialogActions'
+import DialogTitle from '@mui/material/DialogTitle'
 import {postTemplate, putShareTemplate} from '../api/template'
 import {postPalace, putSharePalace} from '../api/palace'
 
@@ -25,31 +25,31 @@ type Mode = 'edit' | 'memorization'
 interface EditProps {
   imageUrl?: string
   isPlayground?: boolean
+  xGap?: number
+  yGap?: number
 }
 
-export const Edit: React.VFC<EditProps> = ({imageUrl, isPlayground = false}) => {
+export const Edit: React.VFC<EditProps> = ({imageUrl, isPlayground = false, xGap = 0, yGap = 0}) => {
   const [open, setOpen] = React.useState<number | boolean>(false)
   const [pinOpen, setPinOpen] = React.useState<EmbededPins | null>(null)
   const [pins, setPins] = React.useState<EmbededPins[]>([])
   const [mode, setMode] = React.useState<Mode>('edit')
-  const image = useParams() //あとで使うかも
-  const location = useLocation()
   const [palaceName, setPalaceName] = React.useState('')
-  const {user} = useAuth()
   const [palaceId, setPalaceId] = React.useState('')
   const [completeIsOpen, setCompleteIsOpen] = React.useState(false)
-  const navigate = useNavigate()
   const [shareOption, setShareOption] = React.useState(false)
   const [templateOption, setTemplateOption] = React.useState(false)
   const [templateShareOption, setTemplateShareOption] = React.useState(false)
-  const [templateId, setTemplateId] = React.useState('')
+  const {user} = useAuth()
+  const location = useLocation()
+  const navigate = useNavigate()
 
   const [hoverRef, isHovered] = useHover<HTMLImageElement>()
   const {x, y} = useMousePosition()
 
   const handleComplete = (e: any) => {
     e.preventDefault()
-    if (pins.length > 0 && !isPlayground) {
+    if (!isPlayground && !(pins.length <= 0 || palaceName === '')) {
       let willSendImage = ''
       if (location.state.image.substr(0, 23) === 'data:image/jpeg;base64,') {
         willSendImage = location.state.image.substring(23)
@@ -62,8 +62,12 @@ export const Edit: React.VFC<EditProps> = ({imageUrl, isPlayground = false}) => 
         embededPins: pins,
         createdBy: user.id,
       }
-      console.log(data)
-      postPalace(data, (res: any) => (shareOption ? putSharePalace(res.data.id, shareOption) : null))
+      postPalace(data, (res: any) => {
+        if (shareOption) {
+          putSharePalace(res.data.id, shareOption)
+          setPalaceId(res.data.id)
+        }
+      })
 
       if (templateOption) {
         let templatePins = new Array<Pin>()
@@ -85,8 +89,9 @@ export const Edit: React.VFC<EditProps> = ({imageUrl, isPlayground = false}) => 
         )
       }
       setCompleteIsOpen(true)
+    } else {
+      setCompleteIsOpen(true)
     }
-    setCompleteIsOpen(true)
   }
 
   const handleClickAway = () => {
@@ -102,7 +107,7 @@ export const Edit: React.VFC<EditProps> = ({imageUrl, isPlayground = false}) => 
       borderRadius: 2,
       transitionDuration: '0.2s',
     }),
-    [open, pinOpen]
+    [open, pinOpen] // eslint-disable-line react-hooks/exhaustive-deps
   )
 
   const pinStyle = React.useCallback<() => React.CSSProperties>(
@@ -112,7 +117,7 @@ export const Edit: React.VFC<EditProps> = ({imageUrl, isPlayground = false}) => 
       left: x,
       transform: `translate(-50%, -100%)`,
     }),
-    [open]
+    [open] // eslint-disable-line react-hooks/exhaustive-deps
   )
 
   const putPin = React.useCallback(
@@ -120,15 +125,15 @@ export const Edit: React.VFC<EditProps> = ({imageUrl, isPlayground = false}) => 
       const data = {
         word: pin.word,
         place: pin.place,
-        do: pin.condition,
+        situation: pin.situation,
         number: pins.length,
-        x: (x - hoverRef.current.x) / hoverRef.current.width,
-        y: (y - hoverRef.current.y) / hoverRef.current.height,
+        x: x,
+        y: y,
       }
       setPins([...pins, data])
       setOpen(false)
     },
-    [open]
+    [open] // eslint-disable-line react-hooks/exhaustive-deps
   )
   const handlePinClick = React.useCallback((pin: EmbededPins) => {
     setPinOpen(pin)
@@ -144,7 +149,6 @@ export const Edit: React.VFC<EditProps> = ({imageUrl, isPlayground = false}) => 
   React.useEffect(() => {
     setPins([])
     setPalaceName('')
-    console.log('a')
   }, [location])
 
   return (
@@ -160,8 +164,8 @@ export const Edit: React.VFC<EditProps> = ({imageUrl, isPlayground = false}) => 
               alt=""
               style={{
                 position: 'absolute',
-                top: pin.y * hoverRef.current.height + 'px',
-                left: pin.x * hoverRef.current.width + 'px',
+                top: pin.y - 68 - yGap + 'px',
+                left: pin.x - xGap + 'px',
                 transform: `translate(-50%, -100%)`,
               }}
               onClick={() => {
@@ -189,11 +193,11 @@ export const Edit: React.VFC<EditProps> = ({imageUrl, isPlayground = false}) => 
         {mode === 'memorization' && <VisibilityOffIcon />}
       </IconButton>
       <ClickAwayListener onClickAway={handleClickAway}>
-        <div>
+        <div className={styles.image}>
           <img
             className={styles.layoutImage}
             src={imageUrl ?? location.state.image}
-            alt="map"
+            alt=""
             onClick={() => mode === 'edit' && setOpen(Math.random())}
             ref={hoverRef}
           />
@@ -207,42 +211,82 @@ export const Edit: React.VFC<EditProps> = ({imageUrl, isPlayground = false}) => 
           )}
         </div>
       </ClickAwayListener>
-      <form>
+      <div className={styles.nameInputForm}>
         <input
           required
           type="text"
           value={palaceName}
-          placeholder="宮殿の名前"
+          placeholder="Untitled Palace"
           onChange={(e) => setPalaceName(e.target.value)}
         />
-        <label>
-          <input type="checkbox" onClick={() => setTemplateOption(!templateOption)} />
-          テンプレートとして保存
-        </label>
-        <label>
-          <input type="checkbox" onClick={() => setShareOption(!shareOption)} id="sharedCheckBox" />
-          宮殿を共有
-        </label>
-        <label>
-          <input
-            type="checkbox"
-            onClick={() => setTemplateShareOption(!templateShareOption)}
-            disabled={!templateOption}
-          />
-          テンプレートとして共有
-        </label>
-        <button onClick={handleComplete} type="submit" disabled={pins.length <= 0 || palaceName === ''}>
-          完成!
-        </button>
-      </form>
-      <Dialog open={completeIsOpen && !isPlayground}>
-        宮殿が完成しました
-        <Link to={'/memorize/' + palaceId}>今すぐ覚える</Link>
-        <Link to="/">ホームへ戻る</Link>
+      </div>
+      <div className={styles.form}>
+        <form>
+          <label>
+            <input type="checkbox" onClick={() => setTemplateOption(!templateOption)} />
+            テンプレートとして保存
+          </label>
+          <br />
+          <label>
+            <input type="checkbox" onClick={() => setShareOption(!shareOption)} id="sharedCheckBox" />
+            宮殿を共有
+          </label>
+          <br />
+          <label>
+            <input
+              type="checkbox"
+              onClick={() => setTemplateShareOption(!templateShareOption)}
+              disabled={!templateOption}
+            />
+            テンプレートとして共有
+          </label>
+          <br />
+          <button onClick={handleComplete} type="submit" className={styles.completeButton}>
+            <CheckCircleIcon />
+            <span>記憶の宮殿を作成する</span>
+          </button>
+        </form>
+      </div>
+      <Dialog
+        open={completeIsOpen && !isPlayground && !(pins.length <= 0 || palaceName === '')}
+        PaperProps={{style: {width: '381px', height: '309px', borderRadius: '10px'}}}>
+        <DialogTitle style={{textAlign: 'center'}}>🎉宮殿が完成しました🎉</DialogTitle>
+        <DialogActions>
+          <button
+            onClick={() => navigate('/memorize/' + palaceId, {state: {shared: false}})}
+            className={styles.button1}>
+            今すぐ覚える
+          </button>
+        </DialogActions>
+        <DialogActions>
+          <button className={styles.button2}>
+            <Link to="/" style={{textDecoration: 'none', color: '#7a8498'}}>
+              ホームへ戻る
+            </Link>
+          </button>
+        </DialogActions>
       </Dialog>
-      <Dialog open={completeIsOpen && isPlayground}>
-        次は実際に宮殿を作成してみましょう!
-        <button onClick={() => setCompleteIsOpen(false)}>OK</button>
+      <Dialog
+        open={completeIsOpen && !isPlayground && (pins.length <= 0 || palaceName === '')}
+        PaperProps={{style: {width: '381px', height: '309px', borderRadius: '10px'}}}>
+        <DialogTitle style={{textAlign: 'center'}}>
+          単語が登録されていないか、宮殿の名前が登録されていません
+        </DialogTitle>
+        <DialogActions>
+          <button onClick={() => setCompleteIsOpen(false)} className={styles.button2}>
+            戻る
+          </button>
+        </DialogActions>
+      </Dialog>
+      <Dialog
+        open={completeIsOpen && isPlayground}
+        PaperProps={{style: {width: '381px', height: '309px', borderRadius: '10px'}}}>
+        <DialogTitle style={{textAlign: 'center'}}>次は実際に宮殿を作成してみましょう!</DialogTitle>
+        <DialogActions>
+          <button onClick={() => setCompleteIsOpen(false)} className={styles.button2}>
+            OK
+          </button>
+        </DialogActions>
       </Dialog>
     </div>
   )

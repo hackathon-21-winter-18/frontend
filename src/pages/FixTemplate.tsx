@@ -1,19 +1,17 @@
 import * as React from 'react'
 import styles from './Edit.module.css'
 import {useParams, useLocation} from 'react-router'
-import AddNewWordDialog from '../components/AddNewWordDialog'
-import useAuth from '../components/UserProvider'
-import {PalaceType} from '../types'
 import Dialog from '@mui/material/Dialog'
+import CheckCircleIcon from '@mui/icons-material/CheckCircle'
+import DialogActions from '@mui/material/DialogActions'
+import DialogTitle from '@mui/material/DialogTitle'
 import {Link} from 'react-router-dom'
 import {useMousePosition} from '../hooks/useMousePosition'
 import {CustomCursor} from '../components/CustomCursor'
-import {Badge, Box, ClickAwayListener, IconButton, Portal, SxProps} from '@mui/material'
+import {Badge, ClickAwayListener, IconButton, SxProps} from '@mui/material'
 import {useHover} from '../hooks/useHover'
-import {EmbededPins, PinContent} from '../types'
 import pinIcon from '../assets/pin.svg'
-import {FixWordDialog} from '../components/FixWordDialog'
-import {getTemplate, postTemplate, putShareTemplate, putTemplate} from '../api/template'
+import {getTemplate, putShareTemplate, putTemplate} from '../api/template'
 import {Pin} from '../types'
 
 export const FixTemplate: React.VFC = () => {
@@ -23,10 +21,8 @@ export const FixTemplate: React.VFC = () => {
   const params = useParams()
   const location = useLocation()
   const [templateName, setTemplateName] = React.useState('')
-  const {user} = useAuth()
   const [hoverRef, isHovered] = useHover<HTMLImageElement>()
   const {x, y} = useMousePosition()
-  const [isOpen, setIsOpen] = React.useState(false)
   const [completeIsOpen, setCompleteIsOpen] = React.useState(false)
   const [shareOption, setShareOption] = React.useState(false)
   const [templateId, setTemplateId] = React.useState('')
@@ -34,7 +30,8 @@ export const FixTemplate: React.VFC = () => {
   React.useEffect(() => {
     const templateID = params.id
     templateID &&
-      getTemplate().then((data) => {
+      getTemplate((res) => {
+        let data = res.data
         for (let i = 0; i < data.length; i++) {
           if (data[i].id === templateID) {
             setTemplateName(data[i].name)
@@ -43,7 +40,7 @@ export const FixTemplate: React.VFC = () => {
           }
         }
       })
-  }, [])
+  }, []) // eslint-disable-line react-hooks/exhaustive-deps
 
   const boxStyle = React.useCallback<() => SxProps>(
     () => ({
@@ -55,12 +52,12 @@ export const FixTemplate: React.VFC = () => {
       borderRadius: 2,
       transitionDuration: '0.2s',
     }),
-    [open, pinOpen]
+    [open, pinOpen] // eslint-disable-line react-hooks/exhaustive-deps
   )
 
   const handleComplete = (e: any) => {
     e.preventDefault()
-    if (pins.length > 0) {
+    if (!(pins.length <= 0 || templateName === '')) {
       let willSendImage = ''
       if (location.state.image.substr(0, 23) === 'data:image/jpeg;base64,') {
         willSendImage = location.state.image.substring(23)
@@ -70,13 +67,12 @@ export const FixTemplate: React.VFC = () => {
       const data = {
         name: templateName,
         image: willSendImage,
-        embededPins: pins,
+        pins: pins,
       }
-      console.log(data)
-      params.id && putTemplate(params.id, data)
-      if (shareOption) {
-        putTemplate(templateId, shareOption, () => putShareTemplate(templateId, shareOption))
-      }
+
+      putTemplate(templateId, data, () => (shareOption ? putShareTemplate(templateId, shareOption) : null))
+      setCompleteIsOpen(true)
+    } else {
       setCompleteIsOpen(true)
     }
   }
@@ -92,18 +88,19 @@ export const FixTemplate: React.VFC = () => {
       left: x,
       transform: `translate(-50%, -100%)`,
     }),
-    [open]
+    [open] // eslint-disable-line react-hooks/exhaustive-deps
   )
 
   const putPin = React.useCallback(() => {
     const data = {
       number: pins.length,
-      x: (x - hoverRef.current.x) / hoverRef.current.width,
-      y: (y - hoverRef.current.y) / hoverRef.current.height,
+      x: x,
+      y: y,
     }
     setPins([...pins, data])
     setOpen(false)
-  }, [open])
+  }, [open]) // eslint-disable-line react-hooks/exhaustive-deps
+
   const handlePinClick = React.useCallback((pin: Pin) => {
     setPinOpen(pin)
   }, [])
@@ -128,8 +125,8 @@ export const FixTemplate: React.VFC = () => {
               alt=""
               style={{
                 position: 'absolute',
-                top: pin.y * hoverRef.current.height + 'px',
-                left: pin.x * hoverRef.current.width + 'px',
+                top: pin.y - 68 + 'px',
+                left: pin.x + 'px',
                 transform: `translate(-50%, -100%)`,
               }}
               onClick={() => {
@@ -147,19 +144,18 @@ export const FixTemplate: React.VFC = () => {
       </IconButton>
 
       <ClickAwayListener onClickAway={handleClickAway}>
-        <div>
+        <div className={styles.image}>
           <img
             className={styles.layoutImage}
             src={location.state.image}
-            alt="map"
+            alt=""
             onClick={() => setOpen(Math.random())}
             ref={hoverRef}
           />
           {open && putPin()}
         </div>
       </ClickAwayListener>
-
-      <form>
+      <div className={styles.nameInputForm}>
         <input
           required
           type="text"
@@ -167,17 +163,43 @@ export const FixTemplate: React.VFC = () => {
           placeholder="テンプレートの名前"
           onChange={(e) => setTemplateName(e.target.value)}
         />
-        <label>
-          <input type="checkbox" onClick={() => setShareOption(!shareOption)} id="sharedCheckBox" />
-          テンプレートを共有
-        </label>
-        <button onClick={handleComplete} type="submit" disabled={pins.length <= 0 || templateName === ''}>
-          完成!
-        </button>
-      </form>
-      <Dialog open={completeIsOpen}>
-        テンプレートが修正されました
-        <Link to="/">ホームへ戻る</Link>
+      </div>
+      <div className={styles.form}>
+        <form>
+          <label>
+            <input type="checkbox" onClick={() => setShareOption(!shareOption)} id="sharedCheckBox" />
+            テンプレートを共有
+          </label>
+          <br />
+          <button onClick={handleComplete} type="submit" className={styles.completeButton}>
+            <CheckCircleIcon />
+            <span>テンプレートの修正を完了する</span>
+          </button>
+        </form>
+      </div>
+      <Dialog
+        open={completeIsOpen && !(pins.length <= 0 || templateName === '')}
+        PaperProps={{style: {width: '381px', height: '309px', borderRadius: '10px'}}}>
+        <DialogTitle style={{textAlign: 'center'}}>🎉テンプレートが修正されました🎉</DialogTitle>
+        <DialogActions>
+          <button className={styles.button2}>
+            <Link to="/" style={{textDecoration: 'none', color: '#7a8498'}}>
+              ホームへ戻る
+            </Link>
+          </button>
+        </DialogActions>
+      </Dialog>
+      <Dialog
+        open={completeIsOpen && (pins.length <= 0 || templateName === '')}
+        PaperProps={{style: {width: '381px', height: '309px', borderRadius: '10px'}}}>
+        <DialogTitle style={{textAlign: 'center'}}>
+          ピンが登録されていないか、テンプレートの名前が登録されていません
+        </DialogTitle>
+        <DialogActions>
+          <button onClick={() => setCompleteIsOpen(false)} className={styles.button2}>
+            戻る
+          </button>
+        </DialogActions>
       </Dialog>
     </div>
   )

@@ -1,9 +1,6 @@
 import * as React from 'react'
 import styles from './Edit.module.css'
 import {Link} from 'react-router-dom'
-import {EditAddedWord} from '../components/EditAddedWord'
-import PushPinIcon from '@mui/icons-material/PushPin'
-import {Pin} from '../types'
 import {useParams, useLocation, useNavigate} from 'react-router'
 import AddNewWordDialog from '../components/AddNewWordDialog'
 import useAuth from '../components/UserProvider'
@@ -15,11 +12,12 @@ import {EmbededPins, PinContent} from '../types'
 import pinIcon from '../assets/pin.svg'
 import {FixWordDialog} from '../components/FixWordDialog'
 import {postPalace, putSharePalace} from '../api/palace'
-import VisibilityIcon from '@mui/icons-material/Visibility'
 import VisibilityOffIcon from '@mui/icons-material/VisibilityOff'
 import Dialog from '@mui/material/Dialog'
-import {postTemplate, getTemplate} from '../api/template'
-import axios from 'axios'
+import CheckCircleIcon from '@mui/icons-material/CheckCircle'
+import DialogActions from '@mui/material/DialogActions'
+import DialogTitle from '@mui/material/DialogTitle'
+import {getTemplate, getSharedTemplate} from '../api/template'
 
 type Mode = 'edit' | 'memorization'
 
@@ -33,56 +31,97 @@ export const EditFromTemplate: React.VFC<EditProps> = ({imageUrl, isPlayground =
   const [pinOpen, setPinOpen] = React.useState<EmbededPins | null>(null)
   const [pins, setPins] = React.useState<EmbededPins[]>([])
   const [mode, setMode] = React.useState<Mode>('edit')
-  const image = useParams() //あとで使うかも
   const location = useLocation()
   const [palaceName, setPalaceName] = React.useState('')
   const [shareOption, setShareOption] = React.useState(false)
-  const [templateName, setTemplateName] = React.useState('')
   const {user} = useAuth()
-  const [isOpen, setIsOpen] = React.useState(false)
-  const [templateId, setTemplateId] = React.useState('')
   const [completeIsOpen, setCompleteIsOpen] = React.useState(false)
   const navigate = useNavigate()
   const params = useParams()
   const [palaceId, setPalaceId] = React.useState('')
-
   const [hoverRef, isHovered] = useHover<HTMLImageElement>()
   const {x, y} = useMousePosition()
 
   React.useEffect(() => {
     const templateID = params.id
-    templateID &&
-      getTemplate().then((data) => {
-        for (let i = 0; i < data.length; i++) {
-          if (data[i].id === templateID) {
-            setTemplateName(data[i].name)
-            setPins(data[i].pins)
+    if (location.state.share) {
+      templateID &&
+        getSharedTemplate((res) => {
+          let data = res.data
+          for (let i = 0; i < data.length; i++) {
+            if (data[i].id === templateID) {
+              for (let j = 0; j < data[i].pins.length; j++) {
+                setPins(
+                  pins.concat([
+                    {
+                      number: data[i].pins[j].number,
+                      x: data[i].pins[j].x,
+                      y: data[i].pins[j].y,
+                      word: '',
+                      place: '',
+                      situation: '',
+                    },
+                  ])
+                )
+              }
+            }
           }
-        }
-      })
-  }, [])
+        })
+    } else {
+      templateID &&
+        getTemplate((res) => {
+          let data = res.data
+          for (let i = 0; i < data.length; i++) {
+            if (data[i].id === templateID) {
+              for (let j = 0; j < data[i].pins.length; j++) {
+                console.log(data[i].pins[j])
+                setPins(
+                  pins.concat([
+                    {
+                      number: data[i].pins[j].number,
+                      x: data[i].pins[j].x,
+                      y: data[i].pins[j].y,
+                      word: '',
+                      place: '',
+                      situation: '',
+                    },
+                  ])
+                )
+              }
+            }
+          }
+        })
+    }
+  }, []) // eslint-disable-line react-hooks/exhaustive-deps
 
   const handleComplete = (e: any) => {
     e.preventDefault()
-    if (pins.length > 0) {
+    if (!(pins.length <= 0 || palaceName === '')) {
       let data
       if (location.state.image.substr(0, 23) === 'data:image/jpeg;base64,') {
         data = {
           name: palaceName,
           image: location.state.image.substr(23),
-          pins: pins,
+          embededPins: pins,
           createdBy: user.id,
         }
       } else {
         data = {
           name: palaceName,
           image: location.state.image.substr(22),
-          pins: pins,
+          embededPins: pins,
           createdBy: user.id,
         }
       }
       console.log(data)
-      postPalace(data, (res) => (shareOption ? putSharePalace(res.data.id, shareOption) : null))
+      postPalace(data, (res: any) => {
+        setPalaceId(res.data.id)
+        if (shareOption) {
+          putSharePalace(res.data.id, shareOption)
+        }
+      })
+      setCompleteIsOpen(true)
+    } else {
       setCompleteIsOpen(true)
     }
   }
@@ -100,7 +139,7 @@ export const EditFromTemplate: React.VFC<EditProps> = ({imageUrl, isPlayground =
       borderRadius: 2,
       transitionDuration: '0.2s',
     }),
-    [open, pinOpen]
+    [open, pinOpen] // eslint-disable-line react-hooks/exhaustive-deps
   )
 
   const pinStyle = React.useCallback<() => React.CSSProperties>(
@@ -110,7 +149,7 @@ export const EditFromTemplate: React.VFC<EditProps> = ({imageUrl, isPlayground =
       left: x,
       transform: `translate(-50%, -100%)`,
     }),
-    [open]
+    [open] // eslint-disable-line react-hooks/exhaustive-deps
   )
 
   const putPin = React.useCallback(
@@ -118,15 +157,15 @@ export const EditFromTemplate: React.VFC<EditProps> = ({imageUrl, isPlayground =
       const data = {
         word: pin.word,
         place: pin.place,
-        do: pin.condition,
+        situation: pin.situation,
         number: pins.length,
-        x: (x - hoverRef.current.x) / hoverRef.current.width,
-        y: (y - hoverRef.current.y) / hoverRef.current.height,
+        x: x,
+        y: y,
       }
       setPins([...pins, data])
       setOpen(false)
     },
-    [open]
+    [open] // eslint-disable-line react-hooks/exhaustive-deps
   )
   const handlePinClick = React.useCallback((pin: EmbededPins) => {
     setPinOpen(pin)
@@ -152,8 +191,8 @@ export const EditFromTemplate: React.VFC<EditProps> = ({imageUrl, isPlayground =
               alt=""
               style={{
                 position: 'absolute',
-                top: pin.y * hoverRef.current.height + 'px',
-                left: pin.x * hoverRef.current.width + 'px',
+                top: pin.y - 68 + 'px',
+                left: pin.x + 'px',
                 transform: `translate(-50%, -100%)`,
               }}
               onClick={() => {
@@ -183,11 +222,11 @@ export const EditFromTemplate: React.VFC<EditProps> = ({imageUrl, isPlayground =
       </IconButton>
 
       <ClickAwayListener onClickAway={handleClickAway}>
-        <div>
+        <div className={styles.image}>
           <img
             className={styles.layoutImage}
             src={imageUrl ?? location.state.image}
-            alt="map"
+            alt=""
             onClick={() => mode === 'edit' && setOpen(Math.random())}
             ref={hoverRef}
           />
@@ -201,27 +240,58 @@ export const EditFromTemplate: React.VFC<EditProps> = ({imageUrl, isPlayground =
           )}
         </div>
       </ClickAwayListener>
-
-      <form>
+      <div className={styles.nameInputForm}>
         <input
           required
           type="text"
           value={palaceName}
-          placeholder="宮殿の名前"
+          placeholder="Untitled Palace"
           onChange={(e) => setPalaceName(e.target.value)}
         />
-        <label>
-          <input type="checkbox" onClick={() => setShareOption(!shareOption)} id="sharedCheckBox" />
-          宮殿を共有
-        </label>
-        <button onClick={handleComplete} type="submit" disabled={pins.length <= 0 || palaceName === ''}>
-          完成!
-        </button>
-      </form>
-      <Dialog open={completeIsOpen}>
-        宮殿が完成しました
-        <Link to={'/memorize/' + palaceId}>今すぐ覚える</Link>
-        <Link to="/">ホームへ戻る</Link>
+      </div>
+      <div className={styles.form}>
+        <form>
+          <label>
+            <input type="checkbox" onClick={() => setShareOption(!shareOption)} />
+            宮殿を共有
+          </label>
+          <br />
+          <button onClick={handleComplete} type="submit" className={styles.completeButton}>
+            <CheckCircleIcon />
+            <span>記憶の宮殿を作成する</span>
+          </button>
+        </form>
+      </div>
+      <Dialog
+        open={completeIsOpen && !(pins.length <= 0 || palaceName === '')}
+        PaperProps={{style: {width: '381px', height: '309px', borderRadius: '10px'}}}>
+        <DialogTitle style={{textAlign: 'center'}}>🎉宮殿が完成しました🎉</DialogTitle>
+        <DialogActions>
+          <button
+            onClick={() => navigate('/memorize/' + palaceId, {state: {shared: false}})}
+            className={styles.button1}>
+            今すぐ覚える
+          </button>
+        </DialogActions>
+        <DialogActions>
+          <button className={styles.button2}>
+            <Link to="/" style={{textDecoration: 'none', color: '#7a8498'}}>
+              ホームへ戻る
+            </Link>
+          </button>
+        </DialogActions>
+      </Dialog>
+      <Dialog
+        open={completeIsOpen && (pins.length <= 0 || palaceName === '')}
+        PaperProps={{style: {width: '381px', height: '309px', borderRadius: '10px'}}}>
+        <DialogTitle style={{textAlign: 'center'}}>
+          単語が登録されていないか、宮殿の名前が登録されていません
+        </DialogTitle>
+        <DialogActions>
+          <button onClick={() => setCompleteIsOpen(false)} className={styles.button2}>
+            戻る
+          </button>
+        </DialogActions>
       </Dialog>
     </div>
   )

@@ -1,23 +1,19 @@
 import * as React from 'react'
 import styles from './Edit.module.css'
 import {Link} from 'react-router-dom'
-import {EditAddedWord} from '../components/EditAddedWord'
-import PushPinIcon from '@mui/icons-material/PushPin'
 import {Pin} from '../types'
-import {useParams, useLocation, useNavigate} from 'react-router'
-import AddNewWordDialog from '../components/AddNewWordDialog'
+import {useLocation} from 'react-router'
 import useAuth from '../components/UserProvider'
 import {useMousePosition} from '../hooks/useMousePosition'
 import {CustomCursor} from '../components/CustomCursor'
-import {Badge, Box, ClickAwayListener, IconButton, Portal, SxProps} from '@mui/material'
+import {Badge, ClickAwayListener, IconButton, SxProps} from '@mui/material'
 import {useHover} from '../hooks/useHover'
-import {EmbededPins, PinContent} from '../types'
 import pinIcon from '../assets/pin.svg'
-import {FixWordDialog} from '../components/FixWordDialog'
-import {postPalace} from '../api/palace'
-import VisibilityIcon from '@mui/icons-material/Visibility'
 import VisibilityOffIcon from '@mui/icons-material/VisibilityOff'
 import Dialog from '@mui/material/Dialog'
+import CheckCircleIcon from '@mui/icons-material/CheckCircle'
+import DialogActions from '@mui/material/DialogActions'
+import DialogTitle from '@mui/material/DialogTitle'
 import {postTemplate, putShareTemplate} from '../api/template'
 
 type Mode = 'edit' | 'memorization'
@@ -32,14 +28,10 @@ export const EditTemplate: React.VFC<EditProps> = ({imageUrl, isPlayground = fal
   const [pinOpen, setPinOpen] = React.useState<Pin | null>(null)
   const [pins, setPins] = React.useState<Pin[]>([])
   const [mode, setMode] = React.useState<Mode>('edit')
-  const image = useParams() //あとで使うかも
   const location = useLocation()
   const [templateName, setTemplateName] = React.useState('')
   const {user} = useAuth()
-  const [templateId, setTemplateId] = React.useState('')
   const [completeIsOpen, setCompleteIsOpen] = React.useState(false)
-  const navigate = useNavigate()
-  const [templateOption, setTemplateOption] = React.useState(false)
   const [shareOption, setShareOption] = React.useState(false)
 
   const [hoverRef, isHovered] = useHover<HTMLImageElement>()
@@ -47,7 +39,7 @@ export const EditTemplate: React.VFC<EditProps> = ({imageUrl, isPlayground = fal
 
   const handleComplete = (e: any) => {
     e.preventDefault()
-    if (pins.length > 0) {
+    if (!(pins.length <= 0 || templateName === '')) {
       let willSendImage = ''
       if (location.state.image.substr(0, 23) === 'data:image/jpeg;base64,') {
         willSendImage = location.state.image.substring(23)
@@ -86,7 +78,7 @@ export const EditTemplate: React.VFC<EditProps> = ({imageUrl, isPlayground = fal
       borderRadius: 2,
       transitionDuration: '0.2s',
     }),
-    [open, pinOpen]
+    [open, pinOpen] // eslint-disable-line react-hooks/exhaustive-deps
   )
 
   const pinStyle = React.useCallback<() => React.CSSProperties>(
@@ -96,18 +88,19 @@ export const EditTemplate: React.VFC<EditProps> = ({imageUrl, isPlayground = fal
       left: x,
       transform: `translate(-50%, -100%)`,
     }),
-    [open]
+    [open] // eslint-disable-line react-hooks/exhaustive-deps
   )
 
   const putPin = React.useCallback(() => {
     const data = {
       number: pins.length,
-      x: (x - hoverRef.current.x) / hoverRef.current.width,
-      y: (y - hoverRef.current.y) / hoverRef.current.height,
+      x: x,
+      y: y,
     }
     setPins([...pins, data])
     setOpen(false)
-  }, [open])
+  }, [open]) // eslint-disable-line react-hooks/exhaustive-deps
+
   const handlePinClick = React.useCallback((pin: Pin) => {
     setPinOpen(pin)
   }, [])
@@ -121,7 +114,6 @@ export const EditTemplate: React.VFC<EditProps> = ({imageUrl, isPlayground = fal
   React.useEffect(() => {
     setPins([])
     setTemplateName('')
-    console.log('a')
   }, [location])
 
   return (
@@ -137,8 +129,8 @@ export const EditTemplate: React.VFC<EditProps> = ({imageUrl, isPlayground = fal
               alt=""
               style={{
                 position: 'absolute',
-                top: pin.y * hoverRef.current.height + 'px',
-                left: pin.x * hoverRef.current.width + 'px',
+                top: pin.y - 68 + 'px',
+                left: pin.x + 'px',
                 transform: `translate(-50%, -100%)`,
               }}
               onClick={() => {
@@ -161,37 +153,62 @@ export const EditTemplate: React.VFC<EditProps> = ({imageUrl, isPlayground = fal
       </IconButton>
 
       <ClickAwayListener onClickAway={handleClickAway}>
-        <div>
+        <div className={styles.image}>
           <img
             className={styles.layoutImage}
             src={imageUrl ?? location.state.image}
-            alt="map"
+            alt=""
             onClick={() => mode === 'edit' && setOpen(Math.random())}
             ref={hoverRef}
           />
           {open && putPin()}
         </div>
       </ClickAwayListener>
-
-      <form>
+      <div className={styles.nameInputForm}>
         <input
           required
           type="text"
           value={templateName}
-          placeholder="テンプレートの名前"
+          placeholder="Untitled Template"
           onChange={(e) => setTemplateName(e.target.value)}
         />
-        <label>
-          <input type="checkbox" onClick={() => setShareOption(!shareOption)} id="sharedCheckBox" />
-          共有
-        </label>
-        <button onClick={handleComplete} type="submit" disabled={pins.length <= 0 || templateName === ''}>
-          完成!
-        </button>
-      </form>
-      <Dialog open={completeIsOpen}>
-        テンプレートが完成しました
-        <Link to="/">ホームへ戻る</Link>
+      </div>
+      <div className={styles.form}>
+        <form>
+          <label>
+            <input type="checkbox" onClick={() => setShareOption(!shareOption)} />
+            テンプレートを共有
+          </label>
+          <br />
+          <button onClick={handleComplete} type="submit" className={styles.completeButton}>
+            <CheckCircleIcon />
+            <span>テンプレートを作成する</span>
+          </button>
+        </form>
+      </div>
+      <Dialog
+        open={completeIsOpen && !(pins.length <= 0 || templateName === '')}
+        PaperProps={{style: {width: '381px', height: '309px', borderRadius: '10px'}}}>
+        <DialogTitle style={{textAlign: 'center'}}>🎉テンプレートが完成しました🎉</DialogTitle>
+        <DialogActions>
+          <button className={styles.button2}>
+            <Link to="/" style={{textDecoration: 'none', color: '#7a8498'}}>
+              ホームへ戻る
+            </Link>
+          </button>
+        </DialogActions>
+      </Dialog>
+      <Dialog
+        open={completeIsOpen && (pins.length <= 0 || templateName === '')}
+        PaperProps={{style: {width: '381px', height: '309px', borderRadius: '10px'}}}>
+        <DialogTitle style={{textAlign: 'center'}}>
+          ピンが登録されていないか、テンプレートの名前が登録されていません
+        </DialogTitle>
+        <DialogActions>
+          <button onClick={() => setCompleteIsOpen(false)} className={styles.button2}>
+            戻る
+          </button>
+        </DialogActions>
       </Dialog>
     </div>
   )

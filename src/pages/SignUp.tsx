@@ -8,6 +8,7 @@ const SignUp: React.VFC = () => {
   const [name, setName] = useState('')
   const [password, setPassword] = useState('')
   const [passwordConfirm, setPasswordConfirm] = useState('')
+  const [errStatus, setErrStatus] = useState('')
   const {signup} = useAuth()
   const navigate = useNavigate()
 
@@ -16,9 +17,14 @@ const SignUp: React.VFC = () => {
     if (name === '' || password === '') return
 
     await signup({name, password})
-    setName('')
-    setPassword('')
-    navigate('/')
+      .then(() => {
+        setName('')
+        setPassword('')
+        navigate('/')
+      })
+      .catch((err) => {
+        setErrStatus(err.response.status.toString())
+      })
   }
 
   return (
@@ -55,7 +61,9 @@ const SignUp: React.VFC = () => {
             onChange={(e) => setPasswordConfirm(e.target.value)}
             required
           />
-
+          <span className={styles.errorMessage}>
+            {errStatus === '500' ? '既に同じユーザー名のアカウントが存在しています' : null}
+          </span>
           <div className={styles.buttonContainer}>
             <Link className={styles.loginButton} to="/login">
               ログインする
