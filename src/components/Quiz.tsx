@@ -28,7 +28,7 @@ const Quiz: React.VFC = () => {
   function RandomSelect(passedPalaces: PalaceType[]) {
     const palaceNum = getRandomInt(0, passedPalaces.length - 1)
     const pinNum = getRandomInt(0, passedPalaces[palaceNum].embededPins.length - 1)
-    const pin = palaces[palaceNum].embededPins[pinNum]
+    const pin = passedPalaces[palaceNum].embededPins[pinNum]
     const palaceDummyNum = getRandomInt(0, passedPalaces.length - 1)
     const pinDummyNum = getRandomInt(0, passedPalaces[palaceDummyNum].embededPins.length - 1)
     const pinDummy = passedPalaces[palaceDummyNum].embededPins[pinDummyNum]
