@@ -14,6 +14,15 @@ const AddNewWordDialog: React.VFC<AddNewWordDialogProps> = ({open, putPin}) => {
   const [word, setWord] = useState('')
   const [place, setPlace] = useState('')
   const [situation, setSituation] = useState('')
+  //const [randomSituation, setRandomSituation] = useState<string[]>(new Array<string>())
+  const [randomSituation, setRandomSituation] = useState<string[]>([
+    '踊ってる',
+    '食べてる',
+    '歌ってる',
+    '寝てる',
+    '遊んでる',
+    'こっち見てる',
+  ])
 
   const handlePutPin = () => {
     putPin({
@@ -21,6 +30,15 @@ const AddNewWordDialog: React.VFC<AddNewWordDialogProps> = ({open, putPin}) => {
       place,
       situation,
     })
+  }
+  function getRandomIntInclusive(min: number, max: number) {
+    min = Math.ceil(min)
+    max = Math.floor(max)
+    return Math.floor(Math.random() * (max - min + 1) + min) //The maximum is inclusive and the minimum is inclusive
+  }
+
+  const handleShuffle = () => {
+    setSituation(randomSituation[getRandomIntInclusive(0, randomSituation.length - 1)])
   }
 
   return (
@@ -46,7 +64,7 @@ const AddNewWordDialog: React.VFC<AddNewWordDialogProps> = ({open, putPin}) => {
             onChange={(e) => setSituation(e.target.value)}
             value={situation}
           />
-          <IconButton color="warning">
+          <IconButton color="warning" onClick={handleShuffle}>
             <ShuffleIcon />
           </IconButton>
         </div>
