@@ -114,9 +114,9 @@ export const FixTemplate: React.VFC = () => {
 
   return (
     <div className={styles.edit}>
-      <CustomCursor type="pin" isHover={isHovered} />
       <ClickAwayListener onClickAway={() => setPinOpen(null)}>
         <div className={styles.base}>
+          <CustomCursor type="pin" isHover={isHovered} />
           {pins.map((pin, i) => (
             <img
               className={styles.pushedPin}

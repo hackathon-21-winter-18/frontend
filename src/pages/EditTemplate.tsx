@@ -118,9 +118,9 @@ export const EditTemplate: React.VFC<EditProps> = ({imageUrl, isPlayground = fal
 
   return (
     <div className={styles.edit}>
-      {mode === 'edit' && <CustomCursor type="pin" isHover={isHovered} />}
       <ClickAwayListener onClickAway={() => setPinOpen(null)}>
         <div className={styles.base}>
+          {mode === 'edit' && <CustomCursor type="pin" isHover={isHovered} />}
           {pins.map((pin, i) => (
             <img
               className={styles.pushedPin}

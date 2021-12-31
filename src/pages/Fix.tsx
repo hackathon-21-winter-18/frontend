@@ -122,7 +122,7 @@ export const Fix: React.VFC = () => {
     <div className={styles.edit}>
       <ClickAwayListener onClickAway={() => setPinOpen(null)}>
         <div className={styles.base}>
-        <div className={styles.cursor}><CustomCursor type="pin" isHover={isHovered} /></div>
+          <CustomCursor type="pin" isHover={isHovered} />
           {pins.map((pin, i) => (
             <img
               className={styles.pushedPin}
