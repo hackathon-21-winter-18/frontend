@@ -14,6 +14,7 @@ const AddNewWordDialog: React.VFC<AddNewWordDialogProps> = ({open, putPin}) => {
   const [word, setWord] = useState('')
   const [place, setPlace] = useState('')
   const [situation, setSituation] = useState('')
+  const [warning, setWarning] = useState(false)
   //const [randomSituation, setRandomSituation] = useState<string[]>(new Array<string>())
   const [randomSituation, setRandomSituation] = useState<string[]>([
     '踊ってる',
@@ -25,11 +26,15 @@ const AddNewWordDialog: React.VFC<AddNewWordDialogProps> = ({open, putPin}) => {
   ])
 
   const handlePutPin = () => {
-    putPin({
-      word,
-      place,
-      situation,
-    })
+    if (word !== '') {
+      putPin({
+        word,
+        place,
+        situation,
+      })
+    } else {
+      setWarning(true)
+    }
   }
   function getRandomIntInclusive(min: number, max: number) {
     min = Math.ceil(min)
@@ -54,7 +59,13 @@ const AddNewWordDialog: React.VFC<AddNewWordDialogProps> = ({open, putPin}) => {
           </Button>
         </div>
         <div className={styles.inputContainer}>
-          <input type="text" placeholder="パンダ🐼" onChange={(e) => setWord(e.target.value)} value={word} />
+          <input
+            type="text"
+            placeholder={warning ? '単語が未設定' : 'パンダ🐼'}
+            onChange={(e) => setWord(e.target.value)}
+            value={word}
+            className={warning ? styles.wordWarning : styles.word}
+          />
           が
           <input type="text" placeholder="リビング" onChange={(e) => setPlace(e.target.value)} value={place} />
           で
