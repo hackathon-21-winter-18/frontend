@@ -31,14 +31,14 @@ export const EditTemplate: React.VFC<EditProps> = ({imageUrl, isPlayground = fal
   const location = useLocation()
   const [templateName, setTemplateName] = React.useState('')
   const {user} = useAuth()
+  const [isOpen, setIsOpen] = React.useState(false)
   const [completeIsOpen, setCompleteIsOpen] = React.useState(false)
   const [shareOption, setShareOption] = React.useState(false)
 
   const [hoverRef, isHovered] = useHover<HTMLImageElement>()
   const {x, y} = useMousePosition()
 
-  const handleComplete = (e: any) => {
-    e.preventDefault()
+  const handleComplete = () => {
     if (!(pins.length <= 0 || templateName === '')) {
       let willSendImage = ''
       if (location.state.image.substr(0, 23) === 'data:image/jpeg;base64,') {
@@ -180,12 +180,34 @@ export const EditTemplate: React.VFC<EditProps> = ({imageUrl, isPlayground = fal
             テンプレートを共有
           </label>
           <br />
-          <button onClick={handleComplete} type="submit" className={styles.completeButton}>
+          <button
+            onClick={(e) => {
+              e.preventDefault()
+              setIsOpen(true)
+            }}
+            type="submit"
+            className={styles.completeButton}>
             <CheckCircleIcon />
             <span>テンプレートを作成する</span>
           </button>
         </form>
       </div>
+      <Dialog open={isOpen} onClose={() => setIsOpen(false)}>
+        <DialogTitle>本当にテンプレートを作成しますか？</DialogTitle>
+        <DialogActions>
+          <button
+            onClick={() => {
+              setIsOpen(false)
+              handleComplete()
+            }}
+            className={styles.button1}>
+            はい
+          </button>
+          <button onClick={() => setIsOpen(false)} className={styles.button2}>
+            いいえ
+          </button>
+        </DialogActions>
+      </Dialog>
       <Dialog
         open={completeIsOpen && !(pins.length <= 0 || templateName === '')}
         PaperProps={{style: {width: '381px', height: '309px', borderRadius: '10px'}}}>

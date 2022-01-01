@@ -20,6 +20,7 @@ const Memorize: React.VFC = () => {
   const [pins, setPins] = React.useState<EmbededPins[]>([])
   const params = useParams()
   const location = useLocation()
+  const [isOpen, setIsOpen] = React.useState(false)
   const [completeIsOpen, setCompleteIsOpen] = React.useState(false)
   const [palaceImage, setPalaceImage] = React.useState('')
   const [flags, setFlags] = React.useState(new Array<boolean>())
@@ -66,11 +67,6 @@ const Memorize: React.VFC = () => {
         })
     }
   }, []) // eslint-disable-line react-hooks/exhaustive-deps
-
-  const handleComplete = (e: any) => {
-    e.preventDefault()
-    setCompleteIsOpen(true)
-  }
 
   const handleClickAway = () => {
     setOpen(false)
@@ -150,11 +146,33 @@ const Memorize: React.VFC = () => {
         </div>
       </ClickAwayListener>
       <div className={styles.form}>
-        <button onClick={handleComplete} type="submit" className={styles.completeButton}>
+        <button
+          onClick={(e) => {
+            e.preventDefault()
+            setIsOpen(true)
+          }}
+          type="submit"
+          className={styles.completeButton}>
           <CheckCircleIcon />
           <span>暗記完了!</span>
         </button>
       </div>
+      <Dialog open={isOpen} onClose={() => setIsOpen(false)}>
+        <DialogTitle>本当に暗記を完了しますか？</DialogTitle>
+        <DialogActions>
+          <button
+            onClick={() => {
+              setIsOpen(false)
+              setCompleteIsOpen(true)
+            }}
+            className={styles.button1}>
+            はい
+          </button>
+          <button onClick={() => setIsOpen(false)} className={styles.button2}>
+            いいえ
+          </button>
+        </DialogActions>
+      </Dialog>
       <Dialog
         open={completeIsOpen && flags.every((value) => value)}
         PaperProps={{style: {width: '381px', height: '309px', borderRadius: '10px'}}}>
@@ -168,11 +186,11 @@ const Memorize: React.VFC = () => {
         </DialogActions>
       </Dialog>
       <Dialog
-        open={completeIsOpen && !flags.every((value) => value)}
+        open={isOpen && !flags.every((value) => value)}
         PaperProps={{style: {width: '381px', height: '309px', borderRadius: '10px'}}}>
         <DialogTitle style={{textAlign: 'center'}}>まだ暗記が終わってません</DialogTitle>
         <DialogActions>
-          <button onClick={() => setCompleteIsOpen(false)} className={styles.button2}>
+          <button onClick={() => setIsOpen(false)} className={styles.button2}>
             戻る
           </button>
         </DialogActions>
