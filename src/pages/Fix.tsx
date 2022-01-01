@@ -26,6 +26,7 @@ export const Fix: React.VFC = () => {
   const [palaceName, setPalaceName] = React.useState('')
   const [hoverRef, isHovered] = useHover<HTMLImageElement>()
   const {x, y} = useMousePosition()
+  const [isOpen, setIsOpen] = React.useState(false)
   const [completeIsOpen, setCompleteIsOpen] = React.useState(false)
   const [shareOption, setShareOption] = React.useState(false)
   const [palaceId, setPalaceId] = React.useState('')
@@ -45,8 +46,7 @@ export const Fix: React.VFC = () => {
       })
   }, []) // eslint-disable-line react-hooks/exhaustive-deps
 
-  const handleComplete = (e: any) => {
-    e.preventDefault()
+  const handleComplete = () => {
     if (!(pins.length <= 0 || palaceName === '')) {
       let willSendImage = ''
       if (location.state.image.substr(0, 23) === 'data:image/jpeg;base64,') {
@@ -192,12 +192,34 @@ export const Fix: React.VFC = () => {
             宮殿を共有
           </label>
           <br />
-          <button onClick={handleComplete} type="submit" className={styles.completeButton}>
+          <button
+            onClick={(e) => {
+              e.preventDefault()
+              setIsOpen(true)
+            }}
+            type="submit"
+            className={styles.completeButton}>
             <CheckCircleIcon />
             <span>記憶の宮殿の修正を完了する</span>
           </button>
         </form>
       </div>
+      <Dialog open={isOpen} onClose={() => setIsOpen(false)}>
+        <DialogTitle>本当に宮殿の修正を完了しますか？</DialogTitle>
+        <DialogActions>
+          <button
+            onClick={() => {
+              setIsOpen(false)
+              handleComplete()
+            }}
+            className={styles.button1}>
+            はい
+          </button>
+          <button onClick={() => setIsOpen(false)} className={styles.button2}>
+            いいえ
+          </button>
+        </DialogActions>
+      </Dialog>
       <Dialog
         open={completeIsOpen && !(pins.length <= 0 || palaceName === '')}
         PaperProps={{style: {width: '381px', height: '309px', borderRadius: '10px'}}}>
