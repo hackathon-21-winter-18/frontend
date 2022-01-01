@@ -158,7 +158,7 @@ const Memorize: React.VFC = () => {
           <span>暗記完了!</span>
         </button>
       </div>
-      <Dialog open={isOpen} onClose={() => setIsOpen(false)}>
+      <Dialog open={isOpen && flags.every((value) => value)} onClose={() => setIsOpen(false)}>
         <DialogTitle>本当に暗記を完了しますか？</DialogTitle>
         <DialogActions>
           <button
@@ -174,15 +174,11 @@ const Memorize: React.VFC = () => {
           </button>
         </DialogActions>
       </Dialog>
-      <Dialog
-        open={completeIsOpen && flags.every((value) => value)}
-        PaperProps={{style: {width: '381px', height: '309px', borderRadius: '10px'}}}>
+      <Dialog open={completeIsOpen} PaperProps={{style: {width: '381px', height: '309px', borderRadius: '10px'}}}>
         <DialogTitle style={{textAlign: 'center'}}>🎉お疲れさまでした🎉</DialogTitle>
         <DialogActions>
-          <button className={styles.button2}>
-            <button onClick={() => navigate('/')} className={styles.button2}>
-              ホームへ戻る
-            </button>
+          <button onClick={() => navigate('/')} className={styles.button2}>
+            ホームへ戻る
           </button>
         </DialogActions>
       </Dialog>
