@@ -4,6 +4,7 @@ import Palace from '../components/Palace'
 import {PalaceType} from '../types'
 import CreateNewPalaceButton from '../components/CreateNewPalaceButton'
 import {getPalace} from '../api/palace'
+import {SortingMyPalacesButton} from '../components/SortingMyPalacesButton'
 
 const Home: React.VFC = () => {
   const [palaces, setPalaces] = useState(new Array<PalaceType>())
@@ -30,7 +31,7 @@ const Home: React.VFC = () => {
       <div className={styles.divider} />
       <ul className={styles.palaceContainer}>
         <CreateNewPalaceButton />
-
+        <SortingMyPalacesButton setPalaces={setPalaces} />
         {listItems}
       </ul>
     </div>

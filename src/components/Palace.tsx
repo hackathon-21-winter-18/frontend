@@ -7,6 +7,8 @@ import CommentIcon from '@mui/icons-material/Comment'
 import Dialog from '@mui/material/Dialog'
 import DialogActions from '@mui/material/DialogActions'
 import DialogTitle from '@mui/material/DialogTitle'
+import GradeIcon from '@mui/icons-material/Grade'
+import ShareIcon from '@mui/icons-material/Share'
 import {deletePalace, putSharePalace} from '../api/palace'
 
 interface PalaceProps {
@@ -20,6 +22,7 @@ const Palace: React.VFC<PalaceProps> = ({num, palace, handleDeletePalace}) => {
   const [deleteIsOpen, setDeleteIsOpen] = useState(false)
   const [shareIsOpen, setShareIsOpen] = useState(false)
   const [share, setShare] = useState(palace.share)
+  const [confirmIsOpen, setConfirmIsOpen] = useState(false)
   const navigate = useNavigate()
 
   function handleDeleteDialog() {
@@ -56,39 +59,35 @@ const Palace: React.VFC<PalaceProps> = ({num, palace, handleDeletePalace}) => {
       {/* <Link to={'/memorize/' + palace.id} className={styles.image}>
         <img src={palace.image} alt={palace.name} />
       </Link> */}
-      <img
-        className={styles.image}
-        src={Extension()}
-        alt={palace.name}
-        onClick={() => navigate('/memorize/' + palace.id, {state: {shared: false}})}
-      />
+      <img className={styles.image} src={Extension()} alt={palace.name} onClick={() => setConfirmIsOpen(true)} />
       <div className={styles.titleContainer}>
         <h1 className={styles.title}>{palace.name}</h1>
         <button className={styles.moreVertIcon} onClick={() => setIsOpen(true)}>
           <MoreVertIcon />
         </button>
       </div>
-      <div className={styles.wordTag}>
-        <CommentIcon className={styles.commentIcon} />
-        {palace.embededPins.length + ' Words'}
+      <div className={styles.tag}>
+        <CommentIcon className={styles.icon} />
+        単語数:{palace.embededPins.length}
       </div>
-      <div>
+      <div className={styles.tag}>
+        <GradeIcon className={styles.icon} />
         <span>保存者数:{palace.savedCount}</span>
       </div>
-      {share ? <span>共有済</span> : <span>未共有</span>}
+      <div className={styles.tag}>
+        <ShareIcon className={styles.icon} />
+        {share ? <span>共有済</span> : <span>未共有</span>}
+      </div>
 
       <Dialog
         open={isOpen}
         onClose={handleDialogClose}
         PaperProps={{style: {width: '381px', height: '309px', borderRadius: '10px'}}}>
         <DialogActions>
-          <button className={styles.button2}>
-            <Link
-              to={'/fix/' + palace.id}
-              state={{image: Extension()}}
-              style={{textDecoration: 'none', color: '#7a8498'}}>
-              宮殿の編集
-            </Link>
+          <button
+            onClick={() => navigate('/fix/' + palace.id, {state: {shared: false, image: Extension()}})}
+            className={styles.button2}>
+            宮殿の編集
           </button>
         </DialogActions>
         <DialogActions>
@@ -122,6 +121,19 @@ const Palace: React.VFC<PalaceProps> = ({num, palace, handleDeletePalace}) => {
               </button>
             </DialogActions>
           </Dialog>
+        </DialogActions>
+      </Dialog>
+      <Dialog open={confirmIsOpen} onClose={() => setConfirmIsOpen(false)}>
+        <DialogTitle>この宮殿の暗記を始めますか？</DialogTitle>
+        <DialogActions>
+          <button
+            onClick={() => navigate('/memorize/' + palace.id, {state: {shared: false}})}
+            className={styles.button1}>
+            はい
+          </button>
+          <button onClick={() => setConfirmIsOpen(false)} className={styles.button2}>
+            いいえ
+          </button>
         </DialogActions>
       </Dialog>
     </div>

@@ -4,6 +4,7 @@ import Template from '../components/Template'
 import {TemplateType} from '../types'
 import CreateNewTemplateButton from '../components/CreateNewTemplateButton'
 import {getTemplate} from '../api/template'
+import {SortingMyTemplatesButton} from '../components/SortingMyTemplatesButton'
 
 const TemplatePage: React.VFC = () => {
   const [templates, setTemplates] = useState(new Array<TemplateType>())
@@ -29,7 +30,7 @@ const TemplatePage: React.VFC = () => {
       <div className={styles.divider} />
       <ul className={styles.templateContainer}>
         <CreateNewTemplateButton />
-
+        <SortingMyTemplatesButton setTemplates={setTemplates} />
         {listItems}
       </ul>
     </div>

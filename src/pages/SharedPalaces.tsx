@@ -4,6 +4,7 @@ import SharedPalace from '../components/SharedPalace'
 import {SharedPalaceType} from '../types'
 import {useLocation, Link} from 'react-router-dom'
 import {getSharedPalace} from '../api/palace'
+import {SortingPublicPalacesButton} from '../components/SortingPublicPalacesButton'
 
 const SharedPalaces: React.VFC = () => {
   const [palaces, setPalaces] = useState(new Array<SharedPalaceType>())
@@ -39,7 +40,11 @@ const SharedPalaces: React.VFC = () => {
         className={pathname === '/sharedTemplates' ? styles.buttonHere : styles.buttonNotHere}>
         Shared Templates
       </Link>
-      <ul className={styles.palaceContainer}>{listItems}</ul>
+
+      <ul className={styles.palaceContainer}>
+        <SortingPublicPalacesButton setPalaces={setPalaces} />
+        {listItems}
+      </ul>
     </div>
   )
 }

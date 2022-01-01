@@ -7,6 +7,8 @@ import CommentIcon from '@mui/icons-material/Comment'
 import Dialog from '@mui/material/Dialog'
 import DialogActions from '@mui/material/DialogActions'
 import DialogTitle from '@mui/material/DialogTitle'
+import GradeIcon from '@mui/icons-material/Grade'
+import ShareIcon from '@mui/icons-material/Share'
 import {deleteTemplate, putShareTemplate} from '../api/template'
 
 interface TemplateProps {
@@ -21,6 +23,7 @@ const Template: React.VFC<TemplateProps> = ({num, template, handleDeleteTemplate
   const [shareIsOpen, setShareIsOpen] = useState(false)
   const [share, setShare] = useState(template.share)
   const navigate = useNavigate()
+  const [confirmIsOpen, setConfirmIsOpen] = useState(false)
 
   function handleDeleteDialog() {
     setDeleteIsOpen(true)
@@ -56,12 +59,7 @@ const Template: React.VFC<TemplateProps> = ({num, template, handleDeleteTemplate
       {/* <Link to={'/memorize/' + palace.id} className={styles.image}>
         <img src={palace.image} alt={palace.name} />
       </Link> */}
-      <img
-        className={styles.image}
-        src={Extension()}
-        alt={template.name}
-        onClick={() => navigate('/fromTemplate/' + template.id, {state: {image: Extension(), shared: true}})}
-      />
+      <img className={styles.image} src={Extension()} alt={template.name} onClick={() => setConfirmIsOpen(true)} />
       <div className={styles.titleContainer}>
         <h1 className={styles.title}>{template.name}</h1>
         <button className={styles.moreVertIcon} onClick={() => setIsOpen(true)}>
@@ -72,10 +70,14 @@ const Template: React.VFC<TemplateProps> = ({num, template, handleDeleteTemplate
         <CommentIcon className={styles.commentIcon} />
         {template.pins.length + ' pins'}
       </div>
-      <div>
+      <div className={styles.tag}>
+        <GradeIcon className={styles.icon} />
         <span>保存者数:{template.savedCount}</span>
       </div>
-      {share ? <span>共有済</span> : <span>未共有</span>}
+      <div className={styles.tag}>
+        <ShareIcon className={styles.icon} />
+        {share ? <span>共有済</span> : <span>未共有</span>}
+      </div>
 
       <Dialog
         open={isOpen}
@@ -120,6 +122,19 @@ const Template: React.VFC<TemplateProps> = ({num, template, handleDeleteTemplate
               </button>
             </DialogActions>
           </Dialog>
+        </DialogActions>
+      </Dialog>
+      <Dialog open={confirmIsOpen} onClose={() => setConfirmIsOpen(false)}>
+        <DialogTitle>このテンプレートから宮殿を作成しますか？</DialogTitle>
+        <DialogActions>
+          <button
+            onClick={() => navigate('/fromTemplate/' + template.id, {state: {image: Extension(), shared: false}})}
+            className={styles.button1}>
+            はい
+          </button>
+          <button onClick={() => setConfirmIsOpen(false)} className={styles.button2}>
+            いいえ
+          </button>
         </DialogActions>
       </Dialog>
     </div>

@@ -4,6 +4,7 @@ import SharedTemplate from '../components/SharedTemplate'
 import {SharedTemplateType} from '../types'
 import {useLocation, Link} from 'react-router-dom'
 import {getSharedTemplate} from '../api/template'
+import {SortingPublicTemplatesButton} from '../components/SortingPublicTemplatesButton'
 
 const SharedTemplates: React.VFC = () => {
   const [templates, setTemplates] = useState(new Array<SharedTemplateType>())
@@ -39,7 +40,11 @@ const SharedTemplates: React.VFC = () => {
         className={pathname === '/sharedTemplates' ? styles.buttonHere : styles.buttonNotHere}>
         Shared Templates
       </Link>
-      <ul className={styles.templateContainer}>{listItems}</ul>
+
+      <ul className={styles.templateContainer}>
+        <SortingPublicTemplatesButton setTemplates={setTemplates} />
+        {listItems}
+      </ul>
     </div>
   )
 }

@@ -26,8 +26,7 @@
 
   cursor: pointer;
 }
-.wordTag {
-  margin-top: 8px;
+.tag {
   padding: 2px 6px;
   background-color: white;
   color: #555d6d;
@@ -36,10 +35,11 @@
   display: inline-flex;
   align-items: flex-end;
 }
-.commentIcon {
+.icon {
   width: 16px !important;
   height: 16px !important;
   margin-right: 4px !important;
+  margin-bottom: 6px;
 }
 
 .button1 {

@@ -6,7 +6,6 @@ import Dialog from '@mui/material/Dialog'
 import CheckCircleIcon from '@mui/icons-material/CheckCircle'
 import DialogActions from '@mui/material/DialogActions'
 import DialogTitle from '@mui/material/DialogTitle'
-import {Link} from 'react-router-dom'
 import {useMousePosition} from '../hooks/useMousePosition'
 import {CustomCursor} from '../components/CustomCursor'
 import {Badge, Box, ClickAwayListener, IconButton, Portal, SxProps} from '@mui/material'
@@ -26,6 +25,7 @@ export const Fix: React.VFC = () => {
   const [palaceName, setPalaceName] = React.useState('')
   const [hoverRef, isHovered] = useHover<HTMLImageElement>()
   const {x, y} = useMousePosition()
+  const [isOpen, setIsOpen] = React.useState(false)
   const [completeIsOpen, setCompleteIsOpen] = React.useState(false)
   const [shareOption, setShareOption] = React.useState(false)
   const [palaceId, setPalaceId] = React.useState('')
@@ -45,8 +45,7 @@ export const Fix: React.VFC = () => {
       })
   }, []) // eslint-disable-line react-hooks/exhaustive-deps
 
-  const handleComplete = (e: any) => {
-    e.preventDefault()
+  const handleComplete = () => {
     if (!(pins.length <= 0 || palaceName === '')) {
       let willSendImage = ''
       if (location.state.image.substr(0, 23) === 'data:image/jpeg;base64,') {
@@ -143,7 +142,7 @@ export const Fix: React.VFC = () => {
           {pinOpen && (
             <Portal>
               <Box sx={boxStyle()}>
-                <FixWordDialog open={pinOpen} deletePin={handleDeletePin} />
+                <AddNewWordDialog open={!!pinOpen} putPin={putPin} deletePin={handleDeletePin} pinContent={pinOpen} />
               </Box>
             </Portal>
           )}
@@ -192,15 +191,35 @@ export const Fix: React.VFC = () => {
             宮殿を共有
           </label>
           <br />
-          <button onClick={handleComplete} type="submit" className={styles.completeButton}>
+          <button
+            onClick={(e) => {
+              e.preventDefault()
+              setIsOpen(true)
+            }}
+            type="submit"
+            className={styles.completeButton}>
             <CheckCircleIcon />
             <span>記憶の宮殿の修正を完了する</span>
           </button>
         </form>
       </div>
-      <Dialog
-        open={completeIsOpen && !(pins.length <= 0 || palaceName === '')}
-        PaperProps={{style: {width: '381px', height: '309px', borderRadius: '10px'}}}>
+      <Dialog open={isOpen && !(pins.length <= 0 || palaceName === '')} onClose={() => setIsOpen(false)}>
+        <DialogTitle>本当に宮殿の修正を完了しますか？</DialogTitle>
+        <DialogActions>
+          <button
+            onClick={() => {
+              setIsOpen(false)
+              handleComplete()
+            }}
+            className={styles.button1}>
+            はい
+          </button>
+          <button onClick={() => setIsOpen(false)} className={styles.button2}>
+            いいえ
+          </button>
+        </DialogActions>
+      </Dialog>
+      <Dialog open={completeIsOpen} PaperProps={{style: {width: '381px', height: '309px', borderRadius: '10px'}}}>
         <DialogTitle style={{textAlign: 'center'}}>🎉宮殿が修正されました🎉</DialogTitle>
         <DialogActions>
           <button
@@ -210,15 +229,13 @@ export const Fix: React.VFC = () => {
           </button>
         </DialogActions>
         <DialogActions>
-          <button className={styles.button2}>
-            <Link to="/" style={{textDecoration: 'none', color: '#7a8498'}}>
-              ホームへ戻る
-            </Link>
+          <button onClick={() => navigate('/')} className={styles.button2}>
+            ホームへ戻る
           </button>
         </DialogActions>
       </Dialog>
       <Dialog
-        open={completeIsOpen && (pins.length <= 0 || palaceName === '')}
+        open={isOpen && (pins.length <= 0 || palaceName === '')}
         PaperProps={{style: {width: '381px', height: '309px', borderRadius: '10px'}}}>
         <DialogTitle style={{textAlign: 'center'}}>
           単語が登録されていないか、宮殿の名前が登録されていません
