@@ -20,6 +20,7 @@ const Palace: React.VFC<PalaceProps> = ({num, palace, handleDeletePalace}) => {
   const [deleteIsOpen, setDeleteIsOpen] = useState(false)
   const [shareIsOpen, setShareIsOpen] = useState(false)
   const [share, setShare] = useState(palace.share)
+  const [confirmIsOpen, setConfirmIsOpen] = useState(false)
   const navigate = useNavigate()
 
   function handleDeleteDialog() {
@@ -56,12 +57,7 @@ const Palace: React.VFC<PalaceProps> = ({num, palace, handleDeletePalace}) => {
       {/* <Link to={'/memorize/' + palace.id} className={styles.image}>
         <img src={palace.image} alt={palace.name} />
       </Link> */}
-      <img
-        className={styles.image}
-        src={Extension()}
-        alt={palace.name}
-        onClick={() => navigate('/memorize/' + palace.id, {state: {shared: false}})}
-      />
+      <img className={styles.image} src={Extension()} alt={palace.name} onClick={() => setConfirmIsOpen(true)} />
       <div className={styles.titleContainer}>
         <h1 className={styles.title}>{palace.name}</h1>
         <button className={styles.moreVertIcon} onClick={() => setIsOpen(true)}>
@@ -122,6 +118,19 @@ const Palace: React.VFC<PalaceProps> = ({num, palace, handleDeletePalace}) => {
               </button>
             </DialogActions>
           </Dialog>
+        </DialogActions>
+      </Dialog>
+      <Dialog open={confirmIsOpen} onClose={() => setConfirmIsOpen(false)}>
+        <DialogTitle>この宮殿の暗記を始めますか？</DialogTitle>
+        <DialogActions>
+          <button
+            onClick={() => navigate('/memorize/' + palace.id, {state: {shared: false}})}
+            className={styles.button1}>
+            はい
+          </button>
+          <button onClick={() => setConfirmIsOpen(false)} className={styles.button2}>
+            いいえ
+          </button>
         </DialogActions>
       </Dialog>
     </div>
