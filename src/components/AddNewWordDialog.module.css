@@ -43,6 +43,3 @@
   color: #313847;
   border-color: #313847;
 }
-.warning::placeholder {
-  color: red;
-}

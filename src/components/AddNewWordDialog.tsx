@@ -14,36 +14,13 @@ const AddNewWordDialog: React.VFC<AddNewWordDialogProps> = ({open, putPin}) => {
   const [word, setWord] = useState('')
   const [place, setPlace] = useState('')
   const [situation, setSituation] = useState('')
-  const [warning, setWarning] = useState(false)
-  //const [randomSituation, setRandomSituation] = useState<string[]>(new Array<string>())
-  const [randomSituation, setRandomSituation] = useState<string[]>([
-    '踊ってる',
-    '食べてる',
-    '歌ってる',
-    '寝てる',
-    '遊んでる',
-    'こっち見てる',
-  ])
 
   const handlePutPin = () => {
-    if (word !== '' && place !== '' && situation !== '') {
-      putPin({
-        word,
-        place,
-        situation,
-      })
-    } else {
-      setWarning(true)
-    }
-  }
-  function getRandomIntInclusive(min: number, max: number) {
-    min = Math.ceil(min)
-    max = Math.floor(max)
-    return Math.floor(Math.random() * (max - min + 1) + min) //The maximum is inclusive and the minimum is inclusive
-  }
-
-  const handleShuffle = () => {
-    setSituation(randomSituation[getRandomIntInclusive(0, randomSituation.length - 1)])
+    putPin({
+      word,
+      place,
+      situation,
+    })
   }
 
   return (
@@ -59,30 +36,17 @@ const AddNewWordDialog: React.VFC<AddNewWordDialogProps> = ({open, putPin}) => {
           </Button>
         </div>
         <div className={styles.inputContainer}>
-          <input
-            type="text"
-            placeholder={warning ? '単語が未設定' : 'パンダ🐼'}
-            onChange={(e) => setWord(e.target.value)}
-            value={word}
-            className={warning ? styles.warning : styles.safe}
-          />
+          <input type="text" placeholder="パンダ🐼" onChange={(e) => setWord(e.target.value)} value={word} />
           が
-          <input
-            type="text"
-            placeholder={warning ? '場所が未設定' : 'リビング'}
-            onChange={(e) => setPlace(e.target.value)}
-            value={place}
-            className={warning ? styles.warning : styles.safe}
-          />
+          <input type="text" placeholder="リビング" onChange={(e) => setPlace(e.target.value)} value={place} />
           で
           <input
             type="text"
-            placeholder={warning ? '状況が未設定' : '笹食ってる'}
+            placeholder="笹食ってる"
             onChange={(e) => setSituation(e.target.value)}
             value={situation}
-            className={warning ? styles.warning : styles.safe}
           />
-          <IconButton color="warning" onClick={handleShuffle}>
+          <IconButton color="warning">
             <ShuffleIcon />
           </IconButton>
         </div>
