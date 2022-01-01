@@ -13,7 +13,7 @@ export const SortingMyPalacesButton = (prop: SortingMyPalacesButtonProp) => {
   const {setPalaces} = prop
   const [order, setOrder] = React.useState('updated_at')
   const [minPins, setMinPins] = React.useState(0)
-  const [maxPins, setMaxPins] = React.useState(10000)
+  const [maxPins, setMaxPins] = React.useState(1)
   const [warning, setWarning] = React.useState(false)
   const handleMinPinsChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     setMinPins(Number(e.target.value))
@@ -45,7 +45,7 @@ export const SortingMyPalacesButton = (prop: SortingMyPalacesButtonProp) => {
     <div className={styles.sorting}>
       <RadioGroup
         aria-label="sort"
-        defaultValue="first_shared_at"
+        defaultValue="updated_at"
         value={order}
         name="radio-buttons-group"
         onChange={handleOrderChange}>

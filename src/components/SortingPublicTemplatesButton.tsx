@@ -13,7 +13,7 @@ export const SortingPublicTemplatesButton = (prop: SortingPublicTemplatesButtonP
   const {setTemplates} = prop
   const [order, setOrder] = React.useState('first_shared_at')
   const [minPins, setMinPins] = React.useState(0)
-  const [maxPins, setMaxPins] = React.useState(10000)
+  const [maxPins, setMaxPins] = React.useState(1)
   const [warning, setWarning] = React.useState(false)
   const handleMinPinsChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     setMinPins(Number(e.target.value))
