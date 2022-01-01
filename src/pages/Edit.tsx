@@ -144,7 +144,6 @@ export const Edit: React.VFC<EditProps> = ({imageUrl, isPlayground = false, xGap
     },
     [pins]
   )
-
   React.useEffect(() => {
     setPins([])
     setPalaceName('')
@@ -175,7 +174,15 @@ export const Edit: React.VFC<EditProps> = ({imageUrl, isPlayground = false, xGap
           {pinOpen && (
             <Portal>
               <Box sx={boxStyle()}>
-                <AddNewWordDialog open={!!pinOpen} putPin={putPin} deletePin={handleDeletePin} pinContent={pinOpen} />
+                <AddNewWordDialog
+                  open={!!pinOpen}
+                  setOpen={setOpen}
+                  putPin={putPin}
+                  deletePin={handleDeletePin}
+                  pinContent={pinOpen}
+                  pins={pins}
+                  setPins={setPins}
+                />
               </Box>
             </Portal>
           )}
@@ -252,6 +259,7 @@ export const Edit: React.VFC<EditProps> = ({imageUrl, isPlayground = false, xGap
           </button>
         </form>
       </div>
+      <button onClick={() => console.log(pins)}>ボタン</button>
       <Dialog open={isOpen} onClose={() => setIsOpen(false)}>
         <DialogTitle>本当に宮殿を作成しますか？</DialogTitle>
         <DialogActions>
