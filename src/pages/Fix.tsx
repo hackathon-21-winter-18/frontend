@@ -142,7 +142,7 @@ export const Fix: React.VFC = () => {
           {pinOpen && (
             <Portal>
               <Box sx={boxStyle()}>
-                <FixWordDialog open={pinOpen} deletePin={handleDeletePin} />
+                <AddNewWordDialog open={!!pinOpen} putPin={putPin} deletePin={handleDeletePin} pinContent={pinOpen} />
               </Box>
             </Portal>
           )}

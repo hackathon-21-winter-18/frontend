@@ -175,7 +175,7 @@ export const Edit: React.VFC<EditProps> = ({imageUrl, isPlayground = false, xGap
           {pinOpen && (
             <Portal>
               <Box sx={boxStyle()}>
-                <FixWordDialog open={pinOpen} deletePin={handleDeletePin} isVisible={mode === 'edit'} />
+                <AddNewWordDialog open={!!pinOpen} putPin={putPin} deletePin={handleDeletePin} pinContent={pinOpen} />
               </Box>
             </Portal>
           )}

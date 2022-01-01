@@ -201,7 +201,7 @@ export const EditFromTemplate: React.VFC<EditProps> = ({imageUrl, isPlayground =
           {pinOpen && (
             <Portal>
               <Box sx={boxStyle()}>
-                <FixWordDialog open={pinOpen} deletePin={handleDeletePin} isVisible={mode === 'edit'} />
+                <AddNewWordDialog open={!!pinOpen} putPin={putPin} deletePin={handleDeletePin} pinContent={pinOpen} />
               </Box>
             </Portal>
           )}

@@ -5,7 +5,6 @@
   margin: 12px 0 16px;
   display: flex;
   align-items: center;
-  justify-content: space-between;
 }
 .question p {
   font-size: 16px;
@@ -16,6 +15,9 @@
 .question div {
   display: flex;
   align-items: center;
+}
+.question > div {
+  flex: 5;
 }
 .pinIcon {
   margin: 0 12px 0 8px;
@@ -42,4 +44,8 @@
   margin-right: 10px;
   color: #313847;
   border-color: #313847;
+  flex: 1;
+}
+.trashButton {
+  flex: 1;
 }
