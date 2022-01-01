@@ -5,3 +5,6 @@
   margin-top: 12px;
   text-align: right;
 }
+.warning {
+  color: red;
+}

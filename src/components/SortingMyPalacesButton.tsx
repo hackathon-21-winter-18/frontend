@@ -14,6 +14,7 @@ export const SortingMyPalacesButton = (prop: SortingMyPalacesButtonProp) => {
   const [order, setOrder] = React.useState('updated_at')
   const [minPins, setMinPins] = React.useState(0)
   const [maxPins, setMaxPins] = React.useState(10000)
+  const [warning, setWarning] = React.useState(false)
   const handleMinPinsChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     setMinPins(Number(e.target.value))
   }
@@ -22,7 +23,7 @@ export const SortingMyPalacesButton = (prop: SortingMyPalacesButtonProp) => {
   }
 
   const handleClick = () => {
-    if (maxPins >= minPins && minPins >= 0) {
+    if (maxPins >= minPins && minPins >= 0 && maxPins > 0) {
       axios
         .get(config() + `/api/palaces/me?sort=${order}&maxpins=${maxPins}&minpins=${minPins}`, {
           withCredentials: true,
@@ -33,6 +34,8 @@ export const SortingMyPalacesButton = (prop: SortingMyPalacesButtonProp) => {
           }
         })
         .catch((err) => console.log(err))
+    } else {
+      setWarning(true)
     }
   }
   const handleOrderChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
@@ -53,6 +56,7 @@ export const SortingMyPalacesButton = (prop: SortingMyPalacesButtonProp) => {
       <Input type="number" value={minPins} onChange={handleMinPinsChange} className={styles.pinNumberInput}></Input>
       <span>～</span>
       <Input type="number" value={maxPins} onChange={handleMaxPinsChange} className={styles.pinNumberInput}></Input>
+      <span className={styles.warning}>{warning ? 'ピンの数指定が不正です' : null}</span>
       <div className={styles.sortingButton}>
         <Button onClick={handleClick}>並び替える</Button>
       </div>
