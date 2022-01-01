@@ -7,6 +7,8 @@ import CommentIcon from '@mui/icons-material/Comment'
 import Dialog from '@mui/material/Dialog'
 import DialogActions from '@mui/material/DialogActions'
 import DialogTitle from '@mui/material/DialogTitle'
+import GradeIcon from '@mui/icons-material/Grade'
+import ShareIcon from '@mui/icons-material/Share'
 import {deleteTemplate, putShareTemplate} from '../api/template'
 
 interface TemplateProps {
@@ -68,10 +70,14 @@ const Template: React.VFC<TemplateProps> = ({num, template, handleDeleteTemplate
         <CommentIcon className={styles.commentIcon} />
         {template.pins.length + ' pins'}
       </div>
-      <div>
+      <div className={styles.tag}>
+        <GradeIcon className={styles.icon} />
         <span>保存者数:{template.savedCount}</span>
       </div>
-      {share ? <span>共有済</span> : <span>未共有</span>}
+      <div className={styles.tag}>
+        <ShareIcon className={styles.icon} />
+        {share ? <span>共有済</span> : <span>未共有</span>}
+      </div>
 
       <Dialog
         open={isOpen}

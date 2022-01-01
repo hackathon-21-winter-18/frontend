@@ -4,6 +4,8 @@ import styles from './SharedTemplate.module.css'
 import {SharedTemplateType} from '../types'
 import MoreVertIcon from '@mui/icons-material/MoreVert'
 import CommentIcon from '@mui/icons-material/Comment'
+import AccessibilityNewIcon from '@mui/icons-material/AccessibilityNew'
+import GradeIcon from '@mui/icons-material/Grade'
 import Dialog from '@mui/material/Dialog'
 import useAuth from '../components/UserProvider'
 import {DialogActions, DialogTitle} from '@mui/material'
@@ -72,14 +74,16 @@ const SharedTemplate: React.VFC<TemplateProps> = ({num, template, handleDeleteTe
           <MoreVertIcon />
         </button>
       </div>
-      <div className={styles.wordTag}>
-        <CommentIcon className={styles.commentIcon} />
-        {template.pins.length + ' pins'}
+      <div className={styles.tag}>
+        <CommentIcon className={styles.icon} />
+        単語数:{template.pins.length}
       </div>
-      <div>
+      <div className={styles.tag}>
+        <AccessibilityNewIcon className={styles.icon} />
         <span>作成者:{template.createrName}</span>
       </div>
-      <div>
+      <div className={styles.tag}>
+        <GradeIcon className={styles.icon} />
         <span>保存者数:{template.savedCount}</span>
       </div>
 

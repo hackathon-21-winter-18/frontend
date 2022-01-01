@@ -64,8 +64,8 @@ export const Edit: React.VFC<EditProps> = ({imageUrl, isPlayground = false, xGap
       postPalace(data, (res: any) => {
         if (shareOption) {
           putSharePalace(res.data.id, shareOption)
-          setPalaceId(res.data.id)
         }
+        setPalaceId(res.data.id)
       })
 
       if (templateOption) {
