@@ -22,17 +22,18 @@ export const SortingMyPalacesButton = (prop: SortingMyPalacesButtonProp) => {
   }
 
   const handleClick = () => {
-    axios
-      .get(config() + `/api/palaces/me?sort=${order}&maxpins=${maxPins}&minpins=${minPins}`, {
-        withCredentials: true,
-      })
-      .then((res) => {
-        if (res.data.length !== 0) {
-          setPalaces(res.data)
-          console.log(res.data)
-        }
-      })
-      .catch((error) => console.log(error))
+    if (maxPins >= minPins && minPins >= 0) {
+      axios
+        .get(config() + `/api/palaces/me?sort=${order}&maxpins=${maxPins}&minpins=${minPins}`, {
+          withCredentials: true,
+        })
+        .then((res) => {
+          if (res.data.length !== 0) {
+            setPalaces(res.data)
+          }
+        })
+        .catch((err) => console.log(err))
+    }
   }
   const handleOrderChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     setOrder(e.target.value)

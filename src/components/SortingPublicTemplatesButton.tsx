@@ -22,17 +22,18 @@ export const SortingPublicTemplatesButton = (prop: SortingPublicTemplatesButtonP
   }
 
   const handleClick = () => {
-    axios
-      .get(config() + `/api/templates?sort=${order}&maxpins=${maxPins}&minpins=${minPins}`, {
-        withCredentials: true,
-      })
-      .then((res) => {
-        if (res.data.length !== 0) {
-          setTemplates(res.data)
-          console.log(res.data)
-        }
-      })
-      .catch((error) => console.log(error))
+    if (maxPins >= minPins && minPins >= 0) {
+      axios
+        .get(config() + `/api/templates?sort=${order}&maxpins=${maxPins}&minpins=${minPins}`, {
+          withCredentials: true,
+        })
+        .then((res) => {
+          if (res.data.length !== 0) {
+            setTemplates(res.data)
+          }
+        })
+        .catch((err) => console.log(err))
+    }
   }
   const handleOrderChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     setOrder(e.target.value)
@@ -47,7 +48,7 @@ export const SortingPublicTemplatesButton = (prop: SortingPublicTemplatesButtonP
         onChange={handleOrderChange}>
         <FormControlLabel label="最初の公開日時が新しい順" control={<Radio />} value="first_shared_at" />
         <FormControlLabel label="公開日時が新しい順" control={<Radio />} value="shared_at" />
-        <FormControlLabel label="保存したユーザーが多い順" control={<Radio />} value="savedcount" />
+        <FormControlLabel label="保存したユーザーが多い順" control={<Radio />} value="savedCount" />
       </RadioGroup>
       <span>ピンの数: </span>
       <Input type="number" value={minPins} onChange={handleMinPinsChange} className={styles.pinNumberInput}></Input>
