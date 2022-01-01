@@ -11,7 +11,7 @@ interface SortingMyTemplatesButtonProp {
 }
 export const SortingMyTemplatesButton = (props: SortingMyTemplatesButtonProp) => {
   const {setTemplates} = props
-  const [order, setOrder] = React.useState('first_shared_at')
+  const [order, setOrder] = React.useState('updated_at')
   const [minPins, setMinPins] = React.useState(0)
   const [maxPins, setMaxPins] = React.useState(10000)
   const [warning, setWarning] = React.useState(false)
@@ -45,7 +45,7 @@ export const SortingMyTemplatesButton = (props: SortingMyTemplatesButtonProp) =>
     <div>
       <RadioGroup
         aria-label="sort"
-        defaultValue="first_shared_at"
+        defaultValue="updated_at"
         value={order}
         name="radio-buttons-group"
         onChange={handleOrderChange}>
