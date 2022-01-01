@@ -1,5 +1,5 @@
 import React, {createContext, useContext, useEffect, useMemo, useState} from 'react'
-import {postLogin, postSignUp, getCurrentUser} from '../api/registration'
+import {postLogin, postSignUp, getCurrentUser, postLogout} from '../api/registration'
 import Loading from '../pages/Loading'
 import {UserRegistration} from '../types'
 
@@ -47,11 +47,14 @@ export const UserProvider: React.FC = ({children}) => {
     setLoading(false)
   }
   const logout = () => {
+    setLoading(true)
+    postLogout()
     setUser({
       name: '',
       id: '',
       auth: false,
     })
+    setLoading(false)
   }
   const memoedValue = useMemo(
     () => ({

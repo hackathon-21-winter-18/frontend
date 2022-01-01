@@ -22,3 +22,7 @@ export const getCurrentUser = async () => {
   })
   return res.data
 }
+
+export const postLogout = async () => {
+  await axios.post(endpoint + '/api/oauth/logout', {}, {withCredentials: true})
+}
