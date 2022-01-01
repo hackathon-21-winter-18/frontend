@@ -5,7 +5,6 @@ import Dialog from '@mui/material/Dialog'
 import CheckCircleIcon from '@mui/icons-material/CheckCircle'
 import DialogActions from '@mui/material/DialogActions'
 import DialogTitle from '@mui/material/DialogTitle'
-import {Link} from 'react-router-dom'
 import {useMousePosition} from '../hooks/useMousePosition'
 import {CustomCursor} from '../components/CustomCursor'
 import {Badge, ClickAwayListener, IconButton, SxProps} from '@mui/material'
@@ -13,6 +12,7 @@ import {useHover} from '../hooks/useHover'
 import pinIcon from '../assets/pin.svg'
 import {getTemplate, putShareTemplate, putTemplate} from '../api/template'
 import {Pin} from '../types'
+import {useNavigate} from 'react-router-dom'
 
 export const FixTemplate: React.VFC = () => {
   const [open, setOpen] = React.useState<number | boolean>(false)
@@ -20,9 +20,11 @@ export const FixTemplate: React.VFC = () => {
   const [pins, setPins] = React.useState<Pin[]>([])
   const params = useParams()
   const location = useLocation()
+  const navigate = useNavigate()
   const [templateName, setTemplateName] = React.useState('')
   const [hoverRef, isHovered] = useHover<HTMLImageElement>()
   const {x, y} = useMousePosition()
+  const [isOpen, setIsOpen] = React.useState(false)
   const [completeIsOpen, setCompleteIsOpen] = React.useState(false)
   const [shareOption, setShareOption] = React.useState(false)
   const [templateId, setTemplateId] = React.useState('')
@@ -55,8 +57,7 @@ export const FixTemplate: React.VFC = () => {
     [open, pinOpen] // eslint-disable-line react-hooks/exhaustive-deps
   )
 
-  const handleComplete = (e: any) => {
-    e.preventDefault()
+  const handleComplete = () => {
     if (!(pins.length <= 0 || templateName === '')) {
       let willSendImage = ''
       if (location.state.image.substr(0, 23) === 'data:image/jpeg;base64,') {
@@ -171,26 +172,44 @@ export const FixTemplate: React.VFC = () => {
             テンプレートを共有
           </label>
           <br />
-          <button onClick={handleComplete} type="submit" className={styles.completeButton}>
+          <button
+            onClick={(e) => {
+              e.preventDefault()
+              setIsOpen(true)
+            }}
+            type="submit"
+            className={styles.completeButton}>
             <CheckCircleIcon />
             <span>テンプレートの修正を完了する</span>
           </button>
         </form>
       </div>
-      <Dialog
-        open={completeIsOpen && !(pins.length <= 0 || templateName === '')}
-        PaperProps={{style: {width: '381px', height: '309px', borderRadius: '10px'}}}>
+      <Dialog open={isOpen && !(pins.length <= 0 || templateName === '')} onClose={() => setIsOpen(false)}>
+        <DialogTitle>本当にテンプレートの修正を完了しますか？</DialogTitle>
+        <DialogActions>
+          <button
+            onClick={() => {
+              setIsOpen(false)
+              handleComplete()
+            }}
+            className={styles.button1}>
+            はい
+          </button>
+          <button onClick={() => setIsOpen(false)} className={styles.button2}>
+            いいえ
+          </button>
+        </DialogActions>
+      </Dialog>
+      <Dialog open={completeIsOpen} PaperProps={{style: {width: '381px', height: '309px', borderRadius: '10px'}}}>
         <DialogTitle style={{textAlign: 'center'}}>🎉テンプレートが修正されました🎉</DialogTitle>
         <DialogActions>
-          <button className={styles.button2}>
-            <Link to="/" style={{textDecoration: 'none', color: '#7a8498'}}>
-              ホームへ戻る
-            </Link>
+          <button onClick={() => navigate('/')} className={styles.button2}>
+            ホームへ戻る
           </button>
         </DialogActions>
       </Dialog>
       <Dialog
-        open={completeIsOpen && (pins.length <= 0 || templateName === '')}
+        open={isOpen && (pins.length <= 0 || templateName === '')}
         PaperProps={{style: {width: '381px', height: '309px', borderRadius: '10px'}}}>
         <DialogTitle style={{textAlign: 'center'}}>
           ピンが登録されていないか、テンプレートの名前が登録されていません

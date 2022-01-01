@@ -1,6 +1,6 @@
 import * as React from 'react'
 import styles from './Edit.module.css'
-import {Link} from 'react-router-dom'
+import {useNavigate} from 'react-router-dom'
 import {useParams, useLocation} from 'react-router'
 import {useMousePosition} from '../hooks/useMousePosition'
 import {Badge, Box, ClickAwayListener, IconButton, Portal, SxProps} from '@mui/material'
@@ -20,6 +20,8 @@ const Memorize: React.VFC = () => {
   const [pins, setPins] = React.useState<EmbededPins[]>([])
   const params = useParams()
   const location = useLocation()
+  const navigate = useNavigate()
+  const [isOpen, setIsOpen] = React.useState(false)
   const [completeIsOpen, setCompleteIsOpen] = React.useState(false)
   const [palaceImage, setPalaceImage] = React.useState('')
   const [flags, setFlags] = React.useState(new Array<boolean>())
@@ -66,11 +68,6 @@ const Memorize: React.VFC = () => {
         })
     }
   }, []) // eslint-disable-line react-hooks/exhaustive-deps
-
-  const handleComplete = (e: any) => {
-    e.preventDefault()
-    setCompleteIsOpen(true)
-  }
 
   const handleClickAway = () => {
     setOpen(false)
@@ -150,29 +147,51 @@ const Memorize: React.VFC = () => {
         </div>
       </ClickAwayListener>
       <div className={styles.form}>
-        <button onClick={handleComplete} type="submit" className={styles.completeButton}>
+        <button
+          onClick={(e) => {
+            e.preventDefault()
+            setIsOpen(true)
+          }}
+          type="submit"
+          className={styles.completeButton}>
           <CheckCircleIcon />
           <span>暗記完了!</span>
         </button>
       </div>
+      <Dialog open={isOpen} onClose={() => setIsOpen(false)}>
+        <DialogTitle>本当に暗記を完了しますか？</DialogTitle>
+        <DialogActions>
+          <button
+            onClick={() => {
+              setIsOpen(false)
+              setCompleteIsOpen(true)
+            }}
+            className={styles.button1}>
+            はい
+          </button>
+          <button onClick={() => setIsOpen(false)} className={styles.button2}>
+            いいえ
+          </button>
+        </DialogActions>
+      </Dialog>
       <Dialog
         open={completeIsOpen && flags.every((value) => value)}
         PaperProps={{style: {width: '381px', height: '309px', borderRadius: '10px'}}}>
         <DialogTitle style={{textAlign: 'center'}}>🎉お疲れさまでした🎉</DialogTitle>
         <DialogActions>
           <button className={styles.button2}>
-            <Link to="/" style={{textDecoration: 'none', color: '#7a8498'}}>
+            <button onClick={() => navigate('/')} className={styles.button2}>
               ホームへ戻る
-            </Link>
+            </button>
           </button>
         </DialogActions>
       </Dialog>
       <Dialog
-        open={completeIsOpen && !flags.every((value) => value)}
+        open={isOpen && !flags.every((value) => value)}
         PaperProps={{style: {width: '381px', height: '309px', borderRadius: '10px'}}}>
         <DialogTitle style={{textAlign: 'center'}}>まだ暗記が終わってません</DialogTitle>
         <DialogActions>
-          <button onClick={() => setCompleteIsOpen(false)} className={styles.button2}>
+          <button onClick={() => setIsOpen(false)} className={styles.button2}>
             戻る
           </button>
         </DialogActions>

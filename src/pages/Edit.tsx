@@ -1,6 +1,5 @@
 import * as React from 'react'
 import styles from './Edit.module.css'
-import {Link} from 'react-router-dom'
 import {Pin} from '../types'
 import {useLocation, useNavigate} from 'react-router'
 import AddNewWordDialog from '../components/AddNewWordDialog'
@@ -36,6 +35,7 @@ export const Edit: React.VFC<EditProps> = ({imageUrl, isPlayground = false, xGap
   const [mode, setMode] = React.useState<Mode>('edit')
   const [palaceName, setPalaceName] = React.useState('')
   const [palaceId, setPalaceId] = React.useState('')
+  const [isOpen, setIsOpen] = React.useState(false)
   const [completeIsOpen, setCompleteIsOpen] = React.useState(false)
   const [shareOption, setShareOption] = React.useState(false)
   const [templateOption, setTemplateOption] = React.useState(false)
@@ -47,8 +47,7 @@ export const Edit: React.VFC<EditProps> = ({imageUrl, isPlayground = false, xGap
   const [hoverRef, isHovered] = useHover<HTMLImageElement>()
   const {x, y} = useMousePosition()
 
-  const handleComplete = (e: any) => {
-    e.preventDefault()
+  const handleComplete = () => {
     if (!isPlayground && !(pins.length <= 0 || palaceName === '')) {
       let willSendImage = ''
       if (location.state.image.substr(0, 23) === 'data:image/jpeg;base64,') {
@@ -241,12 +240,34 @@ export const Edit: React.VFC<EditProps> = ({imageUrl, isPlayground = false, xGap
             テンプレートとして共有
           </label>
           <br />
-          <button onClick={handleComplete} type="submit" className={styles.completeButton}>
+          <button
+            onClick={(e) => {
+              e.preventDefault()
+              setIsOpen(true)
+            }}
+            type="submit"
+            className={styles.completeButton}>
             <CheckCircleIcon />
             <span>記憶の宮殿を作成する</span>
           </button>
         </form>
       </div>
+      <Dialog open={isOpen} onClose={() => setIsOpen(false)}>
+        <DialogTitle>本当に宮殿を作成しますか？</DialogTitle>
+        <DialogActions>
+          <button
+            onClick={() => {
+              setIsOpen(false)
+              handleComplete()
+            }}
+            className={styles.button1}>
+            はい
+          </button>
+          <button onClick={() => setIsOpen(false)} className={styles.button2}>
+            いいえ
+          </button>
+        </DialogActions>
+      </Dialog>
       <Dialog
         open={completeIsOpen && !isPlayground && !(pins.length <= 0 || palaceName === '')}
         PaperProps={{style: {width: '381px', height: '309px', borderRadius: '10px'}}}>
@@ -259,10 +280,8 @@ export const Edit: React.VFC<EditProps> = ({imageUrl, isPlayground = false, xGap
           </button>
         </DialogActions>
         <DialogActions>
-          <button className={styles.button2}>
-            <Link to="/" style={{textDecoration: 'none', color: '#7a8498'}}>
-              ホームへ戻る
-            </Link>
+          <button onClick={() => navigate('/')} className={styles.button2}>
+            ホームへ戻る
           </button>
         </DialogActions>
       </Dialog>

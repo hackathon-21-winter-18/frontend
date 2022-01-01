@@ -23,6 +23,7 @@ const SharedPalace: React.VFC<PalaceProps> = ({num, palace, deletePalace}) => {
   const navigate = useNavigate()
   const {user} = useAuth()
   const [shareIsOpen, setShareIsOpen] = useState(false)
+  const [confirmIsOpen, setConfirmIsOpen] = useState(false)
 
   function handleSaveDialog() {
     setSaveIsOpen(true)
@@ -65,12 +66,7 @@ const SharedPalace: React.VFC<PalaceProps> = ({num, palace, deletePalace}) => {
       {/* <Link to={'/memorize/' + palace.id} className={styles.image}>
         <img src={palace.image} alt={palace.name} />
       </Link> */}
-      <img
-        className={styles.image}
-        src={Extension()}
-        alt={palace.name}
-        onClick={() => navigate('/memorize/' + palace.id, {state: {shared: true}})}
-      />
+      <img className={styles.image} src={Extension()} alt={palace.name} onClick={() => setConfirmIsOpen(true)} />
       {/*stateによって変える*/}
       <div className={styles.titleContainer}>
         <h1 className={styles.title}>{palace.name}</h1>
@@ -125,6 +121,19 @@ const SharedPalace: React.VFC<PalaceProps> = ({num, palace, deletePalace}) => {
               </button>
             </DialogActions>
           </Dialog>
+        </DialogActions>
+      </Dialog>
+      <Dialog open={confirmIsOpen} onClose={() => setConfirmIsOpen(false)}>
+        <DialogTitle>この宮殿の暗記を始めますか？</DialogTitle>
+        <DialogActions>
+          <button
+            onClick={() => navigate('/memorize/' + palace.id, {state: {shared: true}})}
+            className={styles.button1}>
+            はい
+          </button>
+          <button onClick={() => setConfirmIsOpen(false)} className={styles.button2}>
+            いいえ
+          </button>
         </DialogActions>
       </Dialog>
     </div>

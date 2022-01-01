@@ -1,6 +1,5 @@
 import * as React from 'react'
 import styles from './Edit.module.css'
-import {Link} from 'react-router-dom'
 import {useParams, useLocation, useNavigate} from 'react-router'
 import AddNewWordDialog from '../components/AddNewWordDialog'
 import useAuth from '../components/UserProvider'
@@ -35,6 +34,7 @@ export const EditFromTemplate: React.VFC<EditProps> = ({imageUrl, isPlayground =
   const [palaceName, setPalaceName] = React.useState('')
   const [shareOption, setShareOption] = React.useState(false)
   const {user} = useAuth()
+  const [isOpen, setIsOpen] = React.useState(false)
   const [completeIsOpen, setCompleteIsOpen] = React.useState(false)
   const navigate = useNavigate()
   const params = useParams()
@@ -94,8 +94,7 @@ export const EditFromTemplate: React.VFC<EditProps> = ({imageUrl, isPlayground =
     }
   }, []) // eslint-disable-line react-hooks/exhaustive-deps
 
-  const handleComplete = (e: any) => {
-    e.preventDefault()
+  const handleComplete = () => {
     if (!(pins.length <= 0 || palaceName === '')) {
       let data
       if (location.state.image.substr(0, 23) === 'data:image/jpeg;base64,') {
@@ -256,15 +255,35 @@ export const EditFromTemplate: React.VFC<EditProps> = ({imageUrl, isPlayground =
             宮殿を共有
           </label>
           <br />
-          <button onClick={handleComplete} type="submit" className={styles.completeButton}>
+          <button
+            onClick={(e) => {
+              e.preventDefault()
+              setIsOpen(true)
+            }}
+            type="submit"
+            className={styles.completeButton}>
             <CheckCircleIcon />
             <span>記憶の宮殿を作成する</span>
           </button>
         </form>
       </div>
-      <Dialog
-        open={completeIsOpen && !(pins.length <= 0 || palaceName === '')}
-        PaperProps={{style: {width: '381px', height: '309px', borderRadius: '10px'}}}>
+      <Dialog open={isOpen && !(pins.length <= 0 || palaceName === '')} onClose={() => setIsOpen(false)}>
+        <DialogTitle>本当に宮殿を作成しますか？</DialogTitle>
+        <DialogActions>
+          <button
+            onClick={() => {
+              setIsOpen(false)
+              handleComplete()
+            }}
+            className={styles.button1}>
+            はい
+          </button>
+          <button onClick={() => setIsOpen(false)} className={styles.button2}>
+            いいえ
+          </button>
+        </DialogActions>
+      </Dialog>
+      <Dialog open={completeIsOpen} PaperProps={{style: {width: '381px', height: '309px', borderRadius: '10px'}}}>
         <DialogTitle style={{textAlign: 'center'}}>🎉宮殿が完成しました🎉</DialogTitle>
         <DialogActions>
           <button
@@ -274,21 +293,19 @@ export const EditFromTemplate: React.VFC<EditProps> = ({imageUrl, isPlayground =
           </button>
         </DialogActions>
         <DialogActions>
-          <button className={styles.button2}>
-            <Link to="/" style={{textDecoration: 'none', color: '#7a8498'}}>
-              ホームへ戻る
-            </Link>
+          <button onClick={() => navigate('/')} className={styles.button2}>
+            ホームへ戻る
           </button>
         </DialogActions>
       </Dialog>
       <Dialog
-        open={completeIsOpen && (pins.length <= 0 || palaceName === '')}
+        open={isOpen && (pins.length <= 0 || palaceName === '')}
         PaperProps={{style: {width: '381px', height: '309px', borderRadius: '10px'}}}>
         <DialogTitle style={{textAlign: 'center'}}>
           単語が登録されていないか、宮殿の名前が登録されていません
         </DialogTitle>
         <DialogActions>
-          <button onClick={() => setCompleteIsOpen(false)} className={styles.button2}>
+          <button onClick={() => setIsOpen(false)} className={styles.button2}>
             戻る
           </button>
         </DialogActions>
