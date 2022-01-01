@@ -1,6 +1,6 @@
 import * as React from 'react'
 import styles from './Edit.module.css'
-import {Link} from 'react-router-dom'
+import {useNavigate} from 'react-router-dom'
 import {Pin} from '../types'
 import {useLocation} from 'react-router'
 import useAuth from '../components/UserProvider'
@@ -34,6 +34,7 @@ export const EditTemplate: React.VFC<EditProps> = ({imageUrl, isPlayground = fal
   const [isOpen, setIsOpen] = React.useState(false)
   const [completeIsOpen, setCompleteIsOpen] = React.useState(false)
   const [shareOption, setShareOption] = React.useState(false)
+  const navigate = useNavigate()
 
   const [hoverRef, isHovered] = useHover<HTMLImageElement>()
   const {x, y} = useMousePosition()
@@ -192,7 +193,7 @@ export const EditTemplate: React.VFC<EditProps> = ({imageUrl, isPlayground = fal
           </button>
         </form>
       </div>
-      <Dialog open={isOpen} onClose={() => setIsOpen(false)}>
+      <Dialog open={isOpen && !(pins.length <= 0 || templateName === '')} onClose={() => setIsOpen(false)}>
         <DialogTitle>本当にテンプレートを作成しますか？</DialogTitle>
         <DialogActions>
           <button
@@ -208,20 +209,16 @@ export const EditTemplate: React.VFC<EditProps> = ({imageUrl, isPlayground = fal
           </button>
         </DialogActions>
       </Dialog>
-      <Dialog
-        open={completeIsOpen && !(pins.length <= 0 || templateName === '')}
-        PaperProps={{style: {width: '381px', height: '309px', borderRadius: '10px'}}}>
+      <Dialog open={completeIsOpen} PaperProps={{style: {width: '381px', height: '309px', borderRadius: '10px'}}}>
         <DialogTitle style={{textAlign: 'center'}}>🎉テンプレートが完成しました🎉</DialogTitle>
         <DialogActions>
-          <button className={styles.button2}>
-            <Link to="/" style={{textDecoration: 'none', color: '#7a8498'}}>
-              ホームへ戻る
-            </Link>
+          <button onClick={() => navigate('/')} className={styles.button2}>
+            ホームへ戻る
           </button>
         </DialogActions>
       </Dialog>
       <Dialog
-        open={completeIsOpen && (pins.length <= 0 || templateName === '')}
+        open={isOpen && (pins.length <= 0 || templateName === '')}
         PaperProps={{style: {width: '381px', height: '309px', borderRadius: '10px'}}}>
         <DialogTitle style={{textAlign: 'center'}}>
           ピンが登録されていないか、テンプレートの名前が登録されていません

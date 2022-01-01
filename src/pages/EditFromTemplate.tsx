@@ -1,6 +1,5 @@
 import * as React from 'react'
 import styles from './Edit.module.css'
-import {Link} from 'react-router-dom'
 import {useParams, useLocation, useNavigate} from 'react-router'
 import AddNewWordDialog from '../components/AddNewWordDialog'
 import useAuth from '../components/UserProvider'
@@ -294,10 +293,8 @@ export const EditFromTemplate: React.VFC<EditProps> = ({imageUrl, isPlayground =
           </button>
         </DialogActions>
         <DialogActions>
-          <button className={styles.button2}>
-            <Link to="/" style={{textDecoration: 'none', color: '#7a8498'}}>
-              ホームへ戻る
-            </Link>
+          <button onClick={() => navigate('/')} className={styles.button2}>
+            ホームへ戻る
           </button>
         </DialogActions>
       </Dialog>

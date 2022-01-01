@@ -78,13 +78,10 @@ const Palace: React.VFC<PalaceProps> = ({num, palace, handleDeletePalace}) => {
         onClose={handleDialogClose}
         PaperProps={{style: {width: '381px', height: '309px', borderRadius: '10px'}}}>
         <DialogActions>
-          <button className={styles.button2}>
-            <Link
-              to={'/fix/' + palace.id}
-              state={{image: Extension()}}
-              style={{textDecoration: 'none', color: '#7a8498'}}>
-              宮殿の編集
-            </Link>
+          <button
+            onClick={() => navigate('/fix/' + palace.id, {state: {shared: false, image: Extension()}})}
+            className={styles.button2}>
+            宮殿の編集
           </button>
         </DialogActions>
         <DialogActions>

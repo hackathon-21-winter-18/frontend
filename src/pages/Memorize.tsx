@@ -1,6 +1,6 @@
 import * as React from 'react'
 import styles from './Edit.module.css'
-import {Link} from 'react-router-dom'
+import {useNavigate} from 'react-router-dom'
 import {useParams, useLocation} from 'react-router'
 import {useMousePosition} from '../hooks/useMousePosition'
 import {Badge, Box, ClickAwayListener, IconButton, Portal, SxProps} from '@mui/material'
@@ -20,6 +20,7 @@ const Memorize: React.VFC = () => {
   const [pins, setPins] = React.useState<EmbededPins[]>([])
   const params = useParams()
   const location = useLocation()
+  const navigate = useNavigate()
   const [isOpen, setIsOpen] = React.useState(false)
   const [completeIsOpen, setCompleteIsOpen] = React.useState(false)
   const [palaceImage, setPalaceImage] = React.useState('')
@@ -179,9 +180,9 @@ const Memorize: React.VFC = () => {
         <DialogTitle style={{textAlign: 'center'}}>🎉お疲れさまでした🎉</DialogTitle>
         <DialogActions>
           <button className={styles.button2}>
-            <Link to="/" style={{textDecoration: 'none', color: '#7a8498'}}>
+            <button onClick={() => navigate('/')} className={styles.button2}>
               ホームへ戻る
-            </Link>
+            </button>
           </button>
         </DialogActions>
       </Dialog>

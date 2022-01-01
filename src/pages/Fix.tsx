@@ -6,7 +6,6 @@ import Dialog from '@mui/material/Dialog'
 import CheckCircleIcon from '@mui/icons-material/CheckCircle'
 import DialogActions from '@mui/material/DialogActions'
 import DialogTitle from '@mui/material/DialogTitle'
-import {Link} from 'react-router-dom'
 import {useMousePosition} from '../hooks/useMousePosition'
 import {CustomCursor} from '../components/CustomCursor'
 import {Badge, Box, ClickAwayListener, IconButton, Portal, SxProps} from '@mui/material'
@@ -204,7 +203,7 @@ export const Fix: React.VFC = () => {
           </button>
         </form>
       </div>
-      <Dialog open={isOpen} onClose={() => setIsOpen(false)}>
+      <Dialog open={isOpen && !(pins.length <= 0 || palaceName === '')} onClose={() => setIsOpen(false)}>
         <DialogTitle>本当に宮殿の修正を完了しますか？</DialogTitle>
         <DialogActions>
           <button
@@ -220,9 +219,7 @@ export const Fix: React.VFC = () => {
           </button>
         </DialogActions>
       </Dialog>
-      <Dialog
-        open={completeIsOpen && !(pins.length <= 0 || palaceName === '')}
-        PaperProps={{style: {width: '381px', height: '309px', borderRadius: '10px'}}}>
+      <Dialog open={completeIsOpen} PaperProps={{style: {width: '381px', height: '309px', borderRadius: '10px'}}}>
         <DialogTitle style={{textAlign: 'center'}}>🎉宮殿が修正されました🎉</DialogTitle>
         <DialogActions>
           <button
@@ -232,15 +229,13 @@ export const Fix: React.VFC = () => {
           </button>
         </DialogActions>
         <DialogActions>
-          <button className={styles.button2}>
-            <Link to="/" style={{textDecoration: 'none', color: '#7a8498'}}>
-              ホームへ戻る
-            </Link>
+          <button onClick={() => navigate('/')} className={styles.button2}>
+            ホームへ戻る
           </button>
         </DialogActions>
       </Dialog>
       <Dialog
-        open={completeIsOpen && (pins.length <= 0 || palaceName === '')}
+        open={isOpen && (pins.length <= 0 || palaceName === '')}
         PaperProps={{style: {width: '381px', height: '309px', borderRadius: '10px'}}}>
         <DialogTitle style={{textAlign: 'center'}}>
           単語が登録されていないか、宮殿の名前が登録されていません
