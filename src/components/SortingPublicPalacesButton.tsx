@@ -32,6 +32,7 @@ export const SortingPublicPalacesButton = (prop: SortingPublicPalacesButtonProp)
           }
         })
         .catch((err) => console.log(err))
+      setWarning(false)
     } else {
       setWarning(true)
     }

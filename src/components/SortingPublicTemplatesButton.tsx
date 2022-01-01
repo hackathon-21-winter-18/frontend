@@ -34,6 +34,7 @@ export const SortingPublicTemplatesButton = (prop: SortingPublicTemplatesButtonP
           }
         })
         .catch((err) => console.log(err))
+      setWarning(false)
     } else {
       setWarning(true)
     }

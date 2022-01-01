@@ -34,6 +34,7 @@ export const SortingMyPalacesButton = (prop: SortingMyPalacesButtonProp) => {
           }
         })
         .catch((err) => console.log(err))
+      setWarning(false)
     } else {
       setWarning(true)
     }

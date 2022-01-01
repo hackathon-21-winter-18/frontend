@@ -34,6 +34,7 @@ export const SortingMyTemplatesButton = (props: SortingMyTemplatesButtonProp) =>
           }
         })
         .catch((err) => console.log(err))
+      setWarning(false)
     } else {
       setWarning(true)
     }
