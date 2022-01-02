@@ -7,6 +7,7 @@ import {Badge, Box, ClickAwayListener, IconButton, Portal, SxProps} from '@mui/m
 import {useHover} from '../hooks/useHover'
 import {EmbededPins} from '../types'
 import pinIcon from '../assets/pin.svg'
+import greenPinIcon from '../assets/greenPin.svg'
 import {FixWordDialog} from '../components/FixWordDialog'
 import Dialog from '@mui/material/Dialog'
 import CheckCircleIcon from '@mui/icons-material/CheckCircle'
@@ -14,6 +15,7 @@ import DialogActions from '@mui/material/DialogActions'
 import DialogTitle from '@mui/material/DialogTitle'
 import {getPalace, getSharedPalace} from '../api/palace'
 import Popover from '@mui/material/Popover'
+import HidableWord from '../components/HidableWord'
 
 const Memorize: React.VFC = () => {
   const [open, setOpen] = React.useState<number | boolean>(false)
@@ -109,12 +111,26 @@ const Memorize: React.VFC = () => {
   const handleClose = () => {
     setAnchorEl(null)
   }
+
   const pinsList = pins.map((pin, index) => (
     <li key={pin.number} className={styles.li}>
-      {pin.word}
-      <button onClick={() => '何か書く'}>完了</button>
+      <div className={styles.inputContainer}>
+        <HidableWord text={pin.word} isVisible={flags[index]} />が
+        <HidableWord text={pin.place} isVisible={flags[index]} />で
+        <HidableWord text={pin.situation} isVisible={flags[index]} />
+      </div>
+      <IconButton
+        onClick={() => {
+          let flagsCopy = [...flags]
+          flagsCopy[index] = true
+          setFlags(flagsCopy)
+        }}
+        color={flags![index] ? 'primary' : 'error'}>
+        完了
+      </IconButton>
     </li>
   ))
+
   return (
     <div className={styles.edit}>
       <ClickAwayListener onClickAway={() => setPinOpen(null)}>
@@ -123,7 +139,7 @@ const Memorize: React.VFC = () => {
             <img
               className={styles.pushedPin}
               key={i}
-              src={pinIcon}
+              src={flags[i] ? greenPinIcon : pinIcon}
               alt=""
               style={{
                 position: 'absolute',

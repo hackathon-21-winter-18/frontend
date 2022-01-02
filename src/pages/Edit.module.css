@@ -97,7 +97,7 @@
 }
 
 .card {
-  width: 240px;
+  width: 360px;
   height: 240px;
   padding: 12px;
   text-align: center;
@@ -109,11 +109,15 @@
   display: flex;
   justify-content: space-between;
   border-bottom: solid 1px #c6d0e5;
-  height: 60px;
+  height: 44px;
 }
 .li > button {
   text-decoration: none;
   border: none;
   background: transparent;
   cursor: pointer;
+}
+.inputContainer {
+  display: flex;
+  align-items: center;
 }
