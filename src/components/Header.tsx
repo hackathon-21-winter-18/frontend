@@ -9,14 +9,29 @@ import {useState} from 'react'
 import Popover from '@mui/material/Popover'
 import DeleteOutlineIcon from '@mui/icons-material/DeleteOutline'
 import {getNotice} from '../api/notice'
+import {NoticeType} from '../types'
 
+const mockNotice = [
+  {id: 1, read: false, content: '通知1'},
+  {id: 2, read: true, content: '通知2'},
+  {id: 3, read: false, content: '通知3'},
+]
 const Header: React.VFC = () => {
   const {user} = useAuth()
   const navigate = useNavigate()
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null)
   const open = Boolean(anchorEl)
-  const [notices, setNotices] = useState<string[]>(['通知１', '通知２', '通知３'])
-  const [unreadNotices, setUnReadNotices] = useState<number>(notices.length)
+  //const [notices, setNotices] = useState<NoticeType[]>(new Array<NoticeType>())
+  const [notices, setNotices] = useState(mockNotice)
+  const [unreadNotices, setUnreadNotices] = useState<number>(() => {
+    let unreadCount = 0
+    for (let i = 0; i < notices.length; i++) {
+      if (!notices[i].read) {
+        unreadCount += 1
+      }
+    }
+    return unreadCount
+  })
 
   const handleClick = (e: React.MouseEvent<HTMLButtonElement>) => {
     getNotice((res) => setNotices(res.data))
@@ -25,19 +40,37 @@ const Header: React.VFC = () => {
   const handleClose = () => {
     setAnchorEl(null)
   }
+  function handleNoticeClick(index: number) {
+    let noticesCopy = [...notices]
+    noticesCopy[index].read = !noticesCopy[index].read
+    setNotices(noticesCopy)
+    let unreadCount = 0
+    for (let i = 0; i < notices.length; i++) {
+      if (!notices[i].read) {
+        unreadCount += 1
+      }
+    }
+    setUnreadNotices(unreadCount)
+  }
 
   const noticeList = notices.map((notice, index) => (
     <li key={index} className={styles.li}>
-      {notice}
-      <button
-        onClick={() => {
-          let noticesCopy = [...notices]
-          noticesCopy.splice(index, 1)
-          setNotices(noticesCopy)
-          setUnReadNotices(unreadNotices - 1)
-        }}>
-        <DeleteOutlineIcon color="error" />
-      </button>
+      <div
+        onClick={() => handleNoticeClick(index)}
+        className={styles.noticeButton}
+        style={{backgroundColor: notices[index].read ? 'white' : '#f3f6fb'}}>
+        {notice.content}
+        <button
+          onClick={() => {
+            let noticesCopy = [...notices]
+            noticesCopy.splice(index, 1)
+            setNotices(noticesCopy)
+            setUnreadNotices(unreadNotices - 1)
+          }}
+          className={styles.deleteButton}>
+          <DeleteOutlineIcon color="error" />
+        </button>
+      </div>
     </li>
   ))
 
@@ -68,7 +101,7 @@ const Header: React.VFC = () => {
                 horizontal: 'right',
               }}
               className={styles.popover}>
-              <div className={styles.card}>{unreadNotices !== 0 ? <ul>{noticeList}</ul> : 'まだ通知はありません'}</div>
+              <div className={styles.card}>{notices.length !== 0 ? <ul>{noticeList}</ul> : 'まだ通知はありません'}</div>
             </Popover>
             <FromNewPalace />
           </div>

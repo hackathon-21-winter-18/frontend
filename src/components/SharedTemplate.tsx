@@ -6,6 +6,7 @@ import MoreVertIcon from '@mui/icons-material/MoreVert'
 import CommentIcon from '@mui/icons-material/Comment'
 import AccessibilityNewIcon from '@mui/icons-material/AccessibilityNew'
 import GradeIcon from '@mui/icons-material/Grade'
+import EditIcon from '@mui/icons-material/Edit'
 import Dialog from '@mui/material/Dialog'
 import useAuth from '../components/UserProvider'
 import {DialogActions, DialogTitle} from '@mui/material'
@@ -87,6 +88,10 @@ const SharedTemplate: React.VFC<TemplateProps> = ({num, template, handleDeleteTe
       <div className={styles.tag}>
         <AccessibilityNewIcon className={styles.icon} />
         <span>作成者:{template.createrName}</span>
+      </div>
+      <div className={styles.tag}>
+        <EditIcon className={styles.icon} />
+        <span>編集者:{template.editerName}</span>
       </div>
       <div className={styles.tag}>
         <GradeIcon className={styles.icon} />

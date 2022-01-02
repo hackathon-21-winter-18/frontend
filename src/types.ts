@@ -45,6 +45,7 @@ export type SharedPalaceType = {
   image: string
   embededPins: EmbededPin[]
   savedCount: number
+  editerName: string
   createrName: string
   createdBy: string
 }
@@ -55,6 +56,7 @@ export type SharedTemplateType = {
   image: string
   pins: Pin[]
   savedCount: number
+  editerName: string
   createrName: string
   createdBy: string
 }
@@ -67,4 +69,10 @@ export type RegistrationResponse = {
   id: string
   name: string
   unreadNotices: number
+}
+
+export type NoticeType = {
+  id: string
+  read: boolean
+  content: string
 }
