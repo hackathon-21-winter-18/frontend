@@ -64,4 +64,5 @@ export type UserRegistration = {
 export type RegistrationResponse = {
   id: string
   name: string
+  unreadNotices: number
 }

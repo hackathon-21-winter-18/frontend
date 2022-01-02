@@ -8,6 +8,7 @@ interface UserContextInterface {
     name: string
     id: string
     auth: boolean
+    unreadNotices: number
   }
   loading: boolean
   login: (user: UserRegistration) => Promise<void>
@@ -18,7 +19,7 @@ interface UserContextInterface {
 export const UserContext = createContext<UserContextInterface>({} as UserContextInterface)
 
 export const UserProvider: React.FC = ({children}) => {
-  const [user, setUser] = useState({name: '', id: '', auth: false})
+  const [user, setUser] = useState({name: '', id: '', auth: false, unreadNotices: 0})
   const [loading, setLoading] = useState(false)
   const [loadingInitial, setLoadingInitial] = useState(true)
 
@@ -53,6 +54,7 @@ export const UserProvider: React.FC = ({children}) => {
       name: '',
       id: '',
       auth: false,
+      unreadNotices: 0,
     })
     setLoading(false)
   }

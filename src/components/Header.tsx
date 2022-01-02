@@ -8,6 +8,7 @@ import NotificationsIcon from '@mui/icons-material/Notifications'
 import {useState} from 'react'
 import Popover from '@mui/material/Popover'
 import DeleteOutlineIcon from '@mui/icons-material/DeleteOutline'
+import {getNotice} from '../api/notice'
 
 const Header: React.VFC = () => {
   const {user} = useAuth()
@@ -18,6 +19,7 @@ const Header: React.VFC = () => {
   const [unreadNotices, setUnReadNotices] = useState<number>(notices.length)
 
   const handleClick = (e: React.MouseEvent<HTMLButtonElement>) => {
+    getNotice((res) => setNotices(res.data))
     setAnchorEl(e.currentTarget)
   }
   const handleClose = () => {
