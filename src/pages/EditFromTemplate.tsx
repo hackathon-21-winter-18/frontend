@@ -50,19 +50,19 @@ export const EditFromTemplate: React.VFC<EditProps> = ({imageUrl, isPlayground =
           let data = res.data
           for (let i = 0; i < data.length; i++) {
             if (data[i].id === templateID) {
+              let prePins = new Array<EmbededPins>()
               for (let j = 0; j < data[i].pins.length; j++) {
-                setPins(
-                  pins.concat([
-                    {
-                      number: data[i].pins[j].number,
-                      x: data[i].pins[j].x,
-                      y: data[i].pins[j].y,
-                      word: '',
-                      place: '',
-                      situation: '',
-                    },
-                  ])
-                )
+                prePins = prePins.concat([
+                  {
+                    number: data[i].pins[j].number,
+                    x: data[i].pins[j].x,
+                    y: data[i].pins[j].y,
+                    word: '',
+                    place: '',
+                    situation: '',
+                  },
+                ])
+                setPins(prePins)
               }
             }
           }
@@ -73,20 +73,19 @@ export const EditFromTemplate: React.VFC<EditProps> = ({imageUrl, isPlayground =
           let data = res.data
           for (let i = 0; i < data.length; i++) {
             if (data[i].id === templateID) {
+              let prePins = new Array<EmbededPins>()
               for (let j = 0; j < data[i].pins.length; j++) {
-                console.log(data[i].pins[j])
-                setPins(
-                  pins.concat([
-                    {
-                      number: data[i].pins[j].number,
-                      x: data[i].pins[j].x,
-                      y: data[i].pins[j].y,
-                      word: '',
-                      place: '',
-                      situation: '',
-                    },
-                  ])
-                )
+                prePins = prePins.concat([
+                  {
+                    number: data[i].pins[j].number,
+                    x: data[i].pins[j].x,
+                    y: data[i].pins[j].y,
+                    word: '',
+                    place: '',
+                    situation: '',
+                  },
+                ])
+                setPins(prePins)
               }
             }
           }
@@ -272,6 +271,7 @@ export const EditFromTemplate: React.VFC<EditProps> = ({imageUrl, isPlayground =
             <span>記憶の宮殿を作成する</span>
           </button>
         </form>
+        <button onClick={() => console.log(pins)}>ボタン</button>
       </div>
       <Dialog open={isOpen && !(pins.length <= 0 || palaceName === '')} onClose={() => setIsOpen(false)}>
         <DialogTitle>本当に宮殿を作成しますか？</DialogTitle>
