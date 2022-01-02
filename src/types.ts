@@ -1,5 +1,5 @@
 //PalaceType
-export type EmbededPins = {
+export type EmbededPin = {
   number: number
   x: number
   y: number
@@ -12,9 +12,10 @@ export type PalaceType = {
   id: string
   name: string
   image: string
-  embededPins: EmbededPins[]
+  embededPins: EmbededPin[]
   share: boolean
   savedCount: number
+  createdBy: string
 }
 //TemplateType
 export type Pin = {
@@ -35,13 +36,14 @@ export type TemplateType = {
   pins: Pin[]
   share: boolean
   savedCount: number
+  createdBy: string
 }
 //SharedPalaceType
 export type SharedPalaceType = {
   id: string
   name: string
   image: string
-  embededPins: EmbededPins[]
+  embededPins: EmbededPin[]
   savedCount: number
   createrName: string
   createdBy: string

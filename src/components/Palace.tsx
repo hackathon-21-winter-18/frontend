@@ -53,7 +53,7 @@ const Palace: React.VFC<PalaceProps> = ({num, palace, handleDeletePalace}) => {
       name: palace.name,
       image: palace.image,
       pins: palace.embededPins,
-      createdBy: user.id,
+      createdBy: palace.createdBy,
     }
     postTemplate(data, () => setSaveAsTemplateIsOpen(false))
   }

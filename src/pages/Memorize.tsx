@@ -5,7 +5,7 @@ import {useParams, useLocation} from 'react-router'
 import {useMousePosition} from '../hooks/useMousePosition'
 import {Badge, Box, ClickAwayListener, IconButton, Portal, SxProps} from '@mui/material'
 import {useHover} from '../hooks/useHover'
-import {EmbededPins} from '../types'
+import {EmbededPin} from '../types'
 import pinIcon from '../assets/pin.svg'
 import greenPinIcon from '../assets/greenPin.svg'
 import {FixWordDialog} from '../components/FixWordDialog'
@@ -19,8 +19,8 @@ import HidableWord from '../components/HidableWord'
 
 const Memorize: React.VFC = () => {
   const [open, setOpen] = React.useState<number | boolean>(false)
-  const [pinOpen, setPinOpen] = React.useState<EmbededPins | null>(null)
-  const [pins, setPins] = React.useState<EmbededPins[]>([])
+  const [pinOpen, setPinOpen] = React.useState<EmbededPin | null>(null)
+  const [pins, setPins] = React.useState<EmbededPin[]>([])
   const params = useParams()
   const location = useLocation()
   const navigate = useNavigate()
@@ -90,11 +90,11 @@ const Memorize: React.VFC = () => {
     [open, pinOpen] // eslint-disable-line react-hooks/exhaustive-deps
   )
 
-  const handlePinClick = React.useCallback((pin: EmbededPins) => {
+  const handlePinClick = React.useCallback((pin: EmbededPin) => {
     setPinOpen(pin)
   }, [])
   const handleDeletePin = React.useCallback(
-    (pin: EmbededPins) => {
+    (pin: EmbededPin) => {
       setPins(pins.filter((tmp) => tmp !== pin))
       setPinOpen(null)
     },
