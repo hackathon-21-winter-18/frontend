@@ -13,6 +13,7 @@ import CheckCircleIcon from '@mui/icons-material/CheckCircle'
 import DialogActions from '@mui/material/DialogActions'
 import DialogTitle from '@mui/material/DialogTitle'
 import {getPalace, getSharedPalace} from '../api/palace'
+import Popover from '@mui/material/Popover'
 
 const Memorize: React.VFC = () => {
   const [open, setOpen] = React.useState<number | boolean>(false)
@@ -27,6 +28,8 @@ const Memorize: React.VFC = () => {
   const [flags, setFlags] = React.useState(new Array<boolean>())
   const [hoverRef, isHovered] = useHover<HTMLImageElement>()
   const {x, y} = useMousePosition()
+  const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null)
+  const popOpen = Boolean(anchorEl)
 
   function Extension(image: string) {
     switch (image.substring(0, 5)) {
@@ -100,6 +103,18 @@ const Memorize: React.VFC = () => {
     setPins([])
   }, [location])
 
+  const handleClick = (e: React.MouseEvent<HTMLButtonElement>) => {
+    setAnchorEl(e.currentTarget)
+  }
+  const handleClose = () => {
+    setAnchorEl(null)
+  }
+  const pinsList = pins.map((pin, index) => (
+    <li key={pin.number} className={styles.li}>
+      {pin.word}
+      <button onClick={() => '何か書く'}>完了</button>
+    </li>
+  ))
   return (
     <div className={styles.edit}>
       <ClickAwayListener onClickAway={() => setPinOpen(null)}>
@@ -136,11 +151,28 @@ const Memorize: React.VFC = () => {
           )}
         </div>
       </ClickAwayListener>
-      <IconButton className={styles.togglPinList}>
+      <IconButton className={styles.togglPinList} onClick={handleClick}>
         <Badge badgeContent={pins.length} color="primary">
           <img src={pinIcon} alt="pinIcon" className={styles.pinIcon} />
         </Badge>
       </IconButton>
+      <Popover
+        anchorEl={anchorEl}
+        open={popOpen}
+        onClose={handleClose}
+        anchorOrigin={{
+          vertical: 'bottom',
+          horizontal: 'left',
+        }}
+        transformOrigin={{
+          vertical: 'top',
+          horizontal: 'right',
+        }}
+        className={styles.popover}>
+        <div className={styles.card}>
+          <ul>{pinsList}</ul>
+        </div>
+      </Popover>
       <ClickAwayListener onClickAway={handleClickAway}>
         <div className={styles.image}>
           <img className={styles.layoutImage} src={Extension(palaceImage)} alt="map" ref={hoverRef} />
