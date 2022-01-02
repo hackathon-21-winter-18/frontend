@@ -10,6 +10,7 @@ import Dialog from '@mui/material/Dialog'
 import useAuth from '../components/UserProvider'
 import {DialogActions, DialogTitle} from '@mui/material'
 import {putShareTemplate, postTemplate} from '../api/template'
+import {Menu} from '@mui/material'
 
 interface TemplateProps {
   num: number
@@ -24,13 +25,16 @@ const SharedTemplate: React.VFC<TemplateProps> = ({num, template, handleDeleteTe
   const {user} = useAuth()
   const [shareIsOpen, setShareIsOpen] = useState(false)
   const [confirmIsOpen, setConfirmIsOpen] = useState(false)
+  const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null)
+  const open = Boolean(anchorEl)
 
-  function handleSaveDialog() {
-    setSaveIsOpen(true)
+  const handleClick = (e: React.MouseEvent<HTMLButtonElement>) => {
+    setAnchorEl(e.currentTarget)
   }
-  function handleShareDialog() {
-    setShareIsOpen(true)
+  const handleClose = () => {
+    setAnchorEl(null)
   }
+
   function handleShare() {
     const data = {
       share: false,
@@ -39,7 +43,7 @@ const SharedTemplate: React.VFC<TemplateProps> = ({num, template, handleDeleteTe
     putShareTemplate(template.id, data)
     handleDeleteTemplate(num)
     setShareIsOpen(false)
-    setIsOpen(false)
+    handleClose()
   }
   function handleSave() {
     const data = {
@@ -50,7 +54,7 @@ const SharedTemplate: React.VFC<TemplateProps> = ({num, template, handleDeleteTe
       originalID: template.id,
     }
     postTemplate(data)
-    setIsOpen(false)
+    handleClose()
   }
   function Extension() {
     switch (template.image.substring(0, 5)) {
@@ -62,9 +66,7 @@ const SharedTemplate: React.VFC<TemplateProps> = ({num, template, handleDeleteTe
         return 'data:image/jpeg;base64,' + template.image
     }
   }
-  const handleDialogClose = () => {
-    setIsOpen(false)
-  }
+
   return (
     <div className={styles.sharedTemplate}>
       {/* <Link to={'/memorize/' + template.id} className={styles.image}>
@@ -74,13 +76,13 @@ const SharedTemplate: React.VFC<TemplateProps> = ({num, template, handleDeleteTe
       {/*stateによって変える*/}
       <div className={styles.titleContainer}>
         <h1 className={styles.title}>{template.name}</h1>
-        <button className={styles.moreVertIcon} onClick={() => setIsOpen(true)}>
+        <button className={styles.moreVertIcon} onClick={handleClick}>
           <MoreVertIcon />
         </button>
       </div>
       <div className={styles.tag}>
         <CommentIcon className={styles.icon} />
-        単語数:{template.pins.length}
+        ピンの数:{template.pins.length}
       </div>
       <div className={styles.tag}>
         <AccessibilityNewIcon className={styles.icon} />
@@ -91,10 +93,22 @@ const SharedTemplate: React.VFC<TemplateProps> = ({num, template, handleDeleteTe
         <span>保存者数:{template.savedCount}</span>
       </div>
 
-      <Dialog open={isOpen && !(template.createrName === user.name)} onClose={handleDialogClose}>
-        <DialogActions>
-          <button onClick={handleSaveDialog} className={styles.button1}>
-            テンプレートの保存
+      <Menu
+        anchorEl={anchorEl}
+        open={open}
+        onClose={handleClose}
+        anchorOrigin={{
+          vertical: 'bottom',
+          horizontal: 'left',
+        }}
+        transformOrigin={{
+          vertical: 'top',
+          horizontal: 'right',
+        }}
+        className={styles.menu}>
+        <div className={styles.card}>
+          <button onClick={() => setSaveIsOpen(true)} className={styles.menuButton}>
+            <span className={styles.menuText}>テンプレートの保存</span>
           </button>
           <Dialog open={saveIsOpen} onClose={() => setSaveIsOpen(false)}>
             <DialogTitle>本当にテンプレートを保存しますか？</DialogTitle>
@@ -107,12 +121,9 @@ const SharedTemplate: React.VFC<TemplateProps> = ({num, template, handleDeleteTe
               </button>
             </DialogActions>
           </Dialog>
-        </DialogActions>
-      </Dialog>
-      <Dialog open={isOpen && template.createrName === user.name} onClose={handleDialogClose}>
-        <DialogActions>
-          <button onClick={handleShareDialog} className={styles.button2}>
-            テンプレートの共有設定
+          <div className={styles.divider} />
+          <button onClick={() => setShareIsOpen(true)} className={styles.menuButton}>
+            <span className={styles.menuText}>テンプレートの共有設定</span>
           </button>
           <Dialog open={shareIsOpen} onClose={() => setShareIsOpen(false)}>
             <DialogTitle>テンプレートの共有をやめますか？</DialogTitle>
@@ -125,8 +136,8 @@ const SharedTemplate: React.VFC<TemplateProps> = ({num, template, handleDeleteTe
               </button>
             </DialogActions>
           </Dialog>
-        </DialogActions>
-      </Dialog>
+        </div>
+      </Menu>
       <Dialog open={confirmIsOpen} onClose={() => setConfirmIsOpen(false)}>
         <DialogTitle>このテンプレートから宮殿を作成しますか？</DialogTitle>
         <DialogActions>

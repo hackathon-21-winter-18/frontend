@@ -11,6 +11,7 @@ import GradeIcon from '@mui/icons-material/Grade'
 import ShareIcon from '@mui/icons-material/Share'
 import {deleteTemplate, putShareTemplate} from '../api/template'
 import userAuth from '../components/UserProvider'
+import {Menu} from '@mui/material'
 
 interface TemplateProps {
   num: number
@@ -19,20 +20,22 @@ interface TemplateProps {
 }
 
 const Template: React.VFC<TemplateProps> = ({num, template, handleDeleteTemplate}) => {
-  const [isOpen, setIsOpen] = useState(false)
   const [deleteIsOpen, setDeleteIsOpen] = useState(false)
   const [shareIsOpen, setShareIsOpen] = useState(false)
   const [share, setShare] = useState(template.share)
   const navigate = useNavigate()
   const [confirmIsOpen, setConfirmIsOpen] = useState(false)
   const {user} = userAuth()
+  const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null)
+  const open = Boolean(anchorEl)
 
-  function handleDeleteDialog() {
-    setDeleteIsOpen(true)
+  const handleClick = (e: React.MouseEvent<HTMLButtonElement>) => {
+    setAnchorEl(e.currentTarget)
   }
-  function handleShareDialog() {
-    setShareIsOpen(true)
+  const handleClose = () => {
+    setAnchorEl(null)
   }
+
   function handleDelete() {
     deleteTemplate(template.id)
     handleDeleteTemplate(num)
@@ -45,7 +48,7 @@ const Template: React.VFC<TemplateProps> = ({num, template, handleDeleteTemplate
     putShareTemplate(template.id, data)
     setShare(!share)
     setShareIsOpen(false)
-    setIsOpen(false)
+    handleClose()
   }
   function Extension() {
     switch (template.image.substring(0, 5)) {
@@ -57,9 +60,7 @@ const Template: React.VFC<TemplateProps> = ({num, template, handleDeleteTemplate
         return 'data:image/jpeg;base64,' + template.image
     }
   }
-  const handleDialogClose = () => {
-    setIsOpen(false)
-  }
+
   return (
     <div className={styles.template}>
       {/* <Link to={'/memorize/' + palace.id} className={styles.image}>
@@ -68,13 +69,13 @@ const Template: React.VFC<TemplateProps> = ({num, template, handleDeleteTemplate
       <img className={styles.image} src={Extension()} alt={template.name} onClick={() => setConfirmIsOpen(true)} />
       <div className={styles.titleContainer}>
         <h1 className={styles.title}>{template.name}</h1>
-        <button className={styles.moreVertIcon} onClick={() => setIsOpen(true)}>
+        <button className={styles.moreVertIcon} onClick={handleClick}>
           <MoreVertIcon />
         </button>
       </div>
-      <div className={styles.wordTag}>
-        <CommentIcon className={styles.commentIcon} />
-        {template.pins.length + ' pins'}
+      <div className={styles.tag}>
+        <CommentIcon className={styles.icon} />
+        ピンの数:{template.pins.length}
       </div>
       <div className={styles.tag}>
         <GradeIcon className={styles.icon} />
@@ -85,21 +86,28 @@ const Template: React.VFC<TemplateProps> = ({num, template, handleDeleteTemplate
         {share ? <span>共有済</span> : <span>未共有</span>}
       </div>
 
-      <Dialog
-        open={isOpen}
-        onClose={handleDialogClose}
-        PaperProps={{style: {width: '381px', height: '309px', borderRadius: '10px'}}}>
-        <DialogActions>
+      <Menu
+        anchorEl={anchorEl}
+        open={open}
+        onClose={handleClose}
+        anchorOrigin={{
+          vertical: 'bottom',
+          horizontal: 'left',
+        }}
+        transformOrigin={{
+          vertical: 'top',
+          horizontal: 'right',
+        }}
+        className={styles.menu}>
+        <div className={styles.card}>
           <button
             onClick={() => navigate('/fixTemplate/' + template.id, {state: {image: Extension()}})}
-            className={styles.button2}>
-            テンプレートの編集
+            className={styles.menuButton}>
+            <span className={styles.menuText}>テンプレートの編集</span>
           </button>
-        </DialogActions>
-
-        <DialogActions>
-          <button onClick={handleDeleteDialog} className={styles.button2}>
-            テンプレートの削除
+          <div className={styles.divider} />
+          <button onClick={() => setDeleteIsOpen(true)} className={styles.menuButton}>
+            <span className={styles.menuText}>テンプレートの削除</span>
           </button>
           <Dialog open={deleteIsOpen} onClose={() => setDeleteIsOpen(false)}>
             <DialogTitle>本当にテンプレートを削除しますか？</DialogTitle>
@@ -112,10 +120,9 @@ const Template: React.VFC<TemplateProps> = ({num, template, handleDeleteTemplate
               </button>
             </DialogActions>
           </Dialog>
-        </DialogActions>
-        <DialogActions>
-          <button onClick={handleShareDialog} className={styles.button2}>
-            テンプレートの共有設定
+          <div className={styles.divider} />
+          <button onClick={() => setShareIsOpen(true)} className={styles.menuButton}>
+            <span className={styles.menuText}>テンプレートの共有設定</span>
           </button>
           <Dialog open={shareIsOpen} onClose={() => setShareIsOpen(false)}>
             <DialogTitle>{share ? 'テンプレートの共有をやめますか？' : 'テンプレートを共有しますか？'}</DialogTitle>
@@ -128,21 +135,21 @@ const Template: React.VFC<TemplateProps> = ({num, template, handleDeleteTemplate
               </button>
             </DialogActions>
           </Dialog>
-        </DialogActions>
-      </Dialog>
-      <Dialog open={confirmIsOpen} onClose={() => setConfirmIsOpen(false)}>
-        <DialogTitle>このテンプレートから宮殿を作成しますか？</DialogTitle>
-        <DialogActions>
-          <button
-            onClick={() => navigate('/fromTemplate/' + template.id, {state: {image: Extension(), shared: false}})}
-            className={styles.button1}>
-            はい
-          </button>
-          <button onClick={() => setConfirmIsOpen(false)} className={styles.button2}>
-            いいえ
-          </button>
-        </DialogActions>
-      </Dialog>
+          <Dialog open={confirmIsOpen} onClose={() => setConfirmIsOpen(false)}>
+            <DialogTitle>このテンプレートから宮殿を作成しますか？</DialogTitle>
+            <DialogActions>
+              <button
+                onClick={() => navigate('/fromTemplate/' + template.id, {state: {image: Extension(), shared: false}})}
+                className={styles.button1}>
+                はい
+              </button>
+              <button onClick={() => setConfirmIsOpen(false)} className={styles.button2}>
+                いいえ
+              </button>
+            </DialogActions>
+          </Dialog>
+        </div>
+      </Menu>
     </div>
   )
 }

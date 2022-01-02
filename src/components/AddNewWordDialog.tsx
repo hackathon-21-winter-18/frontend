@@ -4,16 +4,16 @@ import styles from './AddNewWordDialog.module.css'
 import pin from '../assets/pin.svg'
 import ShuffleIcon from '@mui/icons-material/Shuffle'
 import DeleteIcon from '@mui/icons-material/Delete'
-import {PinContent, EmbededPins} from '../types'
+import {PinContent, EmbededPin} from '../types'
 
 interface AddNewWordDialogProps {
   open: boolean
   setOpen?: (open: boolean) => void
   putPin: (pin: PinContent) => void
-  deletePin?: (pin: EmbededPins) => void
-  pinContent?: EmbededPins
-  pins?: EmbededPins[]
-  setPins?: (pins: EmbededPins[]) => void
+  deletePin?: (pin: EmbededPin) => void
+  pinContent?: EmbededPin
+  pins?: EmbededPin[]
+  setPins?: (pins: EmbededPin[]) => void
 }
 
 const AddNewWordDialog: React.VFC<AddNewWordDialogProps> = ({

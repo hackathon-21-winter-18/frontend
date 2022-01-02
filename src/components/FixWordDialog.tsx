@@ -2,14 +2,14 @@ import {Card, Grow, IconButton} from '@mui/material'
 import React from 'react'
 import styles from './FixWordDialog.module.css'
 import pin from '../assets/pin.svg'
-import {EmbededPins} from '../types'
+import {EmbededPin} from '../types'
 import DeleteIcon from '@mui/icons-material/Delete'
 import HidableWord from './HidableWord'
 
 interface FixWordDialogProps {
   isVisible?: boolean
-  open: EmbededPins
-  deletePin: (pin: EmbededPins) => void
+  open: EmbededPin
+  deletePin: (pin: EmbededPin) => void
   flags?: boolean[]
   setFlags?: (flags: boolean[]) => void
 }
