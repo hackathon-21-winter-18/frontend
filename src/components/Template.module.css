@@ -67,3 +67,25 @@
   color: #7a8498;
   text-decoration: none;
 }
+.menuButton {
+  cursor: pointer;
+  border: none;
+  text-decoration: none;
+  background: transparent;
+}
+.menuText {
+  font-family: 'Noto Sans JP';
+  font-size: 18px;
+}
+.card {
+  text-align: center;
+  width: 240px;
+  height: 110px;
+  display: flex;
+  flex-flow: column;
+}
+.divider {
+  border-bottom: solid 0.5px #c6d0e5;
+  width: 90%;
+  margin: 6px auto;
+}
