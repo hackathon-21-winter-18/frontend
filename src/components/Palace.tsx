@@ -10,6 +10,9 @@ import DialogTitle from '@mui/material/DialogTitle'
 import GradeIcon from '@mui/icons-material/Grade'
 import ShareIcon from '@mui/icons-material/Share'
 import {deletePalace, putSharePalace} from '../api/palace'
+import userAuth from './UserProvider'
+import {postTemplate} from '../api/template'
+import {Pin} from '../types'
 
 interface PalaceProps {
   num: number
@@ -23,14 +26,10 @@ const Palace: React.VFC<PalaceProps> = ({num, palace, handleDeletePalace}) => {
   const [shareIsOpen, setShareIsOpen] = useState(false)
   const [share, setShare] = useState(palace.share)
   const [confirmIsOpen, setConfirmIsOpen] = useState(false)
+  const [saveAsTemplateIsOpen, setSaveAsTemplateIsOpen] = useState(false)
   const navigate = useNavigate()
+  const {user} = userAuth()
 
-  function handleDeleteDialog() {
-    setDeleteIsOpen(true)
-  }
-  function handleShareDialog() {
-    setShareIsOpen(true)
-  }
   function handleDelete() {
     deletePalace(palace.id)
     handleDeletePalace(num)
@@ -40,6 +39,23 @@ const Palace: React.VFC<PalaceProps> = ({num, palace, handleDeletePalace}) => {
     setShare(!share)
     setShareIsOpen(false)
     setIsOpen(false)
+  }
+  function handleSaveAsTemplate() {
+    let templatePins = new Array<Pin>()
+    for (let i = 0; i < templatePins.length; i++) {
+      templatePins.push({
+        number: i,
+        x: palace.embededPins[i].x,
+        y: palace.embededPins[i].y,
+      })
+    }
+    const data = {
+      name: palace.name,
+      image: palace.image,
+      pins: palace.embededPins,
+      createdBy: user.id,
+    }
+    postTemplate(data, () => setSaveAsTemplateIsOpen(false))
   }
   function Extension() {
     switch (palace.image.substring(0, 5)) {
@@ -91,7 +107,7 @@ const Palace: React.VFC<PalaceProps> = ({num, palace, handleDeletePalace}) => {
           </button>
         </DialogActions>
         <DialogActions>
-          <button onClick={handleDeleteDialog} className={styles.button2}>
+          <button onClick={() => setDeleteIsOpen(true)} className={styles.button2}>
             宮殿の削除
           </button>
           <Dialog open={deleteIsOpen} onClose={() => setDeleteIsOpen(false)}>
@@ -107,7 +123,7 @@ const Palace: React.VFC<PalaceProps> = ({num, palace, handleDeletePalace}) => {
           </Dialog>
         </DialogActions>
         <DialogActions>
-          <button onClick={handleShareDialog} className={styles.button2}>
+          <button onClick={() => setShareIsOpen(true)} className={styles.button2}>
             宮殿の共有設定
           </button>
           <Dialog open={shareIsOpen} onClose={() => setShareIsOpen(false)}>
@@ -117,6 +133,22 @@ const Palace: React.VFC<PalaceProps> = ({num, palace, handleDeletePalace}) => {
                 はい
               </button>
               <button onClick={() => setShareIsOpen(false)} className={styles.button2}>
+                いいえ
+              </button>
+            </DialogActions>
+          </Dialog>
+        </DialogActions>
+        <DialogActions>
+          <button onClick={() => setSaveAsTemplateIsOpen(true)} className={styles.button2}>
+            テンプレートとして保存
+          </button>
+          <Dialog open={saveAsTemplateIsOpen} onClose={() => setSaveAsTemplateIsOpen(false)}>
+            <DialogTitle>本当にテンプレートとして保存しますか？</DialogTitle>
+            <DialogActions>
+              <button onClick={handleSaveAsTemplate} className={styles.button1}>
+                はい
+              </button>
+              <button onClick={() => setSaveAsTemplateIsOpen(false)} className={styles.button2}>
                 いいえ
               </button>
             </DialogActions>

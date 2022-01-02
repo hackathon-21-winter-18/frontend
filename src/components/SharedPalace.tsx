@@ -25,12 +25,6 @@ const SharedPalace: React.VFC<PalaceProps> = ({num, palace, deletePalace}) => {
   const [shareIsOpen, setShareIsOpen] = useState(false)
   const [confirmIsOpen, setConfirmIsOpen] = useState(false)
 
-  function handleSaveDialog() {
-    setSaveIsOpen(true)
-  }
-  function handleShareDialog() {
-    setShareIsOpen(true)
-  }
   function handleShare() {
     putSharePalace(palace.id, false)
     deletePalace(num)
@@ -89,7 +83,7 @@ const SharedPalace: React.VFC<PalaceProps> = ({num, palace, deletePalace}) => {
 
       <Dialog open={isOpen && !(palace.createrName === user.name)} onClose={handleDialogClose}>
         <DialogActions>
-          <button onClick={handleSaveDialog} className={styles.button1}>
+          <button onClick={() => setSaveIsOpen(true)} className={styles.button1}>
             宮殿の保存
           </button>
           <Dialog open={saveIsOpen} onClose={() => setSaveIsOpen(false)}>
@@ -107,7 +101,7 @@ const SharedPalace: React.VFC<PalaceProps> = ({num, palace, deletePalace}) => {
       </Dialog>
       <Dialog open={isOpen && palace.createrName === user.name} onClose={handleDialogClose}>
         <DialogActions>
-          <button onClick={handleShareDialog} className={styles.button2}>
+          <button onClick={() => setShareIsOpen(true)} className={styles.button2}>
             宮殿の共有設定
           </button>
           <Dialog open={shareIsOpen} onClose={() => setShareIsOpen(false)}>

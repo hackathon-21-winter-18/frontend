@@ -25,12 +25,6 @@ const SharedTemplate: React.VFC<TemplateProps> = ({num, template, handleDeleteTe
   const [shareIsOpen, setShareIsOpen] = useState(false)
   const [confirmIsOpen, setConfirmIsOpen] = useState(false)
 
-  function handleSaveDialog() {
-    setSaveIsOpen(true)
-  }
-  function handleShareDialog() {
-    setShareIsOpen(true)
-  }
   function handleShare() {
     putShareTemplate(template.id, false)
     handleDeleteTemplate(num)
@@ -76,7 +70,7 @@ const SharedTemplate: React.VFC<TemplateProps> = ({num, template, handleDeleteTe
       </div>
       <div className={styles.tag}>
         <CommentIcon className={styles.icon} />
-        単語数:{template.pins.length}
+        ピンの数:{template.pins.length}
       </div>
       <div className={styles.tag}>
         <AccessibilityNewIcon className={styles.icon} />
@@ -89,7 +83,7 @@ const SharedTemplate: React.VFC<TemplateProps> = ({num, template, handleDeleteTe
 
       <Dialog open={isOpen && !(template.createrName === user.name)} onClose={handleDialogClose}>
         <DialogActions>
-          <button onClick={handleSaveDialog} className={styles.button1}>
+          <button onClick={() => setSaveIsOpen(true)} className={styles.button1}>
             テンプレートの保存
           </button>
           <Dialog open={saveIsOpen} onClose={() => setSaveIsOpen(false)}>
@@ -107,7 +101,7 @@ const SharedTemplate: React.VFC<TemplateProps> = ({num, template, handleDeleteTe
       </Dialog>
       <Dialog open={isOpen && template.createrName === user.name} onClose={handleDialogClose}>
         <DialogActions>
-          <button onClick={handleShareDialog} className={styles.button2}>
+          <button onClick={() => setShareIsOpen(true)} className={styles.button2}>
             テンプレートの共有設定
           </button>
           <Dialog open={shareIsOpen} onClose={() => setShareIsOpen(false)}>

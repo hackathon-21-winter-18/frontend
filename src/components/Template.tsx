@@ -25,12 +25,6 @@ const Template: React.VFC<TemplateProps> = ({num, template, handleDeleteTemplate
   const navigate = useNavigate()
   const [confirmIsOpen, setConfirmIsOpen] = useState(false)
 
-  function handleDeleteDialog() {
-    setDeleteIsOpen(true)
-  }
-  function handleShareDialog() {
-    setShareIsOpen(true)
-  }
   function handleDelete() {
     deleteTemplate(template.id)
     handleDeleteTemplate(num)
@@ -66,9 +60,9 @@ const Template: React.VFC<TemplateProps> = ({num, template, handleDeleteTemplate
           <MoreVertIcon />
         </button>
       </div>
-      <div className={styles.wordTag}>
-        <CommentIcon className={styles.commentIcon} />
-        {template.pins.length + ' pins'}
+      <div className={styles.tag}>
+        <CommentIcon className={styles.icon} />
+        ピンの数:{template.pins.length}
       </div>
       <div className={styles.tag}>
         <GradeIcon className={styles.icon} />
@@ -92,7 +86,7 @@ const Template: React.VFC<TemplateProps> = ({num, template, handleDeleteTemplate
         </DialogActions>
 
         <DialogActions>
-          <button onClick={handleDeleteDialog} className={styles.button2}>
+          <button onClick={() => setDeleteIsOpen(true)} className={styles.button2}>
             テンプレートの削除
           </button>
           <Dialog open={deleteIsOpen} onClose={() => setDeleteIsOpen(false)}>
@@ -108,7 +102,7 @@ const Template: React.VFC<TemplateProps> = ({num, template, handleDeleteTemplate
           </Dialog>
         </DialogActions>
         <DialogActions>
-          <button onClick={handleShareDialog} className={styles.button2}>
+          <button onClick={() => setShareIsOpen(true)} className={styles.button2}>
             テンプレートの共有設定
           </button>
           <Dialog open={shareIsOpen} onClose={() => setShareIsOpen(false)}>
