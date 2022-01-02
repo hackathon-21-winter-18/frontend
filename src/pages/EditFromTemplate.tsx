@@ -115,7 +115,11 @@ export const EditFromTemplate: React.VFC<EditProps> = ({imageUrl, isPlayground =
       postPalace(data, (res: any) => {
         setPalaceId(res.data.id)
         if (shareOption) {
-          putSharePalace(res.data.id, shareOption)
+          const data = {
+            share: shareOption,
+            createdBy: user.id,
+          }
+          putSharePalace(res.data.id, data)
         }
       })
       setCompleteIsOpen(true)

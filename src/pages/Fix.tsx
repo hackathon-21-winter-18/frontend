@@ -14,6 +14,7 @@ import {EmbededPins, PinContent} from '../types'
 import pinIcon from '../assets/pin.svg'
 import {FixWordDialog} from '../components/FixWordDialog'
 import {getPalace, putPalace, putSharePalace} from '../api/palace'
+import useAuth from '../components/UserProvider'
 
 export const Fix: React.VFC = () => {
   const [open, setOpen] = React.useState<number | boolean>(false)
@@ -29,6 +30,7 @@ export const Fix: React.VFC = () => {
   const [completeIsOpen, setCompleteIsOpen] = React.useState(false)
   const [shareOption, setShareOption] = React.useState(false)
   const [palaceId, setPalaceId] = React.useState('')
+  const {user} = useAuth()
 
   React.useEffect(() => {
     const palaceID = params.id
@@ -58,7 +60,17 @@ export const Fix: React.VFC = () => {
         image: willSendImage,
         embededPins: pins,
       }
-      params.id && putPalace(params.id, data, () => (shareOption ? putSharePalace(palaceId, shareOption) : null))
+
+      params.id &&
+        putPalace(params.id, data, () => {
+          if (shareOption) {
+            const data = {
+              share: shareOption,
+              createdBy: user.id,
+            }
+            putSharePalace(palaceId, data)
+          }
+        })
       setCompleteIsOpen(true)
     } else {
       setCompleteIsOpen(true)

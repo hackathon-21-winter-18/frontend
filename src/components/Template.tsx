@@ -10,6 +10,7 @@ import DialogTitle from '@mui/material/DialogTitle'
 import GradeIcon from '@mui/icons-material/Grade'
 import ShareIcon from '@mui/icons-material/Share'
 import {deleteTemplate, putShareTemplate} from '../api/template'
+import userAuth from '../components/UserProvider'
 
 interface TemplateProps {
   num: number
@@ -24,6 +25,7 @@ const Template: React.VFC<TemplateProps> = ({num, template, handleDeleteTemplate
   const [share, setShare] = useState(template.share)
   const navigate = useNavigate()
   const [confirmIsOpen, setConfirmIsOpen] = useState(false)
+  const {user} = userAuth()
 
   function handleDeleteDialog() {
     setDeleteIsOpen(true)
@@ -36,7 +38,11 @@ const Template: React.VFC<TemplateProps> = ({num, template, handleDeleteTemplate
     handleDeleteTemplate(num)
   }
   function handleShare() {
-    putShareTemplate(template.id, !template.share)
+    const data = {
+      share: !template.share,
+      createdBy: user.id,
+    }
+    putShareTemplate(template.id, data)
     setShare(!share)
     setShareIsOpen(false)
     setIsOpen(false)

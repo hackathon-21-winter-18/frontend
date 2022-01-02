@@ -10,6 +10,7 @@ import DialogTitle from '@mui/material/DialogTitle'
 import GradeIcon from '@mui/icons-material/Grade'
 import ShareIcon from '@mui/icons-material/Share'
 import {deletePalace, putSharePalace} from '../api/palace'
+import userAuth from '../components/UserProvider'
 
 interface PalaceProps {
   num: number
@@ -24,6 +25,7 @@ const Palace: React.VFC<PalaceProps> = ({num, palace, handleDeletePalace}) => {
   const [share, setShare] = useState(palace.share)
   const [confirmIsOpen, setConfirmIsOpen] = useState(false)
   const navigate = useNavigate()
+  const {user} = userAuth()
 
   function handleDeleteDialog() {
     setDeleteIsOpen(true)
@@ -36,7 +38,11 @@ const Palace: React.VFC<PalaceProps> = ({num, palace, handleDeletePalace}) => {
     handleDeletePalace(num)
   }
   function handleShare() {
-    putSharePalace(palace.id, !palace.share)
+    const data = {
+      share: !palace.share,
+      createdBy: user.id,
+    }
+    putSharePalace(palace.id, data)
     setShare(!share)
     setShareIsOpen(false)
     setIsOpen(false)

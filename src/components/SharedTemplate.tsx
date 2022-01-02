@@ -32,7 +32,11 @@ const SharedTemplate: React.VFC<TemplateProps> = ({num, template, handleDeleteTe
     setShareIsOpen(true)
   }
   function handleShare() {
-    putShareTemplate(template.id, false)
+    const data = {
+      share: false,
+      createdBy: user.id,
+    }
+    putShareTemplate(template.id, data)
     handleDeleteTemplate(num)
     setShareIsOpen(false)
     setIsOpen(false)

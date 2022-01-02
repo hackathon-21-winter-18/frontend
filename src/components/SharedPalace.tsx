@@ -32,7 +32,11 @@ const SharedPalace: React.VFC<PalaceProps> = ({num, palace, deletePalace}) => {
     setShareIsOpen(true)
   }
   function handleShare() {
-    putSharePalace(palace.id, false)
+    const data = {
+      share: false,
+      createdBy: user.id,
+    }
+    putSharePalace(palace.id, data)
     deletePalace(num)
     setShareIsOpen(false)
     setIsOpen(false)
