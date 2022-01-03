@@ -4,17 +4,31 @@ import logo from '../assets/logo.svg'
 import FromNewPalace from './DialogFromNewPalace'
 import useAuth from './UserProvider'
 import NotificationsNoneIcon from '@mui/icons-material/NotificationsNone'
-import NotificationsIcon from '@mui/icons-material/Notifications'
 import {useState} from 'react'
 import Popover from '@mui/material/Popover'
-import DeleteOutlineIcon from '@mui/icons-material/DeleteOutline'
 import {getNotice} from '../api/notice'
 import {NoticeType} from '../types'
+import {timeToString} from '../util/timeToString'
 
 const mockNotice = [
-  {id: 1, read: false, content: '通知1'},
-  {id: 2, read: true, content: '通知2'},
-  {id: 3, read: false, content: '通知3'},
+  {
+    id: 1,
+    read: true,
+    content: '公開したものを元に他のユーザーが新たな宮殿を公開しました。',
+    created_at: '2022-01-03T02:13:09.560Z',
+  },
+  {
+    id: 2,
+    read: false,
+    content: '公開したものを元に他のユーザーが新たなテンプレートを公開しました。',
+    created_at: '2022-01-03T02:13:09.560Z',
+  },
+  {
+    id: 3,
+    read: false,
+    content: '公開したものを元に他のユーザーが新たな忘却曲線を公開しました。',
+    created_at: '2022-01-03T02:13:09.560Z',
+  },
 ]
 const Header: React.VFC = () => {
   const {user} = useAuth()
@@ -39,37 +53,39 @@ const Header: React.VFC = () => {
   }
   const handleClose = () => {
     setAnchorEl(null)
+    setUnreadNotices(0)
   }
-  function handleNoticeClick(index: number) {
-    let noticesCopy = [...notices]
-    noticesCopy[index].read = !noticesCopy[index].read
-    setNotices(noticesCopy)
-    let unreadCount = 0
-    for (let i = 0; i < notices.length; i++) {
-      if (!notices[i].read) {
-        unreadCount += 1
-      }
+  function Routing(content: string, index: number) {
+    switch (content.substring(19, 20)) {
+      case '宮':
+        navigate('/memorize/' + notices[index].id, {state: {shared: true}, replace: true})
+        handleClose()
+        break
+      case 'テ':
+        navigate('/fromTemplate/' + notices[index].id, {state: {shared: true}, replace: true})
+        handleClose()
+        break
+      default:
+        navigate('/notFound', {replace: true})
     }
-    setUnreadNotices(unreadCount)
   }
-
   const noticeList = notices.map((notice, index) => (
     <li key={index} className={styles.li}>
       <div
-        onClick={() => handleNoticeClick(index)}
-        className={styles.noticeButton}
-        style={{backgroundColor: notices[index].read ? 'white' : '#f3f6fb'}}>
-        {notice.content}
-        <button
-          onClick={() => {
-            let noticesCopy = [...notices]
-            noticesCopy.splice(index, 1)
-            setNotices(noticesCopy)
-            setUnreadNotices(unreadNotices - 1)
-          }}
-          className={styles.deleteButton}>
-          <DeleteOutlineIcon color="error" />
-        </button>
+        onClick={() => Routing(notice.content, index)}
+        className={styles.background}
+        style={{backgroundColor: notices[index].read ? '#f3f6fb' : 'white'}}>
+        <div className={styles.content}>
+          <span>{notice.content}</span>
+        </div>
+        <div className={styles.bottom}>
+          <div className={styles.time}>
+            <span>{timeToString(notice.created_at)}</span>
+          </div>
+          <div className={styles.confirm}>
+            <span>確認する</span>
+          </div>
+        </div>
       </div>
     </li>
   ))

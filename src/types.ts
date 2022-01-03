@@ -75,4 +75,5 @@ export type NoticeType = {
   id: string
   read: boolean
   content: string
+  created_at: string
 }
