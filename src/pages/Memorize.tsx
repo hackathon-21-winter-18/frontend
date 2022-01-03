@@ -63,7 +63,7 @@ const Memorize: React.VFC = () => {
           }
         })
     }
-  }, []) // eslint-disable-line react-hooks/exhaustive-deps
+  }, [location]) // eslint-disable-line react-hooks/exhaustive-deps
 
   const handleClickAway = () => {
     setOpen(false)

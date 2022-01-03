@@ -98,7 +98,7 @@ export const EditFromTemplate: React.VFC<EditProps> = ({imageUrl, isPlayground =
           }
         })
     }
-  }, []) // eslint-disable-line react-hooks/exhaustive-deps
+  }, [location]) // eslint-disable-line react-hooks/exhaustive-deps
 
   const handleComplete = () => {
     if (!(pins.length <= 0 || palaceName === '')) {
