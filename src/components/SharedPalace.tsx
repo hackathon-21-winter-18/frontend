@@ -111,9 +111,11 @@ const SharedPalace: React.VFC<PalaceProps> = ({num, palace, deletePalace}) => {
         }}
         className={styles.menu}>
         <div className={styles.card}>
-          <button onClick={() => setSaveIsOpen(true)} className={styles.menuButton}>
-            <span className={styles.menuText}>宮殿の保存</span>
-          </button>
+          {palace.createdBy !== user.id ? (
+            <button onClick={() => setSaveIsOpen(true)} className={styles.menuButton}>
+              <span className={styles.menuText}>宮殿の保存</span>
+            </button>
+          ) : null}
           <Dialog open={saveIsOpen} onClose={() => setSaveIsOpen(false)}>
             <DialogTitle>本当に宮殿を保存しますか？</DialogTitle>
             <DialogActions>
@@ -125,10 +127,11 @@ const SharedPalace: React.VFC<PalaceProps> = ({num, palace, deletePalace}) => {
               </button>
             </DialogActions>
           </Dialog>
-          <div className={styles.divider} />
-          <button onClick={() => setShareIsOpen(true)} className={styles.menuButton}>
-            <span className={styles.menuText}>宮殿の共有設定</span>
-          </button>
+          {palace.createdBy === user.id ? (
+            <button onClick={() => setShareIsOpen(true)} className={styles.menuButton}>
+              <span className={styles.menuText}>宮殿の共有設定</span>
+            </button>
+          ) : null}
           <Dialog open={shareIsOpen} onClose={() => setShareIsOpen(false)}>
             <DialogTitle>宮殿の共有をやめますか？</DialogTitle>
             <DialogActions>

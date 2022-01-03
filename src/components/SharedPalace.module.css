@@ -80,7 +80,7 @@
 .card {
   text-align: center;
   width: 240px;
-  height: 72px;
+  height: 32px;
   display: flex;
   flex-flow: column;
 }

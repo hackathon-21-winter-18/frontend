@@ -269,7 +269,6 @@ export const Edit: React.VFC<EditProps> = ({imageUrl, isPlayground = false, xGap
           </button>
         </form>
       </div>
-      <button onClick={() => console.log(pins)}>ボタン</button>
       <Dialog open={isOpen} onClose={() => setIsOpen(false)}>
         <DialogTitle>本当に宮殿を作成しますか？</DialogTitle>
         <DialogActions>
