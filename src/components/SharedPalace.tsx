@@ -12,6 +12,7 @@ import useAuth from '../components/UserProvider'
 import {DialogActions, DialogTitle} from '@mui/material'
 import {putSharePalace, postPalace} from '../api/palace'
 import {Menu} from '@mui/material'
+import {Extension} from '../util/extension'
 
 interface PalaceProps {
   num: number
@@ -55,23 +56,13 @@ const SharedPalace: React.VFC<PalaceProps> = ({num, palace, deletePalace}) => {
     postPalace(data)
     handleClose()
   }
-  function Extension() {
-    switch (palace.image.substring(0, 5)) {
-      case 'iVBOR':
-        return 'data:image/png;base64,' + palace.image
-      case 'R0IGO':
-        return 'data:image/gif;base64,' + palace.image
-      case '/9j/4':
-        return 'data:image/jpeg;base64,' + palace.image
-    }
-  }
 
   return (
     <div className={styles.sharedPalace}>
       <button
         onClick={() => navigate('/memorize/' + palace.id, {state: {shared: true}})}
         className={styles.imageButton}>
-        <img className={styles.image} src={Extension()} alt={palace.name} />
+        <img className={styles.image} src={Extension(palace.image)} alt={palace.name} />
       </button>
       <div className={styles.titleContainer}>
         <h1 className={styles.title}>{palace.name}</h1>
@@ -85,11 +76,11 @@ const SharedPalace: React.VFC<PalaceProps> = ({num, palace, deletePalace}) => {
       </div>
       <div className={styles.tag}>
         <AccessibilityNewIcon className={styles.icon} />
-        <span>作成者:{palace.createrName}</span>
+        <span>作成者:{palace.creatorName}</span>
       </div>
       <div className={styles.tag}>
         <EditIcon className={styles.icon} />
-        <span>編集者:{palace.editerName}</span>
+        <span>編集者:{palace.editorName}</span>
       </div>
       <div className={styles.tag}>
         <GradeIcon className={styles.icon} />

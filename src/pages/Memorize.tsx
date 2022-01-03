@@ -16,6 +16,7 @@ import DialogTitle from '@mui/material/DialogTitle'
 import {getPalace, getSharedPalace} from '../api/palace'
 import Popover from '@mui/material/Popover'
 import HidableWord from '../components/HidableWord'
+import {Extension} from '../util/extension'
 
 const Memorize: React.VFC = () => {
   const [open, setOpen] = React.useState<number | boolean>(false)
@@ -33,16 +34,6 @@ const Memorize: React.VFC = () => {
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null)
   const popOpen = Boolean(anchorEl)
 
-  function Extension(image: string) {
-    switch (image.substring(0, 5)) {
-      case 'iVBOR':
-        return 'data:image/png;base64,' + image
-      case 'R0IGO':
-        return 'data:image/gif;base64,' + image
-      case '/9j/4':
-        return 'data:image/jpeg;base64,' + image
-    }
-  }
   React.useEffect(() => {
     const palaceID = params.id
     if (location.state.shared) {

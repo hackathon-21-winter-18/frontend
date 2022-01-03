@@ -12,6 +12,7 @@ import useAuth from '../components/UserProvider'
 import {DialogActions, DialogTitle} from '@mui/material'
 import {putShareTemplate, postTemplate} from '../api/template'
 import {Menu} from '@mui/material'
+import {Extension} from '../util/extension'
 
 interface TemplateProps {
   num: number
@@ -25,7 +26,6 @@ const SharedTemplate: React.VFC<TemplateProps> = ({num, template, handleDeleteTe
   const navigate = useNavigate()
   const {user} = useAuth()
   const [shareIsOpen, setShareIsOpen] = useState(false)
-  const [confirmIsOpen, setConfirmIsOpen] = useState(false)
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null)
   const open = Boolean(anchorEl)
 
@@ -57,23 +57,13 @@ const SharedTemplate: React.VFC<TemplateProps> = ({num, template, handleDeleteTe
     postTemplate(data)
     handleClose()
   }
-  function Extension() {
-    switch (template.image.substring(0, 5)) {
-      case 'iVBOR':
-        return 'data:image/png;base64,' + template.image
-      case 'R0IGO':
-        return 'data:image/gif;base64,' + template.image
-      case '/9j/4':
-        return 'data:image/jpeg;base64,' + template.image
-    }
-  }
 
   return (
     <div className={styles.sharedTemplate}>
       <button
-        onClick={() => navigate('/fromTemplate/' + template.id, {state: {image: Extension(), shared: true}})}
+        onClick={() => navigate('/fromTemplate/' + template.id, {state: {shared: true}})}
         className={styles.imageButton}>
-        <img className={styles.image} src={Extension()} alt={template.name} />
+        <img className={styles.image} src={Extension(template.image)} alt={template.name} />
       </button>
       <div className={styles.titleContainer}>
         <h1 className={styles.title}>{template.name}</h1>
@@ -87,11 +77,11 @@ const SharedTemplate: React.VFC<TemplateProps> = ({num, template, handleDeleteTe
       </div>
       <div className={styles.tag}>
         <AccessibilityNewIcon className={styles.icon} />
-        <span>作成者:{template.createrName}</span>
+        <span>作成者:{template.creatorName}</span>
       </div>
       <div className={styles.tag}>
         <EditIcon className={styles.icon} />
-        <span>編集者:{template.editerName}</span>
+        <span>編集者:{template.editorName}</span>
       </div>
       <div className={styles.tag}>
         <GradeIcon className={styles.icon} />

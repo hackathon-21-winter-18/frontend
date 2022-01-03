@@ -14,6 +14,7 @@ import userAuth from './UserProvider'
 import {postTemplate} from '../api/template'
 import {Pin} from '../types'
 import {Menu} from '@mui/material'
+import {Extension} from '../util/extension'
 
 interface PalaceProps {
   num: number
@@ -71,23 +72,13 @@ const Palace: React.VFC<PalaceProps> = ({num, palace, handleDeletePalace}) => {
     setSaveAsTemplateIsOpen(false)
     handleClose()
   }
-  function Extension() {
-    switch (palace.image.substring(0, 5)) {
-      case 'iVBOR':
-        return 'data:image/png;base64,' + palace.image
-      case 'R0IGO':
-        return 'data:image/gif;base64,' + palace.image
-      case '/9j/4':
-        return 'data:image/jpeg;base64,' + palace.image
-    }
-  }
 
   return (
     <div className={styles.palace}>
       <button
         onClick={() => navigate('/memorize/' + palace.id, {state: {shared: false}})}
         className={styles.imageButton}>
-        <img className={styles.image} src={Extension()} alt={palace.name} />
+        <img className={styles.image} src={Extension(palace.image)} alt={palace.name} />
       </button>
       <div className={styles.titleContainer}>
         <h1 className={styles.title}>{palace.name}</h1>
@@ -123,7 +114,7 @@ const Palace: React.VFC<PalaceProps> = ({num, palace, handleDeletePalace}) => {
         className={styles.menu}>
         <div className={styles.card}>
           <button
-            onClick={() => navigate('/fix/' + palace.id, {state: {shared: false, image: Extension()}})}
+            onClick={() => navigate('/fix/' + palace.id, {state: {shared: false, image: Extension(palace.image)}})}
             className={styles.menuButton}>
             <span className={styles.menuText}>宮殿の編集</span>
           </button>
