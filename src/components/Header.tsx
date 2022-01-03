@@ -54,15 +54,15 @@ const Header: React.VFC = () => {
   function Routing(content: string, index: number) {
     switch (content.substring(19, 20)) {
       case '宮':
-        navigate('/memorize/' + notices[index].id, {state: {shared: true}, replace: true})
+        navigate('/memorize/' + notices[index].palaceID, {state: {shared: true}})
         handleClose()
         break
       case 'テ':
-        navigate('/fromTemplate/' + notices[index].id, {state: {shared: true}, replace: true})
+        navigate('/fromTemplate/' + notices[index].templateID, {state: {shared: true}})
         handleClose()
         break
       default:
-        navigate('/notFound', {replace: true})
+        navigate('/notFound')
     }
   }
   const noticeList = notices.map((notice, index) => (

@@ -76,4 +76,6 @@ export type NoticeType = {
   checked: boolean
   content: string
   created_at: string
+  palaceID: string
+  templateID: string
 }

@@ -28,7 +28,7 @@ function FromNewTemplateDialog(props: FromNewTemplateDialogProps) {
   let navigate = useNavigate()
   function handleNavigate() {
     onClose()
-    navigate('/editTemplate/' + previewImg.substring(27, 100), {replace: true, state: {image: previewImg}})
+    navigate('/editTemplate/' + previewImg.substring(27, 100), {state: {image: previewImg}})
   }
   return (
     <Dialog open={open} onClose={handleClose}>
