@@ -43,7 +43,7 @@ const Template: React.VFC<TemplateProps> = ({num, template, handleDeleteTemplate
   function handleShare() {
     const data = {
       share: !template.share,
-      createdBy: user.id,
+      createdBy: template.createdBy,
     }
     putShareTemplate(template.id, data)
     setShare(!share)

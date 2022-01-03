@@ -17,6 +17,7 @@ import CheckCircleIcon from '@mui/icons-material/CheckCircle'
 import DialogActions from '@mui/material/DialogActions'
 import DialogTitle from '@mui/material/DialogTitle'
 import {getTemplate, getSharedTemplate} from '../api/template'
+import Template from '../components/Template'
 
 type Mode = 'edit' | 'memorization'
 
@@ -40,6 +41,7 @@ export const EditFromTemplate: React.VFC<EditProps> = ({imageUrl, isPlayground =
   const params = useParams()
   const [palaceId, setPalaceId] = React.useState('')
   const [hoverRef, isHovered] = useHover<HTMLImageElement>()
+  const [templateCreatedBy, setTemplateCreatedBy] = React.useState('')
   const {x, y} = useMousePosition()
 
   React.useEffect(() => {
@@ -63,6 +65,7 @@ export const EditFromTemplate: React.VFC<EditProps> = ({imageUrl, isPlayground =
                   },
                 ])
                 setPins(prePins)
+                setTemplateCreatedBy(data[i].createdBy)
               }
             }
           }
@@ -86,6 +89,7 @@ export const EditFromTemplate: React.VFC<EditProps> = ({imageUrl, isPlayground =
                   },
                 ])
                 setPins(prePins)
+                setTemplateCreatedBy(data[i].createdBy)
               }
             }
           }
@@ -116,7 +120,7 @@ export const EditFromTemplate: React.VFC<EditProps> = ({imageUrl, isPlayground =
         if (shareOption) {
           const data = {
             share: shareOption,
-            createdBy: user.id,
+            createdBy: templateCreatedBy,
           }
           putSharePalace(res.data.id, data)
         }

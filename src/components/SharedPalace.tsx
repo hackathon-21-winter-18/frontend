@@ -37,7 +37,7 @@ const SharedPalace: React.VFC<PalaceProps> = ({num, palace, deletePalace}) => {
   function handleShare() {
     const data = {
       share: false,
-      createdBy: user.id,
+      createdBy: palace.createdBy,
     }
     putSharePalace(palace.id, data)
     deletePalace(num)

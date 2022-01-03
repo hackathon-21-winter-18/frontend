@@ -29,6 +29,7 @@ export const FixTemplate: React.VFC = () => {
   const [completeIsOpen, setCompleteIsOpen] = React.useState(false)
   const [shareOption, setShareOption] = React.useState(false)
   const [templateId, setTemplateId] = React.useState('')
+  const [templateCreatedBy, setTemplateCreatedBy] = React.useState('')
   const {user} = useAuth()
 
   React.useEffect(() => {
@@ -41,6 +42,7 @@ export const FixTemplate: React.VFC = () => {
             setTemplateName(data[i].name)
             setPins(data[i].pins)
             setTemplateId(data[i].id)
+            setTemplateCreatedBy(data[i].createdBy)
           }
         }
       })
@@ -77,7 +79,7 @@ export const FixTemplate: React.VFC = () => {
         if (shareOption) {
           const data = {
             share: shareOption,
-            createdBy: user.id,
+            createdBy: templateCreatedBy,
           }
           putShareTemplate(templateId, data)
         }

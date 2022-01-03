@@ -30,6 +30,7 @@ export const Fix: React.VFC = () => {
   const [completeIsOpen, setCompleteIsOpen] = React.useState(false)
   const [shareOption, setShareOption] = React.useState(false)
   const [palaceId, setPalaceId] = React.useState('')
+  const [palaceCreatedBy, setPalaceCreatedBy] = React.useState('')
   const {user} = useAuth()
 
   React.useEffect(() => {
@@ -42,6 +43,7 @@ export const Fix: React.VFC = () => {
             setPalaceName(data[i].name)
             setPins(data[i].embededPins)
             setPalaceId(data[i].id)
+            setPalaceCreatedBy(data[i].createdBy)
           }
         }
       })
@@ -66,7 +68,7 @@ export const Fix: React.VFC = () => {
           if (shareOption) {
             const data = {
               share: shareOption,
-              createdBy: user.id,
+              createdBy: palaceCreatedBy,
             }
             putSharePalace(palaceId, data)
           }

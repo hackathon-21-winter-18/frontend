@@ -37,15 +37,7 @@ const Header: React.VFC = () => {
   const open = Boolean(anchorEl)
   const [notices, setNotices] = useState<NoticeType[]>(new Array<NoticeType>())
   //const [notices, setNotices] = useState(mockNotice)
-  const [unreadNotices, setUnreadNotices] = useState<number>(() => {
-    let unreadCount = 0
-    for (let i = 0; i < notices.length; i++) {
-      if (!notices[i].checked) {
-        unreadCount += 1
-      }
-    }
-    return unreadCount
-  })
+  const [unreadNotices, setUnreadNotices] = useState<number>(user.unreadNotices)
 
   const handleClick = (e: React.MouseEvent<HTMLButtonElement>) => {
     getNotice((res) => {
