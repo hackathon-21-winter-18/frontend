@@ -8,7 +8,12 @@
   object-fit: cover;
   cursor: pointer;
 }
-
+.imageButton {
+  cursor: pointer;
+  text-decoration: none;
+  border: none;
+  background: transparent;
+}
 .titleContainer {
   display: flex;
   justify-content: space-between;

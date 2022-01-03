@@ -1,5 +1,5 @@
 import {useState} from 'react'
-import {Link, useNavigate} from 'react-router-dom'
+import {useNavigate} from 'react-router-dom'
 import styles from './Palace.module.css'
 import {PalaceType} from '../types'
 import MoreVertIcon from '@mui/icons-material/MoreVert'
@@ -25,7 +25,6 @@ const Palace: React.VFC<PalaceProps> = ({num, palace, handleDeletePalace}) => {
   const [deleteIsOpen, setDeleteIsOpen] = useState(false)
   const [shareIsOpen, setShareIsOpen] = useState(false)
   const [share, setShare] = useState(palace.share)
-  const [confirmIsOpen, setConfirmIsOpen] = useState(false)
   const [saveAsTemplateIsOpen, setSaveAsTemplateIsOpen] = useState(false)
   const navigate = useNavigate()
   const {user} = userAuth()
@@ -80,10 +79,11 @@ const Palace: React.VFC<PalaceProps> = ({num, palace, handleDeletePalace}) => {
 
   return (
     <div className={styles.palace}>
-      {/* <Link to={'/memorize/' + palace.id} className={styles.image}>
-        <img src={palace.image} alt={palace.name} />
-      </Link> */}
-      <img className={styles.image} src={Extension()} alt={palace.name} onClick={() => setConfirmIsOpen(true)} />
+      <button
+        onClick={() => navigate('/memorize/' + palace.id, {state: {shared: false}})}
+        className={styles.imageButton}>
+        <img className={styles.image} src={Extension()} alt={palace.name} />
+      </button>
       <div className={styles.titleContainer}>
         <h1 className={styles.title}>{palace.name}</h1>
         <button className={styles.moreVertIcon} onClick={handleClick}>
@@ -163,19 +163,6 @@ const Palace: React.VFC<PalaceProps> = ({num, palace, handleDeletePalace}) => {
                 はい
               </button>
               <button onClick={() => setSaveAsTemplateIsOpen(false)} className={styles.button2}>
-                いいえ
-              </button>
-            </DialogActions>
-          </Dialog>
-          <Dialog open={confirmIsOpen} onClose={() => setConfirmIsOpen(false)}>
-            <DialogTitle>この宮殿の暗記を始めますか？</DialogTitle>
-            <DialogActions>
-              <button
-                onClick={() => navigate('/memorize/' + palace.id, {state: {shared: false}})}
-                className={styles.button1}>
-                はい
-              </button>
-              <button onClick={() => setConfirmIsOpen(false)} className={styles.button2}>
                 いいえ
               </button>
             </DialogActions>

@@ -65,11 +65,11 @@ const SharedTemplate: React.VFC<TemplateProps> = ({num, template, handleDeleteTe
 
   return (
     <div className={styles.sharedTemplate}>
-      {/* <Link to={'/memorize/' + template.id} className={styles.image}>
-        <img src={template.image} alt={template.name} />
-      </Link> */}
-      <img className={styles.image} src={Extension()} alt={template.name} onClick={() => setConfirmIsOpen(true)} />
-      {/*stateによって変える*/}
+      <button
+        onClick={() => navigate('/fromTemplate/' + template.id, {state: {image: Extension(), shared: true}})}
+        className={styles.imageButton}>
+        <img className={styles.image} src={Extension()} alt={template.name} />
+      </button>
       <div className={styles.titleContainer}>
         <h1 className={styles.title}>{template.name}</h1>
         <button className={styles.moreVertIcon} onClick={handleClick}>
@@ -134,19 +134,6 @@ const SharedTemplate: React.VFC<TemplateProps> = ({num, template, handleDeleteTe
           </Dialog>
         </div>
       </Menu>
-      <Dialog open={confirmIsOpen} onClose={() => setConfirmIsOpen(false)}>
-        <DialogTitle>このテンプレートから宮殿を作成しますか？</DialogTitle>
-        <DialogActions>
-          <button
-            onClick={() => navigate('/fromTemplate/' + template.id, {state: {image: Extension(), shared: true}})}
-            className={styles.button1}>
-            はい
-          </button>
-          <button onClick={() => setConfirmIsOpen(false)} className={styles.button2}>
-            いいえ
-          </button>
-        </DialogActions>
-      </Dialog>
     </div>
   )
 }
