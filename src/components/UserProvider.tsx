@@ -31,20 +31,13 @@ export const UserProvider: React.FC = ({children}) => {
 
   const login = async (user: UserRegistration) => {
     setLoading(true)
-    const res = await postLogin(user)
-    setUser({
-      ...res,
-      auth: true,
-    })
+    postLogin(user)
+    getCurrentUser().then((user) => user && setUser({...user, auth: true}))
     setLoading(false)
   }
   const signup = async (user: UserRegistration) => {
     setLoading(true)
-    const res = await postSignUp(user)
-    setUser({
-      ...res,
-      auth: true,
-    })
+    postSignUp(user).then(() => getCurrentUser().then((user) => user && setUser({...user, auth: true})))
     setLoading(false)
   }
   const logout = () => {
