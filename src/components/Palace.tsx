@@ -54,7 +54,7 @@ const Palace: React.VFC<PalaceProps> = ({num, palace, handleDeletePalace}) => {
   }
   function handleSaveAsTemplate() {
     let templatePins = new Array<Pin>()
-    for (let i = 0; i < templatePins.length; i++) {
+    for (let i = 0; i < palace.embededPins.length; i++) {
       templatePins.push({
         number: i,
         x: palace.embededPins[i].x,
@@ -64,10 +64,11 @@ const Palace: React.VFC<PalaceProps> = ({num, palace, handleDeletePalace}) => {
     const data = {
       name: palace.name,
       image: palace.image,
-      pins: palace.embededPins,
+      pins: templatePins,
       createdBy: palace.createdBy,
     }
-    postTemplate(data, () => setSaveAsTemplateIsOpen(false))
+    postTemplate(data)
+    setSaveAsTemplateIsOpen(false)
     handleClose()
   }
   function Extension() {
