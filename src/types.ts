@@ -73,7 +73,7 @@ export type RegistrationResponse = {
 
 export type NoticeType = {
   id: string
-  read: boolean
+  checked: boolean
   content: string
   created_at: string
 }

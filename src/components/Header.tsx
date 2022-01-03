@@ -8,25 +8,24 @@ import {useState} from 'react'
 import Popover from '@mui/material/Popover'
 import {getNotice} from '../api/notice'
 import {NoticeType} from '../types'
-import {timeToString} from '../util/timeToString'
 import {calcTimeDiff} from '../util/calucTimeDiff'
 
 const mockNotice = [
   {
     id: 1,
-    read: false,
+    checked: false,
     content: '公開したものを元に他のユーザーが新たな宮殿を公開しました。',
     created_at: '2022-01-03T03:13:09.560Z',
   },
   {
     id: 2,
-    read: true,
+    checked: true,
     content: '公開したものを元に他のユーザーが新たなテンプレートを公開しました。',
     created_at: '2022-01-01T02:13:09.560Z',
   },
   {
     id: 3,
-    read: true,
+    checked: true,
     content: '公開したものを元に他のユーザーが新たな忘却曲線を公開しました。',
     created_at: '2022-01-01T03:13:09.560Z',
   },
@@ -36,12 +35,12 @@ const Header: React.VFC = () => {
   const navigate = useNavigate()
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null)
   const open = Boolean(anchorEl)
-  //const [notices, setNotices] = useState<NoticeType[]>(new Array<NoticeType>())
-  const [notices, setNotices] = useState(mockNotice)
+  const [notices, setNotices] = useState<NoticeType[]>(new Array<NoticeType>())
+  //const [notices, setNotices] = useState(mockNotice)
   const [unreadNotices, setUnreadNotices] = useState<number>(() => {
     let unreadCount = 0
     for (let i = 0; i < notices.length; i++) {
-      if (!notices[i].read) {
+      if (!notices[i].checked) {
         unreadCount += 1
       }
     }
@@ -49,7 +48,11 @@ const Header: React.VFC = () => {
   })
 
   const handleClick = (e: React.MouseEvent<HTMLButtonElement>) => {
-    getNotice((res) => setNotices(res.data))
+    getNotice((res) => {
+      if (res.data) {
+        setNotices(res.data)
+      }
+    })
     setAnchorEl(e.currentTarget)
   }
   const handleClose = () => {
@@ -75,7 +78,7 @@ const Header: React.VFC = () => {
       <div
         onClick={() => Routing(notice.content, index)}
         className={styles.background}
-        style={{backgroundColor: notices[index].read ? 'white' : '#f3f6fb'}}>
+        style={{backgroundColor: notices[index].checked ? 'white' : '#f3f6fb'}}>
         <div className={styles.content}>
           <span>{notice.content}</span>
         </div>
