@@ -9,25 +9,26 @@ import Popover from '@mui/material/Popover'
 import {getNotice} from '../api/notice'
 import {NoticeType} from '../types'
 import {timeToString} from '../util/timeToString'
+import {calcTimeDiff} from '../util/calucTimeDiff'
 
 const mockNotice = [
   {
     id: 1,
     read: true,
     content: '公開したものを元に他のユーザーが新たな宮殿を公開しました。',
-    created_at: '2022-01-03T02:13:09.560Z',
+    created_at: '2022-01-03T03:13:09.560Z',
   },
   {
     id: 2,
     read: false,
     content: '公開したものを元に他のユーザーが新たなテンプレートを公開しました。',
-    created_at: '2022-01-03T02:13:09.560Z',
+    created_at: '2022-01-01T02:13:09.560Z',
   },
   {
     id: 3,
     read: false,
     content: '公開したものを元に他のユーザーが新たな忘却曲線を公開しました。',
-    created_at: '2022-01-03T02:13:09.560Z',
+    created_at: '2022-01-01T03:13:09.560Z',
   },
 ]
 const Header: React.VFC = () => {
@@ -80,7 +81,7 @@ const Header: React.VFC = () => {
         </div>
         <div className={styles.bottom}>
           <div className={styles.time}>
-            <span>{timeToString(notice.created_at)}</span>
+            <span>{calcTimeDiff(notice.created_at)}</span>
           </div>
           <div className={styles.confirm}>
             <span>確認する</span>
