@@ -44,7 +44,7 @@ export const EditFromTemplate: React.VFC<EditProps> = ({imageUrl, isPlayground =
 
   React.useEffect(() => {
     const templateID = params.id
-    if (location.state.share) {
+    if (location.state.shared) {
       templateID &&
         getSharedTemplate((res) => {
           let data = res.data

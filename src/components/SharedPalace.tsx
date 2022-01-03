@@ -24,7 +24,6 @@ const SharedPalace: React.VFC<PalaceProps> = ({num, palace, deletePalace}) => {
   const navigate = useNavigate()
   const {user} = useAuth()
   const [shareIsOpen, setShareIsOpen] = useState(false)
-  const [confirmIsOpen, setConfirmIsOpen] = useState(false)
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null)
   const open = Boolean(anchorEl)
 
@@ -69,11 +68,11 @@ const SharedPalace: React.VFC<PalaceProps> = ({num, palace, deletePalace}) => {
 
   return (
     <div className={styles.sharedPalace}>
-      {/* <Link to={'/memorize/' + palace.id} className={styles.image}>
-        <img src={palace.image} alt={palace.name} />
-      </Link> */}
-      <img className={styles.image} src={Extension()} alt={palace.name} onClick={() => setConfirmIsOpen(true)} />
-      {/*stateによって変える*/}
+      <button
+        onClick={() => navigate('/memorize/' + palace.id, {state: {shared: true}})}
+        className={styles.imageButton}>
+        <img className={styles.image} src={Extension()} alt={palace.name} />
+      </button>
       <div className={styles.titleContainer}>
         <h1 className={styles.title}>{palace.name}</h1>
         <button className={styles.moreVertIcon} onClick={handleClick}>
@@ -139,19 +138,6 @@ const SharedPalace: React.VFC<PalaceProps> = ({num, palace, deletePalace}) => {
                 はい
               </button>
               <button onClick={() => setShareIsOpen(false)} className={styles.button2}>
-                いいえ
-              </button>
-            </DialogActions>
-          </Dialog>
-          <Dialog open={confirmIsOpen} onClose={() => setConfirmIsOpen(false)}>
-            <DialogTitle>この宮殿の暗記を始めますか？</DialogTitle>
-            <DialogActions>
-              <button
-                onClick={() => navigate('/memorize/' + palace.id, {state: {shared: false}})}
-                className={styles.button1}>
-                はい
-              </button>
-              <button onClick={() => setConfirmIsOpen(false)} className={styles.button2}>
                 いいえ
               </button>
             </DialogActions>
