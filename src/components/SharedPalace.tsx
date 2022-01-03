@@ -50,7 +50,7 @@ const SharedPalace: React.VFC<PalaceProps> = ({num, palace, deletePalace}) => {
       name: palace.name,
       image: palace.image,
       embededPins: palace.embededPins,
-      createdBy: palace.createdBy,
+      createdBy: palace.heldBy,
       originalID: palace.id,
     }
     postPalace(data)

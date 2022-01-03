@@ -51,7 +51,7 @@ const SharedTemplate: React.VFC<TemplateProps> = ({num, template, handleDeleteTe
       name: template.name,
       image: template.image,
       pins: template.pins,
-      createdBy: template.createdBy,
+      createdBy: template.heldBy,
       originalID: template.id,
     }
     postTemplate(data)

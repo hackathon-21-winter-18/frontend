@@ -45,8 +45,9 @@ export type SharedPalaceType = {
   image: string
   embededPins: EmbededPin[]
   savedCount: number
-  editerName: string
-  createrName: string
+  editorName: string
+  creatorName: string
+  heldBy: string
   createdBy: string
 }
 //SharedTemplateType
@@ -56,8 +57,9 @@ export type SharedTemplateType = {
   image: string
   pins: Pin[]
   savedCount: number
-  editerName: string
-  createrName: string
+  editorName: string
+  creatorName: string
+  heldBy: string
   createdBy: string
 }
 //login周り
