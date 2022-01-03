@@ -14,19 +14,19 @@ import {calcTimeDiff} from '../util/calucTimeDiff'
 const mockNotice = [
   {
     id: 1,
-    read: true,
+    read: false,
     content: '公開したものを元に他のユーザーが新たな宮殿を公開しました。',
     created_at: '2022-01-03T03:13:09.560Z',
   },
   {
     id: 2,
-    read: false,
+    read: true,
     content: '公開したものを元に他のユーザーが新たなテンプレートを公開しました。',
     created_at: '2022-01-01T02:13:09.560Z',
   },
   {
     id: 3,
-    read: false,
+    read: true,
     content: '公開したものを元に他のユーザーが新たな忘却曲線を公開しました。',
     created_at: '2022-01-01T03:13:09.560Z',
   },
@@ -75,7 +75,7 @@ const Header: React.VFC = () => {
       <div
         onClick={() => Routing(notice.content, index)}
         className={styles.background}
-        style={{backgroundColor: notices[index].read ? '#f3f6fb' : 'white'}}>
+        style={{backgroundColor: notices[index].read ? 'white' : '#f3f6fb'}}>
         <div className={styles.content}>
           <span>{notice.content}</span>
         </div>
