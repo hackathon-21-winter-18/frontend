@@ -7,7 +7,7 @@ import {useMousePosition} from '../hooks/useMousePosition'
 import {CustomCursor} from '../components/CustomCursor'
 import {Badge, Box, ClickAwayListener, IconButton, Portal, SxProps} from '@mui/material'
 import {useHover} from '../hooks/useHover'
-import {EmbededPin, PinContent} from '../types'
+import {EmbededPin, PinContent, TemplateType} from '../types'
 import pinIcon from '../assets/pin.svg'
 import {FixWordDialog} from '../components/FixWordDialog'
 import {postPalace, putSharePalace} from '../api/palace'
@@ -17,6 +17,7 @@ import CheckCircleIcon from '@mui/icons-material/CheckCircle'
 import DialogActions from '@mui/material/DialogActions'
 import DialogTitle from '@mui/material/DialogTitle'
 import {getTemplate, getSharedTemplate} from '../api/template'
+import {Extension} from '../util/extension'
 
 type Mode = 'edit' | 'memorization'
 
@@ -40,6 +41,8 @@ export const EditFromTemplate: React.VFC<EditProps> = ({imageUrl, isPlayground =
   const params = useParams()
   const [palaceId, setPalaceId] = React.useState('')
   const [hoverRef, isHovered] = useHover<HTMLImageElement>()
+  const [templateCreatedBy, setTemplateCreatedBy] = React.useState('')
+  const [image, setImage] = React.useState('')
   const {x, y} = useMousePosition()
 
   React.useEffect(() => {
@@ -63,6 +66,8 @@ export const EditFromTemplate: React.VFC<EditProps> = ({imageUrl, isPlayground =
                   },
                 ])
                 setPins(prePins)
+                setTemplateCreatedBy(data[i].createdBy)
+                setImage(Extension(data[i].image))
               }
             }
           }
@@ -70,7 +75,7 @@ export const EditFromTemplate: React.VFC<EditProps> = ({imageUrl, isPlayground =
     } else {
       templateID &&
         getTemplate((res) => {
-          let data = res.data
+          let data: TemplateType[] = res.data
           for (let i = 0; i < data.length; i++) {
             if (data[i].id === templateID) {
               let prePins = new Array<EmbededPin>()
@@ -86,12 +91,14 @@ export const EditFromTemplate: React.VFC<EditProps> = ({imageUrl, isPlayground =
                   },
                 ])
                 setPins(prePins)
+                setTemplateCreatedBy(data[i].createdBy)
+                setImage(Extension(data[i].image))
               }
             }
           }
         })
     }
-  }, []) // eslint-disable-line react-hooks/exhaustive-deps
+  }, [location]) // eslint-disable-line react-hooks/exhaustive-deps
 
   const handleComplete = () => {
     if (!(pins.length <= 0 || palaceName === '')) {
@@ -114,7 +121,11 @@ export const EditFromTemplate: React.VFC<EditProps> = ({imageUrl, isPlayground =
       postPalace(data, (res: any) => {
         setPalaceId(res.data.id)
         if (shareOption) {
-          putSharePalace(res.data.id, shareOption)
+          const data = {
+            share: shareOption,
+            createdBy: templateCreatedBy,
+          }
+          putSharePalace(res.data.id, data)
         }
       })
       setCompleteIsOpen(true)
@@ -229,7 +240,7 @@ export const EditFromTemplate: React.VFC<EditProps> = ({imageUrl, isPlayground =
         <div className={styles.image}>
           <img
             className={styles.layoutImage}
-            src={imageUrl ?? location.state.image}
+            src={imageUrl ?? image}
             alt=""
             onClick={() => mode === 'edit' && setOpen(Math.random())}
             ref={hoverRef}
@@ -271,7 +282,6 @@ export const EditFromTemplate: React.VFC<EditProps> = ({imageUrl, isPlayground =
             <span>記憶の宮殿を作成する</span>
           </button>
         </form>
-        <button onClick={() => console.log(pins)}>ボタン</button>
       </div>
       <Dialog open={isOpen && !(pins.length <= 0 || palaceName === '')} onClose={() => setIsOpen(false)}>
         <DialogTitle>本当に宮殿を作成しますか？</DialogTitle>

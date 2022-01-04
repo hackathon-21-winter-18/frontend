@@ -6,11 +6,13 @@ import MoreVertIcon from '@mui/icons-material/MoreVert'
 import CommentIcon from '@mui/icons-material/Comment'
 import AccessibilityNewIcon from '@mui/icons-material/AccessibilityNew'
 import GradeIcon from '@mui/icons-material/Grade'
+import EditIcon from '@mui/icons-material/Edit'
 import Dialog from '@mui/material/Dialog'
 import useAuth from '../components/UserProvider'
 import {DialogActions, DialogTitle} from '@mui/material'
 import {putSharePalace, postPalace} from '../api/palace'
 import {Menu} from '@mui/material'
+import {Extension} from '../util/extension'
 
 interface PalaceProps {
   num: number
@@ -34,7 +36,11 @@ const SharedPalace: React.VFC<PalaceProps> = ({num, palace, deletePalace}) => {
   }
 
   function handleShare() {
-    putSharePalace(palace.id, false)
+    const data = {
+      share: false,
+      createdBy: palace.createdBy,
+    }
+    putSharePalace(palace.id, data)
     deletePalace(num)
     setShareIsOpen(false)
     handleClose()
@@ -44,21 +50,11 @@ const SharedPalace: React.VFC<PalaceProps> = ({num, palace, deletePalace}) => {
       name: palace.name,
       image: palace.image,
       embededPins: palace.embededPins,
-      createdBy: palace.createdBy,
+      createdBy: palace.heldBy,
       originalID: palace.id,
     }
     postPalace(data)
     handleClose()
-  }
-  function Extension() {
-    switch (palace.image.substring(0, 5)) {
-      case 'iVBOR':
-        return 'data:image/png;base64,' + palace.image
-      case 'R0IGO':
-        return 'data:image/gif;base64,' + palace.image
-      case '/9j/4':
-        return 'data:image/jpeg;base64,' + palace.image
-    }
   }
 
   return (
@@ -66,7 +62,7 @@ const SharedPalace: React.VFC<PalaceProps> = ({num, palace, deletePalace}) => {
       <button
         onClick={() => navigate('/memorize/' + palace.id, {state: {shared: true}})}
         className={styles.imageButton}>
-        <img className={styles.image} src={Extension()} alt={palace.name} />
+        <img className={styles.image} src={Extension(palace.image)} alt={palace.name} />
       </button>
       <div className={styles.titleContainer}>
         <h1 className={styles.title}>{palace.name}</h1>
@@ -76,11 +72,15 @@ const SharedPalace: React.VFC<PalaceProps> = ({num, palace, deletePalace}) => {
       </div>
       <div className={styles.tag}>
         <CommentIcon className={styles.icon} />
-        単語数:{palace.embededPins.length}
+        <span>単語数:{palace.embededPins.length}</span>
       </div>
       <div className={styles.tag}>
         <AccessibilityNewIcon className={styles.icon} />
-        <span>作成者:{palace.createrName}</span>
+        <span>作成者:{palace.creatorName}</span>
+      </div>
+      <div className={styles.tag}>
+        <EditIcon className={styles.icon} />
+        <span>編集者:{palace.editorName}</span>
       </div>
       <div className={styles.tag}>
         <GradeIcon className={styles.icon} />
@@ -101,9 +101,11 @@ const SharedPalace: React.VFC<PalaceProps> = ({num, palace, deletePalace}) => {
         }}
         className={styles.menu}>
         <div className={styles.card}>
-          <button onClick={() => setSaveIsOpen(true)} className={styles.menuButton}>
-            <span className={styles.menuText}>宮殿の保存</span>
-          </button>
+          {palace.createdBy !== user.id ? (
+            <button onClick={() => setSaveIsOpen(true)} className={styles.menuButton}>
+              <span className={styles.menuText}>宮殿の保存</span>
+            </button>
+          ) : null}
           <Dialog open={saveIsOpen} onClose={() => setSaveIsOpen(false)}>
             <DialogTitle>本当に宮殿を保存しますか？</DialogTitle>
             <DialogActions>
@@ -115,10 +117,11 @@ const SharedPalace: React.VFC<PalaceProps> = ({num, palace, deletePalace}) => {
               </button>
             </DialogActions>
           </Dialog>
-          <div className={styles.divider} />
-          <button onClick={() => setShareIsOpen(true)} className={styles.menuButton}>
-            <span className={styles.menuText}>宮殿の共有設定</span>
-          </button>
+          {palace.createdBy === user.id ? (
+            <button onClick={() => setShareIsOpen(true)} className={styles.menuButton}>
+              <span className={styles.menuText}>宮殿の共有設定</span>
+            </button>
+          ) : null}
           <Dialog open={shareIsOpen} onClose={() => setShareIsOpen(false)}>
             <DialogTitle>宮殿の共有をやめますか？</DialogTitle>
             <DialogActions>

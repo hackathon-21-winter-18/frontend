@@ -61,9 +61,18 @@ export const EditTemplate: React.VFC<EditProps> = ({imageUrl, isPlayground = fal
         pins: pins,
         createdBy: user.id,
       }
-      postTemplate(data, (res) => (shareOption ? putShareTemplate(res.data.id, shareOption) : null))
+
+      postTemplate(data, (res) => {
+        if (shareOption) {
+          const data = {
+            share: shareOption,
+            createdBy: user.id,
+          }
+          putShareTemplate(res.data.id, data)
+        }
+      })
+      setCompleteIsOpen(true)
     }
-    setCompleteIsOpen(true)
   }
 
   const handleClickAway = () => {
