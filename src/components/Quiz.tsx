@@ -2,7 +2,7 @@ import styles from './Quiz.module.css'
 import ExploreIcon from '@mui/icons-material/Explore'
 import {useState, useEffect, useRef} from 'react'
 import {getPalace} from '../api/palace'
-import {PalaceType} from '../types'
+import {PalaceType, PinContent} from '../types'
 import {useLocation} from 'react-router-dom'
 
 type quizType = {
@@ -15,7 +15,7 @@ type judge = 'AC' | 'WA' | 'yet'
 type randomNumType = 0 | 1
 const Quiz: React.VFC = () => {
   const [judge, setJudge] = useState<judge>('yet')
-  const [palaces, setPalaces] = useState(new Array<PalaceType>())
+  const [pins, setPins] = useState<PinContent[]>(new Array<PinContent>())
   const [quiz, setQuiz] = useState<quizType>({} as quizType)
   const [randomNum, setRandomNum] = useState<randomNumType>(getRandomInt(0, 1) as randomNumType) //正解の選択肢を上に当てはめるか下に当てはめるか
   const location = useLocation()
@@ -28,23 +28,23 @@ const Quiz: React.VFC = () => {
   const ref1 = useRef<HTMLButtonElement>(null!)
   const ref2 = useRef<HTMLButtonElement>(null!)
 
-  function RandomSelect(passedPalaces: PalaceType[]) {
-    const palaceNum = getRandomInt(0, passedPalaces.length - 1)
-    const pinNum = getRandomInt(0, passedPalaces[palaceNum].embededPins.length - 1)
-    const pin = passedPalaces[palaceNum].embededPins[pinNum]
-    const palaceDummyNum = getRandomInt(0, passedPalaces.length - 1)
-    const pinDummyNum = getRandomInt(0, passedPalaces[palaceDummyNum].embededPins.length - 1)
-    const pinDummy = passedPalaces[palaceDummyNum].embededPins[pinDummyNum]
-    setRandomNum(getRandomInt(0, 1) as randomNumType)
-    setQuiz({
-      place: pin.place,
-      situation: pin.situation,
-      choice1: pin.word,
-      choice2: pinDummy.word,
-    })
-    setJudge('yet')
-    if (pin.word === pinDummy.word) {
-      RandomSelect(passedPalaces)
+  function RandomSelect(passedPins: PinContent[]) {
+    if (passedPins.length >= 2) {
+      const pinNum = getRandomInt(0, passedPins.length - 1)
+      const pin = passedPins[pinNum]
+      const pinDummyNum = getRandomInt(0, passedPins.length - 1)
+      const pinDummy = passedPins[pinDummyNum]
+      setRandomNum(getRandomInt(0, 1) as randomNumType)
+      setQuiz({
+        place: pin.place,
+        situation: pin.situation,
+        choice1: pin.word,
+        choice2: pinDummy.word,
+      })
+      setJudge('yet')
+      if (pin.word === pinDummy.word) {
+        RandomSelect(passedPins)
+      }
     }
   }
   function handleJudge(value: string) {
@@ -59,14 +59,32 @@ const Quiz: React.VFC = () => {
   useEffect(() => {
     getPalace((res) => {
       if (res.data) {
-        setPalaces(res.data)
-        RandomSelect(res.data)
+        let prePins: PinContent[] = new Array<PinContent>()
+        for (let i = 0; i < res.data.length; i++) {
+          for (let j = 0; j < res.data[i].embededPins.length; j++) {
+            if (
+              res.data[i].embededPins[j].word !== '' &&
+              res.data[i].embededPins[j].place !== '' &&
+              res.data[i].embededPins[j].situation !== ''
+            ) {
+              prePins = prePins.concat([
+                {
+                  word: res.data[i].embededPins[j].word,
+                  place: res.data[i].embededPins[j].place,
+                  situation: res.data[i].embededPins[j].situation,
+                },
+              ])
+            }
+          }
+        }
+        setPins(prePins)
+        RandomSelect(prePins)
       }
     })
   }, [location]) // eslint-disable-line react-hooks/exhaustive-deps
   return (
     <div className={styles.quiz}>
-      {palaces.length !== 0 ? (
+      {pins.length >= 2 ? (
         <div>
           <div className={styles.header}>
             <ExploreIcon className={styles.buttonIcon} />
@@ -109,7 +127,7 @@ const Quiz: React.VFC = () => {
             <span>{judge === 'AC' ? '正解!' : judge === 'WA' ? '不正解!' : null}</span>
           </div>
           {judge !== 'yet' ? (
-            <button onClick={() => RandomSelect(palaces)} className={styles.button3}>
+            <button onClick={() => RandomSelect(pins)} className={styles.button3}>
               次の問題へ
             </button>
           ) : null}

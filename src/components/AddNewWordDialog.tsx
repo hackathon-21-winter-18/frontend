@@ -58,7 +58,7 @@ const AddNewWordDialog: React.VFC<AddNewWordDialogProps> = ({
   ])
 
   const handlePutPin = () => {
-    if (word !== '' && place !== '' && situation !== '') {
+    if (word !== '') {
       if (pins) {
         const updatedPin = {
           number: pinContent!.number,
@@ -122,18 +122,18 @@ const AddNewWordDialog: React.VFC<AddNewWordDialogProps> = ({
           が
           <input
             type="text"
-            placeholder={warning ? '場所が未設定' : 'リビング'}
+            placeholder={'リビング'}
             onChange={(e) => setPlace(e.target.value)}
             value={place}
-            className={warning ? styles.warning : styles.safe}
+            className={styles.safe}
           />
           で
           <input
             type="text"
-            placeholder={warning ? '状況が未設定' : '笹食ってる'}
+            placeholder={'笹食ってる'}
             onChange={(e) => setSituation(e.target.value)}
             value={situation}
-            className={warning ? styles.warning : styles.safe}
+            className={styles.safe}
           />
           <IconButton color="warning" onClick={handleShuffle}>
             <ShuffleIcon />
