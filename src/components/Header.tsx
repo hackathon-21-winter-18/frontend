@@ -94,7 +94,7 @@ const Header: React.VFC = () => {
           <div className={styles.right}>
             <button className={styles.notice} onClick={handleClick}>
               <NotificationsNoneIcon className={styles.noticeIcon} fontSize="large" />
-              {unreadNotices !== 0 ? (
+              {unreadNotices !== 0 && unreadNotices ? (
                 <div className={styles.unreadNotices}>
                   <span>{unreadNotices}</span>
                 </div>
