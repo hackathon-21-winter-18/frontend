@@ -1,0 +1,73 @@
+.quiz {
+  width: 251px;
+  height: 240px;
+  border-radius: 10px;
+  background-color: #eef3ff;
+  position: relative;
+}
+.buttonIcon {
+  margin-right: 12px;
+}
+.header {
+  margin-top: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.header > span {
+  color: #313847;
+  font-size: 18px;
+  font-weight: bold;
+  font-family: 'Noto Sans JP';
+}
+
+.question {
+  text-align: center;
+}
+.questionText {
+  font-size: 14px;
+  font-weight: Medium;
+  font-family: 'Noto Sans JP';
+  margin-top: 16px;
+}
+.button1 {
+  margin-top: 20px;
+  background-color: #ffffff;
+  padding: 5px 5px 5px 5px;
+  border-radius: 4px;
+  border: none;
+  cursor: pointer;
+}
+.button2 {
+  margin-bottom: 7px;
+  background-color: #ffffff;
+  padding: 5px 5px 5px 5px;
+  border-radius: 4px;
+  border: none;
+  cursor: pointer;
+}
+
+.or {
+  display: block;
+  margin-top: 5px;
+  margin-bottom: 7px;
+}
+
+.answer {
+  text-align: center;
+}
+.answer > span {
+  color: red;
+}
+.button3 {
+  display: block;
+  bottom: 5px;
+  right: 10px;
+  background-color: #ffffff;
+  padding: 5px 5px 5px 5px;
+  border-radius: 4px;
+  border: none;
+  cursor: pointer;
+  position: absolute;
+}

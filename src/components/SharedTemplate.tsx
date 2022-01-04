@@ -6,11 +6,13 @@ import MoreVertIcon from '@mui/icons-material/MoreVert'
 import CommentIcon from '@mui/icons-material/Comment'
 import AccessibilityNewIcon from '@mui/icons-material/AccessibilityNew'
 import GradeIcon from '@mui/icons-material/Grade'
+import EditIcon from '@mui/icons-material/Edit'
 import Dialog from '@mui/material/Dialog'
 import useAuth from '../components/UserProvider'
 import {DialogActions, DialogTitle} from '@mui/material'
 import {putShareTemplate, postTemplate} from '../api/template'
 import {Menu} from '@mui/material'
+import {Extension} from '../util/extension'
 
 interface TemplateProps {
   num: number
@@ -24,7 +26,6 @@ const SharedTemplate: React.VFC<TemplateProps> = ({num, template, handleDeleteTe
   const navigate = useNavigate()
   const {user} = useAuth()
   const [shareIsOpen, setShareIsOpen] = useState(false)
-  const [confirmIsOpen, setConfirmIsOpen] = useState(false)
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null)
   const open = Boolean(anchorEl)
 
@@ -36,7 +37,11 @@ const SharedTemplate: React.VFC<TemplateProps> = ({num, template, handleDeleteTe
   }
 
   function handleShare() {
-    putShareTemplate(template.id, false)
+    const data = {
+      share: false,
+      createdBy: template.createdBy,
+    }
+    putShareTemplate(template.id, data)
     handleDeleteTemplate(num)
     setShareIsOpen(false)
     handleClose()
@@ -46,29 +51,19 @@ const SharedTemplate: React.VFC<TemplateProps> = ({num, template, handleDeleteTe
       name: template.name,
       image: template.image,
       pins: template.pins,
-      createdBy: template.createdBy,
+      createdBy: template.heldBy,
       originalID: template.id,
     }
     postTemplate(data)
     handleClose()
   }
-  function Extension() {
-    switch (template.image.substring(0, 5)) {
-      case 'iVBOR':
-        return 'data:image/png;base64,' + template.image
-      case 'R0IGO':
-        return 'data:image/gif;base64,' + template.image
-      case '/9j/4':
-        return 'data:image/jpeg;base64,' + template.image
-    }
-  }
 
   return (
     <div className={styles.sharedTemplate}>
       <button
-        onClick={() => navigate('/fromTemplate/' + template.id, {state: {image: Extension(), shared: true}})}
+        onClick={() => navigate('/fromTemplate/' + template.id, {state: {shared: true}})}
         className={styles.imageButton}>
-        <img className={styles.image} src={Extension()} alt={template.name} />
+        <img className={styles.image} src={Extension(template.image)} alt={template.name} />
       </button>
       <div className={styles.titleContainer}>
         <h1 className={styles.title}>{template.name}</h1>
@@ -82,7 +77,11 @@ const SharedTemplate: React.VFC<TemplateProps> = ({num, template, handleDeleteTe
       </div>
       <div className={styles.tag}>
         <AccessibilityNewIcon className={styles.icon} />
-        <span>作成者:{template.createrName}</span>
+        <span>作成者:{template.creatorName}</span>
+      </div>
+      <div className={styles.tag}>
+        <EditIcon className={styles.icon} />
+        <span>編集者:{template.editorName}</span>
       </div>
       <div className={styles.tag}>
         <GradeIcon className={styles.icon} />
@@ -103,9 +102,11 @@ const SharedTemplate: React.VFC<TemplateProps> = ({num, template, handleDeleteTe
         }}
         className={styles.menu}>
         <div className={styles.card}>
-          <button onClick={() => setSaveIsOpen(true)} className={styles.menuButton}>
-            <span className={styles.menuText}>テンプレートの保存</span>
-          </button>
+          {template.createdBy !== user.id ? (
+            <button onClick={() => setSaveIsOpen(true)} className={styles.menuButton}>
+              <span className={styles.menuText}>テンプレートの保存</span>
+            </button>
+          ) : null}
           <Dialog open={saveIsOpen} onClose={() => setSaveIsOpen(false)}>
             <DialogTitle>本当にテンプレートを保存しますか？</DialogTitle>
             <DialogActions>
@@ -117,10 +118,11 @@ const SharedTemplate: React.VFC<TemplateProps> = ({num, template, handleDeleteTe
               </button>
             </DialogActions>
           </Dialog>
-          <div className={styles.divider} />
-          <button onClick={() => setShareIsOpen(true)} className={styles.menuButton}>
-            <span className={styles.menuText}>テンプレートの共有設定</span>
-          </button>
+          {template.createdBy === user.id ? (
+            <button onClick={() => setShareIsOpen(true)} className={styles.menuButton}>
+              <span className={styles.menuText}>テンプレートの共有設定</span>
+            </button>
+          ) : null}
           <Dialog open={shareIsOpen} onClose={() => setShareIsOpen(false)}>
             <DialogTitle>テンプレートの共有をやめますか？</DialogTitle>
             <DialogActions>

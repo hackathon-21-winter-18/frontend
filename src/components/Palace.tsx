@@ -14,6 +14,7 @@ import userAuth from './UserProvider'
 import {postTemplate} from '../api/template'
 import {Pin} from '../types'
 import {Menu} from '@mui/material'
+import {Extension} from '../util/extension'
 
 interface PalaceProps {
   num: number
@@ -43,14 +44,18 @@ const Palace: React.VFC<PalaceProps> = ({num, palace, handleDeletePalace}) => {
     handleDeletePalace(num)
   }
   function handleShare() {
-    putSharePalace(palace.id, !palace.share)
+    const data = {
+      share: !palace.share,
+      createdBy: palace.createdBy,
+    }
+    putSharePalace(palace.id, data)
     setShare(!share)
     setShareIsOpen(false)
     handleClose()
   }
   function handleSaveAsTemplate() {
     let templatePins = new Array<Pin>()
-    for (let i = 0; i < templatePins.length; i++) {
+    for (let i = 0; i < palace.embededPins.length; i++) {
       templatePins.push({
         number: i,
         x: palace.embededPins[i].x,
@@ -60,21 +65,12 @@ const Palace: React.VFC<PalaceProps> = ({num, palace, handleDeletePalace}) => {
     const data = {
       name: palace.name,
       image: palace.image,
-      pins: palace.embededPins,
+      pins: templatePins,
       createdBy: palace.createdBy,
     }
-    postTemplate(data, () => setSaveAsTemplateIsOpen(false))
+    postTemplate(data)
+    setSaveAsTemplateIsOpen(false)
     handleClose()
-  }
-  function Extension() {
-    switch (palace.image.substring(0, 5)) {
-      case 'iVBOR':
-        return 'data:image/png;base64,' + palace.image
-      case 'R0IGO':
-        return 'data:image/gif;base64,' + palace.image
-      case '/9j/4':
-        return 'data:image/jpeg;base64,' + palace.image
-    }
   }
 
   return (
@@ -82,7 +78,7 @@ const Palace: React.VFC<PalaceProps> = ({num, palace, handleDeletePalace}) => {
       <button
         onClick={() => navigate('/memorize/' + palace.id, {state: {shared: false}})}
         className={styles.imageButton}>
-        <img className={styles.image} src={Extension()} alt={palace.name} />
+        <img className={styles.image} src={Extension(palace.image)} alt={palace.name} />
       </button>
       <div className={styles.titleContainer}>
         <h1 className={styles.title}>{palace.name}</h1>
@@ -118,7 +114,7 @@ const Palace: React.VFC<PalaceProps> = ({num, palace, handleDeletePalace}) => {
         className={styles.menu}>
         <div className={styles.card}>
           <button
-            onClick={() => navigate('/fix/' + palace.id, {state: {shared: false, image: Extension()}})}
+            onClick={() => navigate('/fix/' + palace.id, {state: {shared: false, image: Extension(palace.image)}})}
             className={styles.menuButton}>
             <span className={styles.menuText}>宮殿の編集</span>
           </button>

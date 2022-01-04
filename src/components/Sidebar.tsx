@@ -12,6 +12,7 @@ import AttractionsIcon from '@mui/icons-material/Attractions'
 import TravelExploreIcon from '@mui/icons-material/TravelExplore'
 import useAuth from './UserProvider'
 import {Menu} from '@mui/material'
+import Quiz from '../components/Quiz'
 
 const Sidebar: React.VFC = () => {
   const {pathname} = useLocation()
@@ -55,6 +56,7 @@ const Sidebar: React.VFC = () => {
         <AttractionsIcon className={styles.buttonIcon} />
         Playground
       </Link>
+      <Quiz />
       <button className={styles.userSetting} onClick={handleClick}>
         {user.name ? (
           <>

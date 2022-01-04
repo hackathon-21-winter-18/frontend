@@ -13,6 +13,7 @@ import pinIcon from '../assets/pin.svg'
 import {getTemplate, putShareTemplate, putTemplate} from '../api/template'
 import {Pin} from '../types'
 import {useNavigate} from 'react-router-dom'
+import useAuth from '../components/UserProvider'
 
 export const FixTemplate: React.VFC = () => {
   const [open, setOpen] = React.useState<number | boolean>(false)
@@ -28,6 +29,8 @@ export const FixTemplate: React.VFC = () => {
   const [completeIsOpen, setCompleteIsOpen] = React.useState(false)
   const [shareOption, setShareOption] = React.useState(false)
   const [templateId, setTemplateId] = React.useState('')
+  const [templateCreatedBy, setTemplateCreatedBy] = React.useState('')
+  const {user} = useAuth()
 
   React.useEffect(() => {
     const templateID = params.id
@@ -39,6 +42,7 @@ export const FixTemplate: React.VFC = () => {
             setTemplateName(data[i].name)
             setPins(data[i].pins)
             setTemplateId(data[i].id)
+            setTemplateCreatedBy(data[i].createdBy)
           }
         }
       })
@@ -71,7 +75,15 @@ export const FixTemplate: React.VFC = () => {
         pins: pins,
       }
 
-      putTemplate(templateId, data, () => (shareOption ? putShareTemplate(templateId, shareOption) : null))
+      putTemplate(templateId, data, () => {
+        if (shareOption) {
+          const data = {
+            share: shareOption,
+            createdBy: templateCreatedBy,
+          }
+          putShareTemplate(templateId, data)
+        }
+      })
       setCompleteIsOpen(true)
     } else {
       setCompleteIsOpen(true)

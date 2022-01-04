@@ -63,7 +63,11 @@ export const Edit: React.VFC<EditProps> = ({imageUrl, isPlayground = false, xGap
       }
       postPalace(data, (res: any) => {
         if (shareOption) {
-          putSharePalace(res.data.id, shareOption)
+          const data = {
+            share: shareOption,
+            createdBy: user.id,
+          }
+          putSharePalace(res.data.id, data)
         }
         setPalaceId(res.data.id)
       })
@@ -83,9 +87,15 @@ export const Edit: React.VFC<EditProps> = ({imageUrl, isPlayground = false, xGap
           pins: pins,
           createdBy: user.id,
         }
-        postTemplate(data2, (res: any) =>
-          templateShareOption ? putShareTemplate(res.data.id, templateShareOption) : null
-        )
+        postTemplate(data2, (res: any) => {
+          if (templateShareOption) {
+            const data = {
+              share: templateShareOption,
+              createdBy: user.id,
+            }
+            putShareTemplate(res.data.id, data)
+          }
+        })
       }
       setCompleteIsOpen(true)
     } else {
@@ -259,7 +269,6 @@ export const Edit: React.VFC<EditProps> = ({imageUrl, isPlayground = false, xGap
           </button>
         </form>
       </div>
-      <button onClick={() => console.log(pins)}>ボタン</button>
       <Dialog open={isOpen} onClose={() => setIsOpen(false)}>
         <DialogTitle>本当に宮殿を作成しますか？</DialogTitle>
         <DialogActions>
