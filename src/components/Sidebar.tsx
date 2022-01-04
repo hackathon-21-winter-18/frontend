@@ -11,6 +11,7 @@ import AttractionsIcon from '@mui/icons-material/Attractions'
 import TravelExploreIcon from '@mui/icons-material/TravelExplore'
 import useAuth from './UserProvider'
 import {Menu} from '@mui/material'
+import Quiz from '../components/Quiz'
 
 const Sidebar: React.VFC = () => {
   const {pathname} = useLocation()
@@ -28,11 +29,11 @@ const Sidebar: React.VFC = () => {
     <div className={styles.sidebar}>
       <Link to="/" className={pathname === '/' ? styles.buttonHere : styles.buttonNotHere}>
         <HomeIcon className={styles.buttonIcon} />
-        My Palaces
+        My Palace
       </Link>
       <Link to="/template" className={pathname === '/template' ? styles.buttonHere : styles.buttonNotHere}>
         <BalconyIcon className={styles.buttonIcon} />
-        My Templates
+        My Template
       </Link>
       <Link
         to="/sharedPalaces"
@@ -46,6 +47,7 @@ const Sidebar: React.VFC = () => {
         <AttractionsIcon className={styles.buttonIcon} />
         Playground
       </Link>
+      <Quiz />
       <button className={styles.userSetting} onClick={handleClick}>
         <PersonPinIcon className={styles.userIcon} />
         {user.name}

@@ -46,6 +46,9 @@
   border-color: #313847;
   flex: 1;
 }
+.warning::placeholder {
+  color: red;
+}
 .trashButton {
   flex: 1;
 }
