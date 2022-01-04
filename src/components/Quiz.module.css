@@ -49,7 +49,8 @@
 }
 
 .or {
-  margin-top: 7px;
+  display: block;
+  margin-top: 5px;
   margin-bottom: 7px;
 }
 

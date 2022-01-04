@@ -17,7 +17,7 @@ const Quiz: React.VFC = () => {
   const [judge, setJudge] = useState<judge>('yet')
   const [palaces, setPalaces] = useState(new Array<PalaceType>())
   const [quiz, setQuiz] = useState<quizType>({} as quizType)
-  const [randomNum, setRandomNum] = useState<randomNumType>(getRandomInt(0, 1) as randomNumType)
+  const [randomNum, setRandomNum] = useState<randomNumType>(getRandomInt(0, 1) as randomNumType) //正解の選択肢を上に当てはめるか下に当てはめるか
   const location = useLocation()
 
   function getRandomInt(min: number, max: number) {
@@ -43,6 +43,9 @@ const Quiz: React.VFC = () => {
       choice2: pinDummy.word,
     })
     setJudge('yet')
+    if (pin.word === pinDummy.word) {
+      RandomSelect(passedPalaces)
+    }
   }
   function handleJudge(value: string) {
     if (judge === 'yet') {
@@ -78,7 +81,7 @@ const Quiz: React.VFC = () => {
               onClick={() => handleJudge(ref1.current.value)}
               className={styles.button1}
               ref={ref1}
-              value={quiz.choice1}>
+              value={randomNum === 0 ? quiz.choice1 : quiz.choice2}>
               {randomNum === 0
                 ? quiz.choice1 !== ''
                   ? quiz.choice1
@@ -87,14 +90,12 @@ const Quiz: React.VFC = () => {
                 ? quiz.choice2
                 : '単語未設定'}
             </button>
-            <br />
             <span className={styles.or}>or</span>
-            <br />
             <button
               onClick={() => handleJudge(ref2.current.value)}
               className={styles.button2}
               ref={ref2}
-              value={quiz.choice2}>
+              value={randomNum === 0 ? quiz.choice2 : quiz.choice1}>
               {randomNum === 0
                 ? quiz.choice2 !== ''
                   ? quiz.choice2
@@ -107,9 +108,11 @@ const Quiz: React.VFC = () => {
           <div className={styles.answer}>
             <span>{judge === 'AC' ? '正解!' : judge === 'WA' ? '不正解!' : null}</span>
           </div>
-          <button onClick={() => RandomSelect(palaces)} className={styles.button3}>
-            次の問題へ
-          </button>
+          {judge !== 'yet' ? (
+            <button onClick={() => RandomSelect(palaces)} className={styles.button3}>
+              次の問題へ
+            </button>
+          ) : null}
         </div>
       ) : (
         <div>
