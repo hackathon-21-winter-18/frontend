@@ -74,7 +74,7 @@ const Quiz: React.VFC = () => {
           </div>
           <div className={styles.question}>
             <p className={styles.questionText}>
-              {quiz.place !== '' ? quiz.place : '場所未設定'}で{quiz.situation !== '' ? quiz.situation : '状況未設定'}
+              {quiz.place !== '' ? quiz.place : '場所未設定'} で {quiz.situation !== '' ? quiz.situation : '状況未設定'}{' '}
               のは？
             </p>
             <button
