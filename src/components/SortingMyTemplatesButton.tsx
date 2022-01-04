@@ -58,8 +58,8 @@ export const SortingMyTemplatesButton = (props: SortingMyTemplatesButtonProp) =>
         value={order}
         name="radio-buttons-group"
         onChange={handleOrderChange}>
-        <FormControlLabel label="更新日時が新しい順" control={<Radio />} value="updated_at" />
-        <FormControlLabel label="更新日時が古い順" control={<Radio />} value="-updated_at" />
+        <FormControlLabel label={<span>更新日時が新しい順</span>} control={<Radio />} value="updated_at" />
+        <FormControlLabel label={<span>更新日時が古い順</span>} control={<Radio />} value="-updated_at" />
       </RadioGroup>
       <span>ピンの数: </span>
       <Input type="number" value={minPins} onChange={handleMinPinsChange} className={styles.pinNumberInput}></Input>
@@ -67,7 +67,9 @@ export const SortingMyTemplatesButton = (props: SortingMyTemplatesButtonProp) =>
       <Input type="number" value={maxPins} onChange={handleMaxPinsChange} className={styles.pinNumberInput}></Input>
       <span className={styles.warning}>{warning ? 'ピンの数指定が不正です' : null}</span>
       <div className={styles.sortingButton}>
-        <Button onClick={handleClick}>並び替える</Button>
+        <Button onClick={handleClick}>
+          <span>並び替える</span>
+        </Button>
       </div>
     </div>
   )

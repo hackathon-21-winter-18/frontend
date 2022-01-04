@@ -106,8 +106,10 @@ const Memorize: React.VFC = () => {
   const pinsList = pins.map((pin, index) => (
     <li key={pin.number} className={styles.li}>
       <div className={styles.inputContainer}>
-        <HidableWord text={pin.word} isVisible={flags[index]} />が
-        <HidableWord text={pin.place} isVisible={flags[index]} />で
+        <HidableWord text={pin.word} isVisible={flags[index]} />
+        <span>が</span>
+        <HidableWord text={pin.place} isVisible={flags[index]} />
+        <span>で</span>
         <HidableWord text={pin.situation} isVisible={flags[index]} />
       </div>
       <IconButton
@@ -117,7 +119,7 @@ const Memorize: React.VFC = () => {
           setFlags(flagsCopy)
         }}
         color={flags![index] ? 'primary' : 'error'}>
-        完了
+        <span>完了</span>
       </IconButton>
     </li>
   ))
@@ -198,7 +200,9 @@ const Memorize: React.VFC = () => {
         </button>
       </div>
       <Dialog open={isOpen && flags.every((value) => value)} onClose={() => setIsOpen(false)}>
-        <DialogTitle>本当に暗記を完了しますか？</DialogTitle>
+        <DialogTitle>
+          <span>本当に暗記を完了しますか？</span>
+        </DialogTitle>
         <DialogActions>
           <button
             onClick={() => {
@@ -206,28 +210,32 @@ const Memorize: React.VFC = () => {
               setCompleteIsOpen(true)
             }}
             className={styles.button1}>
-            はい
+            <span>はい</span>
           </button>
           <button onClick={() => setIsOpen(false)} className={styles.button2}>
-            いいえ
+            <span>いいえ</span>
           </button>
         </DialogActions>
       </Dialog>
       <Dialog open={completeIsOpen} PaperProps={{style: {width: '381px', height: '309px', borderRadius: '10px'}}}>
-        <DialogTitle style={{textAlign: 'center'}}>🎉お疲れさまでした🎉</DialogTitle>
+        <DialogTitle style={{textAlign: 'center'}}>
+          <span>🎉お疲れさまでした🎉</span>
+        </DialogTitle>
         <DialogActions>
           <button onClick={() => navigate('/')} className={styles.button2}>
-            ホームへ戻る
+            <span>ホームへ戻る</span>
           </button>
         </DialogActions>
       </Dialog>
       <Dialog
         open={isOpen && !flags.every((value) => value)}
         PaperProps={{style: {width: '381px', height: '309px', borderRadius: '10px'}}}>
-        <DialogTitle style={{textAlign: 'center'}}>まだ暗記が終わってません</DialogTitle>
+        <DialogTitle style={{textAlign: 'center'}}>
+          <span>まだ暗記が終わってません</span>
+        </DialogTitle>
         <DialogActions>
           <button onClick={() => setIsOpen(false)} className={styles.button2}>
-            戻る
+            <span>戻る</span>
           </button>
         </DialogActions>
       </Dialog>

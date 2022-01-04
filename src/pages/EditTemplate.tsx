@@ -187,7 +187,7 @@ export const EditTemplate: React.VFC<EditProps> = ({imageUrl, isPlayground = fal
         <form>
           <label>
             <input type="checkbox" onClick={() => setShareOption(!shareOption)} />
-            テンプレートを共有
+            <span>テンプレートを共有</span>
           </label>
           <br />
           <button
@@ -203,7 +203,9 @@ export const EditTemplate: React.VFC<EditProps> = ({imageUrl, isPlayground = fal
         </form>
       </div>
       <Dialog open={isOpen && !(pins.length <= 0 || templateName === '')} onClose={() => setIsOpen(false)}>
-        <DialogTitle>本当にテンプレートを作成しますか？</DialogTitle>
+        <DialogTitle>
+          <span>本当にテンプレートを作成しますか？</span>
+        </DialogTitle>
         <DialogActions>
           <button
             onClick={() => {
@@ -211,18 +213,20 @@ export const EditTemplate: React.VFC<EditProps> = ({imageUrl, isPlayground = fal
               handleComplete()
             }}
             className={styles.button1}>
-            はい
+            <span>はい</span>
           </button>
           <button onClick={() => setIsOpen(false)} className={styles.button2}>
-            いいえ
+            <span>いいえ</span>
           </button>
         </DialogActions>
       </Dialog>
       <Dialog open={completeIsOpen} PaperProps={{style: {width: '381px', height: '309px', borderRadius: '10px'}}}>
-        <DialogTitle style={{textAlign: 'center'}}>🎉テンプレートが完成しました🎉</DialogTitle>
+        <DialogTitle style={{textAlign: 'center'}}>
+          <span>🎉テンプレートが完成しました🎉</span>
+        </DialogTitle>
         <DialogActions>
           <button onClick={() => navigate('/')} className={styles.button2}>
-            ホームへ戻る
+            <span>ホームへ戻る</span>
           </button>
         </DialogActions>
       </Dialog>
@@ -230,11 +234,11 @@ export const EditTemplate: React.VFC<EditProps> = ({imageUrl, isPlayground = fal
         open={isOpen && (pins.length <= 0 || templateName === '')}
         PaperProps={{style: {width: '381px', height: '309px', borderRadius: '10px'}}}>
         <DialogTitle style={{textAlign: 'center'}}>
-          ピンが登録されていないか、テンプレートの名前が登録されていません
+          <span>ピンが登録されていないか、テンプレートの名前が登録されていません</span>
         </DialogTitle>
         <DialogActions>
           <button onClick={() => setCompleteIsOpen(false)} className={styles.button2}>
-            戻る
+            <span>戻る</span>
           </button>
         </DialogActions>
       </Dialog>

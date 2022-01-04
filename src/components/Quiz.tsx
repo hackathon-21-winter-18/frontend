@@ -2,7 +2,7 @@ import styles from './Quiz.module.css'
 import ExploreIcon from '@mui/icons-material/Explore'
 import {useState, useEffect, useRef} from 'react'
 import {getPalace} from '../api/palace'
-import {PalaceType, PinContent} from '../types'
+import {PinContent} from '../types'
 import {useLocation} from 'react-router-dom'
 
 type quizType = {
@@ -92,8 +92,10 @@ const Quiz: React.VFC = () => {
           </div>
           <div className={styles.question}>
             <p className={styles.questionText}>
-              {quiz.place !== '' ? quiz.place : '場所未設定'} で {quiz.situation !== '' ? quiz.situation : '状況未設定'}{' '}
-              のは？
+              <span>
+                {quiz.place !== '' ? quiz.place : '場所未設定'} で{' '}
+                {quiz.situation !== '' ? quiz.situation : '状況未設定'} のは？
+              </span>
             </p>
             <button
               onClick={() => handleJudge(ref1.current.value)}
@@ -128,7 +130,7 @@ const Quiz: React.VFC = () => {
           </div>
           {judge !== 'yet' ? (
             <button onClick={() => RandomSelect(pins)} className={styles.button3}>
-              次の問題へ
+              <span>次の問題へ</span>
             </button>
           ) : null}
         </div>

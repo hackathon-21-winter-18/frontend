@@ -92,7 +92,9 @@ const Header: React.VFC = () => {
                 horizontal: 'right',
               }}
               className={styles.popover}>
-              <div className={styles.card}>{notices.length !== 0 ? <ul>{noticeList}</ul> : 'まだ通知はありません'}</div>
+              <div className={styles.card}>
+                {notices.length !== 0 ? <ul>{noticeList}</ul> : <span>まだ通知はありません</span>}
+              </div>
             </Popover>
             <FromNewPalace />
           </div>
