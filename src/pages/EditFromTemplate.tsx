@@ -7,7 +7,7 @@ import {useMousePosition} from '../hooks/useMousePosition'
 import {CustomCursor} from '../components/CustomCursor'
 import {Badge, Box, ClickAwayListener, IconButton, Portal, SxProps} from '@mui/material'
 import {useHover} from '../hooks/useHover'
-import {EmbededPins, PinContent} from '../types'
+import {EmbededPin, PinContent} from '../types'
 import pinIcon from '../assets/pin.svg'
 import {FixWordDialog} from '../components/FixWordDialog'
 import {postPalace, putSharePalace} from '../api/palace'
@@ -27,8 +27,8 @@ interface EditProps {
 
 export const EditFromTemplate: React.VFC<EditProps> = ({imageUrl, isPlayground = false}) => {
   const [open, setOpen] = React.useState<number | boolean>(false)
-  const [pinOpen, setPinOpen] = React.useState<EmbededPins | null>(null)
-  const [pins, setPins] = React.useState<EmbededPins[]>([])
+  const [pinOpen, setPinOpen] = React.useState<EmbededPin | null>(null)
+  const [pins, setPins] = React.useState<EmbededPin[]>([])
   const [mode, setMode] = React.useState<Mode>('edit')
   const location = useLocation()
   const [palaceName, setPalaceName] = React.useState('')
@@ -44,25 +44,25 @@ export const EditFromTemplate: React.VFC<EditProps> = ({imageUrl, isPlayground =
 
   React.useEffect(() => {
     const templateID = params.id
-    if (location.state.share) {
+    if (location.state.shared) {
       templateID &&
         getSharedTemplate((res) => {
           let data = res.data
           for (let i = 0; i < data.length; i++) {
             if (data[i].id === templateID) {
+              let prePins = new Array<EmbededPin>()
               for (let j = 0; j < data[i].pins.length; j++) {
-                setPins(
-                  pins.concat([
-                    {
-                      number: data[i].pins[j].number,
-                      x: data[i].pins[j].x,
-                      y: data[i].pins[j].y,
-                      word: '',
-                      place: '',
-                      situation: '',
-                    },
-                  ])
-                )
+                prePins = prePins.concat([
+                  {
+                    number: data[i].pins[j].number,
+                    x: data[i].pins[j].x,
+                    y: data[i].pins[j].y,
+                    word: '',
+                    place: '',
+                    situation: '',
+                  },
+                ])
+                setPins(prePins)
               }
             }
           }
@@ -73,20 +73,19 @@ export const EditFromTemplate: React.VFC<EditProps> = ({imageUrl, isPlayground =
           let data = res.data
           for (let i = 0; i < data.length; i++) {
             if (data[i].id === templateID) {
+              let prePins = new Array<EmbededPin>()
               for (let j = 0; j < data[i].pins.length; j++) {
-                console.log(data[i].pins[j])
-                setPins(
-                  pins.concat([
-                    {
-                      number: data[i].pins[j].number,
-                      x: data[i].pins[j].x,
-                      y: data[i].pins[j].y,
-                      word: '',
-                      place: '',
-                      situation: '',
-                    },
-                  ])
-                )
+                prePins = prePins.concat([
+                  {
+                    number: data[i].pins[j].number,
+                    x: data[i].pins[j].x,
+                    y: data[i].pins[j].y,
+                    word: '',
+                    place: '',
+                    situation: '',
+                  },
+                ])
+                setPins(prePins)
               }
             }
           }
@@ -165,11 +164,11 @@ export const EditFromTemplate: React.VFC<EditProps> = ({imageUrl, isPlayground =
     },
     [open] // eslint-disable-line react-hooks/exhaustive-deps
   )
-  const handlePinClick = React.useCallback((pin: EmbededPins) => {
+  const handlePinClick = React.useCallback((pin: EmbededPin) => {
     setPinOpen(pin)
   }, [])
   const handleDeletePin = React.useCallback(
-    (pin: EmbededPins) => {
+    (pin: EmbededPin) => {
       setPins(pins.filter((tmp) => tmp !== pin))
       setPinOpen(null)
     },
@@ -201,7 +200,14 @@ export const EditFromTemplate: React.VFC<EditProps> = ({imageUrl, isPlayground =
           {pinOpen && (
             <Portal>
               <Box sx={boxStyle()}>
-                <AddNewWordDialog open={!!pinOpen} putPin={putPin} deletePin={handleDeletePin} pinContent={pinOpen} />
+                <AddNewWordDialog
+                  open={!!pinOpen}
+                  putPin={putPin}
+                  deletePin={handleDeletePin}
+                  pinContent={pinOpen}
+                  pins={pins}
+                  setPins={setPins}
+                />
               </Box>
             </Portal>
           )}
@@ -265,6 +271,7 @@ export const EditFromTemplate: React.VFC<EditProps> = ({imageUrl, isPlayground =
             <span>記憶の宮殿を作成する</span>
           </button>
         </form>
+        <button onClick={() => console.log(pins)}>ボタン</button>
       </div>
       <Dialog open={isOpen && !(pins.length <= 0 || palaceName === '')} onClose={() => setIsOpen(false)}>
         <DialogTitle>本当に宮殿を作成しますか？</DialogTitle>

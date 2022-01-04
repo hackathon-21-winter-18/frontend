@@ -16,10 +16,18 @@ export const SortingMyPalacesButton = (prop: SortingMyPalacesButtonProp) => {
   const [maxPins, setMaxPins] = React.useState(1)
   const [warning, setWarning] = React.useState(false)
   const handleMinPinsChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-    setMinPins(Number(e.target.value))
+    if (Number(e.target.value) >= 0) {
+      setMinPins(Number(e.target.value))
+    } else {
+      setMinPins(0)
+    }
   }
   const handleMaxPinsChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-    setMaxPins(Number(e.target.value))
+    if (Number(e.target.value) > 0) {
+      setMaxPins(Number(e.target.value))
+    } else {
+      setMaxPins(1)
+    }
   }
 
   const handleClick = () => {

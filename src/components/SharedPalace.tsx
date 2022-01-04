@@ -10,6 +10,7 @@ import Dialog from '@mui/material/Dialog'
 import useAuth from '../components/UserProvider'
 import {DialogActions, DialogTitle} from '@mui/material'
 import {putSharePalace, postPalace} from '../api/palace'
+import {Menu} from '@mui/material'
 
 interface PalaceProps {
   num: number
@@ -18,24 +19,25 @@ interface PalaceProps {
 }
 
 const SharedPalace: React.VFC<PalaceProps> = ({num, palace, deletePalace}) => {
-  const [isOpen, setIsOpen] = useState(false)
   const [saveIsOpen, setSaveIsOpen] = useState(false)
   const navigate = useNavigate()
   const {user} = useAuth()
   const [shareIsOpen, setShareIsOpen] = useState(false)
-  const [confirmIsOpen, setConfirmIsOpen] = useState(false)
+  const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null)
+  const open = Boolean(anchorEl)
 
-  function handleSaveDialog() {
-    setSaveIsOpen(true)
+  const handleClick = (e: React.MouseEvent<HTMLButtonElement>) => {
+    setAnchorEl(e.currentTarget)
   }
-  function handleShareDialog() {
-    setShareIsOpen(true)
+  const handleClose = () => {
+    setAnchorEl(null)
   }
+
   function handleShare() {
     putSharePalace(palace.id, false)
     deletePalace(num)
     setShareIsOpen(false)
-    setIsOpen(false)
+    handleClose()
   }
   function handleSave() {
     const data = {
@@ -46,7 +48,7 @@ const SharedPalace: React.VFC<PalaceProps> = ({num, palace, deletePalace}) => {
       originalID: palace.id,
     }
     postPalace(data)
-    setIsOpen(false)
+    handleClose()
   }
   function Extension() {
     switch (palace.image.substring(0, 5)) {
@@ -58,19 +60,17 @@ const SharedPalace: React.VFC<PalaceProps> = ({num, palace, deletePalace}) => {
         return 'data:image/jpeg;base64,' + palace.image
     }
   }
-  const handleDialogClose = () => {
-    setIsOpen(false)
-  }
+
   return (
     <div className={styles.sharedPalace}>
-      {/* <Link to={'/memorize/' + palace.id} className={styles.image}>
-        <img src={palace.image} alt={palace.name} />
-      </Link> */}
-      <img className={styles.image} src={Extension()} alt={palace.name} onClick={() => setConfirmIsOpen(true)} />
-      {/*stateによって変える*/}
+      <button
+        onClick={() => navigate('/memorize/' + palace.id, {state: {shared: true}})}
+        className={styles.imageButton}>
+        <img className={styles.image} src={Extension()} alt={palace.name} />
+      </button>
       <div className={styles.titleContainer}>
         <h1 className={styles.title}>{palace.name}</h1>
-        <button className={styles.moreVertIcon} onClick={() => setIsOpen(true)}>
+        <button className={styles.moreVertIcon} onClick={handleClick}>
           <MoreVertIcon />
         </button>
       </div>
@@ -87,10 +87,22 @@ const SharedPalace: React.VFC<PalaceProps> = ({num, palace, deletePalace}) => {
         <span>保存者数:{palace.savedCount}</span>
       </div>
 
-      <Dialog open={isOpen && !(palace.createrName === user.name)} onClose={handleDialogClose}>
-        <DialogActions>
-          <button onClick={handleSaveDialog} className={styles.button1}>
-            宮殿の保存
+      <Menu
+        anchorEl={anchorEl}
+        open={open}
+        onClose={handleClose}
+        anchorOrigin={{
+          vertical: 'bottom',
+          horizontal: 'left',
+        }}
+        transformOrigin={{
+          vertical: 'top',
+          horizontal: 'right',
+        }}
+        className={styles.menu}>
+        <div className={styles.card}>
+          <button onClick={() => setSaveIsOpen(true)} className={styles.menuButton}>
+            <span className={styles.menuText}>宮殿の保存</span>
           </button>
           <Dialog open={saveIsOpen} onClose={() => setSaveIsOpen(false)}>
             <DialogTitle>本当に宮殿を保存しますか？</DialogTitle>
@@ -103,12 +115,9 @@ const SharedPalace: React.VFC<PalaceProps> = ({num, palace, deletePalace}) => {
               </button>
             </DialogActions>
           </Dialog>
-        </DialogActions>
-      </Dialog>
-      <Dialog open={isOpen && palace.createrName === user.name} onClose={handleDialogClose}>
-        <DialogActions>
-          <button onClick={handleShareDialog} className={styles.button2}>
-            宮殿の共有設定
+          <div className={styles.divider} />
+          <button onClick={() => setShareIsOpen(true)} className={styles.menuButton}>
+            <span className={styles.menuText}>宮殿の共有設定</span>
           </button>
           <Dialog open={shareIsOpen} onClose={() => setShareIsOpen(false)}>
             <DialogTitle>宮殿の共有をやめますか？</DialogTitle>
@@ -121,21 +130,8 @@ const SharedPalace: React.VFC<PalaceProps> = ({num, palace, deletePalace}) => {
               </button>
             </DialogActions>
           </Dialog>
-        </DialogActions>
-      </Dialog>
-      <Dialog open={confirmIsOpen} onClose={() => setConfirmIsOpen(false)}>
-        <DialogTitle>この宮殿の暗記を始めますか？</DialogTitle>
-        <DialogActions>
-          <button
-            onClick={() => navigate('/memorize/' + palace.id, {state: {shared: true}})}
-            className={styles.button1}>
-            はい
-          </button>
-          <button onClick={() => setConfirmIsOpen(false)} className={styles.button2}>
-            いいえ
-          </button>
-        </DialogActions>
-      </Dialog>
+        </div>
+      </Menu>
     </div>
   )
 }
