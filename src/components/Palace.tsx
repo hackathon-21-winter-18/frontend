@@ -88,7 +88,7 @@ const Palace: React.VFC<PalaceProps> = ({num, palace, handleDeletePalace}) => {
       </div>
       <div className={styles.tag}>
         <CommentIcon className={styles.icon} />
-        単語数:{palace.embededPins.length}
+        <span>単語数:{palace.embededPins.length}</span>
       </div>
       <div className={styles.tag}>
         <GradeIcon className={styles.icon} />
