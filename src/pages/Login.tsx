@@ -18,7 +18,7 @@ const Login: React.VFC = () => {
       .then(() => {
         setName('')
         setPassword('')
-        navigate('/')
+        navigate('/palace')
       })
       .catch((err) => {
         setErrStatus(err.response.status.toString())

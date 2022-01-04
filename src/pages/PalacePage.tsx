@@ -1,5 +1,5 @@
 import {useEffect, useState} from 'react'
-import styles from './Home.module.css'
+import styles from './PalacePage.module.css'
 import Palace from '../components/Palace'
 import {PalaceType} from '../types'
 import CreateNewPalaceButton from '../components/CreateNewPalaceButton'

@@ -1,5 +1,5 @@
 import React, {createContext, useContext, useEffect, useMemo, useState} from 'react'
-import {postLogin, postSignUp, getCurrentUser, postLogout} from '../api/registration'
+import {getOAuthLogin, postLogin, postSignUp, getCurrentUser, postLogout} from '../api/registration'
 import Loading from '../pages/Loading'
 import {UserRegistration} from '../types'
 
@@ -11,6 +11,7 @@ interface UserContextInterface {
     unreadNotices: number
   }
   loading: boolean
+  oAuthLogin: () => Promise<void>
   login: (user: UserRegistration) => Promise<void>
   signup: (user: UserRegistration) => Promise<void>
   logout: () => void
@@ -29,6 +30,11 @@ export const UserProvider: React.FC = ({children}) => {
       .finally(() => setLoadingInitial(false))
   }, [])
 
+  const oAuthLogin = async () => {
+    setLoading(true)
+    await getOAuthLogin().then(() => getCurrentUser().then((user) => user && setUser({...user, auth: true})))
+    setLoading(false)
+  }
   const login = async (user: UserRegistration) => {
     setLoading(true)
     await postLogin(user).then(() => getCurrentUser().then((user) => user && setUser({...user, auth: true})))
@@ -54,6 +60,7 @@ export const UserProvider: React.FC = ({children}) => {
     () => ({
       user,
       loading,
+      oAuthLogin,
       login,
       signup,
       logout,

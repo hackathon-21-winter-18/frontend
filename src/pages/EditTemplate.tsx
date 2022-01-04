@@ -221,8 +221,8 @@ export const EditTemplate: React.VFC<EditProps> = ({imageUrl, isPlayground = fal
       <Dialog open={completeIsOpen} PaperProps={{style: {width: '381px', height: '309px', borderRadius: '10px'}}}>
         <DialogTitle style={{textAlign: 'center'}}>🎉テンプレートが完成しました🎉</DialogTitle>
         <DialogActions>
-          <button onClick={() => navigate('/')} className={styles.button2}>
-            ホームへ戻る
+          <button onClick={() => navigate('/palace')} className={styles.button2}>
+            トップへ戻る
           </button>
         </DialogActions>
       </Dialog>

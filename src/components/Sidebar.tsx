@@ -1,6 +1,6 @@
 import React, {useState} from 'react'
 import styles from './Sidebar.module.css'
-import {useLocation} from 'react-router'
+import {useLocation, useNavigate} from 'react-router'
 import {Link} from 'react-router-dom'
 import HomeIcon from '@mui/icons-material/Home'
 import BalconyIcon from '@mui/icons-material/Balcony'
@@ -18,13 +18,18 @@ const Sidebar: React.VFC = () => {
   const {pathname} = useLocation()
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null)
   const open = Boolean(anchorEl)
-  const {user, logout} = useAuth()
+  const {user, oAuthLogin, logout} = useAuth()
+  const navigate = useNavigate()
 
-  const handleClick = (e: React.MouseEvent<HTMLButtonElement>) => {
+  const handleClick = async (e: React.MouseEvent<HTMLButtonElement>) => {
     if (user.auth) {
       setAnchorEl(e.currentTarget)
     } else {
-      //axios.get
+      await oAuthLogin()
+        .then(() => {
+          navigate('/palace')
+        })
+        .catch((err) => alert(err))
     }
   }
   const handleClose = () => {
@@ -34,7 +39,7 @@ const Sidebar: React.VFC = () => {
     <div className={styles.sidebar}>
       {user.auth ? (
         <>
-          <Link to="/" className={pathname === '/' ? styles.buttonHere : styles.buttonNotHere}>
+          <Link to="/palace" className={pathname === '/palace' ? styles.buttonHere : styles.buttonNotHere}>
             <HomeIcon className={styles.buttonIcon} />
             My Palaces
           </Link>
@@ -56,12 +61,13 @@ const Sidebar: React.VFC = () => {
         <AttractionsIcon className={styles.buttonIcon} />
         Playground
       </Link>
-      <Quiz />
+      {user.auth ? <Quiz /> : null}
       <button className={styles.userSetting} onClick={handleClick}>
-        {user.name ? (
+        {user.auth ? (
           <>
             <PersonPinIcon className={styles.userIcon} />
-            user.name
+            {user.name}
+            <MoreVertIcon className={styles.lastIcon} />
           </>
         ) : (
           <>
@@ -69,7 +75,6 @@ const Sidebar: React.VFC = () => {
             <span style={{fontSize: 16}}>新規登録 or ログイン</span>
           </>
         )}
-        <MoreVertIcon className={styles.lastIcon} />
       </button>
       {user.auth ? (
         <>

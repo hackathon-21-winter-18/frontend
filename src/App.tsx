@@ -1,7 +1,8 @@
 import styles from './App.module.css'
 import {BrowserRouter, Route, Routes} from 'react-router-dom'
 import {UserProvider} from './components/UserProvider'
-import Home from './pages/Home'
+import Title from './pages/Title'
+import PalacePage from './pages/PalacePage'
 import Login from './pages/Login'
 import Memorize from './pages/Memorize'
 import {Edit} from './pages/Edit'
@@ -30,14 +31,12 @@ function App() {
                 <Route path="/sharedPalaces" element={<SharedPalaces />} />
                 <Route path="/sharedTemplates" element={<SharedTemplates />} />
                 <Route path="/playground" element={<Playground />} />
-                <Route path="/login" element={<Login />} />
-                <Route path="/signup" element={<SignUp />} />
               </Route>
             </Route>
             <Route element={<AuthenticatedRoute />}>
               <Route element={<Layout />}>
                 <Route element={<SideLayout />}>
-                  <Route path="/" element={<Home />} />
+                  <Route path="/palace" element={<PalacePage />} />
                   <Route path="/template" element={<TemplatePage />} />
                   <Route path="/sharedPalaces" element={<SharedPalaces />} />
                   <Route path="/sharedTemplates" element={<SharedTemplates />} />
@@ -53,6 +52,9 @@ function App() {
                 <Route path="/*" element={<NotFound />} />
               </Route>
             </Route>
+            <Route path="/login" element={<Login />} />
+            <Route path="/signup" element={<SignUp />} />
+            <Route path="/" element={<Title />} />
           </Routes>
         </BrowserRouter>
       </UserProvider>

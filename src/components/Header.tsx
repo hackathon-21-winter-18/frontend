@@ -10,33 +10,12 @@ import {getNotice} from '../api/notice'
 import {NoticeType} from '../types'
 import {calcTimeDiff} from '../util/calucTimeDiff'
 
-const mockNotice = [
-  {
-    id: 1,
-    checked: false,
-    content: '公開したものを元に他のユーザーが新たな宮殿を公開しました。',
-    created_at: '2022-01-03T03:13:09.560Z',
-  },
-  {
-    id: 2,
-    checked: true,
-    content: '公開したものを元に他のユーザーが新たなテンプレートを公開しました。',
-    created_at: '2022-01-01T02:13:09.560Z',
-  },
-  {
-    id: 3,
-    checked: true,
-    content: '公開したものを元に他のユーザーが新たな忘却曲線を公開しました。',
-    created_at: '2022-01-01T03:13:09.560Z',
-  },
-]
 const Header: React.VFC = () => {
   const {user} = useAuth()
   const navigate = useNavigate()
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null)
   const open = Boolean(anchorEl)
   const [notices, setNotices] = useState<NoticeType[]>(new Array<NoticeType>())
-  //const [notices, setNotices] = useState(mockNotice)
   const [unreadNotices, setUnreadNotices] = useState<number>(user.unreadNotices)
 
   const handleClick = (e: React.MouseEvent<HTMLButtonElement>) => {
@@ -89,7 +68,12 @@ const Header: React.VFC = () => {
   return (
     <>
       <div className={styles.header}>
-        <img className={styles.logo} src={logo} alt="logo" onClick={() => navigate('/')} />
+        <img
+          className={styles.logo}
+          src={logo}
+          alt="logo"
+          onClick={() => navigate(user.auth ? '/palace' : '/sharedPalaces')}
+        />
         {user.auth ? (
           <div className={styles.right}>
             <button className={styles.notice} onClick={handleClick}>

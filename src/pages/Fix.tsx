@@ -250,8 +250,8 @@ export const Fix: React.VFC = () => {
           </button>
         </DialogActions>
         <DialogActions>
-          <button onClick={() => navigate('/')} className={styles.button2}>
-            ホームへ戻る
+          <button onClick={() => navigate('/palace')} className={styles.button2}>
+            トップへ戻る
           </button>
         </DialogActions>
       </Dialog>
