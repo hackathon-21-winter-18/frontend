@@ -38,13 +38,12 @@
   border-radius: 6px;
 
   display: inline-flex;
-  align-items: flex-end;
+  align-items: center;
 }
 .icon {
   width: 16px !important;
   height: 16px !important;
   margin-right: 4px !important;
-  margin-bottom: 6px;
 }
 
 .button1 {
