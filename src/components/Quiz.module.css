@@ -3,6 +3,7 @@
   height: 240px;
   border-radius: 10px;
   background-color: #eef3ff;
+  position: relative;
 }
 .buttonIcon {
   margin-right: 12px;
@@ -60,11 +61,12 @@
 }
 .button3 {
   display: block;
-  margin: 10px 0 0 auto;
-  margin-right: 10px;
+  bottom: 5px;
+  right: 10px;
   background-color: #ffffff;
   padding: 5px 5px 5px 5px;
   border-radius: 4px;
   border: none;
   cursor: pointer;
+  position: absolute;
 }
