@@ -9,12 +9,10 @@ const Header: React.VFC = () => {
   const navigate = useNavigate()
   return (
     <>
-      {user.auth && (
-        <div className={styles.header}>
-          <img className={styles.logo} src={logo} alt="logo" onClick={() => navigate('/')} />
-          <FromNewPalace />
-        </div>
-      )}
+      <div className={styles.header}>
+        <img className={styles.logo} src={logo} alt="logo" onClick={() => navigate('/')} />
+        {user.auth ? <FromNewPalace /> : null}
+      </div>
     </>
   )
 }

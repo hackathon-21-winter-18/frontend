@@ -4,7 +4,7 @@ import useAuth from './UserProvider'
 const AuthenticatedRoute: React.VFC = () => {
   const {user} = useAuth()
 
-  return user.auth ? <Outlet /> : <Navigate to="/login" />
+  return user.auth ? <Outlet /> : <Navigate to="/SharedPalaces" />
 }
 
 export default AuthenticatedRoute

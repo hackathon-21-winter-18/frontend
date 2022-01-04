@@ -25,8 +25,15 @@ function App() {
       <UserProvider>
         <BrowserRouter>
           <Routes>
-            <Route path="/login" element={<Login />} />
-            <Route path="/signup" element={<SignUp />} />
+            <Route element={<Layout />}>
+              <Route element={<SideLayout />}>
+                <Route path="/sharedPalaces" element={<SharedPalaces />} />
+                <Route path="/sharedTemplates" element={<SharedTemplates />} />
+                <Route path="/playground" element={<Playground />} />
+                <Route path="/login" element={<Login />} />
+                <Route path="/signup" element={<SignUp />} />
+              </Route>
+            </Route>
             <Route element={<AuthenticatedRoute />}>
               <Route element={<Layout />}>
                 <Route element={<SideLayout />}>

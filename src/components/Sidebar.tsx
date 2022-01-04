@@ -5,6 +5,7 @@ import {Link} from 'react-router-dom'
 import HomeIcon from '@mui/icons-material/Home'
 import BalconyIcon from '@mui/icons-material/Balcony'
 import PersonPinIcon from '@mui/icons-material/PersonPin'
+import LoginIcon from '@mui/icons-material/Login'
 import LogoutIcon from '@mui/icons-material/Logout'
 import MoreVertIcon from '@mui/icons-material/MoreVert'
 import AttractionsIcon from '@mui/icons-material/Attractions'
@@ -19,21 +20,29 @@ const Sidebar: React.VFC = () => {
   const {user, logout} = useAuth()
 
   const handleClick = (e: React.MouseEvent<HTMLButtonElement>) => {
-    setAnchorEl(e.currentTarget)
+    if (user.auth) {
+      setAnchorEl(e.currentTarget)
+    } else {
+      //axios.get
+    }
   }
   const handleClose = () => {
     setAnchorEl(null)
   }
   return (
     <div className={styles.sidebar}>
-      <Link to="/" className={pathname === '/' ? styles.buttonHere : styles.buttonNotHere}>
-        <HomeIcon className={styles.buttonIcon} />
-        My Palaces
-      </Link>
-      <Link to="/template" className={pathname === '/template' ? styles.buttonHere : styles.buttonNotHere}>
-        <BalconyIcon className={styles.buttonIcon} />
-        My Templates
-      </Link>
+      {user.auth ? (
+        <>
+          <Link to="/" className={pathname === '/' ? styles.buttonHere : styles.buttonNotHere}>
+            <HomeIcon className={styles.buttonIcon} />
+            My Palaces
+          </Link>
+          <Link to="/template" className={pathname === '/template' ? styles.buttonHere : styles.buttonNotHere}>
+            <BalconyIcon className={styles.buttonIcon} />
+            My Templates
+          </Link>
+        </>
+      ) : null}
       <Link
         to="/sharedPalaces"
         className={
@@ -47,37 +56,50 @@ const Sidebar: React.VFC = () => {
         Playground
       </Link>
       <button className={styles.userSetting} onClick={handleClick}>
-        <PersonPinIcon className={styles.userIcon} />
-        {user.name}
+        {user.name ? (
+          <>
+            <PersonPinIcon className={styles.userIcon} />
+            user.name
+          </>
+        ) : (
+          <>
+            <LoginIcon className={styles.loginIcon} />
+            <span style={{fontSize: 16}}>新規登録 or ログイン</span>
+          </>
+        )}
         <MoreVertIcon className={styles.lastIcon} />
       </button>
-      <Menu
-        anchorEl={anchorEl}
-        open={open}
-        onClose={handleClose}
-        anchorOrigin={{
-          vertical: 'top',
-          horizontal: 'left',
-        }}
-        transformOrigin={{
-          vertical: 'bottom',
-          horizontal: 'left',
-        }}
-        elevation={3}
-        className={styles.menu}>
-        <div className={styles.card}>
-          <p>{user.name}でログイン中</p>
-          <button
-            className={styles.logout}
-            onClick={() => {
-              handleClose()
-              logout()
-            }}>
-            <LogoutIcon />
-            ログアウト
-          </button>
-        </div>
-      </Menu>
+      {user.auth ? (
+        <>
+          <Menu
+            anchorEl={anchorEl}
+            open={open}
+            onClose={handleClose}
+            anchorOrigin={{
+              vertical: 'top',
+              horizontal: 'left',
+            }}
+            transformOrigin={{
+              vertical: 'bottom',
+              horizontal: 'left',
+            }}
+            elevation={3}
+            className={styles.menu}>
+            <div className={styles.card}>
+              <p>{user.name}でログイン中</p>
+              <button
+                className={styles.logout}
+                onClick={() => {
+                  handleClose()
+                  logout()
+                }}>
+                <LogoutIcon />
+                ログアウト
+              </button>
+            </div>
+          </Menu>
+        </>
+      ) : null}
     </div>
   )
 }
