@@ -240,12 +240,12 @@ export const Edit: React.VFC<EditProps> = ({imageUrl, isPlayground = false, xGap
         <form>
           <label>
             <input type="checkbox" onClick={() => setTemplateOption(!templateOption)} />
-            テンプレートとして保存
+            <span>テンプレートとして保存</span>
           </label>
           <br />
           <label>
             <input type="checkbox" onClick={() => setShareOption(!shareOption)} id="sharedCheckBox" />
-            宮殿を共有
+            <span>宮殿を共有</span>
           </label>
           <br />
           <label>
@@ -254,7 +254,7 @@ export const Edit: React.VFC<EditProps> = ({imageUrl, isPlayground = false, xGap
               onClick={() => setTemplateShareOption(!templateShareOption)}
               disabled={!templateOption}
             />
-            テンプレートとして共有
+            <span>テンプレートとして共有</span>
           </label>
           <br />
           <button
@@ -270,7 +270,9 @@ export const Edit: React.VFC<EditProps> = ({imageUrl, isPlayground = false, xGap
         </form>
       </div>
       <Dialog open={isOpen} onClose={() => setIsOpen(false)}>
-        <DialogTitle>本当に宮殿を作成しますか？</DialogTitle>
+        <DialogTitle>
+          <span>本当に宮殿を作成しますか？</span>
+        </DialogTitle>
         <DialogActions>
           <button
             onClick={() => {
@@ -278,10 +280,10 @@ export const Edit: React.VFC<EditProps> = ({imageUrl, isPlayground = false, xGap
               handleComplete()
             }}
             className={styles.button1}>
-            はい
+            <span>はい</span>
           </button>
           <button onClick={() => setIsOpen(false)} className={styles.button2}>
-            いいえ
+            <span>いいえ</span>
           </button>
         </DialogActions>
       </Dialog>
@@ -293,12 +295,12 @@ export const Edit: React.VFC<EditProps> = ({imageUrl, isPlayground = false, xGap
           <button
             onClick={() => navigate('/memorize/' + palaceId, {state: {shared: false}})}
             className={styles.button1}>
-            今すぐ覚える
+            <span>今すぐ覚える</span>
           </button>
         </DialogActions>
         <DialogActions>
           <button onClick={() => navigate('/palace')} className={styles.button2}>
-            トップへ戻る
+            <span>トップへ戻る</span>
           </button>
         </DialogActions>
       </Dialog>
@@ -306,21 +308,23 @@ export const Edit: React.VFC<EditProps> = ({imageUrl, isPlayground = false, xGap
         open={completeIsOpen && !isPlayground && (pins.length <= 0 || palaceName === '')}
         PaperProps={{style: {width: '381px', height: '309px', borderRadius: '10px'}}}>
         <DialogTitle style={{textAlign: 'center'}}>
-          単語が登録されていないか、宮殿の名前が登録されていません
+          <span>単語が登録されていないか、宮殿の名前が登録されていません</span>
         </DialogTitle>
         <DialogActions>
           <button onClick={() => setCompleteIsOpen(false)} className={styles.button2}>
-            戻る
+            <span>戻る</span>
           </button>
         </DialogActions>
       </Dialog>
       <Dialog
         open={completeIsOpen && isPlayground}
         PaperProps={{style: {width: '381px', height: '309px', borderRadius: '10px'}}}>
-        <DialogTitle style={{textAlign: 'center'}}>次は実際に宮殿を作成してみましょう!</DialogTitle>
+        <DialogTitle style={{textAlign: 'center'}}>
+          <span>次は実際に宮殿を作成してみましょう!</span>
+        </DialogTitle>
         <DialogActions>
           <button onClick={() => setCompleteIsOpen(false)} className={styles.button2}>
-            OK
+            <span>OK</span>
           </button>
         </DialogActions>
       </Dialog>

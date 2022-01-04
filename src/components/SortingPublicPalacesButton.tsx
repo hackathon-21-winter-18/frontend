@@ -56,9 +56,9 @@ export const SortingPublicPalacesButton = (prop: SortingPublicPalacesButtonProp)
         value={order}
         name="radio-buttons-group"
         onChange={handleOrderChange}>
-        <FormControlLabel label="最初の公開日時が新しい順" control={<Radio />} value="first_shared_at" />
-        <FormControlLabel label="公開日時が新しい順" control={<Radio />} value="shared_at" />
-        <FormControlLabel label="保存したユーザーが多い順" control={<Radio />} value="savedCount" />
+        <FormControlLabel label={<span>最初の公開日時が新しい順</span>} control={<Radio />} value="first_shared_at" />
+        <FormControlLabel label={<span>公開日時が新しい順</span>} control={<Radio />} value="shared_at" />
+        <FormControlLabel label={<span>保存したユーザーが多い順</span>} control={<Radio />} value="savedCount" />
       </RadioGroup>
       <span>ピンの数: </span>
       <Input type="number" value={minPins} onChange={handleMinPinsChange} className={styles.pinNumberInput}></Input>
@@ -66,7 +66,9 @@ export const SortingPublicPalacesButton = (prop: SortingPublicPalacesButtonProp)
       <Input type="number" value={maxPins} onChange={handleMaxPinsChange} className={styles.pinNumberInput}></Input>
       <span className={styles.warning}>{warning ? 'ピンの数指定が不正です' : null}</span>
       <div className={styles.sortingButton}>
-        <Button onClick={handleClick}>並び替える</Button>
+        <Button onClick={handleClick}>
+          <span>並び替える</span>
+        </Button>
       </div>
     </div>
   )

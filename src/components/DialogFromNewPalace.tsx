@@ -16,7 +16,7 @@ export default function FromNewPalace() {
   return (
     <span>
       <Button className={styles.button} onClick={handleClickOpen} variant="contained" startIcon={<AddBoxIcon />}>
-        新規画像から
+        <span>新規画像から</span>
       </Button>
       <Dialog open={open} onClose={handleClose} maxWidth={false}>
         <NewCreationDialog onClose={handleClose} modeProp="general" />

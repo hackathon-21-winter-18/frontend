@@ -181,7 +181,7 @@ export const FixTemplate: React.VFC = () => {
         <form>
           <label>
             <input type="checkbox" onClick={() => setShareOption(!shareOption)} id="sharedCheckBox" />
-            テンプレートを共有
+            <span>テンプレートを共有</span>
           </label>
           <br />
           <button
@@ -197,7 +197,9 @@ export const FixTemplate: React.VFC = () => {
         </form>
       </div>
       <Dialog open={isOpen && !(pins.length <= 0 || templateName === '')} onClose={() => setIsOpen(false)}>
-        <DialogTitle>本当にテンプレートの修正を完了しますか？</DialogTitle>
+        <DialogTitle>
+          <span>本当にテンプレートの修正を完了しますか？</span>
+        </DialogTitle>
         <DialogActions>
           <button
             onClick={() => {
@@ -205,18 +207,20 @@ export const FixTemplate: React.VFC = () => {
               handleComplete()
             }}
             className={styles.button1}>
-            はい
+            <span>はい</span>
           </button>
           <button onClick={() => setIsOpen(false)} className={styles.button2}>
-            いいえ
+            <span>いいえ</span>
           </button>
         </DialogActions>
       </Dialog>
       <Dialog open={completeIsOpen} PaperProps={{style: {width: '381px', height: '309px', borderRadius: '10px'}}}>
-        <DialogTitle style={{textAlign: 'center'}}>🎉テンプレートが修正されました🎉</DialogTitle>
+        <DialogTitle style={{textAlign: 'center'}}>
+          <span>🎉テンプレートが修正されました🎉</span>
+        </DialogTitle>
         <DialogActions>
           <button onClick={() => navigate('/palace')} className={styles.button2}>
-            トップへ戻る
+            <span>トップへ戻る</span>
           </button>
         </DialogActions>
       </Dialog>
@@ -224,11 +228,11 @@ export const FixTemplate: React.VFC = () => {
         open={isOpen && (pins.length <= 0 || templateName === '')}
         PaperProps={{style: {width: '381px', height: '309px', borderRadius: '10px'}}}>
         <DialogTitle style={{textAlign: 'center'}}>
-          ピンが登録されていないか、テンプレートの名前が登録されていません
+          <span>ピンが登録されていないか、テンプレートの名前が登録されていません</span>
         </DialogTitle>
         <DialogActions>
           <button onClick={() => setCompleteIsOpen(false)} className={styles.button2}>
-            戻る
+            <span>戻る</span>
           </button>
         </DialogActions>
       </Dialog>

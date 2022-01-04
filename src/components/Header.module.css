@@ -1,3 +1,6 @@
+* span {
+  font-family: 'Noto Sans JP';
+}
 .header {
   padding: 16px 28px;
   display: flex;

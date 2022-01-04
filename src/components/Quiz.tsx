@@ -95,8 +95,10 @@ const Quiz: React.VFC = () => {
           </div>
           <div className={styles.question}>
             <p className={styles.questionText}>
-              {quiz.place !== '' ? quiz.place : '場所未設定'} で {quiz.situation !== '' ? quiz.situation : '状況未設定'}{' '}
-              のは？
+              <span>
+                {quiz.place !== '' ? quiz.place : '場所未設定'} で{' '}
+                {quiz.situation !== '' ? quiz.situation : '状況未設定'} のは？
+              </span>
             </p>
             <button
               onClick={() => handleJudge(ref1.current.value)}
@@ -131,7 +133,7 @@ const Quiz: React.VFC = () => {
           </div>
           {judge !== 'yet' ? (
             <button onClick={() => RandomSelect(pins)} className={styles.button3}>
-              次の問題へ
+              <span>次の問題へ</span>
             </button>
           ) : null}
         </div>
