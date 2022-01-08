@@ -92,6 +92,29 @@
   font-size: 14px;
   color: #313847;
 }
+.name {
+  display: inline-flex;
+  align-items: center;
+}
+.name > button {
+  border: none;
+  cursor: pointer;
+  text-decoration: none;
+  background: transparent;
+  margin-left: 2px;
+}
+.button2 {
+  font-size: 16px;
+  width: 48px;
+  height: 24px;
+  border-radius: 8px;
+  border: none;
+  background-color: #313847;
+  margin: 0 auto;
+  color: #ffffff;
+  cursor: pointer;
+  text-decoration: none;
+}
 .logout {
   display: flex;
   align-items: flex-end;

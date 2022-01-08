@@ -10,6 +10,7 @@ interface UserContextInterface {
     auth: boolean
     unreadNotices: number
   }
+  setUser: (user: {name: string; id: string; auth: boolean; unreadNotices: number}) => void
   loading: boolean
   oAuthLogin: () => Promise<void>
   login: (user: UserRegistration) => Promise<void>
@@ -59,6 +60,7 @@ export const UserProvider: React.FC = ({children}) => {
   const memoedValue = useMemo(
     () => ({
       user,
+      setUser,
       loading,
       oAuthLogin,
       login,

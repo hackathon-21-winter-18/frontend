@@ -10,30 +10,42 @@ import LogoutIcon from '@mui/icons-material/Logout'
 import MoreVertIcon from '@mui/icons-material/MoreVert'
 import AttractionsIcon from '@mui/icons-material/Attractions'
 import TravelExploreIcon from '@mui/icons-material/TravelExplore'
+import EditIcon from '@mui/icons-material/Edit'
 import useAuth from './UserProvider'
 import {Menu} from '@mui/material'
 import Quiz from '../components/Quiz'
+import Dialog from '@mui/material/Dialog'
+import DialogActions from '@mui/material/DialogActions'
+import DialogTitle from '@mui/material/DialogTitle'
+import {putUserName, getCurrentUser} from '../api/registration'
 
 const Sidebar: React.VFC = () => {
   const {pathname} = useLocation()
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null)
   const open = Boolean(anchorEl)
-  const {user, oAuthLogin, logout} = useAuth()
+  const {user, oAuthLogin, logout, setUser} = useAuth()
   const navigate = useNavigate()
+  const [nameFixDialogIsOpen, setNameFixDialogIsOpen] = useState(false)
+  const [userName, setUserName] = useState(user.name)
 
   const handleClick = async (e: React.MouseEvent<HTMLButtonElement>) => {
     if (user.auth) {
       setAnchorEl(e.currentTarget)
     } else {
-      await oAuthLogin()
-        .then(() => {
-          navigate('/palace')
-        })
-        .catch((err) => alert(err))
+      await oAuthLogin().then(() => {
+        navigate('/palace')
+      })
     }
   }
   const handleClose = () => {
     setAnchorEl(null)
+  }
+
+  function handleSubmitNewName() {
+    putUserName(userName).then(() => {
+      setNameFixDialogIsOpen(false)
+      getCurrentUser().then((user) => user && setUser({...user, auth: true}))
+    })
   }
   return (
     <div className={styles.sidebar}>
@@ -93,7 +105,12 @@ const Sidebar: React.VFC = () => {
             elevation={3}
             className={styles.menu}>
             <div className={styles.card}>
-              <p>{user.name}でログイン中</p>
+              <div className={styles.name}>
+                <span>{user.name}でログイン中</span>
+                <button onClick={() => setNameFixDialogIsOpen(true)}>
+                  <EditIcon />
+                </button>
+              </div>
               <button
                 className={styles.logout}
                 onClick={() => {
@@ -105,6 +122,24 @@ const Sidebar: React.VFC = () => {
               </button>
             </div>
           </Menu>
+          <Dialog
+            open={nameFixDialogIsOpen}
+            onClose={() => setNameFixDialogIsOpen(false)}
+            className={styles.nameFixDialog}>
+            <DialogTitle>名前を変更します</DialogTitle>
+            <DialogActions>
+              <input
+                required
+                type="text"
+                value={userName}
+                placeholder="新しい名前"
+                onChange={(e) => setUserName(e.target.value)}
+              />
+              <button onClick={handleSubmitNewName} className={styles.button2}>
+                決定
+              </button>
+            </DialogActions>
+          </Dialog>
         </>
       ) : null}
     </div>

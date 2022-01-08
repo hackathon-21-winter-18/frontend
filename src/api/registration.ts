@@ -32,3 +32,7 @@ export const getCurrentUser = async () => {
 export const postLogout = async () => {
   await axios.post(endpoint + '/api/oauth/logout', {}, {withCredentials: true})
 }
+
+export const putUserName = async (newUserName: string) => {
+  await axios.put(endpoint + '/api/user/name', {name: newUserName}, {withCredentials: true})
+}

@@ -3,16 +3,14 @@ import useAuth from '../components/UserProvider'
 import {useNavigate} from 'react-router-dom'
 import logo from '../assets/logo.svg'
 
-const Login: React.VFC = () => {
+const Title: React.VFC = () => {
   const {oAuthLogin} = useAuth()
   const navigate = useNavigate()
 
   const handleLogin = async () => {
-    await oAuthLogin()
-      .then(() => {
-        navigate('/')
-      })
-      .catch((err) => alert(err))
+    await oAuthLogin().then(() => {
+      navigate('/')
+    })
   }
   return (
     <div className={styles.layout}>
@@ -26,4 +24,4 @@ const Login: React.VFC = () => {
     </div>
   )
 }
-export default Login
+export default Title
