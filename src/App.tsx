@@ -46,7 +46,6 @@ function App() {
                 <Route path="/edit/:base64/*" element={<Edit />} />
                 <Route path="/fix/:id" element={<Fix />} />
                 <Route path="/fixTemplate/:id" element={<FixTemplate />} />
-                <Route path="/template" element={<TemplatePage />} />
                 <Route path="/editTemplate/:base64/*" element={<EditTemplate />} />
                 <Route path="/fromTemplate/:id" element={<EditFromTemplate />} />
                 <Route path="/*" element={<NotFound />} />
