@@ -32,9 +32,10 @@ const Sidebar: React.VFC = () => {
     if (user.auth) {
       setAnchorEl(e.currentTarget)
     } else {
-      await oAuthLogin().then(() => {
-        navigate('/palace')
-      })
+      //await oAuthLogin().then(() => {
+      //  navigate('/palace')
+      //})
+      navigate('/')
     }
   }
   const handleClose = () => {

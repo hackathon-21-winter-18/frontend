@@ -65,7 +65,7 @@ const SignUp: React.VFC = () => {
             {errStatus === '500' ? '既に同じユーザー名のアカウントが存在しています' : null}
           </span>
           <div className={styles.buttonContainer}>
-            <Link className={styles.loginButton} to="/login">
+            <Link className={styles.loginButton} to="/">
               ログインする
             </Link>
             <button
