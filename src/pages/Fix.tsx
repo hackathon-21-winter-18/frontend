@@ -12,6 +12,9 @@ import {Badge, Box, ClickAwayListener, IconButton, Portal, SxProps} from '@mui/m
 import {useHover} from '../hooks/useHover'
 import {EmbededPin, PinContent} from '../types'
 import pinIcon from '../assets/pin.svg'
+import redPinIcon from '../assets/redPin.svg'
+import bluePinIcon from '../assets/bluePin.svg'
+import yellowPinIcon from '../assets/yellowPin.svg'
 import {FixWordDialog} from '../components/FixWordDialog'
 import {getPalace, putPalace, putSharePalace} from '../api/palace'
 import useAuth from '../components/UserProvider'
@@ -111,6 +114,7 @@ export const Fix: React.VFC = () => {
         word: pin.word,
         place: pin.place,
         situation: pin.situation,
+        groupNumber: pin.groupNumber,
         number: pins.length,
         x: x,
         y: y,
@@ -140,7 +144,15 @@ export const Fix: React.VFC = () => {
             <img
               className={styles.pushedPin}
               key={i}
-              src={pinIcon}
+              src={
+                pin.groupNumber === 0
+                  ? pinIcon
+                  : pin.groupNumber === 1
+                  ? redPinIcon
+                  : pin.groupNumber === 2
+                  ? bluePinIcon
+                  : yellowPinIcon
+              }
               alt=""
               style={{
                 position: 'absolute',

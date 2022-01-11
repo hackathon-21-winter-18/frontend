@@ -9,6 +9,9 @@ import {CustomCursor} from '../components/CustomCursor'
 import {Badge, ClickAwayListener, IconButton, SxProps} from '@mui/material'
 import {useHover} from '../hooks/useHover'
 import pinIcon from '../assets/pin.svg'
+import redPinIcon from '../assets/redPin.svg'
+import bluePinIcon from '../assets/bluePin.svg'
+import yellowPinIcon from '../assets/yellowPin.svg'
 import VisibilityOffIcon from '@mui/icons-material/VisibilityOff'
 import Dialog from '@mui/material/Dialog'
 import CheckCircleIcon from '@mui/icons-material/CheckCircle'
@@ -35,6 +38,7 @@ export const EditTemplate: React.VFC<EditProps> = ({imageUrl, isPlayground = fal
   const [completeIsOpen, setCompleteIsOpen] = React.useState(false)
   const [shareOption, setShareOption] = React.useState(false)
   const navigate = useNavigate()
+  const [groupNumber, setGroupNumber] = React.useState(0)
 
   const [hoverRef, isHovered] = useHover<HTMLImageElement>()
   const {x, y} = useMousePosition()
@@ -53,6 +57,7 @@ export const EditTemplate: React.VFC<EditProps> = ({imageUrl, isPlayground = fal
           number: i,
           x: pins[i].x,
           y: pins[i].y,
+          groupNumber: groupNumber,
         })
       }
       const data = {
@@ -106,14 +111,21 @@ export const EditTemplate: React.VFC<EditProps> = ({imageUrl, isPlayground = fal
       number: pins.length,
       x: x,
       y: y,
+      groupNumber: groupNumber,
     }
     setPins([...pins, data])
     setOpen(false)
   }, [open]) // eslint-disable-line react-hooks/exhaustive-deps
 
-  const handlePinClick = React.useCallback((pin: Pin) => {
-    setPinOpen(pin)
-  }, [])
+  const handlePinClick = React.useCallback(
+    (i) => {
+      let pinsCopy = [...pins]
+      pinsCopy.splice(i, 1)
+      setPins(pinsCopy)
+    },
+    [pins]
+  ) // eslint-disable-line react-hooks/exhaustive-deps
+
   const handleDeletePin = React.useCallback(
     (pin: Pin) => {
       setPins(pins.filter((tmp) => tmp !== pin))
@@ -135,7 +147,15 @@ export const EditTemplate: React.VFC<EditProps> = ({imageUrl, isPlayground = fal
             <img
               className={styles.pushedPin}
               key={i}
-              src={pinIcon}
+              src={
+                pin.groupNumber === 0
+                  ? pinIcon
+                  : pin.groupNumber === 1
+                  ? redPinIcon
+                  : pin.groupNumber === 2
+                  ? bluePinIcon
+                  : yellowPinIcon
+              }
               alt=""
               style={{
                 position: 'absolute',
@@ -144,7 +164,7 @@ export const EditTemplate: React.VFC<EditProps> = ({imageUrl, isPlayground = fal
                 transform: `translate(-50%, -100%)`,
               }}
               onClick={() => {
-                handlePinClick(pin)
+                handlePinClick(i)
               }}
             />
           ))}

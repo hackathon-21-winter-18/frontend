@@ -101,15 +101,16 @@
 }
 
 .card {
-  width: 360px;
+  width: 400px;
   height: 240px;
   padding: 12px;
   text-align: center;
 }
 .card > ul {
   list-style: none;
+  margin-top: 4px;
 }
-.li {
+.card li {
   display: flex;
   justify-content: space-between;
   border-bottom: solid 1px #c6d0e5;
@@ -124,4 +125,11 @@
 .inputContainer {
   display: flex;
   align-items: center;
+}
+.listPinIcon {
+  width: 32px;
+  height: 32px;
+  object-fit: contain;
+  transition-duration: 0.2s;
+  margin-top: 4px;
 }

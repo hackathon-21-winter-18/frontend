@@ -8,6 +8,9 @@ import {useHover} from '../hooks/useHover'
 import {EmbededPin} from '../types'
 import pinIcon from '../assets/pin.svg'
 import greenPinIcon from '../assets/greenPin.svg'
+import redPinIcon from '../assets/redPin.svg'
+import bluePinIcon from '../assets/bluePin.svg'
+import yellowPinIcon from '../assets/yellowPin.svg'
 import {FixWordDialog} from '../components/FixWordDialog'
 import Dialog from '@mui/material/Dialog'
 import CheckCircleIcon from '@mui/icons-material/CheckCircle'
@@ -17,6 +20,7 @@ import {getPalace, getSharedPalace} from '../api/palace'
 import Popover from '@mui/material/Popover'
 import HidableWord from '../components/HidableWord'
 import {Extension} from '../util/extension'
+import {setgroups} from 'process'
 
 const Memorize: React.VFC = () => {
   const [open, setOpen] = React.useState<number | boolean>(false)
@@ -33,6 +37,7 @@ const Memorize: React.VFC = () => {
   const {x, y} = useMousePosition()
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null)
   const popOpen = Boolean(anchorEl)
+  const [groups, setGroups] = React.useState<string[]>(new Array<string>())
 
   React.useEffect(() => {
     const palaceID = params.id
@@ -44,6 +49,7 @@ const Memorize: React.VFC = () => {
             if (data[i].id === palaceID) {
               setPins(data[i].embededPins)
               setPalaceImage(data[i].image)
+              setGroups([data[i].group1, data[i].group2, data[i].group3])
               let preFlags = Array(data[i].embededPins.length)
               setFlags(preFlags.fill(false))
             }
@@ -57,6 +63,7 @@ const Memorize: React.VFC = () => {
             if (data[i].id === palaceID) {
               setPins(data[i].embededPins)
               setPalaceImage(data[i].image)
+              setGroups([data[i].group1, data[i].group2, data[i].group3])
               let preFlags = Array(data[i].embededPins.length)
               setFlags(preFlags.fill(false))
             }
@@ -106,6 +113,19 @@ const Memorize: React.VFC = () => {
   const pinsList = pins.map((pin, index) => (
     <li key={pin.number} className={styles.li}>
       <div className={styles.inputContainer}>
+        <img
+          className={styles.listPinIcon}
+          src={
+            pin.groupNumber === 0
+              ? pinIcon
+              : pin.groupNumber === 1
+              ? redPinIcon
+              : pin.groupNumber === 2
+              ? bluePinIcon
+              : yellowPinIcon
+          }
+          alt=""
+        />
         <HidableWord text={pin.word} isVisible={flags[index]} />
         <span>が</span>
         <HidableWord text={pin.place} isVisible={flags[index]} />
@@ -132,7 +152,17 @@ const Memorize: React.VFC = () => {
             <img
               className={styles.pushedPin}
               key={i}
-              src={flags[i] ? greenPinIcon : pinIcon}
+              src={
+                flags[i]
+                  ? greenPinIcon
+                  : pin.groupNumber === 0
+                  ? pinIcon
+                  : pin.groupNumber === 1
+                  ? redPinIcon
+                  : pin.groupNumber === 2
+                  ? bluePinIcon
+                  : yellowPinIcon
+              }
               alt=""
               style={{
                 position: 'absolute',
@@ -179,6 +209,20 @@ const Memorize: React.VFC = () => {
         }}
         className={styles.popover}>
         <div className={styles.card}>
+          グループ
+          <ul>
+            {groups.map((group, index) => (
+              <li>
+                <img
+                  className={styles.listPinIcon}
+                  src={index === 0 ? redPinIcon : index === 1 ? bluePinIcon : yellowPinIcon}
+                  alt=""
+                />
+                {group}
+              </li>
+            ))}
+          </ul>
+          ピンリスト
           <ul>{pinsList}</ul>
         </div>
       </Popover>

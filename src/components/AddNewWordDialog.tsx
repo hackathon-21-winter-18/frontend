@@ -2,6 +2,9 @@ import {Button, Card, Grow, IconButton} from '@mui/material'
 import React, {useState} from 'react'
 import styles from './AddNewWordDialog.module.css'
 import pin from '../assets/pin.svg'
+import redPin from '../assets/redPin.svg'
+import bluePin from '../assets/bluePin.svg'
+import yellowPin from '../assets/yellowPin.svg'
 import ShuffleIcon from '@mui/icons-material/Shuffle'
 import DeleteIcon from '@mui/icons-material/Delete'
 import {PinContent, EmbededPin} from '../types'
@@ -46,7 +49,20 @@ const AddNewWordDialog: React.VFC<AddNewWordDialogProps> = ({
       return ''
     }
   })
+  const [groupNumber, setGroupNumber] = useState(() => {
+    if (pinContent) {
+      return pinContent.groupNumber
+    } else {
+      return 0
+    }
+  })
   const [warning, setWarning] = useState(false)
+  const pinIcons = [
+    {num: 0, name: pin, img: pin},
+    {num: 1, name: redPin, img: redPin},
+    {num: 2, name: bluePin, img: bluePin},
+    {num: 3, name: yellowPin, img: yellowPin},
+  ]
   //const [randomSituation, setRandomSituation] = useState<string[]>(new Array<string>())
   const [randomSituation, setRandomSituation] = useState<string[]>([
     '踊ってる',
@@ -67,6 +83,7 @@ const AddNewWordDialog: React.VFC<AddNewWordDialogProps> = ({
           word: word,
           place: place,
           situation: situation,
+          groupNumber: groupNumber,
         }
         const newPins = pins
           .slice(0, pinContent!.number)
@@ -78,6 +95,7 @@ const AddNewWordDialog: React.VFC<AddNewWordDialogProps> = ({
           word,
           place,
           situation,
+          groupNumber,
         })
       }
     } else {
@@ -97,9 +115,18 @@ const AddNewWordDialog: React.VFC<AddNewWordDialogProps> = ({
   return (
     <Grow in={open}>
       <Card elevation={1} className={styles.card}>
-        <div className={styles.question}>
+        <div className={styles.header}>
           <div>
-            <img className={styles.pinIcon} src={pin} alt="" />
+            {pinIcons.map((pin) => (
+              <img
+                key={pin.num}
+                className={styles.pinIcon}
+                src={pin.img}
+                style={groupNumber === pin.num ? {border: '1px solid green'} : {}}
+                alt={pin.name}
+                onClick={() => setGroupNumber(pin.num)}
+              />
+            ))}
             <p>誰が何してる？</p>
           </div>
           {deletePin ? (
@@ -119,6 +146,7 @@ const AddNewWordDialog: React.VFC<AddNewWordDialogProps> = ({
             value={word}
             className={warning ? styles.warning : styles.safe}
           />
+          <span style={{fontSize: '40px'}}>(</span>
           が
           <input
             type="text"
@@ -135,6 +163,7 @@ const AddNewWordDialog: React.VFC<AddNewWordDialogProps> = ({
             value={situation}
             className={styles.safe}
           />
+          <span style={{fontSize: '40px'}}>)</span>
           <IconButton color="warning" onClick={handleShuffle}>
             <ShuffleIcon />
           </IconButton>

@@ -10,6 +10,9 @@ import {Badge, Box, ClickAwayListener, IconButton, Portal, SxProps} from '@mui/m
 import {useHover} from '../hooks/useHover'
 import {EmbededPin, PinContent} from '../types'
 import pinIcon from '../assets/pin.svg'
+import redPinIcon from '../assets/redPin.svg'
+import bluePinIcon from '../assets/bluePin.svg'
+import yellowPinIcon from '../assets/yellowPin.svg'
 import {FixWordDialog} from '../components/FixWordDialog'
 import VisibilityOffIcon from '@mui/icons-material/VisibilityOff'
 import Dialog from '@mui/material/Dialog'
@@ -79,6 +82,7 @@ export const Edit: React.VFC<EditProps> = ({imageUrl, isPlayground = false, xGap
             number: i,
             x: pins[i].x,
             y: pins[i].y,
+            groupNumber: pins[i].groupNumber,
           })
         }
         const data2 = {
@@ -138,6 +142,7 @@ export const Edit: React.VFC<EditProps> = ({imageUrl, isPlayground = false, xGap
         number: pins.length,
         x: x,
         y: y,
+        groupNumber: pin.groupNumber,
       }
       setPins([...pins, data])
       setOpen(false)
@@ -168,7 +173,15 @@ export const Edit: React.VFC<EditProps> = ({imageUrl, isPlayground = false, xGap
             <img
               className={styles.pushedPin}
               key={i}
-              src={pinIcon}
+              src={
+                pin.groupNumber === 0
+                  ? pinIcon
+                  : pin.groupNumber === 1
+                  ? redPinIcon
+                  : pin.groupNumber === 2
+                  ? bluePinIcon
+                  : yellowPinIcon
+              }
               alt=""
               style={{
                 position: 'absolute',
