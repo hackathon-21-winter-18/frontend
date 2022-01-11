@@ -4,8 +4,12 @@ import {RegistrationResponse, UserRegistration} from '../types'
 
 const endpoint = config()
 
-export const getOAuthLogin = async () => {
-  const res = await axios.get<RegistrationResponse>(endpoint + '/api/oauth/genpkce', {withCredentials: true})
+export const postOAuthLogin = async (userId: string) => {
+  const res = await axios.post<RegistrationResponse>(
+    endpoint + '/api/oauth/login',
+    {googleID: userId},
+    {withCredentials: true}
+  )
   // TODO response error handling
   return res.data
 }

@@ -19,6 +19,8 @@ import SharedPalaces from './pages/SharedPalaces'
 import SharedTemplates from './pages/SharedTemplates'
 import SideLayout from './components/SideLayout'
 import Playground from './pages/Playground'
+import CallBack from './pages/CallBack'
+import PrivacyPolicy from './pages/PrivacyPolicy'
 
 function App() {
   return (
@@ -26,6 +28,7 @@ function App() {
       <UserProvider>
         <BrowserRouter>
           <Routes>
+            <Route path="/callback" element={<CallBack />} />
             <Route element={<Layout />}>
               <Route element={<SideLayout />}>
                 <Route path="/sharedPalaces" element={<SharedPalaces />} />
@@ -51,9 +54,10 @@ function App() {
                 <Route path="/*" element={<NotFound />} />
               </Route>
             </Route>
-            <Route path="/" element={<Login />} />
+            <Route path="/login" element={<Login />} />
             <Route path="/signup" element={<SignUp />} />
-            <Route path="/login" element={<Title />} />
+            <Route path="/" element={<Title />} />
+            <Route path="/privacyPolicy" element={<PrivacyPolicy />} />
           </Routes>
         </BrowserRouter>
       </UserProvider>
