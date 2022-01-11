@@ -4,6 +4,7 @@ import {useState, useEffect, useRef} from 'react'
 import {getPalace} from '../api/palace'
 import {PinContent} from '../types'
 import {useLocation} from 'react-router-dom'
+import userAuth from './UserProvider'
 
 type quizType = {
   place: string
@@ -19,6 +20,7 @@ const Quiz: React.VFC = () => {
   const [quiz, setQuiz] = useState<quizType>({} as quizType)
   const [randomNum, setRandomNum] = useState<randomNumType>(getRandomInt(0, 1) as randomNumType) //正解の選択肢を上に当てはめるか下に当てはめるか
   const location = useLocation()
+  const {user} = userAuth()
 
   function getRandomInt(min: number, max: number) {
     min = Math.ceil(min)
@@ -57,30 +59,31 @@ const Quiz: React.VFC = () => {
     }
   }
   useEffect(() => {
-    getPalace((res) => {
-      if (res.data) {
-        let prePins: PinContent[] = new Array<PinContent>()
-        for (let i = 0; i < res.data.length; i++) {
-          for (let j = 0; j < res.data[i].embededPins.length; j++) {
-            if (
-              res.data[i].embededPins[j].word !== '' &&
-              res.data[i].embededPins[j].place !== '' &&
-              res.data[i].embededPins[j].situation !== ''
-            ) {
-              prePins = prePins.concat([
-                {
-                  word: res.data[i].embededPins[j].word,
-                  place: res.data[i].embededPins[j].place,
-                  situation: res.data[i].embededPins[j].situation,
-                },
-              ])
+    user.auth &&
+      getPalace((res) => {
+        if (res.data) {
+          let prePins: PinContent[] = new Array<PinContent>()
+          for (let i = 0; i < res.data.length; i++) {
+            for (let j = 0; j < res.data[i].embededPins.length; j++) {
+              if (
+                res.data[i].embededPins[j].word !== '' &&
+                res.data[i].embededPins[j].place !== '' &&
+                res.data[i].embededPins[j].situation !== ''
+              ) {
+                prePins = prePins.concat([
+                  {
+                    word: res.data[i].embededPins[j].word,
+                    place: res.data[i].embededPins[j].place,
+                    situation: res.data[i].embededPins[j].situation,
+                  },
+                ])
+              }
             }
           }
+          setPins(prePins)
+          RandomSelect(prePins)
         }
-        setPins(prePins)
-        RandomSelect(prePins)
-      }
-    })
+      })
   }, [location]) // eslint-disable-line react-hooks/exhaustive-deps
   return (
     <div className={styles.quiz}>

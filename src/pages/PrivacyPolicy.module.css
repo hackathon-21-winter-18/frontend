@@ -1,0 +1,38 @@
+.layout {
+  display: flex;
+  flex-direction: column;
+}
+.layout::before {
+  content: '';
+  display: block;
+  height: 128px;
+}
+.lauout::after {
+  display: block;
+  content: '';
+  height: 64px;
+}
+.window {
+  margin: 0 auto;
+  padding: 32px;
+
+  height: 400px;
+  width: 700px;
+  border: 1px solid #c6d0e5;
+  border-radius: 10px;
+}
+.logo {
+  display: block;
+  margin: 0 auto 16px;
+  height: 32px;
+  object-fit: contain;
+}
+.divider {
+  width: 100%;
+  border-top: 1px solid #c6d0e5;
+}
+.privacyPolicy {
+  height: 300px;
+  overflow: scroll;
+}
+/* TODO @media screen and (width<600px){} */

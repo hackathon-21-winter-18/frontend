@@ -4,6 +4,16 @@ import {RegistrationResponse, UserRegistration} from '../types'
 
 const endpoint = config()
 
+export const postOAuthLogin = async (userId: string) => {
+  const res = await axios.post<RegistrationResponse>(
+    endpoint + '/api/oauth/login',
+    {googleID: userId},
+    {withCredentials: true}
+  )
+  // TODO response error handling
+  return res.data
+}
+
 export const postLogin = async (user: UserRegistration) => {
   const res = await axios.post<RegistrationResponse>(endpoint + '/api/oauth/login', user, {withCredentials: true})
   // TODO response error handling
@@ -25,4 +35,8 @@ export const getCurrentUser = async () => {
 
 export const postLogout = async () => {
   await axios.post(endpoint + '/api/oauth/logout', {}, {withCredentials: true})
+}
+
+export const putUserName = async (newUserName: string) => {
+  await axios.put(endpoint + '/api/user/name', {name: newUserName}, {withCredentials: true})
 }

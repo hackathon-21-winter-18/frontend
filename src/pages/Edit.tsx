@@ -184,15 +184,19 @@ export const Edit: React.VFC<EditProps> = ({imageUrl, isPlayground = false, xGap
           {pinOpen && (
             <Portal>
               <Box sx={boxStyle()}>
-                <AddNewWordDialog
-                  open={!!pinOpen}
-                  setOpen={setOpen}
-                  putPin={putPin}
-                  deletePin={handleDeletePin}
-                  pinContent={pinOpen}
-                  pins={pins}
-                  setPins={setPins}
-                />
+                {isPlayground ? (
+                  pinOpen && <FixWordDialog open={pinOpen} deletePin={handleDeletePin} isVisible={mode === 'edit'} />
+                ) : (
+                  <AddNewWordDialog
+                    open={!!pinOpen}
+                    setOpen={setOpen}
+                    putPin={putPin}
+                    deletePin={handleDeletePin}
+                    pinContent={pinOpen}
+                    pins={pins}
+                    setPins={setPins}
+                  />
+                )}
               </Box>
             </Portal>
           )}
@@ -299,8 +303,8 @@ export const Edit: React.VFC<EditProps> = ({imageUrl, isPlayground = false, xGap
           </button>
         </DialogActions>
         <DialogActions>
-          <button onClick={() => navigate('/')} className={styles.button2}>
-            <span>ホームへ戻る</span>
+          <button onClick={() => navigate('/palace')} className={styles.button2}>
+            <span>トップへ戻る</span>
           </button>
         </DialogActions>
       </Dialog>

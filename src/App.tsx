@@ -1,7 +1,8 @@
 import styles from './App.module.css'
 import {BrowserRouter, Route, Routes} from 'react-router-dom'
 import {UserProvider} from './components/UserProvider'
-import Home from './pages/Home'
+import Title from './pages/Title'
+import PalacePage from './pages/PalacePage'
 import Login from './pages/Login'
 import Memorize from './pages/Memorize'
 import {Edit} from './pages/Edit'
@@ -18,6 +19,8 @@ import SharedPalaces from './pages/SharedPalaces'
 import SharedTemplates from './pages/SharedTemplates'
 import SideLayout from './components/SideLayout'
 import Playground from './pages/Playground'
+import CallBack from './pages/CallBack'
+import PrivacyPolicy from './pages/PrivacyPolicy'
 
 function App() {
   return (
@@ -25,12 +28,18 @@ function App() {
       <UserProvider>
         <BrowserRouter>
           <Routes>
-            <Route path="/login" element={<Login />} />
-            <Route path="/signup" element={<SignUp />} />
+            <Route path="/callback" element={<CallBack />} />
+            <Route element={<Layout />}>
+              <Route element={<SideLayout />}>
+                <Route path="/sharedPalaces" element={<SharedPalaces />} />
+                <Route path="/sharedTemplates" element={<SharedTemplates />} />
+                <Route path="/playground" element={<Playground />} />
+              </Route>
+            </Route>
             <Route element={<AuthenticatedRoute />}>
               <Route element={<Layout />}>
                 <Route element={<SideLayout />}>
-                  <Route path="/" element={<Home />} />
+                  <Route path="/palace" element={<PalacePage />} />
                   <Route path="/template" element={<TemplatePage />} />
                   <Route path="/sharedPalaces" element={<SharedPalaces />} />
                   <Route path="/sharedTemplates" element={<SharedTemplates />} />
@@ -40,12 +49,15 @@ function App() {
                 <Route path="/edit/:base64/*" element={<Edit />} />
                 <Route path="/fix/:id" element={<Fix />} />
                 <Route path="/fixTemplate/:id" element={<FixTemplate />} />
-                <Route path="/template" element={<TemplatePage />} />
                 <Route path="/editTemplate/:base64/*" element={<EditTemplate />} />
                 <Route path="/fromTemplate/:id" element={<EditFromTemplate />} />
                 <Route path="/*" element={<NotFound />} />
               </Route>
             </Route>
+            <Route path="/login" element={<Login />} />
+            <Route path="/signup" element={<SignUp />} />
+            <Route path="/" element={<Title />} />
+            <Route path="/privacyPolicy" element={<PrivacyPolicy />} />
           </Routes>
         </BrowserRouter>
       </UserProvider>

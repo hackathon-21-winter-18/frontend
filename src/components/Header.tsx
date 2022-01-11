@@ -67,9 +67,14 @@ const Header: React.VFC = () => {
 
   return (
     <>
-      {user.auth && (
-        <div className={styles.header}>
-          <img className={styles.logo} src={logo} alt="logo" onClick={() => navigate('/')} />
+      <div className={styles.header}>
+        <img
+          className={styles.logo}
+          src={logo}
+          alt="logo"
+          onClick={() => navigate(user.auth ? '/palace' : '/sharedPalaces')}
+        />
+        {user.auth ? (
           <div className={styles.right}>
             <button className={styles.notice} onClick={handleClick}>
               <NotificationsNoneIcon className={styles.noticeIcon} fontSize="large" />
@@ -98,8 +103,8 @@ const Header: React.VFC = () => {
             </Popover>
             <FromNewPalace />
           </div>
-        </div>
-      )}
+        ) : null}
+      </div>
     </>
   )
 }

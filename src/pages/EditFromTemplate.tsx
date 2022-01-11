@@ -313,8 +313,8 @@ export const EditFromTemplate: React.VFC<EditProps> = ({imageUrl, isPlayground =
           </button>
         </DialogActions>
         <DialogActions>
-          <button onClick={() => navigate('/')} className={styles.button2}>
-            <span>ホームへ戻る</span>
+          <button onClick={() => navigate('/palace')} className={styles.button2}>
+            <span>トップへ戻る</span>
           </button>
         </DialogActions>
       </Dialog>

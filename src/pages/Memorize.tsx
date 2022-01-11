@@ -222,8 +222,8 @@ const Memorize: React.VFC = () => {
           <span>🎉お疲れさまでした🎉</span>
         </DialogTitle>
         <DialogActions>
-          <button onClick={() => navigate('/')} className={styles.button2}>
-            <span>ホームへ戻る</span>
+          <button onClick={() => navigate('/palace')} className={styles.button2}>
+            <span>トップへ戻る</span>
           </button>
         </DialogActions>
       </Dialog>
