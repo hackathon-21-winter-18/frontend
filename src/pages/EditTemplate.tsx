@@ -220,24 +220,11 @@ export const EditTemplate: React.VFC<EditProps> = ({imageUrl, isPlayground = fal
         )}
         {mode === 'memorization' && <VisibilityOffIcon />}
       </IconButton>
-      <Popover
-        anchorEl={anchorEl}
-        open={popOpen}
-        onClose={handleClose}
-        anchorOrigin={{
-          vertical: 'bottom',
-          horizontal: 'left',
-        }}
-        transformOrigin={{
-          vertical: 'top',
-          horizontal: 'right',
-        }}
-        className={styles.popover}>
-        <div className={styles.card}>
-          ピンリスト
-          <ul>{pinsList}</ul>
-        </div>
-      </Popover>
+      <div className={styles.card}>
+        ピンリスト
+        <ul>{pinsList}</ul>
+      </div>
+
       <ClickAwayListener onClickAway={handleClickAway}>
         <div className={styles.image}>
           <img

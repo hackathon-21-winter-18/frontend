@@ -194,39 +194,26 @@ const Memorize: React.VFC = () => {
           <img src={pinIcon} alt="pinIcon" className={styles.pinIcon} />
         </Badge>
       </IconButton>
-      <Popover
-        anchorEl={anchorEl}
-        open={popOpen}
-        onClose={handleClose}
-        anchorOrigin={{
-          vertical: 'bottom',
-          horizontal: 'left',
-        }}
-        transformOrigin={{
-          vertical: 'top',
-          horizontal: 'right',
-        }}
-        className={styles.popover}>
-        <div className={styles.card}>
-          グループ
-          <ul>
-            {groups.map((group, index) => (
-              <li>
-                <img
-                  className={styles.listPinIcon}
-                  src={index === 0 ? redPinIcon : index === 1 ? bluePinIcon : yellowPinIcon}
-                  alt=""
-                />
-                <div className={styles.groupName}>
-                  <span>{group}</span>
-                </div>
-              </li>
-            ))}
-          </ul>
-          ピンリスト
-          <ul>{pinsList}</ul>
-        </div>
-      </Popover>
+      <div className={styles.card}>
+        グループ
+        <ul>
+          {groups.map((group, index) => (
+            <li>
+              <img
+                className={styles.listPinIcon}
+                src={index === 0 ? redPinIcon : index === 1 ? bluePinIcon : yellowPinIcon}
+                alt=""
+              />
+              <div className={styles.groupName}>
+                <span>{group}</span>
+              </div>
+            </li>
+          ))}
+        </ul>
+        ピンリスト
+        <ul>{pinsList}</ul>
+      </div>
+
       <ClickAwayListener onClickAway={handleClickAway}>
         <div className={styles.image}>
           <img className={styles.layoutImage} src={Extension(palaceImage)} alt="map" ref={hoverRef} />

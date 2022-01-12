@@ -238,42 +238,29 @@ export const Fix: React.VFC = () => {
           <img src={pinIcon} alt="" className={styles.pinIcon} />
         </Badge>
       </IconButton>
-      <Popover
-        anchorEl={anchorEl}
-        open={popOpen}
-        onClose={handleClose}
-        anchorOrigin={{
-          vertical: 'bottom',
-          horizontal: 'left',
-        }}
-        transformOrigin={{
-          vertical: 'top',
-          horizontal: 'right',
-        }}
-        className={styles.popover}>
-        <div className={styles.card}>
-          グループ
-          <ul>
-            {groups.map((group, index) => (
-              <li key={index}>
-                <img
-                  className={styles.listPinIcon}
-                  src={index === 0 ? redPinIcon : index === 1 ? bluePinIcon : yellowPinIcon}
-                  alt=""
-                />
-                <input
-                  type="text"
-                  value={group}
-                  onChange={(e) => handleGroupsChange(e, index)}
-                  className={styles.groupNameInput}
-                />
-              </li>
-            ))}
-          </ul>
-          ピンリスト
-          <ul>{pinsList}</ul>
-        </div>
-      </Popover>
+      <div className={styles.card}>
+        グループ
+        <ul>
+          {groups.map((group, index) => (
+            <li key={index}>
+              <img
+                className={styles.listPinIcon}
+                src={index === 0 ? redPinIcon : index === 1 ? bluePinIcon : yellowPinIcon}
+                alt=""
+              />
+              <input
+                type="text"
+                value={group}
+                onChange={(e) => handleGroupsChange(e, index)}
+                className={styles.groupNameInput}
+              />
+            </li>
+          ))}
+        </ul>
+        ピンリスト
+        <ul>{pinsList}</ul>
+      </div>
+
       <ClickAwayListener onClickAway={handleClickAway}>
         <div className={styles.image}>
           <img

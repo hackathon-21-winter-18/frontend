@@ -214,24 +214,11 @@ export const FixTemplate: React.VFC = () => {
           <img src={pinIcon} alt="" className={styles.pinIcon} />
         </Badge>
       </IconButton>
-      <Popover
-        anchorEl={anchorEl}
-        open={popOpen}
-        onClose={handleClose}
-        anchorOrigin={{
-          vertical: 'bottom',
-          horizontal: 'left',
-        }}
-        transformOrigin={{
-          vertical: 'top',
-          horizontal: 'right',
-        }}
-        className={styles.popover}>
-        <div className={styles.card}>
-          ピンリスト
-          <ul>{pinsList}</ul>
-        </div>
-      </Popover>
+      <div className={styles.card}>
+        ピンリスト
+        <ul>{pinsList}</ul>
+      </div>
+
       <ClickAwayListener onClickAway={handleClickAway}>
         <div className={styles.image}>
           <img
