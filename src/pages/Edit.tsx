@@ -369,7 +369,7 @@ export const Edit: React.VFC<EditProps> = ({imageUrl, isPlayground = false, xGap
           </button>
         </form>
       </div>
-      <Dialog open={isOpen} onClose={() => setIsOpen(false)}>
+      <Dialog open={isOpen && !(pins.length <= 0 || palaceName === '')} onClose={() => setIsOpen(false)}>
         <DialogTitle>
           <span>本当に宮殿を作成しますか？</span>
         </DialogTitle>
@@ -405,13 +405,13 @@ export const Edit: React.VFC<EditProps> = ({imageUrl, isPlayground = false, xGap
         </DialogActions>
       </Dialog>
       <Dialog
-        open={completeIsOpen && !isPlayground && (pins.length <= 0 || palaceName === '')}
+        open={isOpen && !isPlayground && (pins.length <= 0 || palaceName === '')}
         PaperProps={{style: {width: '381px', height: '309px', borderRadius: '10px'}}}>
         <DialogTitle style={{textAlign: 'center'}}>
           <span>単語が登録されていないか、宮殿の名前が登録されていません</span>
         </DialogTitle>
         <DialogActions>
-          <button onClick={() => setCompleteIsOpen(false)} className={styles.button2}>
+          <button onClick={() => setIsOpen(false)} className={styles.button2}>
             <span>戻る</span>
           </button>
         </DialogActions>

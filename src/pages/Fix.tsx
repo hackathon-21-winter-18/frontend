@@ -351,7 +351,7 @@ export const Fix: React.VFC = () => {
           <span>単語が登録されていないか、宮殿の名前が登録されていません</span>
         </DialogTitle>
         <DialogActions>
-          <button onClick={() => setCompleteIsOpen(false)} className={styles.button2}>
+          <button onClick={() => setIsOpen(false)} className={styles.button2}>
             <span>戻る</span>
           </button>
         </DialogActions>

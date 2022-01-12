@@ -300,7 +300,7 @@ export const EditTemplate: React.VFC<EditProps> = ({imageUrl, isPlayground = fal
           <span>ピンが登録されていないか、テンプレートの名前が登録されていません</span>
         </DialogTitle>
         <DialogActions>
-          <button onClick={() => setCompleteIsOpen(false)} className={styles.button2}>
+          <button onClick={() => setIsOpen(false)} className={styles.button2}>
             <span>戻る</span>
           </button>
         </DialogActions>
