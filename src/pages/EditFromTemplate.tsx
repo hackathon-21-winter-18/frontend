@@ -215,7 +215,7 @@ export const EditFromTemplate: React.VFC<EditProps> = ({imageUrl, isPlayground =
     setAnchorEl(null)
   }
 
-  const pinsList = pins.map((pin, index) => (
+  const pinsList = pins.map((pin) => (
     <li key={pin.number} className={styles.li}>
       <div className={styles.inputContainer}>
         <img
@@ -236,9 +236,11 @@ export const EditFromTemplate: React.VFC<EditProps> = ({imageUrl, isPlayground =
         <HidableWord text={pin.place} isVisible={true} />
         <span>で</span>
         <HidableWord text={pin.situation} isVisible={true} />
-        <IconButton onClick={() => handleDeletePin(pin)} className={styles.trashButton}>
-          <DeleteIcon />
-        </IconButton>
+        {!location.state.shared ? (
+          <IconButton onClick={() => handleDeletePin(pin)} className={styles.trashButton}>
+            <DeleteIcon />
+          </IconButton>
+        ) : null}
       </div>
     </li>
   ))
@@ -252,7 +254,7 @@ export const EditFromTemplate: React.VFC<EditProps> = ({imageUrl, isPlayground =
   }
   return (
     <div className={styles.edit}>
-      {mode === 'edit' && <CustomCursor type="pin" isHover={isHovered} />}
+      {mode === 'edit' && !location.state.shared && <CustomCursor type="pin" isHover={isHovered} />}
       {!location.state.shared ? (
         <ClickAwayListener onClickAway={() => setPinOpen(null)}>
           <div>
@@ -318,9 +320,6 @@ export const EditFromTemplate: React.VFC<EditProps> = ({imageUrl, isPlayground =
               top: pin.y - 68 + 'px',
               left: pin.x + 'px',
               transform: `translate(-50%, -100%)`,
-            }}
-            onClick={() => {
-              handlePinClick(pin)
             }}
           />
         ))
@@ -412,13 +411,7 @@ export const EditFromTemplate: React.VFC<EditProps> = ({imageUrl, isPlayground =
         </>
       ) : (
         <div className={styles.image}>
-          <img
-            className={styles.layoutImage}
-            src={Extension(image)}
-            alt=""
-            onClick={() => mode === 'edit' && setOpen(Math.random())}
-            ref={hoverRef}
-          />
+          <img className={styles.layoutImage} src={Extension(image)} alt="" ref={hoverRef} />
         </div>
       )}
       <Dialog open={isOpen && !(pins.length <= 0 || palaceName === '')} onClose={() => setIsOpen(false)}>
