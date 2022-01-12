@@ -103,7 +103,7 @@ export const EditFromTemplate: React.VFC<EditProps> = ({imageUrl, isPlayground =
                 ])
                 setPins(prePins)
                 setTemplateCreatedBy(data[i].createdBy)
-                setImage(Extension(data[i].image))
+                setImage(data[i].image)
               }
             }
           }
@@ -333,7 +333,7 @@ export const EditFromTemplate: React.VFC<EditProps> = ({imageUrl, isPlayground =
         <div className={styles.image}>
           <img
             className={styles.layoutImage}
-            src={imageUrl ?? Extension(image)}
+            src={Extension(image)}
             alt=""
             onClick={() => mode === 'edit' && setOpen(Math.random())}
             ref={hoverRef}
