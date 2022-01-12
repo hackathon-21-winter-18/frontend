@@ -125,11 +125,11 @@ const Memorize: React.VFC = () => {
           }
           alt=""
         />
-        <HidableWord text={pin.word} isVisible={flags[index]} />
+        <HidableWord text={pin.word} isVisible={flags[index] || !pin.word} />
         <span>が</span>
-        <HidableWord text={pin.place} isVisible={flags[index]} />
+        <HidableWord text={pin.place} isVisible={flags[index] || !pin.place} />
         <span>で</span>
-        <HidableWord text={pin.situation} isVisible={flags[index]} />
+        <HidableWord text={pin.situation} isVisible={flags[index] || !pin.situation} />
       </div>
       <IconButton
         onClick={() => {
