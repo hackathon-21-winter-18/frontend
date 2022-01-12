@@ -37,6 +37,8 @@ export const SortingPublicPalacesButton = (prop: SortingPublicPalacesButtonProp)
         .then((res) => {
           if (res.data) {
             setPalaces(res.data)
+          } else {
+            setPalaces(new Array<SharedPalaceType>())
           }
         })
         .catch((err) => console.log(err))

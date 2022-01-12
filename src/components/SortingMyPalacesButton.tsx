@@ -39,6 +39,8 @@ export const SortingMyPalacesButton = (prop: SortingMyPalacesButtonProp) => {
         .then((res) => {
           if (res.data) {
             setPalaces(res.data)
+          } else {
+            setPalaces(new Array<PalaceType>())
           }
         })
         .catch((err) => console.log(err))

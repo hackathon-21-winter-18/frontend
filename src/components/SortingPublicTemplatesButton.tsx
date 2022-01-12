@@ -39,6 +39,8 @@ export const SortingPublicTemplatesButton = (prop: SortingPublicTemplatesButtonP
         .then((res) => {
           if (res.data) {
             setTemplates(res.data)
+          } else {
+            setTemplates(new Array<SharedTemplateType>())
           }
         })
         .catch((err) => console.log(err))
