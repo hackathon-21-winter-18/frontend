@@ -20,7 +20,6 @@ import {getPalace, getSharedPalace} from '../api/palace'
 import Popover from '@mui/material/Popover'
 import HidableWord from '../components/HidableWord'
 import {Extension} from '../util/extension'
-import {setgroups} from 'process'
 
 const Memorize: React.VFC = () => {
   const [open, setOpen] = React.useState<number | boolean>(false)

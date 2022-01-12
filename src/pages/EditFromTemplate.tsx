@@ -21,6 +21,8 @@ import DialogActions from '@mui/material/DialogActions'
 import DialogTitle from '@mui/material/DialogTitle'
 import {getTemplate, getSharedTemplate} from '../api/template'
 import {Extension} from '../util/extension'
+import Popover from '@mui/material/Popover'
+import HidableWord from '../components/HidableWord'
 
 type Mode = 'edit' | 'memorization'
 
@@ -47,6 +49,9 @@ export const EditFromTemplate: React.VFC<EditProps> = ({imageUrl, isPlayground =
   const [templateCreatedBy, setTemplateCreatedBy] = React.useState('')
   const [image, setImage] = React.useState('')
   const {x, y} = useMousePosition()
+  const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null)
+  const popOpen = Boolean(anchorEl)
+  const [groups, setGroups] = React.useState<string[]>(['', '', ''])
 
   React.useEffect(() => {
     const templateID = params.id
@@ -114,6 +119,9 @@ export const EditFromTemplate: React.VFC<EditProps> = ({imageUrl, isPlayground =
           image: location.state.image.substr(23),
           embededPins: pins,
           createdBy: user.id,
+          group1: groups[0],
+          group2: groups[1],
+          group3: groups[2],
         }
       } else {
         data = {
@@ -121,6 +129,9 @@ export const EditFromTemplate: React.VFC<EditProps> = ({imageUrl, isPlayground =
           image: location.state.image.substr(22),
           embededPins: pins,
           createdBy: user.id,
+          group1: groups[0],
+          group2: groups[1],
+          group3: groups[2],
         }
       }
       postPalace(data, (res: any) => {
@@ -191,7 +202,42 @@ export const EditFromTemplate: React.VFC<EditProps> = ({imageUrl, isPlayground =
     },
     [pins]
   )
+  const handleClick = (e: React.MouseEvent<HTMLButtonElement>) => {
+    setAnchorEl(e.currentTarget)
+  }
+  const handleClose = () => {
+    setAnchorEl(null)
+  }
 
+  const pinsList = pins.map((pin, index) => (
+    <li key={pin.number} className={styles.li}>
+      <div className={styles.inputContainer}>
+        <img
+          className={styles.listPinIcon}
+          src={
+            pin.groupNumber === 0
+              ? pinIcon
+              : pin.groupNumber === 1
+              ? redPinIcon
+              : pin.groupNumber === 2
+              ? bluePinIcon
+              : yellowPinIcon
+          }
+          alt=""
+        />
+        <HidableWord text={pin.word} isVisible={true} />
+        <span>が</span>
+        <HidableWord text={pin.place} isVisible={true} />
+        <span>で</span>
+        <HidableWord text={pin.situation} isVisible={true} />
+      </div>
+    </li>
+  ))
+  function handleGroupsChange(e: React.ChangeEvent<HTMLInputElement>, index: number) {
+    let groupsCopy = [...groups]
+    groupsCopy[index] = e.target.value
+    setGroups(groupsCopy)
+  }
   return (
     <div className={styles.edit}>
       {mode === 'edit' && <CustomCursor type="pin" isHover={isHovered} />}
@@ -239,9 +285,7 @@ export const EditFromTemplate: React.VFC<EditProps> = ({imageUrl, isPlayground =
         </div>
       </ClickAwayListener>
 
-      <IconButton
-        className={styles.togglPinList}
-        onClick={() => isPlayground && setMode(mode === 'edit' ? 'memorization' : 'edit')}>
+      <IconButton className={styles.togglPinList} onClick={handleClick}>
         {mode === 'edit' && (
           <Badge badgeContent={pins.length} color="primary">
             <img src={pinIcon} alt="" className={styles.pinIcon} />
@@ -249,7 +293,37 @@ export const EditFromTemplate: React.VFC<EditProps> = ({imageUrl, isPlayground =
         )}
         {mode === 'memorization' && <VisibilityOffIcon />}
       </IconButton>
-
+      <Popover
+        anchorEl={anchorEl}
+        open={popOpen}
+        onClose={handleClose}
+        anchorOrigin={{
+          vertical: 'bottom',
+          horizontal: 'left',
+        }}
+        transformOrigin={{
+          vertical: 'top',
+          horizontal: 'right',
+        }}
+        className={styles.popover}>
+        <div className={styles.card}>
+          グループ
+          <ul>
+            {groups.map((group, index) => (
+              <li>
+                <img
+                  className={styles.listPinIcon}
+                  src={index === 0 ? redPinIcon : index === 1 ? bluePinIcon : yellowPinIcon}
+                  alt=""
+                />
+                <input type="text" value={group[index]} onChange={(e) => handleGroupsChange(e, index)} />
+              </li>
+            ))}
+          </ul>
+          ピンリスト
+          <ul>{pinsList}</ul>
+        </div>
+      </Popover>
       <ClickAwayListener onClickAway={handleClickAway}>
         <div className={styles.image}>
           <img

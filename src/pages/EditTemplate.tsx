@@ -18,6 +18,7 @@ import CheckCircleIcon from '@mui/icons-material/CheckCircle'
 import DialogActions from '@mui/material/DialogActions'
 import DialogTitle from '@mui/material/DialogTitle'
 import {postTemplate, putShareTemplate} from '../api/template'
+import Popover from '@mui/material/Popover'
 
 type Mode = 'edit' | 'memorization'
 
@@ -39,6 +40,8 @@ export const EditTemplate: React.VFC<EditProps> = ({imageUrl, isPlayground = fal
   const [shareOption, setShareOption] = React.useState(false)
   const navigate = useNavigate()
   const [groupNumber, setGroupNumber] = React.useState(0)
+  const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null)
+  const popOpen = Boolean(anchorEl)
 
   const [hoverRef, isHovered] = useHover<HTMLImageElement>()
   const {x, y} = useMousePosition()
@@ -138,6 +141,40 @@ export const EditTemplate: React.VFC<EditProps> = ({imageUrl, isPlayground = fal
     setTemplateName('')
   }, [location])
 
+  const handleClick = (e: React.MouseEvent<HTMLButtonElement>) => {
+    setAnchorEl(e.currentTarget)
+  }
+  const handleClose = () => {
+    setAnchorEl(null)
+  }
+  const handlePinChange = (number: number) => {
+    let pinsCopy = [...pins]
+    pinsCopy[number].groupNumber = (pinsCopy[number].groupNumber + 1) % 4
+    setPins(pinsCopy)
+  }
+  const pinsList = pins.map((pin, index) => (
+    <li key={pin.number} className={styles.li}>
+      <div className={styles.inputContainer}>
+        {pin.number}:
+        <button onClick={() => handlePinChange(pin.number)} className={styles.listPinIconButton}>
+          <img
+            className={styles.listPinIcon}
+            src={
+              pin.groupNumber === 0
+                ? pinIcon
+                : pin.groupNumber === 1
+                ? redPinIcon
+                : pin.groupNumber === 2
+                ? bluePinIcon
+                : yellowPinIcon
+            }
+            alt=""
+          />
+        </button>
+      </div>
+    </li>
+  ))
+
   return (
     <div className={styles.edit}>
       {mode === 'edit' && <CustomCursor type="pin" isHover={isHovered} />}
@@ -171,9 +208,7 @@ export const EditTemplate: React.VFC<EditProps> = ({imageUrl, isPlayground = fal
         </div>
       </ClickAwayListener>
 
-      <IconButton
-        className={styles.togglPinList}
-        onClick={() => isPlayground && setMode(mode === 'edit' ? 'memorization' : 'edit')}>
+      <IconButton className={styles.togglPinList} onClick={handleClick}>
         {mode === 'edit' && (
           <Badge badgeContent={pins.length} color="primary">
             <img src={pinIcon} alt="" className={styles.pinIcon} />
@@ -181,7 +216,24 @@ export const EditTemplate: React.VFC<EditProps> = ({imageUrl, isPlayground = fal
         )}
         {mode === 'memorization' && <VisibilityOffIcon />}
       </IconButton>
-
+      <Popover
+        anchorEl={anchorEl}
+        open={popOpen}
+        onClose={handleClose}
+        anchorOrigin={{
+          vertical: 'bottom',
+          horizontal: 'left',
+        }}
+        transformOrigin={{
+          vertical: 'top',
+          horizontal: 'right',
+        }}
+        className={styles.popover}>
+        <div className={styles.card}>
+          ピンリスト
+          <ul>{pinsList}</ul>
+        </div>
+      </Popover>
       <ClickAwayListener onClickAway={handleClickAway}>
         <div className={styles.image}>
           <img
