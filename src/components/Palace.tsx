@@ -60,6 +60,7 @@ const Palace: React.VFC<PalaceProps> = ({num, palace, handleDeletePalace}) => {
         number: i,
         x: palace.embededPins[i].x,
         y: palace.embededPins[i].y,
+        groupNumber: palace.embededPins[i].groupNumber,
       })
     }
     const data = {

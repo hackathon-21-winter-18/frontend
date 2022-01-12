@@ -66,12 +66,17 @@
   border-radius: 8px;
   cursor: pointer;
   border: none;
+  display: flex;
+  align-items: center;
+  margin-left: auto;
+  text-align: center;
+  padding: 0 24px;
 }
 
 .completeButton > span {
   width: 180px;
-  width: 26px;
   font-size: 18px;
+  margin-left: 4px;
 }
 
 .button1 {
@@ -101,17 +106,24 @@
 }
 
 .card {
-  width: 360px;
+  width: 300px;
   height: 240px;
   padding: 12px;
   text-align: center;
+  position: absolute;
+  top: 60px;
+  right: 24px;
+  overflow: scroll;
+  overflow-x: hidden;
 }
 .card > ul {
   list-style: none;
+  margin-top: 4px;
 }
-.li {
+.card li {
   display: flex;
   justify-content: space-between;
+  align-items: center;
   border-bottom: solid 1px #c6d0e5;
   height: 44px;
 }
@@ -124,4 +136,28 @@
 .inputContainer {
   display: flex;
   align-items: center;
+}
+.listPinIcon {
+  object-fit: contain;
+  transition-duration: 0.2s;
+}
+.listPinIconButton {
+  border: none;
+  background-color: transparent;
+  cursor: pointer;
+}
+.groupNameInput {
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+}
+.trashButton {
+}
+.groupName {
+  width: 100%;
+  text-align: center;
+  font-size: 32px;
+}
+.groupName > span {
+  margin-right: 24px;
 }

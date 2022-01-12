@@ -75,6 +75,7 @@ const Quiz: React.VFC = () => {
                     word: res.data[i].embededPins[j].word,
                     place: res.data[i].embededPins[j].place,
                     situation: res.data[i].embededPins[j].situation,
+                    groupNumber: res.data[i].embededPins[j].groupNumber,
                   },
                 ])
               }

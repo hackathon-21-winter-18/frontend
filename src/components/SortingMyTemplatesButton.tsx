@@ -37,7 +37,7 @@ export const SortingMyTemplatesButton = (props: SortingMyTemplatesButtonProp) =>
           withCredentials: true,
         })
         .then((res) => {
-          if (res.data.length !== 0) {
+          if (res.data) {
             setTemplates(res.data)
           }
         })

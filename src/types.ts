@@ -6,6 +6,7 @@ export type EmbededPin = {
   word: string
   place: string
   situation: string
+  groupNumber: number
 }
 
 export type PalaceType = {
@@ -16,17 +17,22 @@ export type PalaceType = {
   share: boolean
   savedCount: number
   createdBy: string
+  group1: string
+  group2: string
+  group3: string
 }
 //TemplateType
 export type Pin = {
   number: number
   x: number
   y: number
+  groupNumber: number
 }
 export type PinContent = {
   word: string
   place: string
   situation: string
+  groupNumber: number
 }
 
 export type TemplateType = {
@@ -49,6 +55,9 @@ export type SharedPalaceType = {
   creatorName: string
   heldBy: string
   createdBy: string
+  group1: string
+  group2: string
+  group3: string
 }
 //SharedTemplateType
 export type SharedTemplateType = {

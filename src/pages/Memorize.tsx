@@ -8,6 +8,9 @@ import {useHover} from '../hooks/useHover'
 import {EmbededPin} from '../types'
 import pinIcon from '../assets/pin.svg'
 import greenPinIcon from '../assets/greenPin.svg'
+import redPinIcon from '../assets/redPin.svg'
+import bluePinIcon from '../assets/bluePin.svg'
+import yellowPinIcon from '../assets/yellowPin.svg'
 import {FixWordDialog} from '../components/FixWordDialog'
 import Dialog from '@mui/material/Dialog'
 import CheckCircleIcon from '@mui/icons-material/CheckCircle'
@@ -33,6 +36,7 @@ const Memorize: React.VFC = () => {
   const {x, y} = useMousePosition()
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null)
   const popOpen = Boolean(anchorEl)
+  const [groups, setGroups] = React.useState<string[]>(new Array<string>())
 
   React.useEffect(() => {
     const palaceID = params.id
@@ -44,6 +48,7 @@ const Memorize: React.VFC = () => {
             if (data[i].id === palaceID) {
               setPins(data[i].embededPins)
               setPalaceImage(data[i].image)
+              setGroups([data[i].group1, data[i].group2, data[i].group3])
               let preFlags = Array(data[i].embededPins.length)
               setFlags(preFlags.fill(false))
             }
@@ -57,6 +62,7 @@ const Memorize: React.VFC = () => {
             if (data[i].id === palaceID) {
               setPins(data[i].embededPins)
               setPalaceImage(data[i].image)
+              setGroups([data[i].group1, data[i].group2, data[i].group3])
               let preFlags = Array(data[i].embededPins.length)
               setFlags(preFlags.fill(false))
             }
@@ -106,11 +112,24 @@ const Memorize: React.VFC = () => {
   const pinsList = pins.map((pin, index) => (
     <li key={pin.number} className={styles.li}>
       <div className={styles.inputContainer}>
-        <HidableWord text={pin.word} isVisible={flags[index]} />
+        <img
+          className={styles.listPinIcon}
+          src={
+            pin.groupNumber === 0
+              ? pinIcon
+              : pin.groupNumber === 1
+              ? redPinIcon
+              : pin.groupNumber === 2
+              ? bluePinIcon
+              : yellowPinIcon
+          }
+          alt=""
+        />
+        <HidableWord text={pin.word} isVisible={flags[index] || !pin.word} />
         <span>が</span>
-        <HidableWord text={pin.place} isVisible={flags[index]} />
+        <HidableWord text={pin.place} isVisible={flags[index] || !pin.place} />
         <span>で</span>
-        <HidableWord text={pin.situation} isVisible={flags[index]} />
+        <HidableWord text={pin.situation} isVisible={flags[index] || !pin.situation} />
       </div>
       <IconButton
         onClick={() => {
@@ -132,7 +151,17 @@ const Memorize: React.VFC = () => {
             <img
               className={styles.pushedPin}
               key={i}
-              src={flags[i] ? greenPinIcon : pinIcon}
+              src={
+                flags[i]
+                  ? greenPinIcon
+                  : pin.groupNumber === 0
+                  ? pinIcon
+                  : pin.groupNumber === 1
+                  ? redPinIcon
+                  : pin.groupNumber === 2
+                  ? bluePinIcon
+                  : yellowPinIcon
+              }
               alt=""
               style={{
                 position: 'absolute',
@@ -165,23 +194,26 @@ const Memorize: React.VFC = () => {
           <img src={pinIcon} alt="pinIcon" className={styles.pinIcon} />
         </Badge>
       </IconButton>
-      <Popover
-        anchorEl={anchorEl}
-        open={popOpen}
-        onClose={handleClose}
-        anchorOrigin={{
-          vertical: 'bottom',
-          horizontal: 'left',
-        }}
-        transformOrigin={{
-          vertical: 'top',
-          horizontal: 'right',
-        }}
-        className={styles.popover}>
-        <div className={styles.card}>
-          <ul>{pinsList}</ul>
-        </div>
-      </Popover>
+      <div className={styles.card}>
+        グループ
+        <ul>
+          {groups.map((group, index) => (
+            <li>
+              <img
+                className={styles.listPinIcon}
+                src={index === 0 ? redPinIcon : index === 1 ? bluePinIcon : yellowPinIcon}
+                alt=""
+              />
+              <div className={styles.groupName}>
+                <span>{group}</span>
+              </div>
+            </li>
+          ))}
+        </ul>
+        ピンリスト
+        <ul>{pinsList}</ul>
+      </div>
+
       <ClickAwayListener onClickAway={handleClickAway}>
         <div className={styles.image}>
           <img className={styles.layoutImage} src={Extension(palaceImage)} alt="map" ref={hoverRef} />

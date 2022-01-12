@@ -12,9 +12,15 @@ import {Badge, Box, ClickAwayListener, IconButton, Portal, SxProps} from '@mui/m
 import {useHover} from '../hooks/useHover'
 import {EmbededPin, PinContent} from '../types'
 import pinIcon from '../assets/pin.svg'
+import redPinIcon from '../assets/redPin.svg'
+import bluePinIcon from '../assets/bluePin.svg'
+import yellowPinIcon from '../assets/yellowPin.svg'
 import {FixWordDialog} from '../components/FixWordDialog'
 import {getPalace, putPalace, putSharePalace} from '../api/palace'
 import useAuth from '../components/UserProvider'
+import Popover from '@mui/material/Popover'
+import HidableWord from '../components/HidableWord'
+import DeleteIcon from '@mui/icons-material/Delete'
 
 export const Fix: React.VFC = () => {
   const [open, setOpen] = React.useState<number | boolean>(false)
@@ -32,6 +38,9 @@ export const Fix: React.VFC = () => {
   const [palaceId, setPalaceId] = React.useState('')
   const [palaceCreatedBy, setPalaceCreatedBy] = React.useState('')
   const {user} = useAuth()
+  const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null)
+  const popOpen = Boolean(anchorEl)
+  const [groups, setGroups] = React.useState<string[]>(['', '', ''])
 
   React.useEffect(() => {
     const palaceID = params.id
@@ -61,6 +70,9 @@ export const Fix: React.VFC = () => {
         name: palaceName,
         image: willSendImage,
         embededPins: pins,
+        group1: groups[0],
+        group2: groups[1],
+        group3: groups[2],
       }
 
       params.id &&
@@ -111,6 +123,7 @@ export const Fix: React.VFC = () => {
         word: pin.word,
         place: pin.place,
         situation: pin.situation,
+        groupNumber: pin.groupNumber,
         number: pins.length,
         x: x,
         y: y,
@@ -130,7 +143,48 @@ export const Fix: React.VFC = () => {
     },
     [pins]
   )
+  const handleClick = (e: React.MouseEvent<HTMLButtonElement>) => {
+    setAnchorEl(e.currentTarget)
+  }
+  const handleClose = () => {
+    setAnchorEl(null)
+  }
 
+  const pinsList = pins.map((pin, index) => (
+    <li key={pin.number} className={styles.li}>
+      <div className={styles.inputContainer}>
+        <img
+          className={styles.listPinIcon}
+          src={
+            pin.groupNumber === 0
+              ? pinIcon
+              : pin.groupNumber === 1
+              ? redPinIcon
+              : pin.groupNumber === 2
+              ? bluePinIcon
+              : yellowPinIcon
+          }
+          alt=""
+        />
+        <HidableWord text={pin.word} isVisible={true} />
+        <span>が</span>
+        <HidableWord text={pin.place} isVisible={true} />
+        <span>で</span>
+        <HidableWord text={pin.situation} isVisible={true} />
+        <IconButton onClick={() => handleDeletePin(pin)} className={styles.trashButton}>
+          <DeleteIcon />
+        </IconButton>
+      </div>
+    </li>
+  ))
+  function handleGroupsChange(e: React.ChangeEvent<HTMLInputElement>, index: number) {
+    let groupsCopy = [...groups]
+    groupsCopy[index] = e.target.value
+    setGroups(groupsCopy)
+  }
+  function close() {
+    setPinOpen(null)
+  }
   return (
     <div className={styles.edit}>
       <CustomCursor type="pin" isHover={isHovered} />
@@ -140,7 +194,15 @@ export const Fix: React.VFC = () => {
             <img
               className={styles.pushedPin}
               key={i}
-              src={pinIcon}
+              src={
+                pin.groupNumber === 0
+                  ? pinIcon
+                  : pin.groupNumber === 1
+                  ? redPinIcon
+                  : pin.groupNumber === 2
+                  ? bluePinIcon
+                  : yellowPinIcon
+              }
               alt=""
               style={{
                 position: 'absolute',
@@ -158,6 +220,7 @@ export const Fix: React.VFC = () => {
               <Box sx={boxStyle()}>
                 <AddNewWordDialog
                   open={!!pinOpen}
+                  close={close}
                   putPin={putPin}
                   deletePin={handleDeletePin}
                   pinContent={pinOpen}
@@ -170,11 +233,33 @@ export const Fix: React.VFC = () => {
         </div>
       </ClickAwayListener>
 
-      <IconButton className={styles.togglPinList}>
+      <IconButton className={styles.togglPinList} onClick={handleClick}>
         <Badge badgeContent={pins.length} color="primary">
           <img src={pinIcon} alt="" className={styles.pinIcon} />
         </Badge>
       </IconButton>
+      <div className={styles.card}>
+        グループ
+        <ul>
+          {groups.map((group, index) => (
+            <li key={index}>
+              <img
+                className={styles.listPinIcon}
+                src={index === 0 ? redPinIcon : index === 1 ? bluePinIcon : yellowPinIcon}
+                alt=""
+              />
+              <input
+                type="text"
+                value={group}
+                onChange={(e) => handleGroupsChange(e, index)}
+                className={styles.groupNameInput}
+              />
+            </li>
+          ))}
+        </ul>
+        ピンリスト
+        <ul>{pinsList}</ul>
+      </div>
 
       <ClickAwayListener onClickAway={handleClickAway}>
         <div className={styles.image}>

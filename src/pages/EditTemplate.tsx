@@ -9,12 +9,17 @@ import {CustomCursor} from '../components/CustomCursor'
 import {Badge, ClickAwayListener, IconButton, SxProps} from '@mui/material'
 import {useHover} from '../hooks/useHover'
 import pinIcon from '../assets/pin.svg'
+import redPinIcon from '../assets/redPin.svg'
+import bluePinIcon from '../assets/bluePin.svg'
+import yellowPinIcon from '../assets/yellowPin.svg'
 import VisibilityOffIcon from '@mui/icons-material/VisibilityOff'
 import Dialog from '@mui/material/Dialog'
 import CheckCircleIcon from '@mui/icons-material/CheckCircle'
 import DialogActions from '@mui/material/DialogActions'
 import DialogTitle from '@mui/material/DialogTitle'
 import {postTemplate, putShareTemplate} from '../api/template'
+import Popover from '@mui/material/Popover'
+import DeleteIcon from '@mui/icons-material/Delete'
 
 type Mode = 'edit' | 'memorization'
 
@@ -35,6 +40,9 @@ export const EditTemplate: React.VFC<EditProps> = ({imageUrl, isPlayground = fal
   const [completeIsOpen, setCompleteIsOpen] = React.useState(false)
   const [shareOption, setShareOption] = React.useState(false)
   const navigate = useNavigate()
+  const [groupNumber, setGroupNumber] = React.useState(0)
+  const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null)
+  const popOpen = Boolean(anchorEl)
 
   const [hoverRef, isHovered] = useHover<HTMLImageElement>()
   const {x, y} = useMousePosition()
@@ -53,6 +61,7 @@ export const EditTemplate: React.VFC<EditProps> = ({imageUrl, isPlayground = fal
           number: i,
           x: pins[i].x,
           y: pins[i].y,
+          groupNumber: groupNumber,
         })
       }
       const data = {
@@ -106,14 +115,21 @@ export const EditTemplate: React.VFC<EditProps> = ({imageUrl, isPlayground = fal
       number: pins.length,
       x: x,
       y: y,
+      groupNumber: groupNumber,
     }
     setPins([...pins, data])
     setOpen(false)
   }, [open]) // eslint-disable-line react-hooks/exhaustive-deps
 
-  const handlePinClick = React.useCallback((pin: Pin) => {
-    setPinOpen(pin)
-  }, [])
+  const handlePinClick = React.useCallback(
+    (i) => {
+      let pinsCopy = [...pins]
+      pinsCopy.splice(i, 1)
+      setPins(pinsCopy)
+    },
+    [pins]
+  ) // eslint-disable-line react-hooks/exhaustive-deps
+
   const handleDeletePin = React.useCallback(
     (pin: Pin) => {
       setPins(pins.filter((tmp) => tmp !== pin))
@@ -126,6 +142,43 @@ export const EditTemplate: React.VFC<EditProps> = ({imageUrl, isPlayground = fal
     setTemplateName('')
   }, [location])
 
+  const handleClick = (e: React.MouseEvent<HTMLButtonElement>) => {
+    setAnchorEl(e.currentTarget)
+  }
+  const handleClose = () => {
+    setAnchorEl(null)
+  }
+  const handlePinChange = (number: number) => {
+    let pinsCopy = [...pins]
+    pinsCopy[number].groupNumber = (pinsCopy[number].groupNumber + 1) % 4
+    setPins(pinsCopy)
+  }
+  const pinsList = pins.map((pin) => (
+    <li key={pin.number} className={styles.li}>
+      <div className={styles.inputContainer}>
+        {pin.number}:
+        <button onClick={() => handlePinChange(pin.number)} className={styles.listPinIconButton}>
+          <img
+            className={styles.listPinIcon}
+            src={
+              pin.groupNumber === 0
+                ? pinIcon
+                : pin.groupNumber === 1
+                ? redPinIcon
+                : pin.groupNumber === 2
+                ? bluePinIcon
+                : yellowPinIcon
+            }
+            alt=""
+          />
+        </button>
+        <IconButton onClick={() => handleDeletePin(pin)} className={styles.trashButton}>
+          <DeleteIcon />
+        </IconButton>
+      </div>
+    </li>
+  ))
+
   return (
     <div className={styles.edit}>
       {mode === 'edit' && <CustomCursor type="pin" isHover={isHovered} />}
@@ -135,7 +188,15 @@ export const EditTemplate: React.VFC<EditProps> = ({imageUrl, isPlayground = fal
             <img
               className={styles.pushedPin}
               key={i}
-              src={pinIcon}
+              src={
+                pin.groupNumber === 0
+                  ? pinIcon
+                  : pin.groupNumber === 1
+                  ? redPinIcon
+                  : pin.groupNumber === 2
+                  ? bluePinIcon
+                  : yellowPinIcon
+              }
               alt=""
               style={{
                 position: 'absolute',
@@ -144,16 +205,14 @@ export const EditTemplate: React.VFC<EditProps> = ({imageUrl, isPlayground = fal
                 transform: `translate(-50%, -100%)`,
               }}
               onClick={() => {
-                handlePinClick(pin)
+                handlePinClick(i)
               }}
             />
           ))}
         </div>
       </ClickAwayListener>
 
-      <IconButton
-        className={styles.togglPinList}
-        onClick={() => isPlayground && setMode(mode === 'edit' ? 'memorization' : 'edit')}>
+      <IconButton className={styles.togglPinList} onClick={handleClick}>
         {mode === 'edit' && (
           <Badge badgeContent={pins.length} color="primary">
             <img src={pinIcon} alt="" className={styles.pinIcon} />
@@ -161,6 +220,10 @@ export const EditTemplate: React.VFC<EditProps> = ({imageUrl, isPlayground = fal
         )}
         {mode === 'memorization' && <VisibilityOffIcon />}
       </IconButton>
+      <div className={styles.card}>
+        ピンリスト
+        <ul>{pinsList}</ul>
+      </div>
 
       <ClickAwayListener onClickAway={handleClickAway}>
         <div className={styles.image}>

@@ -76,7 +76,8 @@
   margin-right: 16px;
 }
 .loginIcon {
-  margin-right: 16px;
+  margin-bottom: 10px;
+  margin-left: 12px;
 }
 
 .lastIcon {
@@ -127,5 +128,33 @@
   padding: 4px;
   margin-top: 16px;
   cursor: pointer;
+}
+
+.loginButtonURL {
+  font-size: 16px;
+  text-decoration: none;
+  color: #313847;
+  width: 100%;
+  padding: 10px 12px;
+}
+.loginButton {
+  margin-top: auto;
+}
+.loginButton {
+  width: 100%;
+  background-color: #eef3ff;
+  border: none;
+  display: flex;
+  align-items: flex-end;
+  font-size: 18px;
+  font-weight: 700;
+  color: #555d6d;
+  cursor: pointer;
+  border: 2px solid white;
+  border-radius: 10px;
+  transition-duration: 0.2s;
+}
+.loginButton:hover {
+  border: 2px solid #95a0b6;
 }
 /* TODO SP用設定 */

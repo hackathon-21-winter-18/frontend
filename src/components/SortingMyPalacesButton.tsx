@@ -37,7 +37,7 @@ export const SortingMyPalacesButton = (prop: SortingMyPalacesButtonProp) => {
           withCredentials: true,
         })
         .then((res) => {
-          if (res.data.length !== 0) {
+          if (res.data) {
             setPalaces(res.data)
           }
         })

@@ -10,10 +10,15 @@ import {CustomCursor} from '../components/CustomCursor'
 import {Badge, ClickAwayListener, IconButton, SxProps} from '@mui/material'
 import {useHover} from '../hooks/useHover'
 import pinIcon from '../assets/pin.svg'
+import redPinIcon from '../assets/redPin.svg'
+import bluePinIcon from '../assets/bluePin.svg'
+import yellowPinIcon from '../assets/yellowPin.svg'
 import {getTemplate, putShareTemplate, putTemplate} from '../api/template'
 import {Pin} from '../types'
 import {useNavigate} from 'react-router-dom'
 import useAuth from '../components/UserProvider'
+import Popover from '@mui/material/Popover'
+import DeleteIcon from '@mui/icons-material/Delete'
 
 export const FixTemplate: React.VFC = () => {
   const [open, setOpen] = React.useState<number | boolean>(false)
@@ -31,6 +36,9 @@ export const FixTemplate: React.VFC = () => {
   const [templateId, setTemplateId] = React.useState('')
   const [templateCreatedBy, setTemplateCreatedBy] = React.useState('')
   const {user} = useAuth()
+  const [groupNumber, setGroupNumber] = React.useState(0)
+  const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null)
+  const popOpen = Boolean(anchorEl)
 
   React.useEffect(() => {
     const templateID = params.id
@@ -109,14 +117,21 @@ export const FixTemplate: React.VFC = () => {
       number: pins.length,
       x: x,
       y: y,
+      groupNumber: groupNumber,
     }
     setPins([...pins, data])
     setOpen(false)
   }, [open]) // eslint-disable-line react-hooks/exhaustive-deps
 
-  const handlePinClick = React.useCallback((pin: Pin) => {
-    setPinOpen(pin)
-  }, [])
+  const handlePinClick = React.useCallback(
+    (i) => {
+      let pinsCopy = [...pins]
+      pinsCopy.splice(i, 1)
+      setPins(pinsCopy)
+    },
+    [pins]
+  ) // eslint-disable-line react-hooks/exhaustive-deps
+
   const handleDeletePin = React.useCallback(
     (pin: Pin) => {
       setPins(pins.filter((tmp) => tmp !== pin))
@@ -124,6 +139,42 @@ export const FixTemplate: React.VFC = () => {
     },
     [pins]
   )
+  const handleClick = (e: React.MouseEvent<HTMLButtonElement>) => {
+    setAnchorEl(e.currentTarget)
+  }
+  const handleClose = () => {
+    setAnchorEl(null)
+  }
+  const handlePinChange = (number: number) => {
+    let pinsCopy = [...pins]
+    pinsCopy[number].groupNumber = (pinsCopy[number].groupNumber + 1) % 4
+    setPins(pinsCopy)
+  }
+  const pinsList = pins.map((pin, index) => (
+    <li key={pin.number} className={styles.li}>
+      <div className={styles.inputContainer}>
+        {pin.number}:
+        <button onClick={() => handlePinChange(pin.number)} className={styles.listPinIconButton}>
+          <img
+            className={styles.listPinIcon}
+            src={
+              pin.groupNumber === 0
+                ? pinIcon
+                : pin.groupNumber === 1
+                ? redPinIcon
+                : pin.groupNumber === 2
+                ? bluePinIcon
+                : yellowPinIcon
+            }
+            alt=""
+          />
+        </button>
+        <IconButton onClick={() => handleDeletePin(pin)} className={styles.trashButton}>
+          <DeleteIcon />
+        </IconButton>
+      </div>
+    </li>
+  ))
 
   return (
     <div className={styles.edit}>
@@ -134,7 +185,15 @@ export const FixTemplate: React.VFC = () => {
             <img
               className={styles.pushedPin}
               key={i}
-              src={pinIcon}
+              src={
+                pin.groupNumber === 0
+                  ? pinIcon
+                  : pin.groupNumber === 1
+                  ? redPinIcon
+                  : pin.groupNumber === 2
+                  ? bluePinIcon
+                  : yellowPinIcon
+              }
               alt=""
               style={{
                 position: 'absolute',
@@ -143,18 +202,22 @@ export const FixTemplate: React.VFC = () => {
                 transform: `translate(-50%, -100%)`,
               }}
               onClick={() => {
-                handlePinClick(pin)
+                handlePinClick(i)
               }}
             />
           ))}
         </div>
       </ClickAwayListener>
 
-      <IconButton className={styles.togglPinList}>
+      <IconButton className={styles.togglPinList} onClick={handleClick}>
         <Badge badgeContent={pins.length} color="primary">
           <img src={pinIcon} alt="" className={styles.pinIcon} />
         </Badge>
       </IconButton>
+      <div className={styles.card}>
+        ピンリスト
+        <ul>{pinsList}</ul>
+      </div>
 
       <ClickAwayListener onClickAway={handleClickAway}>
         <div className={styles.image}>

@@ -22,11 +22,11 @@ export const FixWordDialog: React.VFC<FixWordDialogProps> = ({open, deletePin, i
     <Grow in={!!open}>
       <Card elevation={1} className={styles.card}>
         <div className={styles.inputContainer}>
-          <HidableWord text={open.word} isVisible={isVisible} />
+          <HidableWord text={open.word} isVisible={isVisible || !open.word || flags![open.number]} />
           が
-          <HidableWord text={open.place} isVisible={isVisible} />
+          <HidableWord text={open.place} isVisible={isVisible || !open.place || flags![open.number]} />
           で
-          <HidableWord text={open.situation} isVisible={isVisible} />
+          <HidableWord text={open.situation} isVisible={isVisible || !open.situation || flags![open.number]} />
           {isVisible && (
             <IconButton onClick={() => deletePin(open)}>
               <DeleteIcon />
