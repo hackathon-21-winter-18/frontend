@@ -11,7 +11,7 @@ import {PinContent, EmbededPin} from '../types'
 
 interface AddNewWordDialogProps {
   open: boolean
-  setOpen?: (open: boolean) => void
+  close?: () => void
   putPin: (pin: PinContent) => void
   deletePin?: (pin: EmbededPin) => void
   pinContent?: EmbededPin
@@ -21,7 +21,7 @@ interface AddNewWordDialogProps {
 
 const AddNewWordDialog: React.VFC<AddNewWordDialogProps> = ({
   open,
-  setOpen,
+  close,
   putPin,
   deletePin,
   pinContent,
@@ -90,6 +90,7 @@ const AddNewWordDialog: React.VFC<AddNewWordDialogProps> = ({
           .concat([updatedPin])
           .concat(pins.slice(pinContent!.number + 1))
         setPins!(newPins)
+        close!()
       } else {
         putPin({
           word,

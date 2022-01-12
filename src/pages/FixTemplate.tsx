@@ -18,6 +18,7 @@ import {Pin} from '../types'
 import {useNavigate} from 'react-router-dom'
 import useAuth from '../components/UserProvider'
 import Popover from '@mui/material/Popover'
+import DeleteIcon from '@mui/icons-material/Delete'
 
 export const FixTemplate: React.VFC = () => {
   const [open, setOpen] = React.useState<number | boolean>(false)
@@ -168,6 +169,9 @@ export const FixTemplate: React.VFC = () => {
             alt=""
           />
         </button>
+        <IconButton onClick={() => handleDeletePin(pin)} className={styles.trashButton}>
+          <DeleteIcon />
+        </IconButton>
       </div>
     </li>
   ))

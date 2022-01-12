@@ -20,6 +20,7 @@ import {getPalace, putPalace, putSharePalace} from '../api/palace'
 import useAuth from '../components/UserProvider'
 import Popover from '@mui/material/Popover'
 import HidableWord from '../components/HidableWord'
+import DeleteIcon from '@mui/icons-material/Delete'
 
 export const Fix: React.VFC = () => {
   const [open, setOpen] = React.useState<number | boolean>(false)
@@ -170,6 +171,9 @@ export const Fix: React.VFC = () => {
         <HidableWord text={pin.place} isVisible={true} />
         <span>で</span>
         <HidableWord text={pin.situation} isVisible={true} />
+        <IconButton onClick={() => handleDeletePin(pin)} className={styles.trashButton}>
+          <DeleteIcon />
+        </IconButton>
       </div>
     </li>
   ))
@@ -177,6 +181,9 @@ export const Fix: React.VFC = () => {
     let groupsCopy = [...groups]
     groupsCopy[index] = e.target.value
     setGroups(groupsCopy)
+  }
+  function close() {
+    setPinOpen(null)
   }
   return (
     <div className={styles.edit}>
@@ -213,6 +220,7 @@ export const Fix: React.VFC = () => {
               <Box sx={boxStyle()}>
                 <AddNewWordDialog
                   open={!!pinOpen}
+                  close={close}
                   putPin={putPin}
                   deletePin={handleDeletePin}
                   pinContent={pinOpen}

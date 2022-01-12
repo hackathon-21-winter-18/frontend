@@ -23,6 +23,7 @@ import {getTemplate, getSharedTemplate} from '../api/template'
 import {Extension} from '../util/extension'
 import Popover from '@mui/material/Popover'
 import HidableWord from '../components/HidableWord'
+import DeleteIcon from '@mui/icons-material/Delete'
 
 type Mode = 'edit' | 'memorization'
 
@@ -230,6 +231,9 @@ export const EditFromTemplate: React.VFC<EditProps> = ({imageUrl, isPlayground =
         <HidableWord text={pin.place} isVisible={true} />
         <span>で</span>
         <HidableWord text={pin.situation} isVisible={true} />
+        <IconButton onClick={() => handleDeletePin(pin)} className={styles.trashButton}>
+          <DeleteIcon />
+        </IconButton>
       </div>
     </li>
   ))
@@ -237,6 +241,9 @@ export const EditFromTemplate: React.VFC<EditProps> = ({imageUrl, isPlayground =
     let groupsCopy = [...groups]
     groupsCopy[index] = e.target.value
     setGroups(groupsCopy)
+  }
+  function close() {
+    setPinOpen(null)
   }
   return (
     <div className={styles.edit}>
@@ -273,6 +280,7 @@ export const EditFromTemplate: React.VFC<EditProps> = ({imageUrl, isPlayground =
               <Box sx={boxStyle()}>
                 <AddNewWordDialog
                   open={!!pinOpen}
+                  close={close}
                   putPin={putPin}
                   deletePin={handleDeletePin}
                   pinContent={pinOpen}

@@ -23,6 +23,7 @@ import {postTemplate, putShareTemplate} from '../api/template'
 import {postPalace, putSharePalace} from '../api/palace'
 import Popover from '@mui/material/Popover'
 import HidableWord from '../components/HidableWord'
+import DeleteIcon from '@mui/icons-material/Delete'
 
 type Mode = 'edit' | 'memorization'
 
@@ -200,6 +201,9 @@ export const Edit: React.VFC<EditProps> = ({imageUrl, isPlayground = false, xGap
         <HidableWord text={pin.place} isVisible={true} />
         <span>で</span>
         <HidableWord text={pin.situation} isVisible={true} />
+        <IconButton onClick={() => handleDeletePin(pin)} className={styles.trashButton}>
+          <DeleteIcon />
+        </IconButton>
       </div>
     </li>
   ))
@@ -208,7 +212,9 @@ export const Edit: React.VFC<EditProps> = ({imageUrl, isPlayground = false, xGap
     groupsCopy[index] = e.target.value
     setGroups(groupsCopy)
   }
-
+  function close() {
+    setPinOpen(null)
+  }
   return (
     <div className={styles.edit}>
       {mode === 'edit' && <CustomCursor type="pin" isHover={isHovered} />}
@@ -247,7 +253,7 @@ export const Edit: React.VFC<EditProps> = ({imageUrl, isPlayground = false, xGap
                 ) : (
                   <AddNewWordDialog
                     open={!!pinOpen}
-                    setOpen={setOpen}
+                    close={close}
                     putPin={putPin}
                     deletePin={handleDeletePin}
                     pinContent={pinOpen}

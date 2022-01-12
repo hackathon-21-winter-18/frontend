@@ -19,6 +19,7 @@ import DialogActions from '@mui/material/DialogActions'
 import DialogTitle from '@mui/material/DialogTitle'
 import {postTemplate, putShareTemplate} from '../api/template'
 import Popover from '@mui/material/Popover'
+import DeleteIcon from '@mui/icons-material/Delete'
 
 type Mode = 'edit' | 'memorization'
 
@@ -152,7 +153,7 @@ export const EditTemplate: React.VFC<EditProps> = ({imageUrl, isPlayground = fal
     pinsCopy[number].groupNumber = (pinsCopy[number].groupNumber + 1) % 4
     setPins(pinsCopy)
   }
-  const pinsList = pins.map((pin, index) => (
+  const pinsList = pins.map((pin) => (
     <li key={pin.number} className={styles.li}>
       <div className={styles.inputContainer}>
         {pin.number}:
@@ -171,6 +172,9 @@ export const EditTemplate: React.VFC<EditProps> = ({imageUrl, isPlayground = fal
             alt=""
           />
         </button>
+        <IconButton onClick={() => handleDeletePin(pin)} className={styles.trashButton}>
+          <DeleteIcon />
+        </IconButton>
       </div>
     </li>
   ))
