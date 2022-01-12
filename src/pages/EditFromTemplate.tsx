@@ -77,7 +77,7 @@ export const EditFromTemplate: React.VFC<EditProps> = ({imageUrl, isPlayground =
                 ])
                 setPins(prePins)
                 setTemplateCreatedBy(data[i].createdBy)
-                setImage(Extension(data[i].image))
+                setImage(data[i].image)
               }
             }
           }
@@ -114,10 +114,10 @@ export const EditFromTemplate: React.VFC<EditProps> = ({imageUrl, isPlayground =
   const handleComplete = () => {
     if (!(pins.length <= 0 || palaceName === '')) {
       let data
-      if (location.state.image.substr(0, 23) === 'data:image/jpeg;base64,') {
+      if (image.substring(23) === 'data:image/jpeg;base64,') {
         data = {
           name: palaceName,
-          image: location.state.image.substr(23),
+          image: image,
           embededPins: pins,
           createdBy: user.id,
           group1: groups[0],
@@ -127,7 +127,7 @@ export const EditFromTemplate: React.VFC<EditProps> = ({imageUrl, isPlayground =
       } else {
         data = {
           name: palaceName,
-          image: location.state.image.substr(22),
+          image: image,
           embededPins: pins,
           createdBy: user.id,
           group1: groups[0],
@@ -305,7 +305,7 @@ export const EditFromTemplate: React.VFC<EditProps> = ({imageUrl, isPlayground =
         グループ
         <ul>
           {groups.map((group, index) => (
-            <li>
+            <li key={index}>
               <img
                 className={styles.listPinIcon}
                 src={index === 0 ? redPinIcon : index === 1 ? bluePinIcon : yellowPinIcon}
@@ -328,7 +328,7 @@ export const EditFromTemplate: React.VFC<EditProps> = ({imageUrl, isPlayground =
         <div className={styles.image}>
           <img
             className={styles.layoutImage}
-            src={imageUrl ?? image}
+            src={imageUrl ?? Extension(image)}
             alt=""
             onClick={() => mode === 'edit' && setOpen(Math.random())}
             ref={hoverRef}
