@@ -313,7 +313,7 @@ export const EditFromTemplate: React.VFC<EditProps> = ({imageUrl, isPlayground =
               />
               <input
                 type="text"
-                value={group[index]}
+                value={group}
                 onChange={(e) => handleGroupsChange(e, index)}
                 className={styles.groupNameInput}
               />
