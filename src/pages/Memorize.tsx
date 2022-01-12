@@ -198,7 +198,7 @@ const Memorize: React.VFC = () => {
         グループ
         <ul>
           {groups.map((group, index) => (
-            <li>
+            <li key={index}>
               <img
                 className={styles.listPinIcon}
                 src={index === 0 ? redPinIcon : index === 1 ? bluePinIcon : yellowPinIcon}
