@@ -35,7 +35,7 @@ export const SortingPublicPalacesButton = (prop: SortingPublicPalacesButtonProp)
       axios
         .get(config() + `/api/palaces?sort=${order}&maxpins=${maxPins}&minpins=${minPins}`, {withCredentials: true})
         .then((res) => {
-          if (res.data.length !== 0) {
+          if (res.data) {
             setPalaces(res.data)
           }
         })
