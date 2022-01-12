@@ -18,24 +18,26 @@ import Dialog from '@mui/material/Dialog'
 import DialogActions from '@mui/material/DialogActions'
 import DialogTitle from '@mui/material/DialogTitle'
 import {putUserName, getCurrentUser} from '../api/registration'
+import {generateCrypt} from '../util/generateCrypt'
+import {config2} from '../config'
 
 const Sidebar: React.VFC = () => {
   const {pathname} = useLocation()
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null)
   const open = Boolean(anchorEl)
-  const {user, oAuthLogin, logout, setUser} = useAuth()
+  const {user, logout, setUser} = useAuth()
   const navigate = useNavigate()
   const [nameFixDialogIsOpen, setNameFixDialogIsOpen] = useState(false)
   const [userName, setUserName] = useState(user.name)
+  const nonce = generateCrypt(32)
+  const client_id = process.env.REACT_APP_PALAMO_CLIENT_ID
+  const URL = `https://accounts.google.com/o/oauth2/v2/auth?response_type=code&client_id=${client_id}&scope=https://www.googleapis.com/auth/userinfo.email https://www.googleapis.com/auth/userinfo.profile openid&redirect_uri=${config2()}/callback&nonce=${nonce}`
 
   const handleClick = async (e: React.MouseEvent<HTMLButtonElement>) => {
     if (user.auth) {
       setAnchorEl(e.currentTarget)
     } else {
-      //await oAuthLogin().then(() => {
-      //  navigate('/palace')
-      //})
-      navigate('/')
+      sessionStorage.setItem('nonce', nonce)
     }
   }
   const handleClose = () => {
@@ -75,20 +77,26 @@ const Sidebar: React.VFC = () => {
         Playground
       </Link>
       {user.auth ? <Quiz /> : null}
-      <button className={styles.userSetting} onClick={handleClick}>
-        {user.auth ? (
-          <>
+
+      {user.auth ? (
+        <>
+          <button className={styles.userSetting} onClick={handleClick}>
             <PersonPinIcon className={styles.userIcon} />
             {user.name}
             <MoreVertIcon className={styles.lastIcon} />
-          </>
-        ) : (
-          <>
+          </button>
+        </>
+      ) : (
+        <>
+          <button className={styles.loginButton} onClick={handleClick}>
             <LoginIcon className={styles.loginIcon} />
-            <span style={{fontSize: 16}}>新規登録 or ログイン</span>
-          </>
-        )}
-      </button>
+            <a href={URL} className={styles.loginButtonURL}>
+              新規登録 or ログイン
+            </a>
+          </button>
+        </>
+      )}
+
       {user.auth ? (
         <>
           <Menu

@@ -66,12 +66,17 @@
   border-radius: 8px;
   cursor: pointer;
   border: none;
+  display: flex;
+  align-items: center;
+  margin-left: auto;
+  text-align: center;
+  padding: 0 24px;
 }
 
 .completeButton > span {
   width: 180px;
-  width: 26px;
   font-size: 18px;
+  margin-left: 4px;
 }
 
 .button1 {
