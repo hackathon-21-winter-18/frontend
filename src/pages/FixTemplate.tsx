@@ -134,6 +134,11 @@ export const FixTemplate: React.VFC = () => {
 
   const handleDeletePin = React.useCallback(
     (pin: Pin) => {
+      let pinsCopy = [...pins]
+      for (let i = pin.number + 1; i < pins.length; i++) {
+        pinsCopy[i].number -= 1
+      }
+      setPins(pinsCopy)
       setPins(pins.filter((tmp) => tmp !== pin))
       setPinOpen(null)
     },
@@ -202,7 +207,7 @@ export const FixTemplate: React.VFC = () => {
                 transform: `translate(-50%, -100%)`,
               }}
               onClick={() => {
-                handlePinClick(i)
+                handleDeletePin(pin)
               }}
             />
           ))}

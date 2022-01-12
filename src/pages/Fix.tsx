@@ -138,6 +138,11 @@ export const Fix: React.VFC = () => {
   }, [])
   const handleDeletePin = React.useCallback(
     (pin: EmbededPin) => {
+      let pinsCopy = [...pins]
+      for (let i = pin.number + 1; i < pins.length; i++) {
+        pinsCopy[i].number -= 1
+      }
+      setPins(pinsCopy)
       setPins(pins.filter((tmp) => tmp !== pin))
       setPinOpen(null)
     },
