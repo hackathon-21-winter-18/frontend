@@ -7,34 +7,44 @@ import DeleteIcon from '@mui/icons-material/Delete'
 import HidableWord from './HidableWord'
 
 interface FixWordDialogProps {
+  isPlayground?: boolean
   isVisible?: boolean
   open: EmbededPin
   deletePin: (pin: EmbededPin) => void
   flags?: boolean[]
   setFlags?: (flags: boolean[]) => void
 }
-export const FixWordDialog: React.VFC<FixWordDialogProps> = ({open, deletePin, isVisible = true, flags, setFlags}) => {
+export const FixWordDialog: React.VFC<FixWordDialogProps> = ({
+  isPlayground = false,
+  open,
+  deletePin,
+  isVisible = true,
+  flags = [false],
+  setFlags,
+}) => {
   function handleComplete() {
-    flags![open.number] = !flags![open.number]
-    setFlags!(flags!)
+    if (setFlags) {
+      flags[open.number] = !flags[open.number]
+      setFlags(flags)
+    }
   }
   return (
     <Grow in={!!open}>
       <Card elevation={1} className={styles.card}>
         <div className={styles.inputContainer}>
-          <HidableWord text={open.word} isVisible={isVisible || !open.word || flags![open.number]} />
+          <HidableWord text={open.word} isVisible={isVisible || !open.word || flags[open.number]} />
           が
-          <HidableWord text={open.place} isVisible={isVisible || !open.place || flags![open.number]} />
+          <HidableWord text={open.place} isVisible={isVisible || !open.place || flags[open.number]} />
           で
-          <HidableWord text={open.situation} isVisible={isVisible || !open.situation || flags![open.number]} />
+          <HidableWord text={open.situation} isVisible={isVisible || !open.situation || flags[open.number]} />
           {isVisible && (
             <IconButton onClick={() => deletePin(open)}>
               <DeleteIcon />
             </IconButton>
           )}
           <div>
-            {!isVisible && (
-              <IconButton onClick={flags && handleComplete} color={flags && flags![open.number] ? 'primary' : 'error'}>
+            {!isPlayground && (
+              <IconButton onClick={flags && handleComplete} color={flags && flags[open.number] ? 'primary' : 'error'}>
                 完了
               </IconButton>
             )}

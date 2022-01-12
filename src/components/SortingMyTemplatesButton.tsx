@@ -39,6 +39,8 @@ export const SortingMyTemplatesButton = (props: SortingMyTemplatesButtonProp) =>
         .then((res) => {
           if (res.data) {
             setTemplates(res.data)
+          } else {
+            setTemplates(new Array<TemplateType>())
           }
         })
         .catch((err) => console.log(err))
