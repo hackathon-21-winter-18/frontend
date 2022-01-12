@@ -71,6 +71,13 @@ const AddNewWordDialog: React.VFC<AddNewWordDialogProps> = ({
     '寝てる',
     '遊んでる',
     'こっち見てる',
+    '勉強してる',
+    '料理してる',
+    'めっちゃ赤い',
+    'めっちゃ青い',
+    'めっちゃ大きい',
+    'めっちゃ小さい',
+    '暴れてる',
   ])
 
   const handlePutPin = () => {
