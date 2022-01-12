@@ -276,28 +276,30 @@ export const Edit: React.VFC<EditProps> = ({imageUrl, isPlayground = false, xGap
         )}
         {mode === 'memorization' && <VisibilityOffIcon />}
       </IconButton>
-      <div className={styles.card}>
-        グループ
-        <ul>
-          {groups.map((group, index) => (
-            <li key={index}>
-              <img
-                className={styles.listPinIcon}
-                src={index === 0 ? redPinIcon : index === 1 ? bluePinIcon : yellowPinIcon}
-                alt=""
-              />
-              <input
-                type="text"
-                value={group}
-                onChange={(e) => handleGroupsChange(e, index)}
-                className={styles.groupNameInput}
-              />
-            </li>
-          ))}
-        </ul>
-        ピンリスト
-        <ul>{pinsList}</ul>
-      </div>
+      {!isPlayground ? (
+        <div className={styles.card}>
+          グループ
+          <ul>
+            {groups.map((group, index) => (
+              <li key={index}>
+                <img
+                  className={styles.listPinIcon}
+                  src={index === 0 ? redPinIcon : index === 1 ? bluePinIcon : yellowPinIcon}
+                  alt=""
+                />
+                <input
+                  type="text"
+                  value={group}
+                  onChange={(e) => handleGroupsChange(e, index)}
+                  className={styles.groupNameInput}
+                />
+              </li>
+            ))}
+          </ul>
+          ピンリスト
+          <ul>{pinsList}</ul>
+        </div>
+      ) : null}
 
       <ClickAwayListener onClickAway={handleClickAway}>
         <div className={styles.image}>
