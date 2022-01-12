@@ -324,7 +324,12 @@ export const EditFromTemplate: React.VFC<EditProps> = ({imageUrl, isPlayground =
                   src={index === 0 ? redPinIcon : index === 1 ? bluePinIcon : yellowPinIcon}
                   alt=""
                 />
-                <input type="text" value={group[index]} onChange={(e) => handleGroupsChange(e, index)} />
+                <input
+                  type="text"
+                  value={group[index]}
+                  onChange={(e) => handleGroupsChange(e, index)}
+                  className={styles.groupNameInput}
+                />
               </li>
             ))}
           </ul>

@@ -217,7 +217,9 @@ const Memorize: React.VFC = () => {
                   src={index === 0 ? redPinIcon : index === 1 ? bluePinIcon : yellowPinIcon}
                   alt=""
                 />
-                {group}
+                <div className={styles.groupName}>
+                  <span>{group}</span>
+                </div>
               </li>
             ))}
           </ul>

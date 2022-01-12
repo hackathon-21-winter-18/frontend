@@ -118,6 +118,7 @@
 .card li {
   display: flex;
   justify-content: space-between;
+  align-items: center;
   border-bottom: solid 1px #c6d0e5;
   height: 44px;
 }
@@ -132,11 +133,8 @@
   align-items: center;
 }
 .listPinIcon {
-  width: 32px;
-  height: 32px;
   object-fit: contain;
   transition-duration: 0.2s;
-  margin-top: 4px;
 }
 .listPinIconButton {
   border: none;
@@ -149,4 +147,12 @@
   margin-right: auto;
 }
 .trashButton {
+}
+.groupName {
+  width: 100%;
+  text-align: center;
+  font-size: 32px;
+}
+.groupName > span {
+  margin-right: 24px;
 }

@@ -255,13 +255,18 @@ export const Fix: React.VFC = () => {
           グループ
           <ul>
             {groups.map((group, index) => (
-              <li>
+              <li key={index}>
                 <img
                   className={styles.listPinIcon}
                   src={index === 0 ? redPinIcon : index === 1 ? bluePinIcon : yellowPinIcon}
                   alt=""
                 />
-                <input type="text" value={group} onChange={(e) => handleGroupsChange(e, index)} />
+                <input
+                  type="text"
+                  value={group}
+                  onChange={(e) => handleGroupsChange(e, index)}
+                  className={styles.groupNameInput}
+                />
               </li>
             ))}
           </ul>
