@@ -72,7 +72,7 @@ export const EditFromTemplate: React.VFC<EditProps> = ({imageUrl, isPlayground =
                     word: '',
                     place: '',
                     situation: '',
-                    groupNumber: 0,
+                    groupNumber: data[i].pins[j].groupNumber,
                   },
                 ])
                 setPins(prePins)
