@@ -54,7 +54,9 @@ const Sidebar: React.VFC = () => {
     <div className={styles.sidebar}>
       {user.auth ? (
         <>
-          <Link to="/palace" className={pathname === '/palace' ? styles.buttonHere : styles.buttonNotHere}>
+          <Link
+            to="/palace"
+            className={pathname === '/palace' || pathname === '/' ? styles.buttonHere : styles.buttonNotHere}>
             <HomeIcon className={styles.buttonIcon} />
             My Palaces
           </Link>
