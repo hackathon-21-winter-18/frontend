@@ -21,6 +21,7 @@ import SideLayout from './components/SideLayout'
 import Playground from './pages/Playground'
 import CallBack from './pages/CallBack'
 import PrivacyPolicy from './pages/PrivacyPolicy'
+import TitleOutlet from './components/TitleOutlet'
 
 function App() {
   return (
@@ -28,7 +29,7 @@ function App() {
       <UserProvider>
         <BrowserRouter>
           <Routes>
-            <Route path="/" element={<Title />} />
+            <Route path="/" element={<TitleOutlet />} />
             <Route path="/privacyPolicy" element={<PrivacyPolicy />} />
             <Route path="/callback" element={<CallBack />} />
             <Route element={<AuthenticatedRoute />}>

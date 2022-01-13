@@ -6,7 +6,7 @@ import CreateNewPalaceButton from '../components/CreateNewPalaceButton'
 import {getPalace} from '../api/palace'
 import {SortingMyPalacesButton} from '../components/SortingMyPalacesButton'
 
-const Home: React.VFC = () => {
+const PalacePage: React.VFC = () => {
   const [palaces, setPalaces] = useState(new Array<PalaceType>())
   const listItems = palaces.map((palace, index) => (
     <li key={palace.id}>
@@ -38,4 +38,4 @@ const Home: React.VFC = () => {
   )
 }
 
-export default Home
+export default PalacePage
