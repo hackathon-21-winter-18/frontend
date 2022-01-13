@@ -53,6 +53,9 @@ export const Fix: React.VFC = () => {
             setPins(data[i].embededPins)
             setPalaceId(data[i].id)
             setPalaceCreatedBy(data[i].createdBy)
+            let groups: string[] = [data[i].group1, data[i].group2, data[i].group3]
+            setGroups(groups)
+            setShareOption(data[i].share)
           }
         }
       })
@@ -77,13 +80,11 @@ export const Fix: React.VFC = () => {
 
       params.id &&
         putPalace(params.id, data, () => {
-          if (shareOption) {
-            const data = {
-              share: shareOption,
-              createdBy: palaceCreatedBy,
-            }
-            putSharePalace(palaceId, data)
+          const data = {
+            share: shareOption,
+            createdBy: palaceCreatedBy,
           }
+          putSharePalace(palaceId, data)
         })
       setCompleteIsOpen(true)
     } else {
@@ -154,7 +155,21 @@ export const Fix: React.VFC = () => {
   const handleClose = () => {
     setAnchorEl(null)
   }
-
+  function handlePinsChange(e: React.ChangeEvent<HTMLInputElement>, index: number, type: string) {
+    let pinsCopy = [...pins]
+    switch (type) {
+      case 'word':
+        pinsCopy[index].word = e.target.value
+        break
+      case 'place':
+        pinsCopy[index].place = e.target.value
+        break
+      case 'situation':
+        pinsCopy[index].situation = e.target.value
+        break
+    }
+    setPins(pinsCopy)
+  }
   const pinsList = pins.map((pin, index) => (
     <li key={pin.number} className={styles.li}>
       <div className={styles.inputContainer}>
@@ -171,11 +186,26 @@ export const Fix: React.VFC = () => {
           }
           alt=""
         />
-        <HidableWord text={pin.word} isVisible={true} />
+        <input
+          type="text"
+          value={pin.word}
+          onChange={(e) => handlePinsChange(e, index, 'word')}
+          className={styles.pinInput}
+        />
         <span>が</span>
-        <HidableWord text={pin.place} isVisible={true} />
+        <input
+          type="text"
+          value={pin.place}
+          onChange={(e) => handlePinsChange(e, index, 'place')}
+          className={styles.pinInput}
+        />
         <span>で</span>
-        <HidableWord text={pin.situation} isVisible={true} />
+        <input
+          type="text"
+          value={pin.situation}
+          onChange={(e) => handlePinsChange(e, index, 'situation')}
+          className={styles.pinInput}
+        />
         <IconButton onClick={() => handleDeletePin(pin)} className={styles.trashButton}>
           <DeleteIcon />
         </IconButton>
@@ -298,7 +328,12 @@ export const Fix: React.VFC = () => {
       <div className={styles.form}>
         <form>
           <label>
-            <input type="checkbox" onClick={() => setShareOption(!shareOption)} id="sharedCheckBox" />
+            <input
+              type="checkbox"
+              checked={shareOption}
+              onClick={() => setShareOption(!shareOption)}
+              id="sharedCheckBox"
+            />
             <span>宮殿を共有</span>
           </label>
           <br />

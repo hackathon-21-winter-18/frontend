@@ -51,6 +51,7 @@ export const FixTemplate: React.VFC = () => {
             setPins(data[i].pins)
             setTemplateId(data[i].id)
             setTemplateCreatedBy(data[i].createdBy)
+            setShareOption(data[i].share)
           }
         }
       })
@@ -84,13 +85,11 @@ export const FixTemplate: React.VFC = () => {
       }
 
       putTemplate(templateId, data, () => {
-        if (shareOption) {
-          const data = {
-            share: shareOption,
-            createdBy: templateCreatedBy,
-          }
-          putShareTemplate(templateId, data)
+        const data = {
+          share: shareOption,
+          createdBy: templateCreatedBy,
         }
+        putShareTemplate(templateId, data)
       })
       setCompleteIsOpen(true)
     } else {
@@ -248,7 +247,12 @@ export const FixTemplate: React.VFC = () => {
       <div className={styles.form}>
         <form>
           <label>
-            <input type="checkbox" onClick={() => setShareOption(!shareOption)} id="sharedCheckBox" />
+            <input
+              type="checkbox"
+              checked={shareOption}
+              onClick={() => setShareOption(!shareOption)}
+              id="sharedCheckBox"
+            />
             <span>テンプレートを共有</span>
           </label>
           <br />
