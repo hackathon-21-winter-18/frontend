@@ -262,7 +262,6 @@ export const EditFromTemplate: React.VFC<EditProps> = ({imageUrl, isPlayground =
           className={styles.pinInput}
         />
         <span>で</span>
-        <HidableWord text={pin.situation} isVisible={true} />
         <input
           type="text"
           value={pin.situation}
@@ -353,7 +352,6 @@ export const EditFromTemplate: React.VFC<EditProps> = ({imageUrl, isPlayground =
                   src={index === 0 ? redPinIcon : index === 1 ? bluePinIcon : yellowPinIcon}
                   alt=""
                 />
-
                 <input
                   type="text"
                   value={group}
