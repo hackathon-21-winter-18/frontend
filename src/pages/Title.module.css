@@ -33,7 +33,6 @@
 }
 .button {
   border: none;
-  cursor: pointer;
   background-color: transparent;
 }
 .loginButton {
@@ -47,8 +46,20 @@
   text-decoration: none;
   margin-top: 12px;
   width: 160px;
-  margin-left: auto;
-  margin-right: auto;
 }
-
+.trialButton {
+  padding: 8px 12px;
+  font-size: 16px;
+  background-color: #313847;
+  color: white;
+  border-radius: 8px;
+  margin-top: 12px;
+  width: 160px;
+  border: none;
+  cursor: pointer;
+}
+.buttons {
+  display: flex;
+  justify-content: space-between;
+}
 /* TODO @media screen and (width<600px){} */
