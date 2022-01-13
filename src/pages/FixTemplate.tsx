@@ -157,7 +157,7 @@ export const FixTemplate: React.VFC = () => {
   const pinsList = pins.map((pin, index) => (
     <li key={pin.number} className={styles.li}>
       <div className={styles.inputContainer}>
-        {pin.number}:
+        {pin.number + '.'}
         <button onClick={() => handlePinChange(pin.number)} className={styles.listPinIconButton}>
           <img
             className={styles.listPinIcon}
@@ -186,29 +186,33 @@ export const FixTemplate: React.VFC = () => {
       <ClickAwayListener onClickAway={() => setPinOpen(null)}>
         <div>
           {pins.map((pin, i) => (
-            <img
+            <div
               className={styles.pushedPin}
-              key={i}
-              src={
-                pin.groupNumber === 0
-                  ? pinIcon
-                  : pin.groupNumber === 1
-                  ? redPinIcon
-                  : pin.groupNumber === 2
-                  ? bluePinIcon
-                  : yellowPinIcon
-              }
-              alt=""
               style={{
                 position: 'absolute',
                 top: pin.y - 68 + 'px',
                 left: pin.x + 'px',
                 transform: `translate(-50%, -100%)`,
-              }}
-              onClick={() => {
-                handleDeletePin(pin)
-              }}
-            />
+              }}>
+              <span>{pin.number}.</span>
+              <img
+                className={styles.pushedPin}
+                key={i}
+                src={
+                  pin.groupNumber === 0
+                    ? pinIcon
+                    : pin.groupNumber === 1
+                    ? redPinIcon
+                    : pin.groupNumber === 2
+                    ? bluePinIcon
+                    : yellowPinIcon
+                }
+                alt=""
+                onClick={() => {
+                  handleDeletePin(pin)
+                }}
+              />
+            </div>
           ))}
         </div>
       </ClickAwayListener>

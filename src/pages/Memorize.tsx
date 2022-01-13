@@ -112,6 +112,7 @@ const Memorize: React.VFC = () => {
   const pinsList = pins.map((pin, index) => (
     <li key={pin.number} className={styles.li}>
       <div className={styles.inputContainer}>
+        {pin.number + '.'}
         <img
           className={styles.listPinIcon}
           src={
@@ -148,31 +149,35 @@ const Memorize: React.VFC = () => {
       <ClickAwayListener onClickAway={() => setPinOpen(null)}>
         <div>
           {pins.map((pin, i) => (
-            <img
+            <div
               className={styles.pushedPin}
-              key={i}
-              src={
-                flags[i]
-                  ? greenPinIcon
-                  : pin.groupNumber === 0
-                  ? pinIcon
-                  : pin.groupNumber === 1
-                  ? redPinIcon
-                  : pin.groupNumber === 2
-                  ? bluePinIcon
-                  : yellowPinIcon
-              }
-              alt=""
               style={{
                 position: 'absolute',
                 top: pin.y - 68 + 'px',
                 left: pin.x + 'px',
                 transform: `translate(-50%, -100%)`,
-              }}
-              onClick={() => {
-                handlePinClick(pin)
-              }}
-            />
+              }}>
+              <span>{pin.number}.</span>
+              <img
+                className={styles.pushedPinImg}
+                key={i}
+                src={
+                  flags[i]
+                    ? greenPinIcon
+                    : pin.groupNumber === 0
+                    ? pinIcon
+                    : pin.groupNumber === 1
+                    ? redPinIcon
+                    : pin.groupNumber === 2
+                    ? bluePinIcon
+                    : yellowPinIcon
+                }
+                alt=""
+                onClick={() => {
+                  handlePinClick(pin)
+                }}
+              />
+            </div>
           ))}
           {pinOpen && (
             <Portal>
