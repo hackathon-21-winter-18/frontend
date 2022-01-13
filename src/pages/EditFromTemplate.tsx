@@ -53,6 +53,7 @@ export const EditFromTemplate: React.VFC<EditProps> = ({imageUrl, isPlayground =
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null)
   const popOpen = Boolean(anchorEl)
   const [groups, setGroups] = React.useState<string[]>(['', '', ''])
+  const [isWordWorningOpen, setIsWordWorningOpen] = React.useState(false)
 
   React.useEffect(() => {
     const templateID = params.id
@@ -282,6 +283,20 @@ export const EditFromTemplate: React.VFC<EditProps> = ({imageUrl, isPlayground =
   function close() {
     setPinOpen(null)
   }
+  function wordCheck() {
+    let flag = false
+    for (let i = 0; i < pins.length; i++) {
+      if (pins[i].word === '') {
+        flag = true
+        break
+      }
+    }
+    if (flag) {
+      setIsWordWorningOpen(true)
+    } else {
+      setIsOpen(true)
+    }
+  }
   return (
     <div className={styles.edit}>
       {mode === 'edit' && <CustomCursor type="pin" isHover={isHovered} />}
@@ -404,7 +419,7 @@ export const EditFromTemplate: React.VFC<EditProps> = ({imageUrl, isPlayground =
             <button
               onClick={(e) => {
                 e.preventDefault()
-                setIsOpen(true)
+                wordCheck()
               }}
               type="submit"
               className={styles.completeButton}>
@@ -450,13 +465,18 @@ export const EditFromTemplate: React.VFC<EditProps> = ({imageUrl, isPlayground =
         </DialogActions>
       </Dialog>
       <Dialog
-        open={isOpen && (pins.length <= 0 || palaceName === '')}
+        open={(isOpen && (pins.length <= 0 || palaceName === '')) || isWordWorningOpen}
         PaperProps={{style: {width: '381px', height: '309px', borderRadius: '10px'}}}>
         <DialogTitle style={{textAlign: 'center'}}>
-          <span>単語が登録されていないか、宮殿の名前が登録されていません</span>
+          <span>ピンが登録されていないか、宮殿の名前が登録されていません</span>
         </DialogTitle>
         <DialogActions>
-          <button onClick={() => setIsOpen(false)} className={styles.button2}>
+          <button
+            onClick={() => {
+              setIsOpen(false)
+              setIsWordWorningOpen(false)
+            }}
+            className={styles.button2}>
             <span>戻る</span>
           </button>
         </DialogActions>
