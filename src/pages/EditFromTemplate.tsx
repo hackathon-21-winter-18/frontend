@@ -119,7 +119,8 @@ export const EditFromTemplate: React.VFC<EditProps> = ({imageUrl, isPlayground =
           name: palaceName,
           image: image,
           embededPins: pins,
-          createdBy: templateCreatedBy,
+          createdBy: user.id,
+          //createdBy: templateCreatedBy,
           group1: groups[0],
           group2: groups[1],
           group3: groups[2],
@@ -129,7 +130,8 @@ export const EditFromTemplate: React.VFC<EditProps> = ({imageUrl, isPlayground =
           name: palaceName,
           image: image,
           embededPins: pins,
-          createdBy: templateCreatedBy,
+          createdBy: user.id,
+          //createdBy: templateCreatedBy,
           group1: groups[0],
           group2: groups[1],
           group3: groups[2],
@@ -214,8 +216,22 @@ export const EditFromTemplate: React.VFC<EditProps> = ({imageUrl, isPlayground =
   const handleClose = () => {
     setAnchorEl(null)
   }
-
-  const pinsList = pins.map((pin) => (
+  function handlePinsChange(e: React.ChangeEvent<HTMLInputElement>, index: number, type: string) {
+    let pinsCopy = [...pins]
+    switch (type) {
+      case 'word':
+        pinsCopy[index].word = e.target.value
+        break
+      case 'place':
+        pinsCopy[index].place = e.target.value
+        break
+      case 'situation':
+        pinsCopy[index].situation = e.target.value
+        break
+    }
+    setPins(pinsCopy)
+  }
+  const pinsList = pins.map((pin, index) => (
     <li key={pin.number} className={styles.li}>
       <div className={styles.inputContainer}>
         <img
@@ -231,11 +247,26 @@ export const EditFromTemplate: React.VFC<EditProps> = ({imageUrl, isPlayground =
           }
           alt=""
         />
-        <HidableWord text={pin.word} isVisible={true} />
+        <input
+          type="text"
+          value={pin.word}
+          onChange={(e) => handlePinsChange(e, index, 'word')}
+          className={styles.pinInput}
+        />
         <span>が</span>
-        <HidableWord text={pin.place} isVisible={true} />
+        <input
+          type="text"
+          value={pin.place}
+          onChange={(e) => handlePinsChange(e, index, 'place')}
+          className={styles.pinInput}
+        />
         <span>で</span>
-        <HidableWord text={pin.situation} isVisible={true} />
+        <input
+          type="text"
+          value={pin.situation}
+          onChange={(e) => handlePinsChange(e, index, 'situation')}
+          className={styles.pinInput}
+        />
         {!location.state.shared ? (
           <IconButton onClick={() => handleDeletePin(pin)} className={styles.trashButton}>
             <DeleteIcon />
