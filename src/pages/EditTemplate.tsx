@@ -200,7 +200,7 @@ export const EditTemplate: React.VFC<EditProps> = ({imageUrl, isPlayground = fal
               }}>
               <span>{pin.number}.</span>
               <img
-                className={styles.pushedPin}
+                className={styles.pushedPinImg}
                 key={i}
                 src={
                   pin.groupNumber === 0
