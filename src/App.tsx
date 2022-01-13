@@ -22,6 +22,7 @@ import Playground from './pages/Playground'
 import CallBack from './pages/CallBack'
 import PrivacyPolicy from './pages/PrivacyPolicy'
 import TitleOutlet from './components/TitleOutlet'
+import {TemplatePreview} from './pages/TemplatePreview'
 
 function App() {
   return (
@@ -52,6 +53,7 @@ function App() {
               </Route>
               <Route path="/memorize/:id" element={<Memorize />} />
               <Route path="/fromTemplate/:id" element={<EditFromTemplate />} />
+              <Route path="/templatePreview/:id" element={<TemplatePreview />} />
               <Route path="/*" element={<NotFound />} />
             </Route>
             <Route path="/login" element={<Login />} />
