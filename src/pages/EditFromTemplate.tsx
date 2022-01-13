@@ -248,26 +248,38 @@ export const EditFromTemplate: React.VFC<EditProps> = ({imageUrl, isPlayground =
           }
           alt=""
         />
-        <input
-          type="text"
-          value={pin.word}
-          onChange={(e) => handlePinsChange(e, index, 'word')}
-          className={styles.pinInput}
-        />
+        {location.state.shared ? (
+          <HidableWord text={pin.word} isVisible={true} />
+        ) : (
+          <input
+            type="text"
+            value={pin.word}
+            onChange={(e) => handlePinsChange(e, index, 'word')}
+            className={styles.pinInput}
+          />
+        )}
         <span>が</span>
-        <input
-          type="text"
-          value={pin.place}
-          onChange={(e) => handlePinsChange(e, index, 'place')}
-          className={styles.pinInput}
-        />
+        {location.state.shared ? (
+          <HidableWord text={pin.place} isVisible={true} />
+        ) : (
+          <input
+            type="text"
+            value={pin.place}
+            onChange={(e) => handlePinsChange(e, index, 'place')}
+            className={styles.pinInput}
+          />
+        )}
         <span>で</span>
-        <input
-          type="text"
-          value={pin.situation}
-          onChange={(e) => handlePinsChange(e, index, 'situation')}
-          className={styles.pinInput}
-        />
+        {location.state.shared ? (
+          <HidableWord text={pin.situation} isVisible={true} />
+        ) : (
+          <input
+            type="text"
+            value={pin.situation}
+            onChange={(e) => handlePinsChange(e, index, 'situation')}
+            className={styles.pinInput}
+          />
+        )}
         {!location.state.shared ? (
           <IconButton onClick={() => handleDeletePin(pin)} className={styles.trashButton}>
             <DeleteIcon />
