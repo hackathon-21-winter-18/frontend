@@ -31,6 +31,10 @@
   width: 100%;
   border-top: 1px solid #c6d0e5;
 }
+.explanation {
+  font-size: 16px;
+  text-align: start;
+}
 .button {
   border: none;
   background-color: transparent;
@@ -39,13 +43,11 @@
   display: block;
   padding: 8px 12px;
   font-size: 16px;
-
   background-color: #313847;
   color: white;
   border-radius: 8px;
   text-decoration: none;
   margin-top: 12px;
-  width: 160px;
 }
 .trialButton {
   padding: 8px 12px;
@@ -54,12 +56,21 @@
   color: white;
   border-radius: 8px;
   margin-top: 12px;
-  width: 160px;
   border: none;
   cursor: pointer;
 }
 .buttons {
   display: flex;
   justify-content: space-between;
+}
+.privacyPolicy {
+  text-align: end;
+  margin-top: 16px;
+}
+
+.privacyPolicy > button {
+  border: none;
+  background-color: transparent;
+  cursor: pointer;
 }
 /* TODO @media screen and (width<600px){} */

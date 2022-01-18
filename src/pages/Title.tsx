@@ -17,6 +17,17 @@ const Title: React.VFC = () => {
       <div className={styles.login}>
         <img src={logo} alt="palamo logo" className={styles.logo} />
         <div className={styles.divider} />
+        <div className={styles.explanation}>
+          Palamoとは場所記憶法の手助けをしてくれるアプリです。
+          <br />
+          場所記憶法とは自分の知っている場所に覚えたいものを当てはめることで効率よく暗記ができる記憶術です。
+          <br />
+          その場所と単語の組み合わせを保存し、いつでも見返せるようにしました。
+          <br />
+          また、他人との共有機能もあり、他の人がどんな場所で何を覚えてるかを参考にすることもできます。
+          <br />
+          早速利用してみましょう！
+        </div>
         <div className={styles.buttons}>
           <button className={styles.button} onClick={handleLogin}>
             <a href={URL} className={styles.loginButton}>
@@ -24,8 +35,11 @@ const Title: React.VFC = () => {
             </a>
           </button>
           <button className={styles.trialButton} onClick={() => navigate('/sharedPalaces')}>
-            体験版へ
+            登録せずに使ってみる
           </button>
+        </div>
+        <div className={styles.privacyPolicy}>
+          <button onClick={() => navigate('/privacyPolicy')}>プライバシーポリシー</button>
         </div>
       </div>
     </div>
