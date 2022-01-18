@@ -57,6 +57,9 @@ const Template: React.VFC<TemplateProps> = ({num, template, handleDeleteTemplate
         onClick={() => navigate('/fromTemplate/' + template.id, {state: {shared: false}})}
         className={styles.imageButton}>
         <img className={styles.image} src={Extension(template.image)} alt={template.name} />
+        <div>
+          <span>テンプレートから宮殿を作成</span>
+        </div>
       </button>
       <div className={styles.titleContainer}>
         <h1 className={styles.title}>{template.name}</h1>

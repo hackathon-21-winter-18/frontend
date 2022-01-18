@@ -64,6 +64,9 @@ const SharedTemplate: React.VFC<TemplateProps> = ({num, template, handleDeleteTe
         onClick={() => navigate('/templatePreview/' + template.id, {state: {shared: true}})}
         className={styles.imageButton}>
         <img className={styles.image} src={Extension(template.image)} alt={template.name} />
+        <div>
+          <span>プレビュー</span>
+        </div>
       </button>
       <div className={styles.titleContainer}>
         <h1 className={styles.title}>{template.name}</h1>

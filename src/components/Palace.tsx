@@ -80,6 +80,9 @@ const Palace: React.VFC<PalaceProps> = ({num, palace, handleDeletePalace}) => {
         onClick={() => navigate('/memorize/' + palace.id, {state: {shared: false}})}
         className={styles.imageButton}>
         <img className={styles.image} src={Extension(palace.image)} alt={palace.name} />
+        <div>
+          <span>暗記する</span>
+        </div>
       </button>
       <div className={styles.titleContainer}>
         <h1 className={styles.title}>{palace.name}</h1>
