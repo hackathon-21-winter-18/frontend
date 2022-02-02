@@ -1,18 +1,19 @@
 import {useState} from 'react'
 import {useNavigate} from 'react-router-dom'
-import styles from './SharedTemplate.module.css'
-import {SharedTemplateType} from '../types'
-import MoreVertIcon from '@mui/icons-material/MoreVert'
-import CommentIcon from '@mui/icons-material/Comment'
+
 import AccessibilityNewIcon from '@mui/icons-material/AccessibilityNew'
-import GradeIcon from '@mui/icons-material/Grade'
+import CommentIcon from '@mui/icons-material/Comment'
 import EditIcon from '@mui/icons-material/Edit'
+import GradeIcon from '@mui/icons-material/Grade'
+import MoreVertIcon from '@mui/icons-material/MoreVert'
+import {DialogActions, DialogTitle, Menu} from '@mui/material'
 import Dialog from '@mui/material/Dialog'
+
+import {postTemplate, putShareTemplate} from '../api/template'
 import useAuth from '../components/UserProvider'
-import {DialogActions, DialogTitle} from '@mui/material'
-import {putShareTemplate, postTemplate} from '../api/template'
-import {Menu} from '@mui/material'
+import {SharedTemplateType} from '../types'
 import {Extension} from '../util/extension'
+import styles from './SharedTemplate.module.css'
 
 interface TemplateProps {
   num: number
@@ -70,9 +71,11 @@ const SharedTemplate: React.VFC<TemplateProps> = ({num, template, handleDeleteTe
       </button>
       <div className={styles.titleContainer}>
         <h1 className={styles.title}>{template.name}</h1>
-        <button className={styles.moreVertIcon} onClick={handleClick}>
-          <MoreVertIcon />
-        </button>
+        {user.auth ? (
+          <button className={styles.moreVertIcon} onClick={handleClick}>
+            <MoreVertIcon />
+          </button>
+        ) : null}
       </div>
       <div className={styles.tag}>
         <CommentIcon className={styles.icon} />
