@@ -1,20 +1,21 @@
 import {useState} from 'react'
 import {useNavigate} from 'react-router-dom'
-import styles from './Palace.module.css'
-import {PalaceType} from '../types'
-import MoreVertIcon from '@mui/icons-material/MoreVert'
+
 import CommentIcon from '@mui/icons-material/Comment'
+import GradeIcon from '@mui/icons-material/Grade'
+import MoreVertIcon from '@mui/icons-material/MoreVert'
+import ShareIcon from '@mui/icons-material/Share'
+import {Menu} from '@mui/material'
 import Dialog from '@mui/material/Dialog'
 import DialogActions from '@mui/material/DialogActions'
 import DialogTitle from '@mui/material/DialogTitle'
-import GradeIcon from '@mui/icons-material/Grade'
-import ShareIcon from '@mui/icons-material/Share'
+
 import {deletePalace, putSharePalace} from '../api/palace'
-import userAuth from './UserProvider'
 import {postTemplate} from '../api/template'
-import {Pin} from '../types'
-import {Menu} from '@mui/material'
+import {PalaceType, Pin} from '../types'
 import {Extension} from '../util/extension'
+import styles from './Palace.module.css'
+import userAuth from './UserProvider'
 
 interface PalaceProps {
   num: number
@@ -67,7 +68,8 @@ const Palace: React.VFC<PalaceProps> = ({num, palace, handleDeletePalace}) => {
       name: palace.name,
       image: palace.image,
       pins: templatePins,
-      createdBy: palace.createdBy,
+      createdBy: user.id,
+      //createdBy: palace.createdBy,
     }
     postTemplate(data)
     setSaveAsTemplateIsOpen(false)
