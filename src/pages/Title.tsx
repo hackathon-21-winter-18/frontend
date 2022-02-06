@@ -1,8 +1,9 @@
-import styles from './Title.module.css'
+import { useNavigate } from 'react-router-dom'
+
 import logo from '../assets/logo.svg'
-import {generateCrypt} from '../util/generateCrypt'
-import {config2} from '../config'
-import {useNavigate} from 'react-router-dom'
+import { config2 } from '../config'
+import { generateCrypt } from '../util/generateCrypt'
+import styles from './Title.module.css'
 
 const Title: React.VFC = () => {
   const navigate = useNavigate()
@@ -31,7 +32,7 @@ const Title: React.VFC = () => {
         <div className={styles.buttons}>
           <button className={styles.button} onClick={handleLogin}>
             <a href={URL} className={styles.loginButton}>
-              新規登録 or ログイン
+              Googleアカウントで新規登録/ログイン
             </a>
           </button>
           <button className={styles.trialButton} onClick={() => navigate('/sharedPalaces')}>
